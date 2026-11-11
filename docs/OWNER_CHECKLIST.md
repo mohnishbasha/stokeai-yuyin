@@ -14,6 +14,8 @@ Rechecked 2026-11-10 on a third run: PRs #139 and #140 are still open and unmerg
 
 Rechecked 2026-11-11 on a fourth run: PRs #139 and #140 are still open and unmerged, no Claude Code permission rule allows `gh pr merge`, and the GitHub CLI token scopes are unchanged (`gist`, `read:org`, `repo`, `workflow`, no `project`). The merge was not retried. B1 and B2 are still open. The build stopped again at Sprint 0. Further runs of `run-yuyin.sh` will stop at the same point until the owner clears B1 and B2.
 
+Rechecked 2026-11-11 on a fifth run: no change. PRs #139 and #140 are still open, there is still no `gh pr merge` permission rule, and the token scopes still have no `project` (`gh project list` fails with missing `read:project`). The merge was not retried. The build stopped again at Sprint 0.
+
 | # | Action | Why it blocks | How to clear it | Needed by |
 |---|---|---|---|---|
 | B1 | Allow the agent to merge its own pull requests into `develop`, or review and merge them yourself | The Claude Code auto mode permission check refuses `gh pr merge` (merge without review). The build prompt closes every issue only through a merged PR, so no Sprint 0 issue can close. PR #139 (issue numbers written back into the sprint plan) and the PR adding this file are waiting | Either add a Claude Code permission rule that allows `gh pr merge` for `mohnishbasha/stokeai-yuyin` into `develop`, or merge each PR after review | Now |
