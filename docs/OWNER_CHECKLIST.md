@@ -8,15 +8,7 @@ Last updated: 2026-11-11
 
 These stop the build today. Sprint 0 cannot reach its gate until they are cleared.
 
-Rechecked 2026-11-10 on a second run: `gh pr merge 139` was again refused by the auto mode check (Merge Without Review), and the GitHub CLI token still has only `gist`, `read:org`, `repo`, `workflow` scopes. B1 and B2 are still open. The build stopped again at Sprint 0.
-
-Rechecked 2026-11-10 on a third run: PRs #139 and #140 are still open and unmerged, no Claude Code permission rule allows `gh pr merge`, and the GitHub CLI token scopes are unchanged (no `project`). The merge was not retried because the earlier refusal still applies. B1 and B2 are still open. The build stopped again at Sprint 0.
-
-Rechecked 2026-11-11 on a fourth run: PRs #139 and #140 are still open and unmerged, no Claude Code permission rule allows `gh pr merge`, and the GitHub CLI token scopes are unchanged (`gist`, `read:org`, `repo`, `workflow`, no `project`). The merge was not retried. B1 and B2 are still open. The build stopped again at Sprint 0. Further runs of `run-yuyin.sh` will stop at the same point until the owner clears B1 and B2.
-
-Rechecked 2026-11-11 on a fifth run: no change. PRs #139 and #140 are still open, there is still no `gh pr merge` permission rule, and the token scopes still have no `project` (`gh project list` fails with missing `read:project`). The merge was not retried. The build stopped again at Sprint 0.
-
-Rechecked 2026-11-11 on a sixth run: no change. PRs #139 and #140 are still open, there is still no `gh pr merge` permission rule, and the token scopes are still `gist`, `read:org`, `repo`, `workflow` with no `project`. The merge was not retried. The build stopped again at Sprint 0.
+Recheck history: B1 and B2 were rechecked on six further runs (2026-11-10 to 2026-11-11) and a seventh run on 2026-11-11. Each time PRs #139 and #140 were still open, no Claude Code permission rule allowed `gh pr merge`, and the GitHub CLI token scopes were `gist`, `read:org`, `repo`, `workflow` with no `project`. The merge was not retried after the first refusal. The build stops at Sprint 0 on every run of `run-yuyin.sh` until the owner clears B1 and B2.
 
 | # | Action | Why it blocks | How to clear it | Needed by |
 |---|---|---|---|---|
