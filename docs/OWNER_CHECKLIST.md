@@ -2,7 +2,7 @@
 
 Actions only the owner can take. The agent prepares each one, records it here, and stops. Nothing in this list is ever done by the agent.
 
-Last updated: 2026-11-10
+Last updated: 2026-11-11
 
 ## Blocking now
 
@@ -11,6 +11,8 @@ These stop the build today. Sprint 0 cannot reach its gate until they are cleare
 Rechecked 2026-11-10 on a second run: `gh pr merge 139` was again refused by the auto mode check (Merge Without Review), and the GitHub CLI token still has only `gist`, `read:org`, `repo`, `workflow` scopes. B1 and B2 are still open. The build stopped again at Sprint 0.
 
 Rechecked 2026-11-10 on a third run: PRs #139 and #140 are still open and unmerged, no Claude Code permission rule allows `gh pr merge`, and the GitHub CLI token scopes are unchanged (no `project`). The merge was not retried because the earlier refusal still applies. B1 and B2 are still open. The build stopped again at Sprint 0.
+
+Rechecked 2026-11-11 on a fourth run: PRs #139 and #140 are still open and unmerged, no Claude Code permission rule allows `gh pr merge`, and the GitHub CLI token scopes are unchanged (`gist`, `read:org`, `repo`, `workflow`, no `project`). The merge was not retried. B1 and B2 are still open. The build stopped again at Sprint 0. Further runs of `run-yuyin.sh` will stop at the same point until the owner clears B1 and B2.
 
 | # | Action | Why it blocks | How to clear it | Needed by |
 |---|---|---|---|---|
