@@ -35,7 +35,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 | S0-T13 | Container skeletons and image build in CI | M | p0 |
 
 ### S0-T01: Monorepo layout
-- **Issue:** TBD
+- **Issue:** #1
 - **Labels:** type: chore, area: infra, priority: p0, size: M, sprint: 0
 - **Estimate:** M
 - **Dependencies:** none
@@ -49,7 +49,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_workspace_crates_placeholder_compiles_passes, unit_workspace_packages_placeholder_builds_passes, e2e_repo_cleanclone_build_exits_zero
 
 ### S0-T02: Rust workspace and toolchain
-- **Issue:** TBD
+- **Issue:** #2
 - **Labels:** type: chore, area: infra, priority: p0, size: S, sprint: 0
 - **Estimate:** S
 - **Dependencies:** S0-T01
@@ -63,7 +63,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_workspace_lints_unsafecode_forbidden_rejectsunsafe, unit_workspace_toolchain_pinned_matchesfile
 
 ### S0-T03: Bun workspace, TypeScript base config, ESLint, Prettier
-- **Issue:** TBD
+- **Issue:** #3
 - **Labels:** type: chore, area: infra, priority: p0, size: S, sprint: 0
 - **Estimate:** S
 - **Dependencies:** S0-T01
@@ -78,7 +78,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_tsconfig_base_strictflags_enabled, unit_workspace_scripts_allfour_exitzero
 
 ### S0-T04: CI pipeline
-- **Issue:** TBD
+- **Issue:** #4
 - **Labels:** type: chore, area: infra, priority: p0, size: L, sprint: 0
 - **Estimate:** L
 - **Dependencies:** S0-T02, S0-T03
@@ -92,7 +92,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_ci_lintjob_deliberateerror_failspr, e2e_ci_coveragejob_belowthreshold_failspr, contract_ci_workflow_jobgraph_matchesspec
 
 ### S0-T05: Version source of truth and scripts
-- **Issue:** TBD
+- **Issue:** #5
 - **Labels:** type: chore, area: infra, priority: p0, size: S, sprint: 0
 - **Estimate:** S
 - **Dependencies:** S0-T01
@@ -106,7 +106,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_scripts_checkversions_mismatch_exitsonenamesfile, unit_scripts_checkversions_allmatch_exitszero, unit_scripts_extractchangelog_knownversion_returnssection
 
 ### S0-T06: Agent repository files
-- **Issue:** TBD
+- **Issue:** #6
 - **Labels:** type: docs, area: infra, priority: p0, size: M, sprint: 0
 - **Estimate:** M
 - **Dependencies:** S0-T01
@@ -120,7 +120,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_agent_skills_runsh_executable_exitszero, unit_agent_files_required_present_allexist
 
 ### S0-T07: Licence and legal files
-- **Issue:** TBD
+- **Issue:** #7
 - **Labels:** type: docs, area: legal, priority: p0, size: S, sprint: 0
 - **Estimate:** S
 - **Dependencies:** S0-T04
@@ -133,7 +133,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_ci_licencecheck_disallowedlicence_fails, e2e_ci_licencecheck_allowlistonly_passes
 
 ### S0-T08: Local dev stack
-- **Issue:** TBD
+- **Issue:** #8
 - **Labels:** type: chore, area: infra, priority: p0, size: M, sprint: 0
 - **Estimate:** M
 - **Dependencies:** S0-T01
@@ -146,7 +146,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_devstack_startup_allservices_healthzreturns200, unit_env_example_noSecrets_passesscan
 
 ### S0-T09: OpenAPI skeleton and contract lint
-- **Issue:** TBD
+- **Issue:** #9
 - **Labels:** type: docs, area: gateway, priority: p1, size: S, sprint: 0
 - **Estimate:** S
 - **Dependencies:** S0-T04
@@ -159,7 +159,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** contract_openapi_spec_lint_exitszero, contract_openapi_paths_allcontractpaths_present
 
 ### S0-T10: Dependabot, audit jobs, secret scanning
-- **Issue:** TBD
+- **Issue:** #10
 - **Labels:** type: security, area: infra, priority: p1, size: S, sprint: 0
 - **Estimate:** S
 - **Dependencies:** S0-T04
@@ -173,7 +173,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_secretscan_fakeliveKey_commitrejected, e2e_ci_audit_knownvuln_fails
 
 ### S0-T11: Owner checklist
-- **Issue:** TBD
+- **Issue:** #11
 - **Labels:** type: docs, area: infra, priority: p1, size: XS, sprint: 0
 - **Estimate:** XS
 - **Dependencies:** none
@@ -185,7 +185,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_docs_ownerchecklist_linkedfromreadme_linkresolves
 
 ### S0-T12: Makefile and build entry points
-- **Issue:** TBD
+- **Issue:** #12
 - **Labels:** type: chore, area: infra, priority: p0, size: M, sprint: 0
 - **Estimate:** M
 - **Dependencies:** S0-T02, S0-T03, S0-T08
@@ -199,7 +199,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_make_setupbuildcheck_freshcontainer_exitszero, unit_make_help_alltargets_listed, unit_make_futuretarget_notbuilt_printsavailablemessage
 
 ### S0-T13: Container skeletons and image build in CI
-- **Issue:** TBD
+- **Issue:** #13
 - **Labels:** type: chore, area: infra, priority: p0, size: M, sprint: 0
 - **Estimate:** M
 - **Dependencies:** S0-T04, S0-T05, S0-T08
@@ -250,7 +250,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 | S1-T12 | Property tests and fuzzing for the normaliser | M | p1 |
 
 ### S1-T01: Golden corpus format and runner
-- **Issue:** TBD
+- **Issue:** #14
 - **Labels:** type: test, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S0-T01
@@ -265,7 +265,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_goldenrunner_allrows_passes, unit_text_goldenrunner_regressionrow_failsci, unit_text_goldenrunner_perclassreport_countsprinted
 
 ### S1-T02: Script and language tagging
-- **Issue:** TBD
+- **Issue:** #15
 - **Labels:** type: feature, area: text, priority: p0, size: L, sprint: 1
 - **Estimate:** L
 - **Dependencies:** S1-T01
@@ -279,7 +279,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_tagger_devanagari_tokenstaggedhindi, unit_text_tagger_romanhindi_lexiconhit_taggedhindi, unit_text_tagger_unknownword_ngramscorer_classified, unit_text_tagger_heldoutset_accuracyatleast95pct, unit_text_tagger_explicitlanguage_constrainsoutput
 
 ### S1-T03: Number verbalisation, Hindi and English, Indian numbering
-- **Issue:** TBD
+- **Issue:** #16
 - **Labels:** type: feature, area: text, priority: p0, size: L, sprint: 1
 - **Estimate:** L
 - **Dependencies:** S1-T01
@@ -293,7 +293,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_numbers_hindi0to99_tablelookup_matchesgolden, unit_text_numbers_indiangrouping_lakhcrore_verbalised, unit_text_numbers_westerngrouping_enus_million, property_text_numbers_roundtrip_100values_parsebackequal
 
 ### S1-T04: Currency
-- **Issue:** TBD
+- **Issue:** #17
 - **Labels:** type: feature, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T03
@@ -307,7 +307,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_currency_rupeesymbol_spoken_matchesgolden, unit_text_currency_paise_fractionalamount_verbalised, unit_text_currency_lakhcroreshorthand_expanded, unit_text_currency_trailingslashdash_ignored
 
 ### S1-T05: Dates and times
-- **Issue:** TBD
+- **Issue:** #18
 - **Labels:** type: feature, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T03
@@ -320,7 +320,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_dates_ambiguousnumeric_enin_readsdaymonth, unit_text_dates_ambiguousnumeric_enus_readsmonthday, unit_text_times_24hourhrs_verbalised, unit_text_dates_relativeformat_leftuntouched
 
 ### S1-T06: Phone numbers, OTPs, digit strings
-- **Issue:** TBD
+- **Issue:** #19
 - **Labels:** type: feature, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T03
@@ -333,7 +333,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_digits_otp_readdigitbydigit, unit_text_digits_cardtail_xxxxprefix_readcorrectly, unit_text_digits_year_negativecase_readasnumber, unit_text_digits_pincode_withprefix_readbydigit, unit_text_digits_panlike_readcharbychar
 
 ### S1-T07: Acronym lexicon and overrides
-- **Issue:** TBD
+- **Issue:** #20
 - **Labels:** type: feature, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T01
@@ -347,7 +347,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_acronyms_override_tenantprecedence_beatsbuiltin, unit_text_acronyms_unknowncaps_2to5letters_letterbyletter, unit_text_acronyms_builtin_emikycupi_readcorrectly
 
 ### S1-T08: Units, percent, ranges, email, URL
-- **Issue:** TBD
+- **Issue:** #21
 - **Labels:** type: feature, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T03
@@ -360,7 +360,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_text_units_mbps_expandedcorrectly, unit_text_ranges_daysrange_readasrange, unit_text_email_atdot_spokenform, unit_text_url_slashdot_spokenform
 
 ### S1-T09: Segmenter with short first segment
-- **Issue:** TBD
+- **Issue:** #22
 - **Labels:** type: feature, area: text, priority: p0, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T02, S1-T03
@@ -374,7 +374,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** property_text_segmenter_spans_coverinputexactly_nooverlap, unit_text_segmenter_firstsegment_capped60_earliestboundary, unit_text_segmenter_danda_splitsatsentence, unit_text_segmenter_semioticspan_neversplit
 
 ### S1-T10: Engine bake-off spike and ADR
-- **Issue:** TBD
+- **Issue:** #23
 - **Labels:** type: spike, area: engine, priority: p0, size: L, sprint: 1
 - **Estimate:** L
 - **Dependencies:** S0-T01
@@ -390,7 +390,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_bench_bakeoff_script_runsonfakeinput_producesreport, unit_docs_licences_voiceentries_evidencefilepresent
 
 ### S1-T11: `SynthesisEngine` trait and fake engine
-- **Issue:** TBD
+- **Issue:** #24
 - **Labels:** type: feature, area: engine, priority: p0, size: S, sprint: 1
 - **Estimate:** S
 - **Dependencies:** S0-T02
@@ -404,7 +404,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_engine_fakeengine_synthesise_deterministicoutput, unit_engine_fakeengine_cancel_stopswithin20ms, unit_engine_fakeengine_textlength_proportionalduration
 
 ### S1-T12: Property tests and fuzzing for the normaliser
-- **Issue:** TBD
+- **Issue:** #25
 - **Labels:** type: test, area: text, priority: p1, size: M, sprint: 1
 - **Estimate:** M
 - **Dependencies:** S1-T03, S1-T04, S1-T05, S1-T06, S1-T07, S1-T08, S1-T09
@@ -446,7 +446,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 | S2-T09 | Playwright harness and visual snapshots | M | p0 |
 
 ### S2-T01: Next.js app, Tailwind tokens, fonts
-- **Issue:** TBD
+- **Issue:** #26
 - **Labels:** type: feature, area: console, priority: p0, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S0-T03
@@ -461,7 +461,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_console_homeshell_lighthouse_meetsthresholds, unit_console_tokens_themes_darkdefaultlightavailable, unit_console_styles_rawvalues_lintrejects
 
 ### S2-T02: Component library
-- **Issue:** TBD
+- **Issue:** #27
 - **Labels:** type: feature, area: console, priority: p0, size: L, sprint: 2
 - **Estimate:** L
 - **Dependencies:** S2-T01
@@ -476,7 +476,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_console_textarea_counter_codepoints_matchesexpected, unit_console_keyreveal_secret_shownonce, unit_console_components_keyboardnav_focusringvisible, unit_console_codeblock_copy_languagetabswork
 
 ### S2-T03: Signature element: the pulse line
-- **Issue:** TBD
+- **Issue:** #28
 - **Labels:** type: feature, area: console, priority: p1, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S2-T01
@@ -489,7 +489,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_console_pulseline_reducedmotion_staticrender, unit_console_pulseline_render_hasaccessibletextalternative, perf_console_pulseline_mockstream_sustains60fps
 
 ### S2-T04: Clerk auth and organization switcher
-- **Issue:** TBD
+- **Issue:** #29
 - **Labels:** type: feature, area: console, priority: p0, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S2-T01
@@ -503,7 +503,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_console_signup_firstconsoleview_succeeds, security_console_operatorroute_nonallowlisted_denied, security_console_middleware_unauthenticated_redirects
 
 ### S2-T05: Console screens with mock data
-- **Issue:** TBD
+- **Issue:** #30
 - **Labels:** type: feature, area: console, priority: p0, size: L, sprint: 2
 - **Estimate:** L
 - **Dependencies:** S2-T02, S2-T04
@@ -516,7 +516,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_console_screens_all_reachable, e2e_console_screens_emptystateflag_renders, e2e_console_screens_errorstateflag_renders
 
 ### S2-T06: Marketing site shell
-- **Issue:** TBD
+- **Issue:** #31
 - **Labels:** type: feature, area: site, priority: p0, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S2-T01, S2-T02
@@ -530,7 +530,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_site_pages_allpublic_noperformancenumbers, unit_site_pricing_configfile_rendersvalues, e2e_site_pages_alllisted_navigable
 
 ### S2-T07: Docs site shell
-- **Issue:** TBD
+- **Issue:** #32
 - **Labels:** type: feature, area: docs-site, priority: p1, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S2-T01, S0-T09
@@ -543,7 +543,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** contract_docs_reference_buildfromopenapi_succeeds, e2e_docs_search_knownterm_returnsresult
 
 ### S2-T08: Accessibility and Devanagari rendering checks
-- **Issue:** TBD
+- **Issue:** #33
 - **Labels:** type: test, area: console, priority: p0, size: S, sprint: 2
 - **Estimate:** S
 - **Dependencies:** S2-T05, S2-T06, S2-T09
@@ -555,7 +555,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_a11y_allroutes_axe_zeroseriousviolations, e2e_render_devanagarifixture_conjunctsmatras_matchessnapshot
 
 ### S2-T09: Playwright harness and visual snapshots
-- **Issue:** TBD
+- **Issue:** #34
 - **Labels:** type: test, area: console, priority: p0, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S2-T05
@@ -604,7 +604,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 | S3-T17 | Minimal Helm chart and kind install in CI | L | p0 |
 
 ### S3-T01: ONNX engine implementation
-- **Issue:** TBD
+- **Issue:** #35
 - **Labels:** type: feature, area: engine, priority: p0, size: XL, sprint: 3
 - **Estimate:** XL
 - **Dependencies:** S1-T10, S1-T11, S1-T09
@@ -620,7 +620,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_engine_onnx_fourlanguages_producesaudio, integration_engine_onnx_warmup_onevoiceutteranceeach, integration_engine_onnx_corruptmodel_startupfailsnonzero, unit_engine_onnx_checksum_mismatch_rejectsmodel
 
 ### S3-T02: Voice registry and `config/voices.toml`
-- **Issue:** TBD
+- **Issue:** #36
 - **Labels:** type: feature, area: engine, priority: p0, size: M, sprint: 3
 - **Estimate:** M
 - **Dependencies:** S1-T10
@@ -634,7 +634,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_engine_voiceregistry_missinglicenceref_ciFails, unit_engine_voiceregistry_load_allvoicesparsed, unit_engine_voiceregistry_ids_stableslugs
 
 ### S3-T03: Worker pool and per-stream pipeline
-- **Issue:** TBD
+- **Issue:** #37
 - **Labels:** type: feature, area: gateway, priority: p0, size: L, sprint: 3
 - **Estimate:** L
 - **Dependencies:** S1-T09, S1-T11, S3-T04
@@ -648,7 +648,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_gateway_pipeline_200concurrent_nocrosstalk, integration_gateway_pipeline_clientdisconnect_cancelssynthesis, integration_gateway_pipeline_workerpanic_errorEventAndReplacement
 
 ### S3-T04: Opus encoder and Ogg muxer
-- **Issue:** TBD
+- **Issue:** #38
 - **Labels:** type: feature, area: audio, priority: p0, size: L, sprint: 3
 - **Estimate:** L
 - **Dependencies:** S0-T02
@@ -662,7 +662,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_audio_opus_referencedecoder_durationwithin2pct, unit_audio_ogg_pageflush_atmost100msinterval, e2e_audio_opus_browsersandplayers_plays
 
 ### S3-T05: PCM and WAV outputs
-- **Issue:** TBD
+- **Issue:** #39
 - **Labels:** type: feature, area: audio, priority: p0, size: S, sprint: 3
 - **Estimate:** S
 - **Dependencies:** S0-T02
@@ -675,7 +675,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_audio_wav_ffmpegdecode_succeeds, e2e_audio_pcm_webaudio_decodesandplays, unit_audio_wav_streamheader_maxdatalength
 
 ### S3-T06: Pace control
-- **Issue:** TBD
+- **Issue:** #40
 - **Labels:** type: feature, area: audio, priority: p1, size: M, sprint: 3
 - **Estimate:** M
 - **Dependencies:** S3-T01
@@ -688,7 +688,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_audio_pace_range_durationwithin5pct, unit_audio_wsola_testtone_pitchshiftunder1pct, unit_audio_pace_outofrange_validatedperspec
 
 ### S3-T07: REST endpoint `POST /v1/speech`
-- **Issue:** TBD
+- **Issue:** #41
 - **Labels:** type: feature, area: gateway, priority: p0, size: L, sprint: 3
 - **Estimate:** L
 - **Dependencies:** S3-T03, S3-T04, S3-T05, S3-T14, S0-T09
@@ -702,7 +702,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_gateway_speech_longinput_bytesarriveBeforeCompletion, integration_gateway_speech_eachErrorCode_returnsContractedResponse, integration_gateway_speech_trailers_billedcharsandttfapresent
 
 ### S3-T08: WebSocket endpoint
-- **Issue:** TBD
+- **Issue:** #42
 - **Labels:** type: feature, area: gateway, priority: p0, size: L, sprint: 3
 - **Estimate:** L
 - **Dependencies:** S3-T03, S3-T04, S3-T14
@@ -716,7 +716,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_gateway_ws_wordevery50ms_nogapover400ms, integration_gateway_ws_partialword_heldUntilBoundary, integration_gateway_ws_clientstopsreading_closesafter30s, integration_gateway_ws_flush_synthesisesbufferedtext
 
 ### S3-T09: Admission control and 503 behaviour
-- **Issue:** TBD
+- **Issue:** #43
 - **Labels:** type: feature, area: gateway, priority: p0, size: M, sprint: 3
 - **Estimate:** M
 - **Dependencies:** S3-T03, S3-T07
@@ -729,7 +729,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_gateway_admission_atcapacity_503withretryafterzerobytes, integration_gateway_admission_atcapacity_activestreamsbyteidentical, unit_gateway_admission_envoverride_replacesconfigvalue
 
 ### S3-T10: Graceful draining
-- **Issue:** TBD
+- **Issue:** #44
 - **Labels:** type: feature, area: gateway, priority: p0, size: M, sprint: 3
 - **Estimate:** M
 - **Dependencies:** S3-T03, S3-T07
@@ -744,7 +744,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_gateway_drain_sigtermduring20streams_allcomplete, integration_gateway_drain_newrequest_refused, integration_gateway_drain_readyz_returns503
 
 ### S3-T11: Voices and normalise endpoints
-- **Issue:** TBD
+- **Issue:** #45
 - **Labels:** type: feature, area: gateway, priority: p1, size: S, sprint: 3
 - **Estimate:** S
 - **Dependencies:** S3-T02, S1-T08, S0-T09
@@ -757,7 +757,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** contract_gateway_voices_list_matchesopenapi, contract_gateway_normalize_request_matchesopenapi, integration_gateway_normalize_61stcallinminute_rejected429
 
 ### S3-T12: Metrics, tracing, structured logs
-- **Issue:** TBD
+- **Issue:** #46
 - **Labels:** type: feature, area: gateway, priority: p0, size: M, sprint: 3
 - **Estimate:** M
 - **Dependencies:** S3-T03, S3-T07
@@ -771,7 +771,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** security_gateway_logs_infolevel_noRequestText, integration_gateway_metrics_scrape_allnamedmetricspresent, unit_gateway_config_debuglogtext_prodprofile_refused
 
 ### S3-T13: Benchmark harness v1 and capacity file
-- **Issue:** TBD
+- **Issue:** #47
 - **Labels:** type: feature, area: bench, priority: p0, size: L, sprint: 3
 - **Estimate:** L
 - **Dependencies:** S3-T07, S3-T08, S3-T12
@@ -787,7 +787,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** unit_bench_capacitysearch_fakeengine_findsknowncapacity, unit_bench_results_run_writesdatedjson, unit_bench_capacityfile_margin_applies20pct
 
 ### S3-T14: Static dev key auth shim
-- **Issue:** TBD
+- **Issue:** #48
 - **Labels:** type: chore, area: gateway, priority: p1, size: XS, sprint: 3
 - **Estimate:** XS
 - **Dependencies:** S0-T08
@@ -800,7 +800,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** security_gateway_devkey_releasebuild_rejected, unit_gateway_devkey_envdev_accepted, unit_gateway_devkey_envnotdev_rejected
 
 ### S3-T15: Listening sheet generator
-- **Issue:** TBD
+- **Issue:** #49
 - **Labels:** type: test, area: engine, priority: p0, size: S, sprint: 3
 - **Estimate:** S
 - **Dependencies:** S3-T01, S3-T02
@@ -813,7 +813,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** integration_scripts_listeningsheet_everypublicvoice_generated, unit_scripts_listeningsheet_csv_hasutteranceperrow
 
 ### S3-T16: Gateway image with models and `healthcheck` subcommand
-- **Issue:** TBD
+- **Issue:** #50
 - **Labels:** type: feature, area: infra, priority: p0, size: M, sprint: 3
 - **Estimate:** M
 - **Dependencies:** S0-T13, S3-T01
@@ -826,7 +826,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Test scenarios to add:** e2e_image_full_makeupsmoke_onnxpasses, integration_image_modelslayer_rustonlychange_digestunchanged, unit_gateway_healthcheck_notready_exitsnonzero
 
 ### S3-T17: Minimal Helm chart and kind install in CI
-- **Issue:** TBD
+- **Issue:** #51
 - **Labels:** type: feature, area: infra, priority: p0, size: L, sprint: 3
 - **Estimate:** L
 - **Dependencies:** S3-T16, S3-T10
@@ -878,7 +878,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 Build and deployment work in this sprint (from the sprint plan table): migration hook Job in the chart, and a Compose local stack with Postgres and Valkey. These are covered by acceptance criteria in S4-T01 and the sprint gate.
 
 ### S4-T01: Database schema and migrations on Nile
-- **Issue:** TBD
+- **Issue:** #52
 - **Labels:** type: feature, area: metering, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S3-T17
@@ -894,7 +894,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_db_migrations_updown_cleandatabasepasses, security_db_ledger_update_rejected, security_db_ledger_delete_rejected
 
 ### S4-T02: Tenant isolation tests
-- **Issue:** TBD
+- **Issue:** #53
 - **Labels:** type: test, area: metering, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T01
@@ -907,7 +907,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** security_isolation_keys_othertenant_noRowsReturned, security_isolation_ledger_forgedtenantid_ignored, security_isolation_usage_othertenant_noRowsReturned
 
 ### S4-T03: API key lifecycle in the console
-- **Issue:** TBD
+- **Issue:** #54
 - **Labels:** type: feature, area: console, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T01, S2-T05
@@ -921,7 +921,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** security_console_keycreate_secret_notinlogsorstorage, unit_console_keyformat_generated_matchesprefixandlength, e2e_console_keylifecycle_createrenamerevoke_succeeds
 
 ### S4-T04: Gateway key verification and cache
-- **Issue:** TBD
+- **Issue:** #55
 - **Labels:** type: feature, area: gateway, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T01, S4-T03
@@ -935,7 +935,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_gateway_keyrevoke_twoinstances_rejectedunder10s, unit_gateway_keyverify_hashcompare_constanttime, integration_gateway_orgsuspend_cacheevicted_requestrejected
 
 ### S4-T05: Character counting and price lookup
-- **Issue:** TBD
+- **Issue:** #56
 - **Labels:** type: feature, area: metering, priority: p0, size: S, sprint: 4
 - **Estimate:** S
 - **Dependencies:** S1-T09
@@ -948,7 +948,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** unit_metering_countchars_fixture200_matchesexpected, e2e_console_wasmcounter_fixture200_matchesrust, unit_metering_pricelookup_known_returnsconfiguredprice
 
 ### S4-T06: Redis reservation and settlement
-- **Issue:** TBD
+- **Issue:** #57
 - **Labels:** type: feature, area: metering, priority: p0, size: L, sprint: 4
 - **Estimate:** L
 - **Dependencies:** S4-T01, S4-T05
@@ -961,7 +961,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_metering_reserve_500parallelbalancefor100_admitsexactly100, integration_metering_reservation_gatewaycrash_ttlreleasescredit, integration_metering_settle_actualbelowreserved_refundsdifference
 
 ### S4-T07: Ledger batcher and idempotency
-- **Issue:** TBD
+- **Issue:** #58
 - **Labels:** type: feature, area: metering, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T01, S4-T06
@@ -974,7 +974,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_metering_batcher_postgreskilledmidrun_everyeventexactlyonce, unit_metering_batcher_duplicaterequestid_noop, unit_metering_spool_exceeds100mb_boundedbehaviour
 
 ### S4-T08: Stripe Checkout top-ups and webhooks
-- **Issue:** TBD
+- **Issue:** #59
 - **Labels:** type: feature, area: console, priority: p0, size: L, sprint: 4
 - **Estimate:** L
 - **Dependencies:** S4-T01, S4-T06, S4-T07, S0-T08
@@ -989,7 +989,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_console_topup_stripetestmode_balanceincreasesunder5s, integration_console_webhook_replayedevent_noDoubleCredit, integration_console_webhook_refund_reducesbalanceandwritesledgerrow, security_console_webhook_invalidsignature_rejected
 
 ### S4-T09: Launch grant
-- **Issue:** TBD
+- **Issue:** #60
 - **Labels:** type: feature, area: metering, priority: p1, size: S, sprint: 4
 - **Estimate:** S
 - **Dependencies:** S4-T01, S4-T06
@@ -1003,7 +1003,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_metering_grant_1001storg_noGrant, integration_metering_grant_50concurrentatboundary_neverexceedslimit, unit_metering_grant_plustagandotemail_foldedtoonenormalisedaddress
 
 ### S4-T10: 402, 429, key restrictions
-- **Issue:** TBD
+- **Issue:** #61
 - **Labels:** type: feature, area: gateway, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T04, S4-T06
@@ -1016,7 +1016,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_gateway_speech_insufficientcredits_returns402, integration_gateway_speech_overratelimit_returns429, integration_gateway_speech_voicenotinallowlist_returns403keyrestricted, integration_gateway_speech_monthlycapreached_returns402distinctmessage, integration_gateway_speech_orgsuspended_returns403orgsuspended
 
 ### S4-T11: Balance and usage endpoints and views
-- **Issue:** TBD
+- **Issue:** #62
 - **Labels:** type: feature, area: gateway, area: console, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T07, S2-T05
@@ -1029,7 +1029,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** property_metering_usagedaily_randomworkload_totalsequalledger, contract_gateway_balanceandusage_matchesopenapi, e2e_console_usagescreen_realdata_rendersdailyseries
 
 ### S4-T12: Reconciliation job and alert
-- **Issue:** TBD
+- **Issue:** #63
 - **Labels:** type: feature, area: metering, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S4-T07, S4-T11
@@ -1042,7 +1042,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_metering_reconcile_injected1microusd_detectedandalerted, integration_metering_reconcile_clean_reportrowwrittennoalert
 
 ### S4-T13: Per-tenant lexicon
-- **Issue:** TBD
+- **Issue:** #64
 - **Labels:** type: feature, area: console, area: text, priority: p1, size: S, sprint: 4
 - **Estimate:** S
 - **Dependencies:** S1-T07, S4-T04
@@ -1084,7 +1084,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 | S5-T08 | Changelog and status feed | S | p1 |
 
 ### S5-T01: Console playground on the real API
-- **Issue:** TBD
+- **Issue:** #65
 - **Labels:** type: feature, area: console, priority: p0, size: L, sprint: 5
 - **Estimate:** L
 - **Dependencies:** S3-T08, S2-T03, S4-T05, S4-T03
@@ -1098,7 +1098,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_console_playground_play_ttfareadoutpopulated, security_console_playground_browser_nolongkeyexposed, e2e_console_playground_normalisedtoggle_showsnormalisedtext
 
 ### S5-T02: Public demo on the home page
-- **Issue:** TBD
+- **Issue:** #66
 - **Labels:** type: feature, area: site, priority: p0, size: M, sprint: 5
 - **Estimate:** M
 - **Dependencies:** S5-T01, S4-T10
@@ -1112,7 +1112,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_site_demo_dailybudgetexhausted_requestsrefused, integration_site_demo_perIPlimit_excessrejected, security_site_demo_restrictedkey_notexposedtoclient
 
 ### S5-T03: TypeScript SDK
-- **Issue:** TBD
+- **Issue:** #67
 - **Labels:** type: feature, area: sdk, priority: p0, size: L, sprint: 5
 - **Estimate:** L
 - **Dependencies:** S0-T09, S3-T07, S3-T08, S4-T10
@@ -1127,7 +1127,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** contract_sdkts_speak_mockserver_streamsbytes, integration_sdkts_stream_localgateway_asynciteratesaudiochunks, unit_sdkts_retry_503withretryafter_waitsandretries, unit_sdkts_retry_402_neverretries
 
 ### S5-T04: Python SDK
-- **Issue:** TBD
+- **Issue:** #68
 - **Labels:** type: feature, area: sdk, priority: p0, size: L, sprint: 5
 - **Estimate:** L
 - **Dependencies:** S5-T03
@@ -1141,7 +1141,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** contract_sdkpy_speak_mockserver_streamsbytes, integration_sdkpy_stream_localgateway_asynciteratesaudiochunks, unit_sdkpy_retry_402_neverretries
 
 ### S5-T05: Docs content
-- **Issue:** TBD
+- **Issue:** #69
 - **Labels:** type: docs, area: docs-site, priority: p0, size: L, sprint: 5
 - **Estimate:** L
 - **Dependencies:** S2-T07, S5-T03, S5-T04
@@ -1155,7 +1155,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_docs_samples_allsamples_runagainstlocalstack, security_docs_samples_nosecretpattern_scanpasses
 
 ### S5-T06: Benchmarks page from harness output
-- **Issue:** TBD
+- **Issue:** #70
 - **Labels:** type: feature, area: site, priority: p0, size: M, sprint: 5
 - **Estimate:** M
 - **Dependencies:** S3-T13, S2-T06
@@ -1168,7 +1168,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** unit_site_benchmarks_resultsfilechanged_pageoutputchanges, unit_site_benchmarks_pagesource_numericliteral_lintFails, unit_site_benchmarks_noresult_showsnoresultmessage
 
 ### S5-T07: Onboarding flow
-- **Issue:** TBD
+- **Issue:** #71
 - **Labels:** type: feature, area: console, priority: p1, size: S, sprint: 5
 - **Estimate:** S
 - **Dependencies:** S5-T01, S4-T03
@@ -1181,7 +1181,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_console_onboarding_threesteps_firstaudioplays, e2e_console_onboarding_skipstep_flowcontinues
 
 ### S5-T08: Changelog and status feed
-- **Issue:** TBD
+- **Issue:** #72
 - **Labels:** type: feature, area: site, priority: p1, size: S, sprint: 5
 - **Estimate:** S
 - **Dependencies:** S2-T06, S0-T05
@@ -1225,7 +1225,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 | S6-T10 | Release v1.0.0 | S | p0 |
 
 ### S6-T01: Terraform for AWS
-- **Issue:** TBD
+- **Issue:** #73
 - **Labels:** type: feature, area: infra, priority: p0, size: XL, sprint: 6
 - **Estimate:** XL
 - **Dependencies:** S3-T17, S3-T13
@@ -1241,7 +1241,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_infra_staging_terraformapplyfromscratch_environmentcreated, unit_infra_terraform_plan_ciexitszero, unit_infra_loadbalancer_idletimeout_above600s
 
 ### S6-T02: Gateway image and deploy pipeline
-- **Issue:** TBD
+- **Issue:** #74
 - **Labels:** type: chore, area: infra, priority: p0, size: L, sprint: 6
 - **Estimate:** L
 - **Dependencies:** S3-T16, S3-T17, S6-T01
@@ -1255,7 +1255,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_deploy_stagingrollingdeploy_50streamload_zerocutstreams, security_image_cosignverify_signedimage_verifies, security_image_runtime_readonlyrootfs_writeRejected
 
 ### S6-T03: Operator console
-- **Issue:** TBD
+- **Issue:** #75
 - **Labels:** type: feature, area: console, priority: p0, size: L, sprint: 6
 - **Estimate:** L
 - **Dependencies:** S2-T04, S4-T01, S4-T04, S4-T08
@@ -1269,7 +1269,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_console_operator_everymutation_writesauditrow, unit_console_operator_manualcredit_missingreason_rejected, security_console_operator_nonoperator_denied
 
 ### S6-T04: Acceptable use enforcement and abuse intake
-- **Issue:** TBD
+- **Issue:** #76
 - **Labels:** type: security, area: infra, priority: p1, size: M, sprint: 6
 - **Estimate:** M
 - **Dependencies:** S6-T03, S6-T05, S4-T10
@@ -1284,7 +1284,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_gateway_policy_fraudpatternnewaccount_returns403policyreviewrequired, integration_gateway_policy_ordinaryotpnotice_passes, integration_gateway_policy_verifiedorg_bypassesblock, unit_gateway_policy_patternconfig_falsepositivecorpus_noneblocked
 
 ### S6-T05: Legal pages
-- **Issue:** TBD
+- **Issue:** #77
 - **Labels:** type: docs, area: legal, area: site, priority: p0, size: M, sprint: 6
 - **Estimate:** M
 - **Dependencies:** S2-T06, S0-T07
@@ -1297,7 +1297,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** unit_site_legalpages_allfive_exist, unit_site_legalbanner_defaultconfig_enabledinallenvironments
 
 ### S6-T06: Security review and threat model
-- **Issue:** TBD
+- **Issue:** #78
 - **Labels:** type: security, area: infra, priority: p0, size: L, sprint: 6
 - **Estimate:** L
 - **Dependencies:** S6-T02, S6-T03, S4-T02
@@ -1312,7 +1312,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** security_gateway_keyverify_enumerationtiming_nodistinguishablesignal, security_gateway_ws_badorigin_rejected, security_console_headers_csp_present, security_gateway_ratelimit_bypassattempts_blocked
 
 ### S6-T07: Load, soak, and chaos tests on staging
-- **Issue:** TBD
+- **Issue:** #79
 - **Labels:** type: test, area: bench, priority: p0, size: L, sprint: 6
 - **Estimate:** L
 - **Dependencies:** S6-T01, S6-T02, S3-T13, S4-T12
@@ -1325,7 +1325,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_bench_staging_soak2hoursat60pct_zerounexplainedcutstreams, e2e_bench_staging_nodekillduringload_ledgerreconciles, e2e_bench_staging_redisfailover_ledgerreconciles, e2e_bench_staging_postgresoutage60s_ledgerreconciles
 
 ### S6-T08: Alerts, dashboards, runbooks
-- **Issue:** TBD
+- **Issue:** #80
 - **Labels:** type: docs, area: infra, priority: p1, size: M, sprint: 6
 - **Estimate:** M
 - **Dependencies:** S3-T12, S6-T01, S4-T12
@@ -1338,7 +1338,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_alerts_staging_capacityabove80pct_alertfires, e2e_alerts_staging_reconciliationmismatch_alertfires, unit_docs_runbooks_everyalert_runbookexists
 
 ### S6-T09: Backup, restore, and data retention jobs
-- **Issue:** TBD
+- **Issue:** #81
 - **Labels:** type: feature, area: infra, priority: p1, size: M, sprint: 6
 - **Estimate:** M
 - **Dependencies:** S4-T01, S6-T01
@@ -1352,7 +1352,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** integration_db_retention_requestlogolderthan30days_deleted, integration_console_accountdeletion_personaldata_removedledgerkept
 
 ### S6-T10: Release v1.0.0
-- **Issue:** TBD
+- **Issue:** #82
 - **Labels:** type: chore, area: infra, priority: p0, size: S, sprint: 6
 - **Estimate:** S
 - **Dependencies:** S6-T01, S6-T02, S6-T03, S6-T05, S6-T06, S6-T07
@@ -1398,7 +1398,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 Build and deployment work in this sprint: self-host binary, tarball, systemd unit, `docker-compose.selfhost.yml`.
 
 ### S7-T01: Mode split: hosted and selfhost behind traits
-- **Issue:** TBD
+- **Issue:** #83
 - **Labels:** type: refactor, area: gateway, priority: p0, size: L, sprint: 7
 - **Estimate:** L
 - **Dependencies:** S4-T04, S4-T06, S4-T07
@@ -1411,7 +1411,7 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Test scenarios to add:** integration_gateway_selfhostmode_fullsuite_passes, integration_gateway_hostedmode_fullsuite_passes, unit_gateway_handlers_nocfgforks_checkpasses
 
 ### S7-T02: Licence file format, signing tool, verification
-- **Issue:** TBD
+- **Issue:** #84
 - **Labels:** type: feature, area: selfhost, priority: p0, size: M, sprint: 7
 - **Estimate:** M
 - **Dependencies:** S7-T01
@@ -1425,7 +1425,7 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Test scenarios to add:** unit_selfhost_licence_tampered_rejectedwithdistinctError, unit_selfhost_licence_expired_rejectedwithdistinctError, unit_selfhost_licence_wrongkey_rejectedwithdistinctError, unit_selfhost_licence_clockrollback_detectedviahighwatermark, integration_selfhost_licence_expiredaftergrace_newstreamsrefusedactivecontinue
 
 ### S7-T03: Local key store and admin CLI
-- **Issue:** TBD
+- **Issue:** #85
 - **Labels:** type: feature, area: selfhost, priority: p0, size: M, sprint: 7
 - **Estimate:** M
 - **Dependencies:** S7-T01
@@ -1438,7 +1438,7 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Test scenarios to add:** e2e_selfhost_admin_keycreate_synthesisesuccessfully, e2e_selfhost_admin_keyrevoke_nextrequestrejected, unit_selfhost_admin_keylist_secretnotprinted
 
 ### S7-T04: Offline usage report
-- **Issue:** TBD
+- **Issue:** #86
 - **Labels:** type: feature, area: selfhost, priority: p1, size: S, sprint: 7
 - **Estimate:** S
 - **Dependencies:** S7-T01, S7-T02
@@ -1451,7 +1451,7 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Test scenarios to add:** unit_selfhost_usagereport_generated_verifieswithpublickey, unit_selfhost_usagereport_content_noTextOrAudio
 
 ### S7-T05: No-egress test
-- **Issue:** TBD
+- **Issue:** #87
 - **Labels:** type: test, area: selfhost, priority: p0, size: S, sprint: 7
 - **Estimate:** S
 - **Dependencies:** S7-T01, S7-T03
@@ -1464,7 +1464,7 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Test scenarios to add:** e2e_selfhost_noegress_nodefaultroute_synthesisandkeysandmetricswork, e2e_selfhost_noegress_packetcapture_zerooutboundpackets
 
 ### S7-T06: Self-host tarball and install doc
-- **Issue:** TBD
+- **Issue:** #88
 - **Labels:** type: docs, area: selfhost, priority: p0, size: M, sprint: 7
 - **Estimate:** M
 - **Dependencies:** S7-T01, S7-T02, S7-T03, S7-T04
@@ -1520,7 +1520,7 @@ yuyin --version
 Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` or `paplay`, PowerShell) with a clear message if none is found, with no bundled audio stack. `--json` on every read command. Exit codes: 0 ok, 2 usage error, 3 auth, 4 insufficient credits, 5 at capacity, 6 network. The CLI never prints the API key, and `yuyin config get api_key` prints the prefix only. No telemetry, and no update check unless `yuyin update --check` is run. Acceptance criteria for every task: unit tests for argument parsing and error mapping, integration tests against the local gateway, a smoke test on all three OS in the `cli-matrix` job, and binary size and startup time recorded.
 
 ### S8-T01: CLI skeleton, config, auth
-- **Issue:** TBD
+- **Issue:** #89
 - **Labels:** type: feature, area: cli, priority: p0, size: M, sprint: 8
 - **Estimate:** M
 - **Dependencies:** S5-T03
@@ -1537,7 +1537,7 @@ Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` 
 - **Test scenarios to add:** unit_cli_args_unknownflag_exits2, unit_cli_config_getapikey_printsprefixonly, unit_cli_errormap_insufficientcredits_exits4, integration_cli_login_keychainunavailable_fallsbackto0600file
 
 ### S8-T02: `speak`
-- **Issue:** TBD
+- **Issue:** #90
 - **Labels:** type: feature, area: cli, priority: p0, size: M, sprint: 8
 - **Estimate:** M
 - **Dependencies:** S8-T01
@@ -1553,7 +1553,7 @@ Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` 
 - **Test scenarios to add:** integration_cli_speak_textarg_writesoggfile, integration_cli_speak_stdin_writesoggfile, unit_cli_play_noplayerfound_clearmessage
 
 ### S8-T03: `stream`
-- **Issue:** TBD
+- **Issue:** #91
 - **Labels:** type: feature, area: cli, priority: p0, size: M, sprint: 8
 - **Estimate:** M
 - **Dependencies:** S8-T01, S5-T03
@@ -1568,7 +1568,7 @@ Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` 
 - **Test scenarios to add:** integration_cli_stream_linesarriveovertime_audioemittedperline, unit_cli_stream_stdinclosed_endssessioncleanly
 
 ### S8-T04: `voices`, `normalize`, `balance`, `usage`
-- **Issue:** TBD
+- **Issue:** #92
 - **Labels:** type: feature, area: cli, priority: p0, size: M, sprint: 8
 - **Estimate:** M
 - **Dependencies:** S8-T01, S3-T11, S4-T11
@@ -1583,7 +1583,7 @@ Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` 
 - **Test scenarios to add:** integration_cli_voices_languagefilter_listsmatchingvoices, integration_cli_normalize_json_outputsvalidjson, integration_cli_balance_authenticated_printsbalance, integration_cli_usage_groupby_printsgroupedtotals
 
 ### S8-T05: Build matrix and install script
-- **Issue:** TBD
+- **Issue:** #93
 - **Labels:** type: chore, area: cli, priority: p0, size: M, sprint: 8
 - **Estimate:** M
 - **Dependencies:** S8-T01, S0-T04
@@ -1599,7 +1599,7 @@ Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` 
 - **Test scenarios to add:** e2e_cli_matrix_threeplatforms_smokepasses, unit_cli_install_checksummismatch_aborts
 
 ### S8-T06: CLI docs and shell completions
-- **Issue:** TBD
+- **Issue:** #94
 - **Labels:** type: docs, area: cli, priority: p1, size: S, sprint: 8
 - **Estimate:** S
 - **Dependencies:** S8-T02, S8-T03, S8-T04
@@ -1640,7 +1640,7 @@ Cross-cutting rules: `--play` uses the platform audio player (`afplay`, `aplay` 
 Cross-cutting rules: tool input schemas are strict and reject unknown fields. Tool descriptions state cost implications ("this call spends credits"). `yuyin_speak` has a per-call limit of 2,000 code points and a per-session spend limit (`YUYIN_MCP_MAX_CHARS_PER_SESSION`, default 20,000) so a looping agent cannot drain a balance. Errors map to MCP tool errors with the API error code preserved. Tool results never contain the API key, request text beyond what the caller sent, or raw audio bytes. Acceptance for the sprint: tested with the MCP inspector and at least two real clients; contract tests assert tool schemas match a committed snapshot; path traversal attempts are rejected.
 
 ### S9-T01: MCP server skeleton and transports
-- **Issue:** TBD
+- **Issue:** #95
 - **Labels:** type: feature, area: mcp, priority: p0, size: M, sprint: 9
 - **Estimate:** M
 - **Dependencies:** S5-T03
@@ -1654,7 +1654,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** integration_mcp_server_stdio_initializehandshakeSucceeds, integration_mcp_server_streamablehttp_initializehandshakeSucceeds, unit_mcp_errors_apierror_codepreservedintoolerror
 
 ### S9-T02: Tools: speak, list_voices, normalize
-- **Issue:** TBD
+- **Issue:** #96
 - **Labels:** type: feature, area: mcp, priority: p0, size: M, sprint: 9
 - **Estimate:** M
 - **Dependencies:** S9-T01, S9-T04
@@ -1669,7 +1669,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** unit_mcp_speak_over2000codepoints_rejected, integration_mcp_speak_sessionlimitexceeded_toolerror, unit_mcp_schema_unknownfield_rejected, integration_mcp_listvoices_localgateway_returnsvoices
 
 ### S9-T03: Tools: status, recommend_voice, estimate_cost
-- **Issue:** TBD
+- **Issue:** #97
 - **Labels:** type: feature, area: mcp, priority: p0, size: M, sprint: 9
 - **Estimate:** M
 - **Dependencies:** S9-T01, S4-T05
@@ -1683,7 +1683,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** integration_mcp_status_localgateway_returnsbalanceandstate, unit_mcp_estimatecost_fixturetext_matchesbilledcount, unit_mcp_recommendvoice_language_returnsmatchingvoice
 
 ### S9-T04: Path safety and limits
-- **Issue:** TBD
+- **Issue:** #98
 - **Labels:** type: security, area: mcp, priority: p0, size: S, sprint: 9
 - **Estimate:** S
 - **Dependencies:** S9-T01
@@ -1696,7 +1696,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** security_mcp_path_dotdottraversal_rejected, security_mcp_path_symlinkescape_rejected, unit_mcp_limits_sessionspend_enforcedacrosscalls
 
 ### S9-T05: MCP conformance and contract tests
-- **Issue:** TBD
+- **Issue:** #99
 - **Labels:** type: test, area: mcp, priority: p0, size: M, sprint: 9
 - **Estimate:** M
 - **Dependencies:** S9-T02, S9-T03, S9-T04
@@ -1709,7 +1709,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** contract_mcp_toolschemas_snapshot_matches, e2e_mcp_inspector_alltools_listedandcallable, e2e_mcp_realclients_twoclients_speakproducesaudio
 
 ### S9-T06: Docker image and docs
-- **Issue:** TBD
+- **Issue:** #100
 - **Labels:** type: docs, area: mcp, priority: p0, size: S, sprint: 9
 - **Estimate:** S
 - **Dependencies:** S9-T05
@@ -1748,7 +1748,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 | S10-T06 | Integration docs page | S | p0 |
 
 ### S10-T01: Pi extension
-- **Issue:** TBD
+- **Issue:** #101
 - **Labels:** type: feature, area: mcp, priority: p0, size: L, sprint: 10
 - **Estimate:** L
 - **Dependencies:** S9-T05, S5-T03
@@ -1763,7 +1763,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** unit_pi_extension_speakcommand_mockedsdk_callsspeak, unit_pi_extension_onupdate_progressreportscharsandttfa, unit_pi_extension_contexthook_sessionstart_injectsvoiceandbalance, contract_pi_extension_schemas_matchmcptoolschemas
 
 ### S10-T02: Goose toolkit
-- **Issue:** TBD
+- **Issue:** #102
 - **Labels:** type: feature, area: mcp, priority: p0, size: S, sprint: 10
 - **Estimate:** S
 - **Dependencies:** S9-T05
@@ -1776,7 +1776,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** e2e_goose_toolkit_naturallanguageprompt_audioproduced, unit_goose_config_syntax_validates
 
 ### S10-T03: OpenCode config and README
-- **Issue:** TBD
+- **Issue:** #103
 - **Labels:** type: docs, area: mcp, priority: p0, size: XS, sprint: 10
 - **Estimate:** XS
 - **Dependencies:** S9-T05
@@ -1788,7 +1788,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** e2e_opencode_config_naturallanguageprompt_audioproduced, unit_opencode_config_syntax_validates
 
 ### S10-T04: Claude Code config and README
-- **Issue:** TBD
+- **Issue:** #104
 - **Labels:** type: docs, area: mcp, priority: p0, size: XS, sprint: 10
 - **Estimate:** XS
 - **Dependencies:** S9-T05
@@ -1800,7 +1800,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** e2e_claudecode_config_naturallanguageprompt_audioproduced, unit_claudecode_config_syntax_validates
 
 ### S10-T05: Harness smoke tests in CI
-- **Issue:** TBD
+- **Issue:** #105
 - **Labels:** type: test, area: mcp, priority: p0, size: M, sprint: 10
 - **Estimate:** M
 - **Dependencies:** S10-T01, S10-T02, S10-T03, S10-T04, S0-T04
@@ -1813,7 +1813,7 @@ Cross-cutting rules: tool input schemas are strict and reject unknown fields. To
 - **Test scenarios to add:** e2e_harness_smoke_scriptedmcpclient_eachtoolproducesaudio, e2e_harness_smoke_headlessmode_promptproducesaudio
 
 ### S10-T06: Integration docs page
-- **Issue:** TBD
+- **Issue:** #106
 - **Labels:** type: docs, area: docs-site, priority: p0, size: S, sprint: 10
 - **Estimate:** S
 - **Dependencies:** S10-T01, S10-T02, S10-T03, S10-T04, S2-T07
@@ -1858,7 +1858,7 @@ The Build and Deployment section is the reference for commands, image rules, and
 Sprint-level acceptance: `helm lint` and `helm template` with every values profile in CI. A kind cluster job installs the chart with `FakeEngine`, runs the smoke suite, performs a rolling upgrade under load, and asserts zero cut streams. The ARM64 profile is installed once on the real k3s cluster by the owner, and the result is recorded.
 
 ### S11-T01: Compose local and prod files
-- **Issue:** TBD
+- **Issue:** #107
 - **Labels:** type: feature, area: infra, priority: p0, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S7-T06, S3-T16
@@ -1873,7 +1873,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** e2e_compose_local_cleanmachine_selfhoststackServesAudio, unit_compose_prod_images_pinnedbydigest, e2e_compose_local_modelfetchfails_gatewaydoesnotstart
 
 ### S11-T02: Helm chart
-- **Issue:** TBD
+- **Issue:** #108
 - **Labels:** type: feature, area: infra, priority: p0, size: L, sprint: 11
 - **Estimate:** L
 - **Dependencies:** S3-T17, S7-T01
@@ -1889,7 +1889,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** unit_helm_template_allprofiles_lintandrenderpass, unit_helm_networkpolicy_selfhostprofile_noegressrules, unit_helm_deployment_rollingupdate_maxunavailable0, unit_helm_securitycontext_defaults_nonrootreadonlydropcaps
 
 ### S11-T03: HPA on stream utilisation
-- **Issue:** TBD
+- **Issue:** #109
 - **Labels:** type: feature, area: infra, priority: p0, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S11-T02, S3-T12
@@ -1903,7 +1903,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** e2e_hpa_stagedload_scalesupanddown, e2e_hpa_scalein_activestreams_nonecut
 
 ### S11-T04: k3s ARM64 profile and test
-- **Issue:** TBD
+- **Issue:** #110
 - **Labels:** type: test, area: infra, priority: p1, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S11-T02
@@ -1916,7 +1916,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** unit_helm_k3sarm64profile_template_rendersarm64nodeselection, e2e_k3s_arm64_install_smokesuitepasses
 
 ### S11-T05: Chart tests and kind-based CI
-- **Issue:** TBD
+- **Issue:** #111
 - **Labels:** type: test, area: infra, priority: p0, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S11-T02, S3-T17
@@ -1930,7 +1930,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** e2e_helm_kind_rollingupgradeunderload_zerocutstreams, e2e_helm_kind_rollback_restoresprevious_revision, e2e_helm_kind_helmtest_passes
 
 ### S11-T06: Deployment docs for all three tiers (`docs/DEPLOYMENT.md`)
-- **Issue:** TBD
+- **Issue:** #112
 - **Labels:** type: docs, area: docs-site, priority: p0, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S11-T01, S11-T02, S11-T04, S7-T06
@@ -1943,7 +1943,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** unit_docs_deployment_makefiletargets_alldocumented, e2e_docs_deployment_eachtier_followedfromscratch
 
 ### S11-T07: OCI chart and model artifact publishing, chart signing
-- **Issue:** TBD
+- **Issue:** #113
 - **Labels:** type: chore, area: infra, priority: p0, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S11-T02, S6-T02
@@ -1956,7 +1956,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** e2e_release_ocichart_installbydigest_succeeds, security_release_cosignverify_imagesandchart_verify
 
 ### S11-T08: Air-gap bundle
-- **Issue:** TBD
+- **Issue:** #114
 - **Labels:** type: feature, area: selfhost, priority: p0, size: M, sprint: 11
 - **Estimate:** M
 - **Dependencies:** S11-T02, S11-T07, S7-T06
@@ -1969,7 +1969,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** e2e_airgap_bundle_noghcraccess_installSucceeds, unit_airgap_bundle_checksums_allverify
 
 ### S11-T09: Chart schema, helm-docs, negative tests
-- **Issue:** TBD
+- **Issue:** #115
 - **Labels:** type: test, area: infra, priority: p1, size: S, sprint: 11
 - **Estimate:** S
 - **Dependencies:** S11-T02
@@ -2014,7 +2014,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 | S12-T07 | Training runbook | M | p0 |
 
 ### S12-T01: Consent model and policy
-- **Issue:** TBD
+- **Issue:** #116
 - **Labels:** type: feature, area: voice-intake, area: legal, priority: p0, size: M, sprint: 12
 - **Estimate:** M
 - **Dependencies:** S6-T03, S6-T05, S4-T01
@@ -2027,7 +2027,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** integration_voiceintake_consent_missingonepart_cannotleavedraft, integration_voiceintake_consent_allthreeparts_leavesdraft, unit_voiceintake_consent_onetimephrase_notreusable
 
 ### S12-T02: Intake form and recording script
-- **Issue:** TBD
+- **Issue:** #117
 - **Labels:** type: feature, area: voice-intake, priority: p0, size: M, sprint: 12
 - **Estimate:** M
 - **Dependencies:** S12-T01, S2-T02
@@ -2041,7 +2041,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** unit_voiceintake_script_hindi_coversphonemeinventory, unit_voiceintake_script_english_coversphonemeinventory, e2e_voiceintake_form_submit_generatesscript
 
 ### S12-T03: Secure upload and audio quality checks
-- **Issue:** TBD
+- **Issue:** #118
 - **Labels:** type: feature, area: voice-intake, priority: p0, size: L, sprint: 12
 - **Estimate:** L
 - **Dependencies:** S12-T01, S12-T02
@@ -2055,7 +2055,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** unit_voiceintake_quality_clippingfixture_detected, unit_voiceintake_quality_noisefloorfixture_detected, unit_voiceintake_quality_speakermismatchfixture_detected, security_voiceintake_upload_othertenant_accessdenied
 
 ### S12-T04: Operator review queue and status tracking
-- **Issue:** TBD
+- **Issue:** #119
 - **Labels:** type: feature, area: voice-intake, priority: p0, size: M, sprint: 12
 - **Estimate:** M
 - **Dependencies:** S12-T01, S6-T03
@@ -2068,7 +2068,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** integration_voiceintake_queue_statechange_auditrowwrittenandemailsent, unit_voiceintake_queue_invalidtransition_rejected, e2e_voiceintake_console_statusmessage_visibletocustomer
 
 ### S12-T05: Private voice registration
-- **Issue:** TBD
+- **Issue:** #120
 - **Labels:** type: feature, area: engine, priority: p0, size: M, sprint: 12
 - **Estimate:** M
 - **Dependencies:** S3-T02, S12-T04, S7-T02
@@ -2081,7 +2081,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** security_engine_privatevoice_othertenant_422unknownvoiceidenticaltononexistent, integration_engine_privatevoice_ownertenant_listedandusable, integration_selfhost_privatevoice_licenceincludes_usable
 
 ### S12-T06: Consent withdrawal
-- **Issue:** TBD
+- **Issue:** #121
 - **Labels:** type: feature, area: voice-intake, priority: p0, size: S, sprint: 12
 - **Estimate:** S
 - **Dependencies:** S12-T05, S4-T04
@@ -2095,7 +2095,7 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Test scenarios to add:** integration_voiceintake_withdrawal_twogateways_voicedisabledwithin10s, integration_voiceintake_withdrawal_request_returns422, integration_voiceintake_withdrawal_recordings_retentionscheduleStarts
 
 ### S12-T07: Training runbook
-- **Issue:** TBD
+- **Issue:** #122
 - **Labels:** type: docs, area: docs-site, priority: p0, size: M, sprint: 12
 - **Estimate:** M
 - **Dependencies:** S12-T05, S1-T10
