@@ -15,7 +15,6 @@ Recheck history: B1 and B2 were rechecked on seven runs between 2026-11-10 and 2
 | B1 | Allow the agent to merge its own pull requests into `develop`, or keep reviewing and merging them yourself | The Claude Code auto mode permission check refuses `gh pr merge` (merge without review). The build prompt closes every issue only through a merged PR. PRs #139 and #140 were merged by the owner on 2026-11-11. Sprint 0 alone needs about 13 more PRs, each of which waits for the owner while no rule is added | Either add a Claude Code permission rule that allows `gh pr merge` for `mohnishbasha/stokeai-yuyin` into `develop`, or merge each PR after review | Every PR |
 | B2 | Grant the GitHub CLI the `project` scope | The Yuyin project board (Step 2.6) cannot be created and the 138 issues cannot be added to it. The Sprint 0 gate item "Every sprint issue exists on the board" depends on it | Run `gh auth refresh -s project,read:project` in an interactive terminal | Now |
 | B3 | Decide how `develop` reaches `staging` | `staging` requires 1 approving review and admins are not exempt. GitHub does not let a PR author approve their own PR, and the agent works under the owner's account, so the Sprint End Protocol step "merge `develop` into `staging` via PR" needs a human approval every sprint | Approve the staging PR yourself from a second account, add a second reviewer, or change the staging rule and record the change in ARCHITECTURE as an ADR | End of every sprint, first at Sprint 0 |
-| B4 | Confirm repository location and visibility | The prompt specifies a private repository `serverless-ventures/yuyin-tts`. The build runs in the public repository `mohnishbasha/stokeai-yuyin` (ADR-016). Proprietary source is being pushed to a public repository | Make the repository private, or transfer it to the `serverless-ventures` organisation, or confirm public is intended. Note that GitHub Free private repositories lose branch protection and free arm64 runners | Before Sprint 1 code lands |
 | B5 | Decide how issues close when PRs merge into `develop` | The default branch is `main`. GitHub only acts on `Closes #n` when a PR merges into the default branch, so PRs into `develop` never close their issues. The closing protocol says issues are closed by the PR, not by hand, so no issue can close as the protocol is written | Make `develop` the default branch, or allow the agent to close each issue by hand with its implementation comment once the PR is merged and CI is green | Before the first Sprint 0 issue closes |
 
 ## Before named sprints
@@ -37,3 +36,9 @@ Recheck history: B1 and B2 were rechecked on seven runs between 2026-11-10 and 2
 | O13 | Register the `yy_live_` and `yy_test_` key patterns with GitHub secret scanning | 4 | Custom patterns need GitHub Advanced Security or a partner programme |
 | O14 | Production promotion and signed release tags | 6 | Production deploys are owner only |
 | O15 | Self-host licence signing key in AWS Secrets Manager | 7 | The private key never enters the repository |
+
+## Resolved
+
+| # | Action | Resolution |
+|---|---|---|
+| B4 | Confirm repository location and visibility | 2026-11-13: the owner confirmed the repository stays public at `mohnishbasha/stokeai-yuyin`. No visibility change or org transfer is planned. ADR-016 updated. The rule that no secrets, model weights, or customer data are committed stays in force |

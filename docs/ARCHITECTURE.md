@@ -227,9 +227,9 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 
 ### ADR-016 Repository location
 
-- Context: The build prompt names `serverless-ventures/yuyin-tts` and states the repository is private. The repository actually provided by the owner is `github.com/mohnishbasha/stokeai-yuyin`, currently public.
-- Decision: Build in the provided repository. Registry, chart, and image references keep the `serverless-ventures` names as configuration (the Makefile `REGISTRY` variable, defaulting to `ghcr.io/serverless-ventures`) until the owner moves the repository. Visibility changes and any org transfer are owner actions tracked in `docs/OWNER_CHECKLIST.md`.
-- Consequences: Image labels (`org.opencontainers.image.source`) and cosign identity regexes must be parameterised, not hard-coded. While the repository is public, no proprietary material, secrets, or model weights may be committed. Renaming later is a configuration change.
+- Context: The build prompt originally named `serverless-ventures/yuyin-tts` as a private repository. The repository actually provided by the owner is `github.com/mohnishbasha/stokeai-yuyin`, and on 2026-11-13 the owner confirmed it stays public.
+- Decision: Build in the provided repository. Registry, chart, and image references keep the `serverless-ventures` names as configuration (the Makefile `REGISTRY` variable, defaulting to `ghcr.io/serverless-ventures`) until the owner moves the repository. The repository is public by owner decision. Any future org transfer is an owner action tracked in `docs/OWNER_CHECKLIST.md`.
+- Consequences: Image labels (`org.opencontainers.image.source`) and cosign identity regexes must be parameterised, not hard-coded. Because the repository is public, no secrets, model weights, or customer data may be committed. Renaming later is a configuration change.
 - Status: Accepted.
 
 ### ADR-017 Default branch
@@ -689,7 +689,7 @@ Rules: error responses never echo request text. Every error carries `request_id`
 - GitHub Actions pinned by commit SHA.
 - Images signed with cosign keyless, SBOM (SPDX) attached, base images pinned by digest.
 - Licence allowlist enforced for code. Model and voice licences are reviewed by hand and recorded in `docs/licences/`.
-- While the repository is public (ADR-016), no secrets, model weights, or customer data are committed.
+- The repository is public (ADR-016), so no secrets, model weights, or customer data are committed.
 
 ### Network defaults
 
