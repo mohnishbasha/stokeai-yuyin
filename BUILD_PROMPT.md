@@ -14,7 +14,7 @@
 **Container registry:** `ghcr.io/serverless-ventures/yuyin-{gateway,console,mcp}`
 **Tagline:** *Speech that starts before the sentence ends.*
 **Short description (GitHub About field):** Streaming text-to-speech API for Hindi, Hinglish, and English that runs on ordinary CPU servers.
-**Repository visibility:** Private. Source not distributed.
+**Repository visibility:** Public (`github.com/mohnishbasha/stokeai-yuyin`, owner decision 2026-11-13). Never commit secrets, model weights, or customer data.
 **Distribution model:** Hosted pay-as-you-go API (prepaid credits) plus a licensed self-host edition for customers who need audio to stay in their own data centre.
 **License:** Proprietary. Copyright 2026 Serverless Ventures LLC. All rights reserved.
 **Long description (README opening):** Yuyin turns text into natural speech and streams the audio back while it is still being generated, over REST or WebSocket. It reads rupee amounts, dates, phone numbers, OTPs, and acronyms the way a person would, switches between Hindi and English inside one sentence, and runs on standard CPU servers in the cloud or on the customer's own hardware.
