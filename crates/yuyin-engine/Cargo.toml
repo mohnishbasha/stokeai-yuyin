@@ -1,0 +1,28 @@
+[package]
+name = "yuyin-engine"
+description = "Speech engine abstraction, fake engine, worker pool."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+
+# Same as [workspace.lints] except unsafe_code, which is deny here so FFI
+# bindings can use `#[allow(unsafe_code)]` with a `// SAFETY:` comment.
+[lints.rust]
+unsafe_code = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+todo = "deny"
+module_name_repetitions = "allow"

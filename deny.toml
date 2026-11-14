@@ -1,0 +1,40 @@
+# cargo-deny configuration: licences (scripts/licence-check.sh) and advisories, bans, sources (scripts/audit.sh).
+# Allowlist source: docs/SPRINT_PLAN.md S0-T07. Widening it needs a decision log entry.
+
+[graph]
+all-features = true
+
+[licenses]
+version = 2
+allow = [
+  "MIT",
+  "Apache-2.0",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "ISC",
+  "Zlib",
+  "Unicode-3.0",
+  "Unicode-DFS-2016",
+  # Allowed for unmodified use only. Do not patch or vendor MPL-2.0 crates.
+  "MPL-2.0",
+]
+confidence-threshold = 0.9
+# The allowlist is wider than the current tree needs; unused entries are expected.
+unused-allowed-license = "allow"
+
+[licenses.private]
+# Our own crates declare LicenseRef-Proprietary and are publish = false.
+ignore = true
+
+[advisories]
+version = 2
+yanked = "deny"
+
+[bans]
+multiple-versions = "allow"
+wildcards = "allow"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

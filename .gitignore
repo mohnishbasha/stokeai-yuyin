@@ -1,0 +1,74 @@
+# Rust
+target/
+*.rs.bk
+# Cargo.lock is tracked.
+
+# TypeScript
+node_modules/
+dist/
+.next/
+*.tsbuildinfo
+
+# Bun (bun.lock, the text lockfile, is tracked; see ADR-022)
+.bun/
+
+# Python (packages/sdk-python/uv.lock is tracked)
+__pycache__/
+.venv/
+*.egg-info/
+
+# Environment (example files stay tracked)
+.env
+.env.*
+!.env.*.example
+
+# Test and coverage
+coverage/
+playwright-report/
+tarpaulin-report.html
+
+# Models and audio (fixtures under tests/fixtures/ are tracked)
+models/
+out/
+*.onnx
+*.ogg
+*.wav
+!tests/fixtures/**/*.ogg
+!tests/fixtures/**/*.wav
+
+# Database (migrations stay tracked)
+*.db
+*.db-shm
+*.db-wal
+
+# Terraform
+.terraform/
+*.tfstate*
+
+# Agent sessions
+.pi/sessions/
+.agent/sessions/
+CLAUDE.local.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/settings.json
+.idea/
+
+# Secrets
+licence.json
+*.pem
+*.key
+
+# Build runner output (local)
+logs/
+
+# Local dev stack state (scripts/dev.sh)
+.dev/
+
+# Local Claude Code state
+.claude/settings.local.json
+.claude/worktrees/

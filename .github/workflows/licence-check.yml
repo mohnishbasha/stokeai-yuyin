@@ -1,0 +1,25 @@
+name: licence-check
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  licence-check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install pinned Rust toolchain
+        run: |
+          rustup show active-toolchain || rustup toolchain install
+          rustc --version
+      - uses: oven-sh/setup-bun@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
+      - run: bun install --frozen-lockfile
+      - run: scripts/licence-check.sh

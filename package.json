@@ -1,0 +1,33 @@
+{
+  "name": "yuyin",
+  "version": "0.1.0",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "integrations/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "lint": "eslint . --max-warnings 0 && prettier --check .",
+    "lint:openapi": "redocly lint api/openapi.yaml",
+    "format": "prettier --write .",
+    "type-check": "bun run --filter '*' type-check",
+    "test": "bun run --filter '*' test"
+  },
+  "overrides": {
+    "minimatch": "^11.0.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@redocly/cli": "2.78.0",
+    "@vitest/coverage-v8": "5.1.0",
+    "eslint": "10.15.0",
+    "prettier": "3.10.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
+  }
+}

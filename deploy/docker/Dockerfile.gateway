@@ -1,0 +1,60 @@
+# syntax=docker/dockerfile:1
+# Gateway image (ARCHITECTURE 16.4). Targets: slim (binary only) and full (default, adds the
+# model directory). Per ADR-018 each architecture builds natively on its own runner, so there
+# is no cross-compilation here.
+#
+#   docker build -f deploy/docker/Dockerfile.gateway --target slim -t yuyin-gateway-slim .
+ARG RUST_VERSION=1.100.0
+
+FROM rust:${RUST_VERSION}-bookworm@sha256:ade39a710ef85f3506cffcfec3e8a24ba090badef1dff2fb798f71d878833fea AS chef
+RUN cargo install cargo-chef --locked --version 0.1.77
+WORKDIR /src
+
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM chef AS builder
+COPY --from=planner /src/recipe.json recipe.json
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    cargo chef cook --release --locked --recipe-path recipe.json -p yuyin-gateway
+COPY . .
+# GIT_SHA reaches `yuyin-gateway --version` through build.rs.
+ARG GIT_SHA=unknown
+ENV YUYIN_GIT_SHA=${GIT_SHA}
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    cargo build --release --locked -p yuyin-gateway \
+    && cp target/release/yuyin-gateway /yuyin-gateway
+
+# Placeholder model layer. It stays separate from the binary layer so a code change does not
+# re-push models. The real model bundle arrives in Sprint 3 (MODELS.md).
+FROM scratch AS models
+COPY MODELS.md /models/MODELS.md
+
+FROM gcr.io/distroless/cc-debian12:nonroot@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f AS slim
+ARG VERSION=0.0.0
+ARG GIT_SHA=unknown
+ARG SOURCE=https://github.com/mohnishbasha/stokeai-yuyin
+ARG CREATED=unknown
+LABEL org.opencontainers.image.title="yuyin-gateway" \
+      org.opencontainers.image.description="Streaming text-to-speech gateway" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      org.opencontainers.image.created="${CREATED}" \
+      org.opencontainers.image.source="${SOURCE}" \
+      org.opencontainers.image.vendor="Serverless Ventures LLC" \
+      org.opencontainers.image.licenses="LicenseRef-Proprietary"
+COPY --from=builder /yuyin-gateway /yuyin-gateway
+COPY THIRD_PARTY_LICENSES.md EULA.md /licenses/
+USER 65532:65532
+ENV YUYIN_BIND=0.0.0.0:8080
+EXPOSE 8080
+# No shell or curl in distroless, so the binary probes itself.
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
+    CMD ["/yuyin-gateway", "healthcheck"]
+ENTRYPOINT ["/yuyin-gateway"]
+CMD ["serve"]
+
+FROM slim AS full
+COPY --from=models /models /models
+ENV YUYIN_MODEL_DIR=/models

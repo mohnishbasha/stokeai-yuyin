@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Blocks commits that stage secrets. Install with scripts/install-hooks.sh.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not installed; install it (https://github.com/gitleaks/gitleaks) to commit." >&2
+  exit 1
+fi
+exec gitleaks git --pre-commit --staged --no-banner --redact --config .gitleaks.toml
