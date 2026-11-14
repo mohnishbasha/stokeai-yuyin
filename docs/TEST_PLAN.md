@@ -147,6 +147,8 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-22 | smoke_tsconfig_base_strictflags_enabled | Smoke | Given `tsconfig.base.json`, when a probe that only `strict`, `noUncheckedIndexedAccess`, or `exactOptionalPropertyTypes` rejects is type-checked, then each probe fails | SPRINT_PLAN S0-T03 | S0 | ✅ Automated |
 | SC-23 | smoke_workspace_scripts_allfour_exitzero | Smoke | Given the Bun workspace, when `bun run lint`, `type-check`, `test`, and `build` run, then all four exit 0 | SPRINT_PLAN S0-T03 | S0 | ✅ Automated |
 | SC-24 | smoke_agent_files_required_present_allexist | Smoke | Given the repository, when the agent files are checked, then every file from S0-T06 exists and carries the content Appendix J requires | SPRINT_PLAN S0-T06 | S0 | ✅ Automated |
+| SC-25 | e2e_devstack_startup_allservices_healthzreturns200 | E2E | Given Docker is running and the default ports may be taken, when `scripts/dev.sh --detach` runs with the port override variables, then Postgres, Valkey, and stripe-mock are running and the gateway `/healthz` returns 200 | SPRINT_PLAN S0-T08 | S0 | ✅ Automated |
+| SC-26 | unit_env_example_nosecrets_passesscan | Unit | Given `.env.development.example` is tracked, when gitleaks scans it, then it finds nothing, and the same file with a live-looking key added is flagged | SPRINT_PLAN S0-T08; NFR-016 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 
