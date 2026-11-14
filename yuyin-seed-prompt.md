@@ -6,12 +6,12 @@
 ## Project Identity
 
 **Name:** `Yuyin`
-**GitHub repo:** `serverless-ventures/yuyin-tts`
-**Primary domain:** `getyuyin.com` (preferred), fallback `yuyintts.com`
-**Subdomains:** `api.` (data plane), `console.` (accounts and billing), `docs.` (documentation), `status.` (status page)
+**GitHub repo:** `mohnishbasha/stokeai-yuyin`
+**Primary domain:** `yuyin.openstoke.com` (the owner controls `openstoke.com`)
+**Subdomains:** `api.yuyin.openstoke.com` (data plane), `console.yuyin.openstoke.com` (accounts and billing), `docs.yuyin.openstoke.com` (documentation), `status.yuyin.openstoke.com` (status page)
 **npm scope:** `@yuyin-tts`
 **PyPI package:** `yuyin`
-**Container registry:** `ghcr.io/serverless-ventures/yuyin-{gateway,console,mcp}`
+**Container registry:** `ghcr.io/mohnishbasha/yuyin-{gateway,console,mcp}`
 **Tagline:** *Speech that starts before the sentence ends.*
 **Short description (GitHub About field):** Streaming text-to-speech API for Hindi, Hinglish, and English that runs on ordinary CPU servers.
 **Repository visibility:** Public (`github.com/mohnishbasha/stokeai-yuyin`, owner decision 2026-11-13). Never commit secrets, model weights, or customer data.
@@ -21,7 +21,7 @@
 
 **Why Yuyin:** Yuyin (语音, yǔyīn) is the Mandarin word for speech, the spoken sound of language. It joins 语 (language, words) and 音 (sound), which is exactly what the product does: it turns language into sound. It is also the standard technical term in Chinese for speech technology, as in 语音合成 (speech synthesis). It is five letters, two syllables, and pronounced "yoo-yin".
 
-> **Name status:** Yuyin is the working name for now. Domain, npm scope, PyPI name, and trademark availability have NOT been verified, and because the word is a generic term in Chinese it may be hard to protect or to rank for in Chinese-language search. The executing agent must not register anything. The owner verifies availability before Sprint 0 ends. The name appears in code only through the constants `PRODUCT_NAME`, `PRODUCT_SLUG`, and `KEY_PREFIX` so a rename is a single change set.
+> **Name status:** Yuyin is the working name for now. npm scope and PyPI name availability have NOT been verified, and because the word is a generic term in Chinese it may be hard to protect or to rank for in Chinese-language search. The trademark check is a Pending TODO at the very end of the plan (see Pending TODO) and blocks no sprint. The executing agent must not register anything. The owner verifies package name availability by the sprint that needs it. The name appears in code only through the constants `PRODUCT_NAME`, `PRODUCT_SLUG`, and `KEY_PREFIX` so a rename is a single change set.
 
 ---
 
@@ -39,7 +39,7 @@ This product is in the same category as vartaloop.ai, a streaming TTS API for Hi
 | Compute | Runs on standard CPU servers | Same. No GPU in the serving path |
 | Billing | Prepaid, per 1,000 characters, HTTP 402 when credits run out | Same model, prices set by owner |
 | Overload | HTTP 503 with retry time before any audio, streams in progress are never cut | Same |
-| Deployment | Hosted region or customer data centre | Hosted on AWS, plus self-host edition |
+| Deployment | Hosted region or customer data centre | Hosted on the Stoke Kubernetes cluster (DGX Spark bundles, ARM64), plus self-host edition |
 | Custom voice | Trained from about 30 minutes of consented studio audio | Intake and consent workflow in Sprint 12, training is an operator runbook |
 | Roadmap | Speech recognition next, then a voice agent | Out of scope for v1, tracked as issues |
 
@@ -57,14 +57,14 @@ This product is in the same category as vartaloop.ai, a streaming TTS API for Hi
 |---|---|---|---|
 | D1 | Product type | Multi-tenant SaaS API plus self-host edition, not a desktop app | The product is an API. The skill's desktop defaults (Tauri, SQLite) do not apply |
 | D2 | Data plane language | Rust (Axum, Tokio) | Latency-sensitive streaming, predictable memory, single static binary for self-host |
-| D3 | Control plane | Next.js (App Router) console on Vercel, TypeScript | Matches the CaseVase pattern. Accounts and billing are not latency-critical |
-| D4 | Auth for humans | Clerk (organizations = tenants) | Existing portfolio integration |
-| D5 | Auth for machines | Yuyin API keys, hashed at rest, verified in the gateway | Clerk is never in the synthesis hot path |
-| D6 | Database | Nile (multi-tenant Postgres) | Existing portfolio pattern, tenant isolation built in |
-| D7 | Hot-path state | Valkey or Redis (ElastiCache) | Key cache, balance reservation, concurrency counters |
+| D3 | Control plane | Next.js (App Router) console, TypeScript, deployed on the Stoke cluster in the current phase (Vercel is Next phase) | Matches the CaseVase pattern. Accounts and billing are not latency-critical. The console must reach the in-cluster Postgres |
+| D4 | Auth for humans | Built-in console auth in the current phase: operator-created organizations and users, one-time login token or magic link, session cookie, CSRF. Clerk is Next phase | Keeps the current phase free of third-party accounts. `organizations.external_auth_id` is reserved for Clerk |
+| D5 | Auth for machines | Yuyin API keys, hashed at rest, verified in the gateway | Human auth is never in the synthesis hot path |
+| D6 | Database | PostgreSQL 16, in-cluster on Stoke (CloudNativePG operator). NileDB or Neon is Next phase | Plain portable SQL, so the move to managed serverless Postgres is configuration only. Tenant isolation is enforced in the application (and optionally by row-level security) |
+| D7 | Hot-path state | Valkey or Redis (in-cluster) | Key cache, balance reservation, concurrency counters |
 | D8 | Payments | Stripe Checkout for prepaid top-ups, behind a `PaymentProvider` interface | Existing integration. Razorpay and UPI are a v1.1 adapter |
 | D9 | Speech model | Open-weights neural TTS run through ONNX Runtime on CPU, behind a `SynthesisEngine` trait, chosen by a measured bake-off in Sprint 1 | We are not training a foundation model in v1. The trait keeps the door open for our own model later |
-| D10 | Primary region | AWS `ap-south-1` (Mumbai) for the data plane | The target listeners are in India. Region is configuration, not code |
+| D10 | Primary deployment | Stoke Kubernetes cluster (DGX Spark bundles, linux/arm64), deployed with the Helm chart. AWS (`ap-south-1`) is Next phase | No cloud account is needed in the current phase. Placement is configuration, not code |
 | D11 | Billing unit | Unicode code points of the submitted text, before normalisation | Predictable for customers. Matras and punctuation count |
 | D12 | Money representation | Integer micro-USD everywhere. No floats | Ledger correctness |
 | D13 | Telemetry | No third-party analytics in the console, site, CLI, or self-host edition. First-party operational metrics only | Portfolio privacy stance |
@@ -199,15 +199,15 @@ NFR-004  Zero in-progress streams terminated by deploys, scale-in, or overload. 
 NFR-005  Availability target 99.9% monthly for the hosted data plane.
 NFR-006  Billing accuracy: ledger and gateway meter reconcile to zero difference daily.
 NFR-007  Text and audio are not persisted by default. Request logs hold metadata only.
-NFR-008  Tenant isolation enforced at the database layer (Nile tenant context) and tested.
+NFR-008  Tenant isolation enforced by an application tenant context (the repository layer always filters by `tenant_id`, optionally backed by Postgres row-level security) and tested.
 NFR-009  API keys stored only as SHA-256 hashes with a non-secret prefix for lookup.
 NFR-010  Key revocation effective fleet-wide within 10 seconds.
 NFR-011  Normalisation golden corpus pass rate 100% in CI. Corpus has at least 1,500 cases by v1.0.0.
 NFR-012  Gateway cold start to ready (model loaded and warmed) <= 20 s.
 NFR-013  Gateway memory per node <= 2 GiB with all v1 voices loaded.
-NFR-014  Images built for linux/amd64 and linux/arm64.
+NFR-014  Images built for linux/arm64 (required, the Stoke cluster is ARM64) and linux/amd64.
 NFR-015  Console pages meet WCAG 2.2 AA. Devanagari renders correctly everywhere text is shown.
-NFR-016  All secrets in AWS Secrets Manager or Vercel encrypted env. None in the repository.
+NFR-016  All secrets in Kubernetes Secrets or GitHub Actions secrets. None in the repository.
 NFR-017  Every third-party model and voice has a recorded licence that permits commercial hosted use.
 ```
 
@@ -233,13 +233,13 @@ FR-019 AC-2  Given a node whose active stream count equals its configured capaci
 
 ```
                       +----------------------+        +------------------+
-  Browser  ---------> |  console (Next.js)   | -----> |  Clerk           |
+  Browser  ---------> |  console (Next.js)   | -----> |  Built-in auth   |
                       |  marketing + docs    | -----> |  Stripe          |
                       +----------+-----------+        +------------------+
-                                 | SQL (tenant context)
+                                 | SQL (tenant context in the app)
                                  v
                       +----------------------+
-                      |  Nile Postgres       |  orgs, keys, ledger, usage, voices, consent
+                      |  PostgreSQL 16       |  orgs, keys, ledger, usage, voices, consent
                       +----------+-----------+
                                  ^  batched ledger writes, key sync
                                  |
@@ -343,10 +343,14 @@ Synthesis is CPU-bound and never runs on the Tokio runtime threads. A fixed-size
 - A reconciliation job runs daily. It recomputes each balance from the append-only ledger and alerts on any difference. Postgres is the source of truth. Redis is a cache that can be rebuilt.
 - Top-ups: the Stripe webhook writes a `credit` ledger row and bumps the Redis balance through the same script. Webhooks are idempotent on the Stripe event id.
 
-**Data model (seed, all tenant tables carry `tenant_id` for Nile):**
+**Data model (seed, all tenant tables carry `tenant_id`; the repository layer always filters by it):**
 
 ```
-organizations(id, clerk_org_id, name, status[active|suspended], created_at)
+organizations(id, external_auth_id text null, name, status[active|suspended], created_at)   -- external_auth_id reserved for Clerk (Next phase)
+users(id, email, name, status[active|disabled], created_at)
+memberships(tenant_id, user_id, role[owner|admin|developer|billing])
+login_tokens(id, user_id, token_hash, expires_at, used_at null, issued_by)
+sessions(id, user_id, tenant_id, token_hash, csrf_secret, expires_at, revoked_at null)
 api_keys(id, tenant_id, name, prefix, hash, scopes jsonb, voice_allowlist text[],
          monthly_char_cap bigint null, last_used_at, revoked_at, created_by, created_at)
 ledger(id, tenant_id, kind[credit|debit|grant|refund|adjustment], amount_micro_usd bigint,
@@ -369,7 +373,7 @@ audit_log(id, tenant_id null, actor, action, target, metadata jsonb, created_at)
 **Full API contract (write the complete OpenAPI 3.1 file at `api/openapi.yaml`, and mirror it in this document):**
 
 ```
-Base URL: https://api.getyuyin.com
+Base URL: https://api.yuyin.openstoke.com
 Auth:     Authorization: Bearer yy_live_<prefix>_<secret>     (yy_test_ for test mode)
 
 POST /v1/speech
@@ -397,7 +401,7 @@ GET  /healthz               liveness
 GET  /readyz                readiness (model warmed, not draining)
 GET  /metrics               Prometheus, internal network only
 
-WebSocket: wss://api.getyuyin.com/v1/speech/stream
+WebSocket: wss://api.yuyin.openstoke.com/v1/speech/stream
   Auth: Authorization header, or first message { "type": "auth", "api_key": "..." } for browsers
   Client -> server (JSON text frames):
     { "type": "start", "voice": "...", "language": "auto", "format": "opus", "pace": 1.0 }
@@ -456,11 +460,11 @@ Scenario tables must exist for: normalisation (by semiotic class and language), 
 ### 2.1 Repository
 
 ```bash
-gh repo create serverless-ventures/yuyin-tts --private \
+gh repo create mohnishbasha/stokeai-yuyin --public \
   --description "Streaming text-to-speech API for Hindi, Hinglish, and English that runs on ordinary CPU servers."
 git init && git checkout -b main
 git add docs/ && git commit -m "docs: add product specification documents"
-git remote add origin git@github.com:serverless-ventures/yuyin-tts.git
+git remote add origin git@github.com:mohnishbasha/stokeai-yuyin.git
 git push -u origin main
 git checkout -b staging && git push -u origin staging
 git checkout -b develop && git push -u origin develop
@@ -520,7 +524,7 @@ create "area: sdk"       0E8A16 "TypeScript and Python SDKs"
 create "area: cli"       0E8A16 "CLI"
 create "area: mcp"       0E8A16 "MCP server and harnesses"
 create "area: selfhost"  0E8A16 "Self-host edition and licence"
-create "area: infra"     0E8A16 "Terraform, Helm, CI"
+create "area: infra"     0E8A16 "Helm, CI"
 create "area: bench"     0E8A16 "Benchmarks and load tests"
 create "area: voice-intake" 0E8A16 "Custom voice and consent"
 create "area: legal"     0E8A16 "Licence, terms, policies"
@@ -550,7 +554,7 @@ One per sprint, named `Sprint {n}: {Name}`, with the sprint goal as the descript
 
 ### 2.6 Project Board
 
-`gh project create --owner serverless-ventures --title "Yuyin"` with columns Backlog, Ready, In Progress, In Review, Done. Automation: new issues go to Backlog, an opened PR moves the linked issue to In Review, a merged PR moves it to Done.
+`gh project create --owner mohnishbasha --title "Yuyin"` with columns Backlog, Ready, In Progress, In Review, Done. Automation: new issues go to Backlog, an opened PR moves the linked issue to In Review, a merged PR moves it to Done.
 
 ### 2.7 Templates
 
@@ -762,7 +766,7 @@ AC: lint exits 0. The file is the single source for SDK types and the docs refer
 **S0-T10 Supply chain.** Dependabot for cargo, npm, pip, GitHub Actions, Docker. `cargo audit` and `cargo deny` in CI. `bun audit` or equivalent. Gitleaks pre-commit and in CI.
 AC: a commit containing a fake `yy_live_` secret is rejected.
 
-**S0-T11 Owner checklist.** `docs/OWNER_CHECKLIST.md` listing every action only the owner can take, with the sprint by which it is needed: domain registration, name and trademark check, AWS account and region, Clerk application, Nile database, Stripe account and products, Vercel project, npm and PyPI org, GHCR access, pricing decision, voice name approval, attorney review of legal pages.
+**S0-T11 Owner checklist.** `docs/OWNER_CHECKLIST.md` listing every action only the owner can take, with the sprint by which it is needed: DNS for `yuyin.openstoke.com` subdomains, Stoke cluster access (`STOKE_KUBECONFIG` secret), Stripe account and products, npm and PyPI org, GHCR access, licence signing key secret, pricing decision, voice name approval, attorney review of legal pages. The trademark check is listed in a separate Pending TODO section at the end.
 AC: file exists and is linked from the README.
 
 **S0-T12 Makefile.** Root `Makefile` with every target listed in the Build and Deployment section. Targets for things that do not exist yet print "available from Sprint N" and exit 0. `make help` is generated from target comments. `make setup` checks prerequisites and reports what is missing.
@@ -774,7 +778,7 @@ AC: `docker run` of the placeholder image answers `/healthz`. A test asserts the
 **Sprint 0 gate:**
 - [ ] `make setup && make build && make check` passes on a clean clone
 - [ ] `make dev` starts the local stack and `make smoke` passes against it
-- [ ] `make image` builds for linux/amd64 and linux/arm64 in CI
+- [ ] `make image` builds for linux/arm64 and linux/amd64 in CI
 - [ ] All five spec docs committed and linked from the README
 - [ ] CI green on `develop`
 - [ ] All agent files present
@@ -860,14 +864,14 @@ AC: properties pass with 10,000 cases each.
 ## Sprint 2 - Console and Site Shell
 
 **Milestone:** Sprint 2: UI Shell | **Duration:** 1 week
-**Goal:** The design system exists and every screen is navigable with mock data. Nothing is wired to real services except Clerk sign-in.
+**Goal:** The design system exists and every screen is navigable with mock data. Nothing is wired to real services except the built-in sign-in.
 
 | ID | Title | Labels | Size |
 |---|---|---|---|
 | S2-T01 | Next.js app, Tailwind tokens, fonts | feature, console | M |
 | S2-T02 | Component library | feature, console | L |
 | S2-T03 | Signature element: the pulse line | feature, console | M |
-| S2-T04 | Clerk auth and organization switcher | feature, console | M |
+| S2-T04 | Built-in auth and organization switcher (Clerk moved to Next phase) | feature, console | M |
 | S2-T05 | Console screens with mock data | feature, console | L |
 | S2-T06 | Marketing site shell | feature, site | M |
 | S2-T07 | Docs site shell | feature, docs-site | M |
@@ -883,8 +887,8 @@ AC: every component has keyboard support and a visible focus ring.
 **S2-T03.** The pulse line component described in the Design System section, driven by a mock audio stream.
 AC: renders at 60 fps on a mid-range laptop, respects `prefers-reduced-motion`, has an accessible text alternative.
 
-**S2-T04.** Clerk sign-up, sign-in, email verification, organizations, roles mapped to owner, admin, developer, billing. Middleware protects `(console)` and `(operator)`. Operator access is an allowlist of Clerk user ids from the environment.
-AC: e2e test covers sign-up to first console view using Clerk test mode.
+**S2-T04.** Built-in auth. An operator CLI (`yuyin-admin org create`, `user create`, `login-token issue`) creates organizations and users; there is no self-serve sign-up. Sign-in with an operator-issued email magic link or one-time login token (hashed, single use, 15 minute expiry), server-side session in an HttpOnly Secure SameSite cookie, CSRF protection on all mutations, roles owner, admin, developer, billing, and an organization switcher. Middleware protects `(console)` and `(operator)`. Operator access is an allowlist of user ids from the environment. Creates the auth subset of the schema (`organizations`, `users`, `memberships`, `login_tokens`, `sessions`) as plain SQL migrations. The Clerk integration is a Next phase task.
+AC: e2e test covers operator-created user, login token, sign-in, and first console view against the built-in auth. A used, expired, or forged token is rejected. A mutation without a CSRF token is rejected.
 
 **S2-T05.** All console screens from DESIGN.md, backed by a typed mock data layer behind the same interfaces the real data layer will implement.
 AC: every screen reachable, every empty and error state viewable through a query flag.
@@ -1004,7 +1008,7 @@ AC: `make kind-up && make image && make kind-load && make helm-install && make h
 
 | ID | Title | Labels | Size |
 |---|---|---|---|
-| S4-T01 | Database schema and migrations on Nile | feature, metering | M |
+| S4-T01 | Database schema and migrations on PostgreSQL | feature, metering | M |
 | S4-T02 | Tenant isolation tests | test, security | M |
 | S4-T03 | API key lifecycle in the console | feature, console | M |
 | S4-T04 | Gateway key verification and cache | feature, gateway | M |
@@ -1018,7 +1022,7 @@ AC: `make kind-up && make image && make kind-load && make helm-install && make h
 | S4-T12 | Reconciliation job and alert | feature, metering | M |
 | S4-T13 | Per-tenant lexicon | feature, console, text | S |
 
-**S4-T01.** Schema from the ARCHITECTURE spec with SQL migrations (`sqlx migrate` for the gateway side, the same SQL applied in the console's migration runner, one migrations directory, one owner). The ledger is append-only: no UPDATE or DELETE grants for the application role, enforced by database permissions and a trigger.
+**S4-T01.** Schema from the ARCHITECTURE spec with SQL migrations (`sqlx migrate` for the gateway side, the same SQL applied in the console's migration runner, one migrations directory, one owner). Migrations are plain, portable SQL with no provider-specific features, so moving to NileDB or Neon in the Next phase is configuration only. Every tenant table carries `tenant_id`; the repository layer always filters by it. The ledger is append-only: no UPDATE or DELETE grants for the application role, enforced by database permissions and a trigger.
 AC: migration up and down pass on a clean database. An attempted UPDATE on `ledger` fails.
 
 **S4-T02.** Tests that create two tenants and prove that every query path in the console and the gateway returns only the caller's rows, including when a tenant id is forged in a request body.
@@ -1122,7 +1126,7 @@ AC: an incident created in the operator console shows on the site within 60 s.
 
 | ID | Title | Labels | Size |
 |---|---|---|---|
-| S6-T01 | Terraform for AWS | feature, infra | XL |
+| S6-T01 | Terraform for AWS (Moved to Next phase) | feature, infra | XL |
 | S6-T02 | Gateway image and deploy pipeline | ci, infra | L |
 | S6-T03 | Operator console | feature, console | L |
 | S6-T04 | Acceptable use enforcement and abuse intake | feature, security | M |
@@ -1133,10 +1137,10 @@ AC: an incident created in the operator console shows on the site within 60 s.
 | S6-T09 | Backup, restore, and data retention jobs | feature, infra | M |
 | S6-T10 | Release v1.0.0 | chore | S |
 
-**S6-T01.** Terraform modules: VPC, EKS (or ECS if the ADR prefers, decide and record), node group of compute-optimised CPU instances in `ap-south-1` (benchmark both x86 and Graviton classes and pick by cost per stream), ALB or NLB with WebSocket support and idle timeout above 10 minutes, ElastiCache, Secrets Manager, ECR pull-through or GHCR pull secret, CloudWatch, Route 53 or Cloudflare DNS records, WAF with rate rules. Separate state per environment. `terraform plan` runs in CI. `apply` to prod is an owner action.
-AC: staging environment created from scratch by `terraform apply` with no manual steps other than secrets.
+**S6-T01.** Moved to Next phase. Terraform for AWS (VPC, EKS or ECS, ALB or NLB, ElastiCache, Secrets Manager, ECR, CloudWatch, WAF, DNS, `ap-south-1`, GitHub OIDC role) is not built in the current phase. The current phase deploys to the Stoke cluster with the Helm chart (S6-T02).
+AC: none in the current phase. Tracked as a Next phase issue.
 
-**S6-T02.** Multi-arch image built with `cargo-chef`, distroless base, non-root, read-only root filesystem, models baked into a separate image layer with checksums, signed with cosign keyless, SBOM attached. Deploy by Helm with rolling update `maxUnavailable: 0`, `preStop` hook, and the drain timeout.
+**S6-T02.** Multi-arch image (`linux/arm64` required for the Stoke cluster) built with `cargo-chef`, distroless base, non-root, read-only root filesystem, models baked into a separate image layer with checksums, signed with cosign keyless, SBOM attached. Images are pushed to `ghcr.io/mohnishbasha`. `.github/workflows/deploy-staging.yml` runs `helm upgrade --install` by digest against the Stoke cluster using the kubeconfig in the GitHub Actions secret `STOKE_KUBECONFIG`, with rolling update `maxUnavailable: 0`, `preStop` hook, and the drain timeout. Needs owner item O16 (Stoke cluster access).
 AC: a staging deploy during a 50-stream load test cuts zero streams.
 
 **S6-T03.** Organizations list and detail, suspend and unsuspend, manual credit and debit with required reason, refund trigger, key list (prefix only), abuse queue, custom voice queue (stub), fleet capacity view, incident banner, audit log. Every operator action writes to `audit_log`.
@@ -1157,14 +1161,14 @@ AC: results written to `bench/results/` and summarised in the retrospective. Zer
 **S6-T08.** Dashboards: fleet utilisation, time to first audio, error rates by code, ledger lag, webhook failures. Alerts with runbooks in `docs/runbooks/`: capacity above 80% for 5 minutes, p95 time to first audio above target for 10 minutes, reconciliation mismatch, ledger spool growing, webhook failures, certificate expiry.
 AC: each alert fired once on staging by fault injection.
 
-**S6-T09.** Nile backups verified by a restore drill, `request_log` 30 day retention job, account deletion flow that removes personal data and keeps the financial ledger as required for accounting, with the retention rule documented in the privacy policy draft.
+**S6-T09.** CloudNativePG scheduled backups to in-cluster object storage verified by a restore drill, `request_log` 30 day retention job, account deletion flow that removes personal data and keeps the financial ledger as required for accounting, with the retention rule documented in the privacy policy draft.
 AC: restore drill documented with timings.
 
 **S6-T10.** Follow the Release Checklist in the Versioning section. Tag `v1.0.0`.
 AC: release exists with changelog body, signed images, and SBOMs. Production promotion is an owner action.
 
 **Sprint 6 gate:**
-- [ ] Staging built entirely from Terraform and Helm
+- [ ] Staging deployed to the Stoke cluster entirely from the Helm chart by CI
 - [ ] Zero cut streams during a rolling deploy under load
 - [ ] Security findings closed or accepted in writing
 - [ ] Soak and chaos tests recorded, ledger reconciles
@@ -1333,7 +1337,7 @@ owner actions: promote images to prod (Helm upgrade), publish npm and PyPI, anno
 - `strict` on. No `any`. No non-null assertions without a comment. No `// @ts-ignore`.
 - No `console.log` in committed code. Use the logger.
 - Server Components by default. Client Components only where interaction requires it.
-- Data access through a typed repository layer that always sets the Nile tenant context. No raw SQL in route handlers or components.
+- Data access through a typed repository layer that always filters by `tenant_id` (application-enforced tenant context, optionally backed by Postgres row-level security). No raw SQL in route handlers or components.
 - Zod validation on every route handler input and every webhook payload.
 - Zustand for client state that crosses components (playground session). No global state for server data.
 - Components are small, named by what they are, and have tests for behaviour, not markup.
@@ -1375,16 +1379,16 @@ ci:       GitHub Actions and pipelines
 - Authentication runs before any body parsing beyond a size check. Maximum request body 64 KiB.
 - Input validation: length in code points, allowed Unicode categories, control characters stripped, voice id against the registry. Reject, never truncate silently.
 - WebSocket: origin allowlist for browser tokens, per-connection limits, ping every 20 s, close on protocol violation.
-- Rate limits at three levels: WAF per IP, gateway per key, gateway per organization.
+- Rate limits at three levels: ingress per IP, gateway per key, gateway per organization.
 - `/metrics` and admin ports bind to the internal network only.
 - The synthesis worker never opens network connections and never reads files outside `YUYIN_MODEL_DIR`. Enforce with a seccomp profile and a read-only root filesystem.
 - Model files are verified by SHA-256 against a manifest signed at build time.
 
 ### Console
 
-- Clerk for sessions. CSRF protection on all mutations. Strict CSP with nonces, no inline scripts, `frame-ancestors 'none'`.
+- Built-in auth: operator-issued one-time login token or email magic link, server-side session behind an HttpOnly Secure SameSite cookie, no self-serve sign-up. CSRF protection on all mutations. Strict CSP with nonces, no inline scripts, `frame-ancestors 'none'`.
 - Role checks on the server for every action. The client never decides authorisation.
-- Stripe webhooks verified by signature. Secrets in Vercel encrypted env.
+- Stripe webhooks verified by signature. Secrets in Kubernetes Secrets.
 - Operator routes require an allowlisted user and a fresh session (re-auth within 15 minutes for credit and suspension actions).
 - Playground tokens are short-lived (5 minutes), scoped to one organization, limited to the playground rate.
 
@@ -1394,7 +1398,7 @@ ci:       GitHub Actions and pipelines
 - No third-party analytics, session replay, or advertising pixels anywhere. Server-side first-party page counts only.
 - The self-host edition makes zero outbound connections. A test runs it in a network namespace with no route out and asserts normal operation.
 - Personal data inventory in `docs/DATA_INVENTORY.md`: what, where, why, retention.
-- Consent recordings for custom voices are stored in S3 with KMS encryption and Object Lock, access logged, and retrievable only by operators.
+- Consent recordings for custom voices are stored in in-cluster S3-compatible object storage (for example MinIO) with server-side encryption and Object Lock, access logged, and retrievable only by operators.
 
 ### Voice Safety
 
@@ -1503,15 +1507,15 @@ Plain, specific, technical. Say what happens and what it costs. Show the request
 
 | | dev | stage | prod |
 |---|---|---|---|
-| Where | Laptop, Docker Compose | AWS `ap-south-1`, small cluster | AWS `ap-south-1` |
-| Console | `localhost:3000` | `console.stage.getyuyin.com` (Vercel preview env) | `console.getyuyin.com` |
-| API | `localhost:8080` | `api.stage.getyuyin.com` | `api.getyuyin.com` |
-| Database | Local Postgres | Nile staging database | Nile production database |
+| Where | Laptop, Docker Compose | Stoke cluster (ARM64), namespace `yuyin-stage` | Stoke cluster (ARM64), namespace `yuyin` |
+| Console | `localhost:3000` | `console-stage.yuyin.openstoke.com` | `console.yuyin.openstoke.com` |
+| API | `localhost:8080` | `api-stage.yuyin.openstoke.com` | `api.yuyin.openstoke.com` |
+| Database | Local Postgres | In-cluster PostgreSQL 16 (CloudNativePG) | In-cluster PostgreSQL 16 (CloudNativePG) |
 | Payments | `stripe-mock` | Stripe test mode | Stripe live mode |
-| Auth | Clerk development instance | Clerk development instance | Clerk production instance |
+| Auth | Built-in auth, dev login token | Built-in auth | Built-in auth |
 | Key prefix | `yy_test_` | `yy_test_` | `yy_live_` |
 | Engine | `FakeEngine` by default, real engine opt-in | Real engine | Real engine |
-| Deploy | manual | automatic on merge to `staging` | owner, on signed tag |
+| Deploy | manual | automatic on merge to `staging` (`helm upgrade` using the `STOKE_KUBECONFIG` GitHub Actions secret) | owner, on signed tag |
 
 ### Environment Variables
 
@@ -1534,12 +1538,11 @@ Plain, specific, technical. Say what happens and what it costs. Show the request
 | `YUYIN_LICENCE_FILE` | unset | unset | unset (self-host only) |
 | `YUYIN_MODE` | `hosted` | `hosted` | `hosted` (`selfhost` in that edition) |
 | `NEXT_PUBLIC_API_BASE_URL` | `http://localhost:8080` | stage URL | prod URL |
-| `CLERK_SECRET_KEY` | dev secret | secret | secret |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | dev | dev | prod |
+| `SESSION_SECRET` | dev secret | secret | secret |
 | `STRIPE_SECRET_KEY` | mock | test secret | live secret |
 | `STRIPE_WEBHOOK_SECRET` | mock | secret | secret |
-| `NILE_DATABASE_URL` | local | secret | secret |
-| `OPERATOR_USER_IDS` | your id | allowlist | allowlist |
+| `DATABASE_URL` (console) | local | secret | secret |
+| `OPERATOR_USER_IDS` | your id | allowlist (user ids from the built-in `users` table) | allowlist |
 | `LEGAL_DRAFT_BANNER` | `on` | `on` | `on` until owner sets `off` |
 | `PUBLIC_DEMO_DAILY_CHAR_BUDGET` | `10000` | `50000` | owner sets |
 
@@ -1608,7 +1611,7 @@ Kubernetes (Helm)
   make kind-down        delete the local cluster
 ```
 
-Variables: `VERSION` (defaults to the `VERSION` file), `REGISTRY` (defaults to `ghcr.io/serverless-ventures`), `PLATFORMS` (defaults to `linux/amd64,linux/arm64`), `ENGINE` (`fake` or `onnx`), `NAMESPACE` (defaults to `yuyin`), `VALUES` (defaults to `values-kind.yaml`).
+Variables: `VERSION` (defaults to the `VERSION` file), `REGISTRY` (defaults to `ghcr.io/mohnishbasha`), `PLATFORMS` (defaults to `linux/arm64,linux/amd64`; the Stoke cluster needs `linux/arm64`), `ENGINE` (`fake` or `onnx`), `NAMESPACE` (defaults to `yuyin`), `VALUES` (defaults to `values-kind.yaml`).
 
 ### Path 1: Local build
 
@@ -1691,15 +1694,15 @@ Every service has a health check, `depends_on` uses `condition: service_healthy`
 |---|---|---|---|
 | `yuyin-gateway` | `deploy/docker/Dockerfile.gateway` | distroless `cc` or `static`, pinned by digest | Gateway binary, default models, licences |
 | `yuyin-gateway-slim` | same file, `--target slim` | same | Gateway binary only; models come from a volume or OCI artifact |
-| `yuyin-console` | `deploy/docker/Dockerfile.console` | distroless Node, pinned by digest | Next.js standalone output (for clusters that do not use Vercel) |
+| `yuyin-console` | `deploy/docker/Dockerfile.console` | distroless Node, pinned by digest | Next.js standalone output (deployed on the Stoke cluster in the current phase) |
 | `yuyin-mcp` | `deploy/docker/Dockerfile.mcp` | distroless, pinned by digest | MCP server |
 
 **Other OCI artifacts in GHCR:**
 
 | Artifact | Reference | How |
 |---|---|---|
-| Helm chart | `oci://ghcr.io/serverless-ventures/charts/yuyin` | `helm push` |
-| Model bundle | `ghcr.io/serverless-ventures/yuyin-models:<models-version>` | `oras push` with a manifest of file checksums |
+| Helm chart | `oci://ghcr.io/mohnishbasha/charts/yuyin` | `helm push` |
+| Model bundle | `ghcr.io/mohnishbasha/yuyin-models:<models-version>` | `oras push` with a manifest of file checksums |
 | SBOM and provenance | attached to each image digest | `cosign attest`, buildx attestations |
 
 **Gateway Dockerfile (shape to follow; verify base image tags and tool versions at implementation time):**
@@ -1735,7 +1738,7 @@ LABEL org.opencontainers.image.title="yuyin-gateway" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${REVISION}" \
       org.opencontainers.image.created="${CREATED}" \
-      org.opencontainers.image.source="https://github.com/serverless-ventures/yuyin-tts" \
+      org.opencontainers.image.source="https://github.com/mohnishbasha/stokeai-yuyin" \
       org.opencontainers.image.vendor="Serverless Ventures LLC" \
       org.opencontainers.image.licenses="LicenseRef-Proprietary"
 COPY --from=builder /src/target/release/yuyin-gateway /yuyin-gateway
@@ -1801,8 +1804,8 @@ Pushing to GHCR from a developer machine is allowed only for `:sha-` tags in a p
 **Verification a consumer can run:**
 
 ```bash
-cosign verify ghcr.io/serverless-ventures/yuyin-gateway:1.0.0 \
-  --certificate-identity-regexp 'https://github.com/serverless-ventures/yuyin-tts/.*' \
+cosign verify ghcr.io/mohnishbasha/yuyin-gateway:1.0.0 \
+  --certificate-identity-regexp 'https://github.com/mohnishbasha/stokeai-yuyin/.*' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
@@ -1816,7 +1819,7 @@ deploy/helm/yuyin/
 ├── values.yaml                 # documented defaults
 ├── values.schema.json          # every value typed and validated
 ├── values-kind.yaml            # local cluster, FakeEngine, 1 replica
-├── values-hosted.yaml          # AWS hosted mode
+├── values-hosted.yaml          # Stoke hosted mode (ARM64)
 ├── values-selfhost.yaml        # customer cluster, no egress
 ├── values-k3s-arm64.yaml       # two-node ARM64 k3s with Cilium
 ├── README.md                   # generated from values.yaml comments (helm-docs)
@@ -1835,7 +1838,7 @@ deploy/helm/yuyin/
     ├── networkpolicy.yaml
     ├── servicemonitor.yaml     # optional, Prometheus Operator
     ├── statefulset-valkey.yaml # optional in-cluster cache
-    ├── deployment-console.yaml # optional, when not using Vercel
+    ├── deployment-console.yaml # console on the Stoke cluster (current phase)
     ├── job-migrate.yaml        # pre-install, pre-upgrade hook (hosted mode)
     ├── NOTES.txt
     └── tests/
@@ -1848,7 +1851,7 @@ deploy/helm/yuyin/
 ```yaml
 mode: hosted                       # hosted | selfhost
 image:
-  repository: ghcr.io/serverless-ventures/yuyin-gateway
+  repository: ghcr.io/mohnishbasha/yuyin-gateway
   digest: ""                       # required in hosted and selfhost profiles
   tag: ""                          # dev convenience only
   pullPolicy: IfNotPresent
@@ -1876,7 +1879,7 @@ ingress:
   className: ""
   host: ""
   tls: { secretName: "" }
-  annotations: {}                  # presets documented for AWS ALB and NGINX
+  annotations: {}                  # presets documented for NGINX and Traefik (AWS ALB preset is Next phase)
   proxyTimeoutSeconds: 660
 database: { existingSecret: "", urlKey: url }
 redis:    { existingSecret: "", urlKey: url, inCluster: false }
@@ -1920,11 +1923,11 @@ kubectl create namespace yuyin
 kubectl -n yuyin create secret generic yuyin-db    --from-literal=url="$YUYIN_DATABASE_URL"
 kubectl -n yuyin create secret generic yuyin-redis --from-literal=url="$YUYIN_REDIS_URL"
 
-helm upgrade --install yuyin oci://ghcr.io/serverless-ventures/charts/yuyin \
+helm upgrade --install yuyin oci://ghcr.io/mohnishbasha/charts/yuyin \
   --version 1.0.0 --namespace yuyin \
   -f values-hosted.yaml \
   --set image.digest=sha256:<digest> \
-  --set ingress.host=api.getyuyin.com \
+  --set ingress.host=api.yuyin.openstoke.com \
   --atomic --wait --timeout 10m
 
 helm test yuyin -n yuyin
@@ -1936,7 +1939,7 @@ Self-host cluster install differs only in the values profile and a licence secre
 
 ```bash
 kubectl -n yuyin create secret generic yuyin-licence --from-file=licence.json
-helm upgrade --install yuyin oci://ghcr.io/serverless-ventures/charts/yuyin \
+helm upgrade --install yuyin oci://ghcr.io/mohnishbasha/charts/yuyin \
   --version 1.0.0 -n yuyin -f values-selfhost.yaml --set image.digest=sha256:<digest> --atomic --wait
 ```
 
@@ -1957,7 +1960,7 @@ Air-gapped clusters: `scripts/airgap-bundle.sh` produces a tarball of the images
 |---|---|---|
 | `ci.yml` | every PR | `make check`, image build for both architectures (no push), `make helm-lint` |
 | `kind.yml` | PRs touching `deploy/` or `crates/`, and all PRs to `staging` | chart verification steps 3 to 5 |
-| `deploy-staging.yml` | merge to `staging` | push `:sha-` and `:staging` images, sign, `helm upgrade` staging by digest, smoke suite |
+| `deploy-staging.yml` | merge to `staging` | push `:sha-` and `:staging` images, sign, `helm upgrade` staging by digest against the Stoke cluster (kubeconfig from the `STOKE_KUBECONFIG` GitHub Actions secret), smoke suite |
 | `release.yml` | signed `v*` tag | multi-arch images, SBOM, provenance, cosign, model artifact, OCI chart, CLI binaries, self-host tarball, GitHub Release |
 | production deploy | owner, manually | `helm upgrade` by digest with canary, as in the Release Checklist |
 
@@ -1968,7 +1971,7 @@ Air-gapped clusters: `scripts/airgap-bundle.sh` produces a tarball of the images
 | 0 | Makefile, `make setup/build/check/dev`, Dockerfile skeletons, CI builds images |
 | 3 | Real gateway image, `healthcheck` subcommand, minimal Helm chart, kind install in CI |
 | 4 | Migration hook Job, Compose local stack with Postgres and Valkey |
-| 6 | Signed multi-arch images, SBOM, staging deploy by digest, Terraform |
+| 6 | Signed multi-arch images, SBOM, staging deploy by digest to the Stoke cluster (Terraform and AWS are Next phase) |
 | 7 | Self-host binary, tarball, systemd unit, `docker-compose.selfhost.yml` |
 | 8 | CLI binaries for all platforms |
 | 11 | Chart completed: HPA, NetworkPolicy, all values profiles, OCI chart push, air-gap bundle, deployment docs |
@@ -2023,11 +2026,10 @@ wiremock         = "*"     # dev
   "react": "current stable",
   "typescript": "^5",
   "tailwindcss": "current stable",
-  "@clerk/nextjs": "current stable",
   "stripe": "current stable",
   "zod": "current stable",
   "zustand": "^5",
-  "@niledatabase/server": "current stable",
+  "pg": "current stable",
   "@modelcontextprotocol/sdk": "current stable",
   "vitest": "current stable",
   "@playwright/test": "current stable",
@@ -2071,6 +2073,26 @@ Create one GitHub issue with the `enhancement` label for each item.
 
 ---
 
+## Next Phase
+
+These items are deferred by owner decision (2026-11-13). No current-phase task, gate, or script may depend on them. Create one GitHub issue with the `enhancement` label for each.
+
+| Item | Replaces or adds |
+|---|---|
+| Clerk: console human sign-in and Clerk organizations as tenants | Built-in auth. Fills `organizations.external_auth_id` |
+| Managed serverless Postgres: NileDB or Neon (owner picks) | In-cluster PostgreSQL 16. Migrations stay plain SQL, so the move is configuration only |
+| AWS infrastructure: Terraform, EKS or ECS, ALB or NLB, ElastiCache, Secrets Manager, CloudWatch, WAF, Route 53, ECR, ap-south-1, GitHub OIDC role for CI, AWS billing | Stoke cluster, Helm, Kubernetes Secrets, GitHub Actions secrets. Includes benchmarking x86 against Graviton |
+| Vercel hosting for the console and docs | Console and docs run on the Stoke cluster |
+| Managed object storage with KMS and Object Lock for consent recordings | In-cluster S3-compatible object storage |
+
+## Pending TODO
+
+| Item | Status |
+|---|---|
+| Name and trademark check for "Yuyin". The word is generic in Chinese (语音) and may be hard to protect. Owner action, after Sprint 12 and the final release. Blocks no sprint gate | Pending |
+
+---
+
 ## README Template
 
 ```markdown
@@ -2094,7 +2116,7 @@ and runs on standard CPU servers in the cloud or on your own hardware.
 
 ## Quickstart
 
-    curl -N https://api.getyuyin.com/v1/speech \
+    curl -N https://api.yuyin.openstoke.com/v1/speech \
       -H "Authorization: Bearer $YUYIN_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{"text":"आपकी EMI ₹12,450 है, due date 05/12/2026.","voice":"<voice-id>"}' \
@@ -2263,7 +2285,7 @@ yuyin-tts/
 │   ├── compose/{docker-compose.dev.yml,docker-compose.local.yml,docker-compose.selfhost.yml,docker-compose.prod.yml}
 │   ├── helm/yuyin/
 │   ├── systemd/yuyin-gateway.service
-│   └── terraform/{modules/,envs/stage/,envs/prod/}
+│   └── (terraform/ is Next phase and is not created in the current phase)
 ├── scripts/
 │   ├── dev.sh
 │   ├── check-versions.sh
@@ -2302,8 +2324,8 @@ Model weights are not committed to git. `scripts/fetch-models.sh` downloads them
 **S7-T01.** Traits `KeyStore`, `CreditStore`, `UsageSink`. Hosted implementations use Redis and Postgres. Self-host implementations use an embedded SQLite file and treat credit as unlimited within licence limits. `YUYIN_MODE` selects at startup. No `cfg` forks in request handlers.
 AC: the full gateway integration suite passes in both modes.
 
-**S7-T02.** Licence is a JSON document (customer, issued, expires, max nodes, max concurrent streams, voices, edition) with a detached Ed25519 signature. The public key is compiled in. The private key lives only in the owner's Secrets Manager. `tools/licence-sign` is an owner-run tool. Expiry behaviour: 14 day grace with a warning log and a header, then refuse new streams, never cut active ones.
-AC: tampered, expired, and wrong-key licences are rejected with distinct errors. Clock rollback is detected through a monotonic high-water mark stored locally.
+**S7-T02.** Licence is a JSON document (customer, issued, expires, max nodes, max concurrent streams, voices, edition) with a detached Ed25519 signature. The public key is compiled in. The private key is stored only as the GitHub Actions secret `YUYIN_LICENCE_SIGNING_KEY` in a protected `licensing` environment (required reviewer: the owner) and never enters the repository. Licences are signed by the manually triggered (`workflow_dispatch`) workflow `.github/workflows/licence-sign.yml` running `tools/licence-sign`, which uploads the signed licence as a workflow artifact. Expiry behaviour: 14 day grace with a warning log and a header, then refuse new streams, never cut active ones.
+AC: tampered, expired, and wrong-key licences are rejected with distinct errors. Clock rollback is detected through a monotonic high-water mark stored locally. The signing workflow can only be started by `workflow_dispatch`, runs in the protected `licensing` environment, and a CI check fails if any private key material is present in the repository.
 
 **S7-T03.** `yuyin-gateway admin keys create|list|revoke` operating on the local store. Same key format with prefix `yy_self_`.
 AC: e2e test creates a key and synthesises.
@@ -2320,6 +2342,7 @@ AC: a fresh VM follows the doc to first audio. Time recorded.
 **Sprint 7 gate:**
 - [ ] Both modes pass the integration suite
 - [ ] Licence verification tests pass
+- [ ] Licence signing runs only through the manual `licensing` environment workflow and no private key is in the repository
 - [ ] No-egress tests pass
 - [ ] Tarball installs on a clean VM following the doc only
 
@@ -2446,11 +2469,11 @@ The Build and Deployment section is the reference for commands, image rules, and
 ```yaml
 services:
   model-fetch:            # one-shot: verifies or downloads models into the volume, then exits 0
-    image: ghcr.io/serverless-ventures/yuyin-gateway:${YUYIN_VERSION}
+    image: ghcr.io/mohnishbasha/yuyin-gateway:${YUYIN_VERSION}
     command: ["fetch-models", "--verify"]
     volumes: ["models:/models"]
   gateway:
-    image: ghcr.io/serverless-ventures/yuyin-gateway:${YUYIN_VERSION}
+    image: ghcr.io/mohnishbasha/yuyin-gateway:${YUYIN_VERSION}
     depends_on:
       model-fetch: { condition: service_completed_successfully }
     environment:
@@ -2483,8 +2506,8 @@ secrets: { licence: { file: ./licence.json } }
 - **PodDisruptionBudget** `maxUnavailable: 1`.
 - **Resources:** CPU request equals limit equals worker thread count for Guaranteed QoS. Document the static CPU manager policy as a recommendation for latency.
 - **Models:** baked into the image by default. Optional init container that copies models from an OCI artifact or object store into an `emptyDir` or a read-only PVC for air-gapped clusters.
-- **StatefulSet** only for optional in-cluster Valkey (for clusters without a managed cache). Postgres is external (Nile) in hosted mode and absent in self-host mode.
-- **Ingress:** WebSocket upgrade enabled, proxy read and send timeouts 660 s, request buffering off for `/v1/speech`, body size limit 64k. Examples for AWS ALB and NGINX.
+- **StatefulSet** only for optional in-cluster Valkey (for clusters without a managed cache). Postgres is in-cluster (CloudNativePG) in hosted mode and absent in self-host mode.
+- **Ingress:** WebSocket upgrade enabled, proxy read and send timeouts 660 s, request buffering off for `/v1/speech`, body size limit 64k. Examples for NGINX and Traefik (the Stoke ingress).
 - **NetworkPolicy:** gateway accepts only from the ingress controller and Prometheus. Egress only to cache and database in hosted mode, none in self-host mode.
 - **Security context:** non-root, read-only root filesystem, all capabilities dropped, seccomp `RuntimeDefault`.
 - **Values profiles:** `values-hosted.yaml`, `values-selfhost.yaml`, `values-k3s-arm64.yaml` (for the existing two-node ARM64 k3s cluster with Cilium, CPU nodes only).
@@ -2537,7 +2560,7 @@ AC: a request cannot leave the `draft` state without all three parts.
 **S12-T02.** Form: organization, speaker details, intended use, languages. Generates a recording script of original, phonetically varied sentences in the requested languages sized for about 30 minutes of speech, plus recording guidance (quiet room, 48 kHz, 24-bit, pop filter, consistent distance).
 AC: script covers the phoneme inventory of each requested language, checked by a coverage test.
 
-**S12-T03.** Direct-to-S3 multipart upload with presigned URLs into a KMS-encrypted, Object Lock bucket. Automated checks: format, sample rate, duration, clipping, noise floor, silence ratio, and a speaker consistency check between the consent clip and the recordings. Failures are reported per file with a plain explanation.
+**S12-T03.** Direct-to-object-storage multipart upload with presigned URLs (S3-compatible API) into an encrypted, Object Lock bucket on the in-cluster object store. Automated checks: format, sample rate, duration, clipping, noise floor, silence ratio, and a speaker consistency check between the consent clip and the recordings. Failures are reported per file with a plain explanation.
 AC: fixtures for each failure class are detected. No audio is readable by other tenants (isolation test).
 
 **S12-T04.** Operator queue with states `submitted`, `consent_verified`, `in_training`, `review`, `ready`, `rejected`, `withdrawn`. The customer sees status and messages in the console.
@@ -2570,7 +2593,7 @@ AC: runbook reviewed by the owner.
 | 3 | Core Feature | 2 weeks | Streaming synthesis over REST and WebSocket | `sprint-3-complete` |
 | 4 | Secondary Feature | 1 week | Accounts, keys, metering, credits | `sprint-4-complete` |
 | 5 | Tertiary Feature | 1 week | Playground, docs, SDKs, benchmarks page | `sprint-5-complete` |
-| 6 | Release | 1 week | Infra, security, operator tools, v1.0.0 | `v1.0.0` |
+| 6 | Release | 1 week | Stoke deploy, security, operator tools, v1.0.0 | `v1.0.0` |
 | 7 | Self-Host Edition | 1 week | Licensed single-binary edition | `v1.1.0` |
 | 8 | CLI | 1 week | `yuyin` binary | `v1.2.0` |
 | 9 | MCP Server | 1 week | Six MCP tools | `v1.3.0` |
@@ -2590,7 +2613,7 @@ Dependency notes: Sprint 3 needs ADR-015 from Sprint 1. Sprint 4 needs the gatew
 2. **The engine is replaceable.** Nothing above `yuyin-engine` knows which model is running. A second engine must be addable without touching the gateway.
 3. **One counter.** Character counting exists once. Everything else imports it.
 4. **One contract.** `api/openapi.yaml` generates SDK types, docs, mock servers, and contract tests. Hand-written duplicates are a bug.
-5. **Control plane and data plane share only the database schema and the cache protocol.** The console never calls the gateway's internals. The gateway never calls Clerk or Stripe.
+5. **Control plane and data plane share only the database schema and the cache protocol.** The console never calls the gateway's internals. The gateway never calls the console auth or Stripe.
 6. **Mode by trait, not by fork.** Hosted and self-host differ only in the implementations bound at startup.
 7. **Clients are thin.** CLI, MCP server, and Pi extension depend on the TypeScript SDK and contain no protocol logic of their own.
 8. **Config over code for anything a customer or operator may tune:** prices, limits, capacity, voices, policy patterns.
@@ -2669,7 +2692,7 @@ Regression tests are never deleted. A wrong reading reported by a customer becom
 
 ### `.gitignore` (required sections)
 
-Rust (`target/`, `*.rs.bk`), TypeScript (`node_modules/`, `dist/`, `.next/`, `*.tsbuildinfo`), Bun (`.bun/`, with `bun.lockb` committed), Python (`__pycache__/`, `.venv/`, `*.egg-info/`), environment (`.env`, `.env.*` with `.env.*.example` committed), test and coverage (`coverage/`, `playwright-report/`, `tarpaulin-report.html`), models and audio (`models/`, `out/`, `*.onnx`, `*.ogg`, `*.wav` outside `tests/fixtures/`), database (`*.db`, `*.db-shm`, `*.db-wal`, with migrations committed), Terraform (`.terraform/`, `*.tfstate*`), agent sessions (`.pi/sessions/`, `.agent/sessions/`, `CLAUDE.local.md`), OS (`.DS_Store`, `Thumbs.db`), editors (`.vscode/settings.json`, `.idea/`), secrets (`licence.json`, `*.pem`, `*.key`). `Cargo.lock` and `bun.lockb` are tracked.
+Rust (`target/`, `*.rs.bk`), TypeScript (`node_modules/`, `dist/`, `.next/`, `*.tsbuildinfo`), Bun (`.bun/`, with `bun.lockb` committed), Python (`__pycache__/`, `.venv/`, `*.egg-info/`), environment (`.env`, `.env.*` with `.env.*.example` committed), test and coverage (`coverage/`, `playwright-report/`, `tarpaulin-report.html`), models and audio (`models/`, `out/`, `*.onnx`, `*.ogg`, `*.wav` outside `tests/fixtures/`), database (`*.db`, `*.db-shm`, `*.db-wal`, with migrations committed), Terraform (`.terraform/`, `*.tfstate*`, Next phase), agent sessions (`.pi/sessions/`, `.agent/sessions/`, `CLAUDE.local.md`), OS (`.DS_Store`, `Thumbs.db`), editors (`.vscode/settings.json`, `.idea/`), secrets (`licence.json`, `*.pem`, `*.key`). `Cargo.lock` and `bun.lockb` are tracked.
 
 ### `AGENTS.md` must contain
 
@@ -2689,7 +2712,7 @@ Rust (`target/`, `*.rs.bk`), TypeScript (`node_modules/`, `dist/`, `.next/`, `*.
   - NEVER weaken the capacity, drain, or isolation tests
   - NEVER perform owner-only actions
 - Versioning: `VERSION` is the single source of truth, run `scripts/check-versions.sh`
-- Boundaries: directories the agent must not modify without an explicit task (`migrations/` once applied, `docs/licences/`, `deploy/terraform/envs/prod/`)
+- Boundaries: directories the agent must not modify without an explicit task (`migrations/` once applied, `docs/licences/`, `deploy/helm/yuyin/values-prod.yaml`)
 
 ### `CLAUDE.md` must contain
 

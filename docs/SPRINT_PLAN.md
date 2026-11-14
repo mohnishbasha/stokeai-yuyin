@@ -178,7 +178,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Estimate:** XS
 - **Dependencies:** none
 - **Spec references:** BUILD_PROMPT "Things only the owner does"
-- **Description:** `docs/OWNER_CHECKLIST.md` listing every action only the owner can take, with the sprint by which it is needed: domain registration, name and trademark check, AWS account and region, Clerk application, Nile database, Stripe account and products, Vercel project, npm and PyPI org, GHCR access, pricing decision, voice name approval, and attorney review of legal pages.
+- **Description:** `docs/OWNER_CHECKLIST.md` listing every action only the owner can take, with the sprint by which it is needed: DNS for `yuyin.openstoke.com` subdomains, Stoke cluster access (`STOKE_KUBECONFIG`), Stripe account and products, npm and PyPI org, GHCR access, pricing decision, voice name approval, attorney review of legal pages, and the licence signing key secret. AWS, Clerk, the NileDB or Neon account and Vercel are listed under Next phase, and the trademark check is a Pending TODO at the end of the plan that blocks no gate.
 - **Acceptance criteria:**
   - [ ] File exists with every item above and a needed-by sprint
   - [ ] File is linked from the README
@@ -431,14 +431,14 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 **Duration:** 1 week
 **Start:** 2026-11-24
 **Due:** 2026-11-30
-**Goal:** The design system exists and every screen is navigable with mock data. Nothing is wired to real services except Clerk sign-in.
+**Goal:** The design system exists and every screen is navigable with mock data. Nothing is wired to real services except built-in console sign-in.
 
 | ID | Title | Size | Priority |
 |---|---|---|---|
 | S2-T01 | Next.js app, Tailwind tokens, fonts | M | p0 |
 | S2-T02 | Component library | L | p0 |
 | S2-T03 | Signature element: the pulse line | M | p1 |
-| S2-T04 | Clerk auth and organization switcher | M | p0 |
+| S2-T04 | Built-in auth and organization switcher | M | p0 |
 | S2-T05 | Console screens with mock data | L | p0 |
 | S2-T06 | Marketing site shell | M | p0 |
 | S2-T07 | Docs site shell | M | p1 |
@@ -488,19 +488,21 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] Has an accessible text alternative
 - **Test scenarios to add:** unit_console_pulseline_reducedmotion_staticrender, unit_console_pulseline_render_hasaccessibletextalternative, perf_console_pulseline_mockstream_sustains60fps
 
-### S2-T04: Clerk auth and organization switcher
+### S2-T04: Built-in auth and organization switcher
 - **Issue:** #29
 - **Labels:** type: feature, area: console, priority: p0, size: M, sprint: 2
 - **Estimate:** M
 - **Dependencies:** S2-T01
 - **Spec references:** PRD FR-021; ARCHITECTURE "Authentication and roles"
-- **Description:** Clerk sign-up, sign-in, email verification, and organizations, with roles mapped to owner, admin, developer, billing. Middleware protects `(console)` and `(operator)`. Operator access is an allowlist of Clerk user ids from the environment.
+- **Description:** Built-in auth (ADR-025). Organizations and users are created by the operator CLI `yuyin-admin`, which issues a single-use magic link or one-time token (hashed in `login_tokens`, 15 minute expiry). Sign-in sets an HttpOnly, Secure, SameSite session cookie (`sessions`) and all mutating requests require a CSRF token. Roles map to owner, admin, developer, billing through `memberships`. Middleware protects `(console)` and `(operator)`. Operator access is an allowlist of user ids from the environment. This task creates the auth subset of the schema (`organizations`, `users`, `memberships`, `login_tokens`, `sessions`) as plain SQL migrations; S4-T01 extends it. The Clerk integration is a Next phase task (NP-02).
 - **Acceptance criteria:**
-  - [ ] An e2e test covers sign-up to first console view using Clerk test mode
+  - [ ] An e2e test covers operator-issued login link to first console view using built-in auth
   - [ ] Roles map to owner, admin, developer, billing
+  - [ ] A login token is single use, expires after 15 minutes, and is stored only as a hash
+  - [ ] Session cookie is HttpOnly, Secure, SameSite, and mutating requests without a valid CSRF token are rejected
   - [ ] Unauthenticated requests to `(console)` and `(operator)` are redirected
   - [ ] Operator routes are accessible only to the env-configured allowlist
-- **Test scenarios to add:** e2e_console_signup_firstconsoleview_succeeds, security_console_operatorroute_nonallowlisted_denied, security_console_middleware_unauthenticated_redirects
+- **Test scenarios to add:** e2e_console_loginlink_firstconsoleview_succeeds, security_console_logintoken_reused_rejected, security_console_mutation_missingcsrf_rejected, security_console_operatorroute_nonallowlisted_denied, security_console_middleware_unauthenticated_redirects
 
 ### S2-T05: Console screens with mock data
 - **Issue:** #30
@@ -563,7 +565,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Description:** Playwright config, auth fixture, and visual snapshots for 12 key screens in both themes.
 - **Acceptance criteria:**
   - [ ] 12 key screens have snapshots in both themes
-  - [ ] Auth fixture works with Clerk test mode
+  - [ ] Auth fixture works with built-in auth (seeded session)
   - [ ] The suite runs in CI in under 6 minutes
 - **Test scenarios to add:** e2e_visual_keyscreens_darktheme_matchessnapshots, e2e_visual_keyscreens_lighttheme_matchessnapshots
 
@@ -861,7 +863,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 
 | ID | Title | Size | Priority |
 |---|---|---|---|
-| S4-T01 | Database schema and migrations on Nile | M | p0 |
+| S4-T01 | Database schema and migrations on PostgreSQL | M | p0 |
 | S4-T02 | Tenant isolation tests | M | p0 |
 | S4-T03 | API key lifecycle in the console | M | p0 |
 | S4-T04 | Gateway key verification and cache | M | p0 |
@@ -877,13 +879,13 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 
 Build and deployment work in this sprint (from the sprint plan table): migration hook Job in the chart, and a Compose local stack with Postgres and Valkey. These are covered by acceptance criteria in S4-T01 and the sprint gate.
 
-### S4-T01: Database schema and migrations on Nile
+### S4-T01: Database schema and migrations on PostgreSQL
 - **Issue:** #52
 - **Labels:** type: feature, area: metering, priority: p0, size: M, sprint: 4
 - **Estimate:** M
 - **Dependencies:** S3-T17
 - **Spec references:** PRD FR-015, FR-016, NFR-008; ARCHITECTURE "Data model"
-- **Description:** Implement the schema from the ARCHITECTURE spec with SQL migrations (`sqlx migrate` for the gateway side, the same SQL applied in the console's migration runner, one migrations directory, one owner). The ledger is append-only: no UPDATE or DELETE grants for the application role, enforced by database permissions and a trigger. Add the migration hook Job to the chart and a Compose local stack with Postgres and Valkey.
+- **Description:** Implement the schema from the ARCHITECTURE spec on plain PostgreSQL 16 (CloudNativePG on Stoke, ADR-024), extending the auth tables from S2-T04, with portable SQL migrations (no Nile-specific features). Every tenant table has `tenant_id`; tenant context is enforced in the repository layer, optionally with Postgres RLS. Migrations (`sqlx migrate` for the gateway side, the same SQL applied in the console's migration runner, one migrations directory, one owner). The ledger is append-only: no UPDATE or DELETE grants for the application role, enforced by database permissions and a trigger. Add the migration hook Job to the chart and a Compose local stack with Postgres and Valkey.
 - **Acceptance criteria:**
   - [ ] Migration up and down pass on a clean database
   - [ ] An attempted UPDATE on `ledger` fails
@@ -1209,11 +1211,11 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 **Duration:** 1 week
 **Start:** 2026-12-29
 **Due:** 2027-01-04
-**Goal:** Production-ready hosted service. Infrastructure as code, security review, operator tooling, legal pages, and the v1.0.0 tag.
+**Goal:** Production-ready hosted service. Helm deploy to the Stoke cluster, security review, operator tooling, legal pages, and the v1.0.0 tag.
 
 | ID | Title | Size | Priority |
 |---|---|---|---|
-| S6-T01 | Terraform for AWS | XL | p0 |
+| S6-T01 | Terraform for AWS (Moved to Next phase) | XL | p0 |
 | S6-T02 | Gateway image and deploy pipeline | L | p0 |
 | S6-T03 | Operator console | L | p0 |
 | S6-T04 | Acceptable use enforcement and abuse intake | M | p1 |
@@ -1224,7 +1226,8 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 | S6-T09 | Backup, restore, and data retention jobs | M | p1 |
 | S6-T10 | Release v1.0.0 | S | p0 |
 
-### S6-T01: Terraform for AWS
+### S6-T01: Terraform for AWS (Moved to Next phase)
+- **Status:** Moved to Next phase (NP-03). Not part of Sprint 6 or its gate; deploys target the Stoke cluster by Helm (ADR-026). The original scope below is kept for reference.
 - **Issue:** #73
 - **Labels:** type: feature, area: infra, priority: p0, size: XL, sprint: 6
 - **Estimate:** XL
@@ -1244,7 +1247,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Issue:** #74
 - **Labels:** type: chore, area: infra, priority: p0, size: L, sprint: 6
 - **Estimate:** L
-- **Dependencies:** S3-T16, S3-T17, S6-T01
+- **Dependencies:** S3-T16, S3-T17
 - **Spec references:** BUILD_PROMPT "Build and Deployment" workflows; ARCHITECTURE "Release pipeline"
 - **Description:** Multi-arch image built with `cargo-chef`, distroless base, non-root, read-only root filesystem, models baked into a separate image layer with checksums, signed with cosign keyless, SBOM attached. Deploy by Helm with rolling update `maxUnavailable: 0`, a `preStop` hook, and the drain timeout. Add `deploy-staging.yml` that pushes `:sha-` and `:staging` images, signs, runs `helm upgrade` by digest, and runs the smoke suite.
 - **Acceptance criteria:**
@@ -1315,7 +1318,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Issue:** #79
 - **Labels:** type: test, area: bench, priority: p0, size: L, sprint: 6
 - **Estimate:** L
-- **Dependencies:** S6-T01, S6-T02, S3-T13, S4-T12
+- **Dependencies:** S6-T02, S3-T13, S4-T12
 - **Spec references:** PRD NFR-003, NFR-004, NFR-006; TEST_PLAN "Load and chaos"
 - **Description:** On staging: ramp to measured capacity, a 2 hour soak at 60% capacity with random client disconnects, node kill during load, Redis failover, and Postgres outage for 60 s. The ledger reconciles after each.
 - **Acceptance criteria:**
@@ -1328,7 +1331,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Issue:** #80
 - **Labels:** type: docs, area: infra, priority: p1, size: M, sprint: 6
 - **Estimate:** M
-- **Dependencies:** S3-T12, S6-T01, S4-T12
+- **Dependencies:** S3-T12, S6-T02, S4-T12
 - **Spec references:** ARCHITECTURE "Observability"; PRD NFR-005
 - **Description:** Dashboards: fleet utilisation, time to first audio, error rates by code, ledger lag, webhook failures. Alerts with runbooks in `docs/runbooks/`: capacity above 80% for 5 minutes, p95 time to first audio above target for 10 minutes, reconciliation mismatch, ledger spool growing, webhook failures, certificate expiry.
 - **Acceptance criteria:**
@@ -1341,9 +1344,9 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Issue:** #81
 - **Labels:** type: feature, area: infra, priority: p1, size: M, sprint: 6
 - **Estimate:** M
-- **Dependencies:** S4-T01, S6-T01
+- **Dependencies:** S4-T01, S6-T02
 - **Spec references:** PRD NFR-007; ARCHITECTURE "Data retention"
-- **Description:** Nile backups verified by a restore drill, a `request_log` 30 day retention job, and an account deletion flow that removes personal data and keeps the financial ledger as required for accounting, with the retention rule documented in the privacy policy draft.
+- **Description:** CloudNativePG scheduled backups verified by a restore drill, a `request_log` 30 day retention job, and an account deletion flow that removes personal data and keeps the financial ledger as required for accounting, with the retention rule documented in the privacy policy draft.
 - **Acceptance criteria:**
   - [ ] Restore drill is documented with timings
   - [ ] `request_log` rows older than 30 days are deleted by the job
@@ -1355,7 +1358,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Issue:** #82
 - **Labels:** type: chore, area: infra, priority: p0, size: S, sprint: 6
 - **Estimate:** S
-- **Dependencies:** S6-T01, S6-T02, S6-T03, S6-T05, S6-T06, S6-T07
+- **Dependencies:** S6-T02, S6-T03, S6-T05, S6-T06, S6-T07
 - **Spec references:** BUILD_PROMPT "Release Checklist"
 - **Description:** Follow the Release Checklist in the Versioning section. Tag `v1.0.0`. Production promotion is an owner action.
 - **Acceptance criteria:**
@@ -1367,7 +1370,7 @@ Build and deployment work in this sprint (from the sprint plan table): migration
 - **Test scenarios to add:** e2e_release_v100tag_releaseworkflow_signedimagesandsbomspublished, unit_scripts_checkversions_v100_allversionsmatch
 
 ### Sprint 6 gate
-- [ ] Staging built entirely from Terraform and Helm
+- [ ] Staging deployed to the Stoke cluster by Helm from CI (`STOKE_KUBECONFIG`)
 - [ ] Zero cut streams during a rolling deploy under load
 - [ ] Security findings closed or accepted in writing
 - [ ] Soak and chaos tests recorded, ledger reconciles
@@ -1416,12 +1419,14 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Estimate:** M
 - **Dependencies:** S7-T01
 - **Spec references:** PRD FR-027; ARCHITECTURE "Licence verification"
-- **Description:** The licence is a JSON document (customer, issued, expires, max nodes, max concurrent streams, voices, edition) with a detached Ed25519 signature. The public key is compiled in. The private key lives only in the owner's Secrets Manager. `tools/licence-sign` is an owner-run tool. Expiry behaviour: a 14 day grace with a warning log and a header, then refuse new streams, never cutting active ones.
+- **Description:** The licence is a JSON document (customer, issued, expires, max nodes, max concurrent streams, voices, edition) with a detached Ed25519 signature. The public key is compiled in. The private key lives only in the GitHub Actions secret `YUYIN_LICENCE_SIGNING_KEY`, scoped to the protected `licensing` environment (ADR-027). Licences are signed by a manual `workflow_dispatch` workflow (`licence-sign.yml`) that runs `tools/licence-sign`; the key never enters the repository. Expiry behaviour: a 14 day grace with a warning log and a header, then refuse new streams, never cutting active ones.
 - **Acceptance criteria:**
   - [ ] Tampered, expired, and wrong-key licences are rejected with distinct errors
   - [ ] Clock rollback is detected through a monotonic high-water mark stored locally
   - [ ] Expiry: 14 day grace with warning log and header, then new streams refused, active streams never cut
   - [ ] The private key is never present in the repository
+  - [ ] Only the manual `licence-sign.yml` workflow in the protected `licensing` environment can read `YUYIN_LICENCE_SIGNING_KEY`
+  - [ ] A licence produced by the workflow verifies with the compiled-in public key
 - **Test scenarios to add:** unit_selfhost_licence_tampered_rejectedwithdistinctError, unit_selfhost_licence_expired_rejectedwithdistinctError, unit_selfhost_licence_wrongkey_rejectedwithdistinctError, unit_selfhost_licence_clockrollback_detectedviahighwatermark, integration_selfhost_licence_expiredaftergrace_newstreamsrefusedactivecontinue
 
 ### S7-T03: Local key store and admin CLI
@@ -1477,6 +1482,7 @@ Build and deployment work in this sprint: self-host binary, tarball, systemd uni
 - **Test scenarios to add:** e2e_selfhost_tarball_freshvm_docfollowedtofirstaudio, unit_selfhost_tarball_checksums_allverify, unit_docs_selfhosting_sizingtable_generatedfrombenchresults
 
 ### Sprint 7 gate
+- [ ] Licence signing workflow runs from `workflow_dispatch` in the protected `licensing` environment
 - [ ] Both modes pass the integration suite
 - [ ] Licence verification tests pass
 - [ ] No-egress tests pass
@@ -1878,14 +1884,14 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Estimate:** L
 - **Dependencies:** S3-T17, S7-T01
 - **Spec references:** BUILD_PROMPT Appendix G Tier 3; ARCHITECTURE "Kubernetes deployment"
-- **Description:** Complete `deploy/helm/yuyin/`: Deployment `gateway` (stateless) with `maxUnavailable: 0`, `maxSurge: 25%`, `terminationGracePeriodSeconds: 150`, `preStop` sleep 5, readiness on `/readyz`, liveness on `/healthz`, and a startup probe allowing 60 s for model warmup. PodDisruptionBudget `maxUnavailable: 1`. Resources: CPU request equals limit equals worker thread count for Guaranteed QoS, with the static CPU manager policy documented as a recommendation. Models baked into the image by default, with an optional init container that copies models from an OCI artifact or object store into an `emptyDir` or read-only PVC for air-gapped clusters. StatefulSet only for optional in-cluster Valkey (Postgres is external in hosted mode and absent in self-host mode). Ingress with WebSocket upgrade enabled, proxy read and send timeouts 660 s, request buffering off for `/v1/speech`, body size limit 64k, with examples for AWS ALB and NGINX. NetworkPolicy: gateway accepts only from the ingress controller and Prometheus, egress only to cache and database in hosted mode and none in self-host mode. Security context: non-root, read-only root filesystem, all capabilities dropped, seccomp `RuntimeDefault`. Values profiles: `values-hosted.yaml`, `values-selfhost.yaml`, `values-k3s-arm64.yaml`.
+- **Description:** Complete `deploy/helm/yuyin/`: Deployment `gateway` (stateless) with `maxUnavailable: 0`, `maxSurge: 25%`, `terminationGracePeriodSeconds: 150`, `preStop` sleep 5, readiness on `/readyz`, liveness on `/healthz`, and a startup probe allowing 60 s for model warmup. PodDisruptionBudget `maxUnavailable: 1`. Resources: CPU request equals limit equals worker thread count for Guaranteed QoS, with the static CPU manager policy documented as a recommendation. Models baked into the image by default, with an optional init container that copies models from an OCI artifact or object store into an `emptyDir` or read-only PVC for air-gapped clusters. StatefulSet only for optional in-cluster Valkey (Postgres is external in hosted mode and absent in self-host mode). Ingress with WebSocket upgrade enabled, proxy read and send timeouts 660 s, request buffering off for `/v1/speech`, body size limit 64k, with examples for NGINX and Traefik (AWS ALB is Next phase). NetworkPolicy: gateway accepts only from the ingress controller and Prometheus, egress only to cache and database in hosted mode and none in self-host mode. Security context: non-root, read-only root filesystem, all capabilities dropped, seccomp `RuntimeDefault`. Values profiles: `values-hosted.yaml`, `values-selfhost.yaml`, `values-k3s-arm64.yaml`.
 - **Acceptance criteria:**
   - [ ] `helm lint` and `helm template` pass with every values profile in CI
   - [ ] The chart installs with each profile
   - [ ] Rolling update, drain, probe, PDB, and security context settings match the list above
   - [ ] NetworkPolicy allows ingress only from the ingress controller and Prometheus
   - [ ] Self-host profile has no egress rules
-  - [ ] Ingress examples exist for AWS ALB and NGINX
+  - [ ] Ingress examples exist for NGINX (Stoke default) and Traefik; an AWS ALB example is Next phase
 - **Test scenarios to add:** unit_helm_template_allprofiles_lintandrenderpass, unit_helm_networkpolicy_selfhostprofile_noegressrules, unit_helm_deployment_rollingupdate_maxunavailable0, unit_helm_securitycontext_defaults_nonrootreadonlydropcaps
 
 ### S11-T03: HPA on stream utilisation
@@ -2046,12 +2052,12 @@ Sprint-level acceptance: `helm lint` and `helm template` with every values profi
 - **Estimate:** L
 - **Dependencies:** S12-T01, S12-T02
 - **Spec references:** PRD FR-030, NFR-008; ARCHITECTURE "Voice intake storage"
-- **Description:** Direct-to-S3 multipart upload with presigned URLs into a KMS-encrypted, Object Lock bucket. Automated checks: format, sample rate, duration, clipping, noise floor, silence ratio, and a speaker consistency check between the consent clip and the recordings. Failures are reported per file with a plain explanation.
+- **Description:** Direct multipart upload with presigned URLs into in-cluster S3-compatible object storage with encryption at rest and retention lock where supported (managed bucket in the Next phase). Automated checks: format, sample rate, duration, clipping, noise floor, silence ratio, and a speaker consistency check between the consent clip and the recordings. Failures are reported per file with a plain explanation.
 - **Acceptance criteria:**
   - [ ] Fixtures for each failure class are detected
   - [ ] No audio is readable by other tenants (isolation test)
   - [ ] Failures are reported per file with a plain explanation
-  - [ ] The bucket is KMS-encrypted with Object Lock enabled
+  - [ ] The bucket is encrypted at rest with retention lock enabled where supported
 - **Test scenarios to add:** unit_voiceintake_quality_clippingfixture_detected, unit_voiceintake_quality_noisefloorfixture_detected, unit_voiceintake_quality_speakermismatchfixture_detected, security_voiceintake_upload_othertenant_accessdenied
 
 ### S12-T04: Operator review queue and status tracking
@@ -2160,7 +2166,7 @@ S4-T01 (schema) -> S4-T03, S4-T04, S4-T06 -> S4-T07 (batcher) -> S4-T11 -> S4-T1
 S4-T04 (key cache and revocation channel) -> S4-T10 (402/429) -> S5-T02 (public demo)
 S4-T05 (WASM counter) -> S5-T01 (playground)
 S5-T03 (TypeScript SDK) -> S5-T04 (Python SDK), S8-T01 (CLI), S9-T01 (MCP) -> S10-T01..S10-T05
-S6-T01 (Terraform) -> S6-T02 (deploy pipeline) -> S6-T07 (soak and chaos) -> S6-T10 (v1.0.0)
+S6-T02 (deploy pipeline) -> S6-T07 (soak and chaos) -> S6-T10 (v1.0.0)
 S6-T03 (operator console) -> S12-T04 (review queue)
 S7-T01 (mode split) -> S7-T02 (licence), S7-T03 (local keys) -> S7-T05 (no-egress), S7-T06 (tarball) -> S11-T01, S11-T08 (air-gap)
 S11-T02 (Helm chart) -> S11-T03 (HPA), S11-T04 (k3s), S11-T05 (kind CI), S11-T07 (OCI), S11-T09 (schema)
@@ -2191,3 +2197,29 @@ Create one GitHub issue with the `enhancement` label for each item below. These 
 | Batch and long-form synthesis API (audiobooks) | Different latency and pricing profile |
 | Go, Java, and other SDKs | After the OpenAPI file has been stable for a quarter |
 | Audio watermarking of output | Evaluate robust options for provenance after v1 |
+
+---
+
+## Next phase
+
+Deferred by the owner decisions of 2026-11-13. None of these blocks a sprint gate. Status of every task: TODO.
+
+| ID | Title | Origin | Notes |
+|---|---|---|---|
+| NP-01 | Move to NileDB or Neon | ADR-024 | Choose provider (O6), keep `tenant_id` on all tables, port-check the plain SQL migrations, replace the application-enforced tenant context if the provider offers native tenant context |
+| NP-02 | Clerk integration | ADR-025, original S2-T04 | Sign-up, sign-in, email verification, organizations, role mapping; populate `organizations.external_auth_id`; Clerk test-mode e2e |
+| NP-03 | Terraform for AWS | S6-T01 | VPC, EKS or ECS, node group, ALB or NLB, Secrets Manager, CloudWatch, WAF, ap-south-1, x86 vs Graviton benchmark |
+| NP-04 | AWS IAM and GitHub OIDC for CI | ADR-026 | Replace `STOKE_KUBECONFIG` with OIDC role assumption |
+| NP-05 | Managed object storage and secrets | ADR-026 | S3 with KMS and Object Lock for voice intake; Secrets Manager in place of Kubernetes Secrets |
+| NP-06 | AWS billing and cost alerts | ADR-026 | Budget and cost alarms |
+| NP-07 | Vercel hosting for console and marketing site | ADR-024 | Requires a database reachable from Vercel (follows NP-01) |
+
+---
+
+## Pending TODO
+
+Items here block no sprint or release gate.
+
+| ID | Title | Status |
+|---|---|---|
+| TODO-01 | Trademark check for the name "Yuyin" (owner and counsel; the word is generic in Chinese and may be hard to protect). Name stays a single change set through `PRODUCT_NAME`, `PRODUCT_SLUG`, `KEY_PREFIX`. | Status: Pending |

@@ -15,8 +15,8 @@ Conventions used in this document:
 - "Character" means one Unicode scalar value (code point) of the submitted text after NFC normalisation and before text normalisation (see Pricing and billing rules).
 - All money is integer micro-USD (1 USD = 1,000,000 micro-USD). No floating point anywhere in billing.
 - Error bodies on every endpoint have the shape `{ "error": { "code": "...", "message": "...", "request_id": "..." } }`.
-- Base URL is `https://api.getyuyin.com`. Authentication is `Authorization: Bearer yy_live_<prefix>_<secret>` (`yy_test_` for test mode, `yy_self_` for the self-host edition).
-- Domain, npm scope, PyPI name, and trademark for the name "Yuyin" are unverified (see Open questions). The name appears in code only through the constants `PRODUCT_NAME`, `PRODUCT_SLUG`, and `KEY_PREFIX`.
+- Base URL is `https://api.yuyin.openstoke.com`. Authentication is `Authorization: Bearer yy_live_<prefix>_<secret>` (`yy_test_` for test mode, `yy_self_` for the self-host edition).
+- The domain is `yuyin.openstoke.com` (owner controls `openstoke.com`). The npm scope and PyPI name are unverified and the trademark check is a Pending TODO at the end of the sprint plan that blocks no gate (see Open questions). The name appears in code only through the constants `PRODUCT_NAME`, `PRODUCT_SLUG`, and `KEY_PREFIX`.
 
 ---
 
@@ -35,7 +35,7 @@ Yuyin is a streaming text-to-speech service that:
 1. Accepts text over REST or WebSocket and streams audio back while synthesis is still running.
 2. Reads Indian-context text correctly through a tested normalisation library with a published golden corpus.
 3. Handles Hindi, Hinglish, en-IN, and en-US with mid-sentence switching in Devanagari or Roman script.
-4. Serves from ordinary CPU servers, in a hosted AWS region (`ap-south-1`, Mumbai) or inside the customer's own network through a licensed self-host edition.
+4. Serves from ordinary CPU servers, on a Stoke Kubernetes cluster (DGX Spark bundles, ARM64) at `yuyin.openstoke.com`, or inside the customer's own network through a licensed self-host edition.
 5. Bills prepaid credits per 1,000 characters, returns HTTP 402 when credits run out, returns HTTP 503 with a retry time before any audio when full, and never cuts a stream that is already running.
 
 ## 2. Users
@@ -159,7 +159,7 @@ Every FR has a description with inputs, outputs, and limits. FR-001 to FR-032 ar
 
 ### FR-002 WebSocket synthesis endpoint with incremental text input
 
-`wss://api.getyuyin.com/v1/speech/stream` accepts text in pieces and streams audio as binary frames.
+`wss://api.yuyin.openstoke.com/v1/speech/stream` accepts text in pieces and streams audio as binary frames.
 
 - Auth: `Authorization` header, or first message `{ "type": "auth", "api_key": "..." }` for browsers.
 - Client to server (JSON text frames): `start` (voice, language, format, pace), `text` (any number of times, partial sentences allowed), `flush`, `end`.
@@ -305,7 +305,7 @@ Managed in the console by users whose role permits it.
 
 ### FR-021 Organization management and roles (owner, admin, developer, billing)
 
-Organizations map to Clerk organizations and are the tenant boundary.
+Organizations are the tenant boundary. In the current phase organizations and users are created by an operator CLI and console sign-in uses built-in auth (operator-issued magic link or one-time token, session cookie, CSRF). `organizations.external_auth_id` is nullable and reserved for Clerk in the Next phase.
 
 | Role | Create and revoke keys | Pay and view billing | Invite users | Manage lexicon | Delete organization |
 |---|---|---|---|---|---|
@@ -374,7 +374,7 @@ Tools: `yuyin_speak`, `yuyin_list_voices`, `yuyin_normalize`, `yuyin_status`, `y
 ### FR-030 Custom voice intake: consent capture, upload, quality checks, status tracking
 
 - A request cannot leave `draft` until it has three consent parts: a signed written statement, a spoken consent clip (speaker reads a statement with their name, the customer's name, and a one-time phrase), and identity verification of the speaker.
-- Upload: direct-to-S3 multipart with presigned URLs into a KMS-encrypted, Object Lock bucket. About 30 minutes of speech expected.
+- Upload: direct multipart upload with presigned URLs into in-cluster S3-compatible object storage (encrypted at rest, retention lock where supported; a managed bucket in the Next phase). About 30 minutes of speech expected.
 - Automated checks: format, sample rate, duration, clipping, noise floor, silence ratio, speaker consistency between the consent clip and the recordings.
 - States: `draft`, `submitted`, `consent_verified`, `in_training`, `review`, `ready`, `rejected`, `withdrawn`. Every state change is audited and emails the requester. Training is an operator runbook.
 - A ready voice is `visibility: private` and usable only by the owning organization's keys.
@@ -433,15 +433,15 @@ NFR-004  Zero in-progress streams terminated by deploys, scale-in, or overload. 
 NFR-005  Availability target 99.9% monthly for the hosted data plane.
 NFR-006  Billing accuracy: ledger and gateway meter reconcile to zero difference daily.
 NFR-007  Text and audio are not persisted by default. Request logs hold metadata only.
-NFR-008  Tenant isolation enforced at the database layer (Nile tenant context) and tested.
+NFR-008  Tenant isolation enforced at the database layer (application-enforced tenant context: the repository layer always filters by `tenant_id`, optionally with Postgres RLS) and tested.
 NFR-009  API keys stored only as SHA-256 hashes with a non-secret prefix for lookup.
 NFR-010  Key revocation effective fleet-wide within 10 seconds.
 NFR-011  Normalisation golden corpus pass rate 100% in CI. Corpus has at least 1,500 cases by v1.0.0.
 NFR-012  Gateway cold start to ready (model loaded and warmed) <= 20 s.
 NFR-013  Gateway memory per node <= 2 GiB with all v1 voices loaded.
-NFR-014  Images built for linux/amd64 and linux/arm64.
+NFR-014  Images built for linux/arm64 (Stoke DGX Spark) and linux/amd64.
 NFR-015  Console pages meet WCAG 2.2 AA. Devanagari renders correctly everywhere text is shown.
-NFR-016  All secrets in AWS Secrets Manager or Vercel encrypted env. None in the repository.
+NFR-016  All secrets in Kubernetes Secrets or GitHub Actions secrets. None in the repository.
 NFR-017  Every third-party model and voice has a recorded licence that permits commercial hosted use.
 NFR-018  API key format and scanning: keys are 32 bytes from the OS CSPRNG, base62 encoded, with a
          fixed prefix (yy_live_, yy_test_, yy_self_) detectable by secret scanners. Constant time compare.
@@ -967,7 +967,7 @@ The `normalize` option does not change the bill: the count is taken before norma
 - No voice cloning from arbitrary audio. Custom voices are created only through the consent workflow with identity verification of the speaker.
 - No voices that imitate a real public figure. The intake form states this and the operator checks it.
 - Consent has three parts: a signed written statement, a spoken consent clip with the speaker's name, the customer's name, and a one-time phrase, and identity verification.
-- Consent recordings are stored in S3 with KMS encryption and Object Lock, access logged, and retrievable only by operators.
+- Consent recordings are stored in in-cluster object storage with encryption at rest and retention lock where supported, access logged, and retrievable only by operators.
 - Consent can be withdrawn by the speaker or the customer. Withdrawal disables the voice fleet-wide within 10 seconds, is recorded, and starts the recordings retention schedule. The business-day target for the operator to confirm is one business day.
 - Private voices are visible only to the owning organization. Other organizations see 422 `unknown_voice`.
 
@@ -990,9 +990,9 @@ The `normalize` option does not change the bill: the count is taken before norma
 | OQ-03 | Minimum top-up | $5.00 |
 | OQ-04 | Launch grant size and count | 1,000,000 characters, first 1,000 verified signups |
 | OQ-05 | Voice names (original Indian and English first names generated in `config/voices.toml`, owner approves) | Generated list |
-| OQ-06 | Is `getyuyin.com` available and registered by the owner? Fallback `yuyintts.com` | Unverified. Agent does not register anything |
+| OQ-06 | Is DNS for the `yuyin.openstoke.com` subdomains configured by the owner? Fallback dropped (`yuyintts.com` is no longer pursued) | Owner controls `openstoke.com`. Pending owner DNS (O2) |
 | OQ-07 | Are the npm scope `@yuyin-tts` and PyPI name `yuyin` available? | Unverified |
-| OQ-08 | Trademark search for "Yuyin". The word is generic in Chinese (语音) and may be hard to protect or to rank for | Unverified. Name is a single change set via `PRODUCT_NAME`, `PRODUCT_SLUG`, `KEY_PREFIX` |
+| OQ-08 | Trademark search for "Yuyin" (Pending TODO at end of plan, blocks no gate). The word is generic in Chinese (语音) and may be hard to protect or to rank for | Unverified. Name is a single change set via `PRODUCT_NAME`, `PRODUCT_SLUG`, `KEY_PREFIX` |
 
 ### 10.2 Product and engineering questions
 
@@ -1004,11 +1004,15 @@ The `normalize` option does not change the bill: the count is taken before norma
 | OQ-12 | Does the launch grant expire? Proposed: no expiry in v1. |
 | OQ-13 | Which speech engine and voices pass the Sprint 1 bake-off, and what are their licences (ADR-015)? NFR-017 depends on this. |
 | OQ-14 | Do NFR-001 and NFR-002 hold on the chosen engine? Results come only from our benchmark harness. If they fail, a `type: perf` issue is opened and the numbers are not adjusted. |
-| OQ-15 | EKS or ECS, and x86 or Graviton for the node group? Decided by benchmark and recorded as an ADR. |
+| OQ-15 | Resolved for now by ADR-026: Stoke Kubernetes on ARM64. EKS or ECS and Graviton are Next phase. |
 | OQ-16 | Business verification process for lifting `policy_review_required`: who reviews and what documents are accepted? |
 | OQ-17 | Identity verification provider for custom voice speakers (manual operator check in v1, or a vendor)? |
 | OQ-18 | Retention period for consent recordings after withdrawal (legal review). |
 | OQ-19 | Should billing characters be taken from the NFC text with control characters stripped (as in FR-005 AC-3) or from the raw text? Proposed: after NFC and after stripping control characters, so what the customer sees is what is billed. |
 | OQ-20 | Private-repository and self-host licence pricing (edition tiers, per-node limits). Sales motion, outside v1 pricing. |
-| OQ-21 | Hosted data residency promise: is `ap-south-1` the only region at launch? Proposed: yes, with the region as configuration. |
+| OQ-21 | Hosted data residency promise: is the Stoke cluster location the only region at launch? AWS regions (`ap-south-1`) are Next phase. |
 | OQ-22 | Legal entity and jurisdiction text for the terms, privacy policy, and data processing terms (owner and counsel). |
+
+## 11. Next phase
+
+Deferred by the owner decisions of 2026-11-13 (see ADR-024 to ADR-027): NileDB or Neon in place of in-cluster PostgreSQL, Clerk in place of built-in auth, AWS (Terraform, EKS or ECS, ALB, S3, Secrets Manager, IAM and OIDC, AWS billing) in place of the Stoke cluster, and Vercel hosting for the console. Dependencies on these are removed from v1.0.0.
