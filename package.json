@@ -12,12 +12,14 @@
   "scripts": {
     "build": "bun run --filter '*' build",
     "lint": "eslint . --max-warnings 0 && prettier --check .",
+    "lint:openapi": "redocly lint api/openapi.yaml",
     "format": "prettier --write .",
     "type-check": "bun run --filter '*' type-check",
     "test": "bun run --filter '*' test"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@redocly/cli": "2.78.0",
     "eslint": "10.15.0",
     "prettier": "3.10.1",
     "typescript": "6.0.3",

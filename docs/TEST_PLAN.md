@@ -140,7 +140,7 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-15 | smoke_image_gateway_no_env_file_in_layers | Smoke | Given the built image, when its filesystem layers are scanned, then no `.env` file exists | NFR-016 | S0 | ⚠️ Deferred |
 | SC-16 | smoke_image_multiarch_amd64_arm64_build | Smoke | Given a PR, when CI builds both architectures without pushing, then both succeed | NFR-014 | S0 | ⚠️ Deferred |
 | SC-17 | smoke_agent_skills_run_sh_exit_0 | Smoke | Given `.agent/skills/{run-tests,check-types,run-golden,run-bench}/run.sh` are executable, when each runs on the scaffold, then each exits 0 | SPRINT_PLAN S0-T06 | S0 | ✅ Automated |
-| SC-18 | contract_openapi_skeleton_lint_passes | Contract | Given `api/openapi.yaml`, when the OpenAPI linter runs, then it reports no errors | SPRINT_PLAN S0-T09 | S0 | ⚠️ Deferred |
+| SC-18 | contract_openapi_skeleton_lint_passes | Contract | Given `api/openapi.yaml`, when the OpenAPI linter runs, then it reports no errors | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
 | SC-19 | smoke_make_help_targets_not_yet_built_exit_0 | Smoke | Given a target for a later sprint, when `make <target>` runs, then it prints "available from Sprint N" and exits 0 | SPRINT_PLAN S0-T12 | S0 | ⚠️ Deferred |
 | SC-20 | smoke_workspace_lints_unsafecode_forbidden_rejectsunsafe | Smoke | Given an `unsafe` block added to each crate, when `cargo check` runs, then it fails via `forbid(unsafe_code)` in every crate except `yuyin-engine` and `yuyin-audio`, where it fails via `deny(unsafe_code)` and passes with a documented `#[allow(unsafe_code)]` | SPRINT_PLAN S0-T02 | S0 | ✅ Automated |
 | SC-21 | smoke_workspace_toolchain_pinned_matchesfile | Smoke | Given `rust-toolchain.toml`, when its channel is read, then it is an exact version and matches the active `rustc` | SPRINT_PLAN S0-T02 | S0 | ✅ Automated |
@@ -149,6 +149,9 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-24 | smoke_agent_files_required_present_allexist | Smoke | Given the repository, when the agent files are checked, then every file from S0-T06 exists and carries the content Appendix J requires | SPRINT_PLAN S0-T06 | S0 | ✅ Automated |
 | SC-25 | e2e_devstack_startup_allservices_healthzreturns200 | E2E | Given Docker is running and the default ports may be taken, when `scripts/dev.sh --detach` runs with the port override variables, then Postgres, Valkey, and stripe-mock are running and the gateway `/healthz` returns 200 | SPRINT_PLAN S0-T08 | S0 | ✅ Automated |
 | SC-26 | unit_env_example_nosecrets_passesscan | Unit | Given `.env.development.example` is tracked, when gitleaks scans it, then it finds nothing, and the same file with a live-looking key added is flagged | SPRINT_PLAN S0-T08; NFR-016 | S0 | ✅ Automated |
+| SC-27 | contract_openapi_paths_allcontractpaths_present | Contract | Given `api/openapi.yaml`, when its paths and methods are listed, then every path and method in ARCHITECTURE section 11 is present | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
+| SC-28 | smoke_scripts_check_versions_openapi_mismatch_exits_1_names_file | Smoke | Given `info.version` in `api/openapi.yaml` differs from `VERSION`, when `scripts/check-versions.sh` runs, then it exits 1 and names `api/openapi.yaml` | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
+| SC-29 | contract_openapi_operationids_unique_present | Contract | Given `api/openapi.yaml`, when every operation is inspected, then each has a unique `operationId` and at least one tag | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 

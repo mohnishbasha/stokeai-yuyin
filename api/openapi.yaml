@@ -1,0 +1,436 @@
+openapi: 3.1.0
+info:
+  title: Yuyin API
+  version: 0.1.0
+  summary: Text-to-speech API for Hindi, Hinglish, and Indian English.
+  description: |
+    This file is the single source for SDK types and the docs API reference.
+    It mirrors docs/ARCHITECTURE.md section 11. If the two differ, this file
+    is fixed in the same change set. Operations are stubs until the gateway
+    implements them.
+  license:
+    name: See LICENSE
+    url: https://github.com/mohnishbasha/stokeai-yuyin/blob/develop/LICENSE
+servers:
+  - url: https://api.yuyin.openstoke.com
+    description: Production
+  - url: https://api-stage.yuyin.openstoke.com
+    description: Stage
+  - url: http://127.0.0.1:8080
+    description: Local
+tags:
+  - name: speech
+    description: Speech synthesis.
+  - name: voices
+    description: Voice catalogue.
+  - name: text
+    description: Text normalisation.
+  - name: billing
+    description: Balance and usage.
+  - name: operations
+    description: Liveness, readiness, and metrics.
+security:
+  - bearerAuth: []
+paths:
+  /v1/speech:
+    post:
+      operationId: createSpeech
+      tags: [speech]
+      summary: Synthesise speech and stream the audio.
+      description: Request body limit is 64 KiB. Trailers X-Yuyin-Chars-Billed and X-Yuyin-Ttfa-Ms are sent after the audio.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeechRequest'
+      responses:
+        '200':
+          description: Chunked audio, 24 kHz mono.
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/XRequestId'
+            X-Yuyin-Voice:
+              schema:
+                type: string
+              description: Voice id used.
+            X-Yuyin-Chars:
+              schema:
+                type: integer
+              description: Characters submitted and reserved.
+          content:
+            audio/ogg; codecs=opus:
+              schema:
+                type: string
+                format: binary
+            audio/pcm;rate=24000:
+              schema:
+                type: string
+                format: binary
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '402':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '413':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+  /v1/speech/stream:
+    get:
+      operationId: streamSpeech
+      tags: [speech]
+      summary: WebSocket speech stream.
+      description: |
+        Upgrade to a WebSocket at wss://api.yuyin.openstoke.com/v1/speech/stream.
+        Authenticate with the Authorization header, or with a first message
+        {"type":"auth","api_key":"..."} for browsers. Client messages: start,
+        text, flush, end. Server messages: started, binary audio frames,
+        segment, done, error. Limits: 20,000 code points per connection, 10
+        minute maximum duration, 30 s idle timeout, ping every 20 s.
+      responses:
+        '101':
+          description: Switching protocols.
+        '401':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '503':
+          $ref: '#/components/responses/Error'
+  /v1/voices:
+    get:
+      operationId: listVoices
+      tags: [voices]
+      summary: List voices.
+      parameters:
+        - name: language
+          in: query
+          schema:
+            type: string
+            enum: [hi, hinglish, en-IN, en-US]
+        - name: gender
+          in: query
+          schema:
+            type: string
+        - name: style
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Voices visible to the caller.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [voices]
+                properties:
+                  voices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Voice'
+        '401':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+  /v1/voices/{id}:
+    get:
+      operationId: getVoice
+      tags: [voices]
+      summary: Get one voice.
+      description: An unknown or inaccessible id returns 422 unknown_voice. No 404 is used.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The voice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Voice'
+        '401':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+  /v1/normalize:
+    post:
+      operationId: normalizeText
+      tags: [text]
+      summary: Normalise text into language segments.
+      description: Free of charge and rate limited.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NormalizeRequest'
+      responses:
+        '200':
+          description: Normalised segments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NormalizeResponse'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '413':
+          $ref: '#/components/responses/Error'
+        '422':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+  /v1/balance:
+    get:
+      operationId: getBalance
+      tags: [billing]
+      summary: Get credit balance.
+      responses:
+        '200':
+          description: Current balance.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Balance'
+        '401':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+  /v1/usage:
+    get:
+      operationId: getUsage
+      tags: [billing]
+      summary: Get usage grouped by day, key, voice, or format.
+      description: Maximum range is 366 days.
+      parameters:
+        - name: from
+          in: query
+          description: Start date, inclusive.
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          description: End date, inclusive.
+          schema:
+            type: string
+            format: date
+        - name: group_by
+          in: query
+          schema:
+            type: string
+            enum: [day, key, voice, format]
+            default: day
+      responses:
+        '200':
+          description: Usage rows.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+  /healthz:
+    get:
+      operationId: getHealthz
+      tags: [operations]
+      summary: Liveness.
+      security: []
+      responses:
+        '200':
+          description: The process is running.
+  /readyz:
+    get:
+      operationId: getReadyz
+      tags: [operations]
+      summary: Readiness.
+      security: []
+      responses:
+        '200':
+          description: The model is warmed and the node is not draining.
+        '503':
+          description: Not ready.
+  /metrics:
+    get:
+      operationId: getMetrics
+      tags: [operations]
+      summary: Prometheus exposition.
+      description: Served only on the internal metrics port (YUYIN_METRICS_BIND).
+      security: []
+      responses:
+        '200':
+          description: Prometheus text format.
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: yy_live_<prefix>_<secret> or yy_test_<prefix>_<secret>
+      description: API key. yy_test_ keys select test mode.
+  headers:
+    XRequestId:
+      description: Request id, echoed or generated.
+      schema:
+        type: string
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: Machine-readable code, for example invalid_request or rate_limited.
+            message:
+              type: string
+            retry_after:
+              type: integer
+              description: Seconds. Present for rate_limited and at_capacity.
+    SpeechRequest:
+      type: object
+      required: [text, voice]
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        voice:
+          type: string
+        language:
+          type: string
+          enum: [auto, hi, hinglish, en-IN, en-US]
+          default: auto
+        format:
+          type: string
+          enum: [opus, pcm, wav]
+          default: opus
+        pace:
+          type: number
+          minimum: 0.5
+          maximum: 2.0
+          default: 1.0
+        normalize:
+          type: boolean
+          default: true
+        request_id:
+          type: string
+    Voice:
+      type: object
+      required: [id, display_name, languages, gender, style, sample_url, visibility]
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        languages:
+          type: array
+          items:
+            type: string
+        gender:
+          type: string
+        style:
+          type: string
+        sample_url:
+          type: string
+          format: uri
+        visibility:
+          type: string
+    NormalizeRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        language:
+          type: string
+          enum: [auto, hi, hinglish, en-IN, en-US]
+          default: auto
+    NormalizeResponse:
+      type: object
+      required: [segments, chars]
+      properties:
+        segments:
+          type: array
+          items:
+            type: object
+            required: [text, lang]
+            properties:
+              text:
+                type: string
+              lang:
+                type: string
+                enum: [hi, en]
+        chars:
+          type: integer
+    Balance:
+      type: object
+      required: [balance_micro_usd, grant_chars_remaining]
+      properties:
+        balance_micro_usd:
+          type: integer
+        grant_chars_remaining:
+          type: integer
+    Usage:
+      type: object
+      required: [from, to, group_by, rows]
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        group_by:
+          type: string
+        rows:
+          type: array
+          items:
+            type: object
+            required: [group, requests, chars, cost_micro_usd]
+            properties:
+              group:
+                type: string
+              requests:
+                type: integer
+              chars:
+                type: integer
+              cost_micro_usd:
+                type: integer
