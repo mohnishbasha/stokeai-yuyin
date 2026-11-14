@@ -12,7 +12,7 @@ Recheck history: B1 and B2 were rechecked on seven runs between 2026-11-10 and 2
 
 | # | Action | Why it blocks | How to clear it | Needed by |
 |---|---|---|---|---|
-| B3 | Decide how `develop` reaches `staging` | `staging` requires 1 approving review and admins are not exempt. GitHub does not let a PR author approve their own PR, and the agent works under the owner's account, so the Sprint End Protocol step "merge `develop` into `staging` via PR" needs a human approval every sprint | Approve the staging PR yourself from a second account, add a second reviewer, or change the staging rule and record the change in ARCHITECTURE as an ADR | End of every sprint, first at Sprint 0. Waiting now: PR #168 (`develop` into `staging`, Sprint 0). The Sprint 0 work is otherwise complete. After #168 is approved and merged, the agent tags the `staging` merge commit `sprint-0-complete` |
+| B3 | Merge `develop` into `staging` each sprint | On 2026-11-14 the owner set the `staging` rule to 0 required approving reviews (still enforced for admins), so PR #168 (`develop` into `staging`, Sprint 0) is clean and mergeable. The agent's `gh pr merge 168` was then denied by the Claude Code auto mode permission check: the B1 rule covers merges into `develop` only. Without the merge there is no `staging` merge commit to tag `sprint-0-complete` | Merge PR #168 yourself (`gh pr merge 168 --merge`), or add a Claude Code permission rule that lets the agent merge PRs into `staging`. The agent then records the new `staging` rule as an ADR in ARCHITECTURE | End of every sprint, first at Sprint 0. Waiting now: PR #168. After it merges, the agent tags the `staging` merge commit `sprint-0-complete` and pushes the tag |
 
 ## Before named sprints
 
