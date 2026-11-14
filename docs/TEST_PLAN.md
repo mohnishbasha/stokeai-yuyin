@@ -152,6 +152,7 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-30 | smoke_legal_files_present_eula_terms_present | Smoke | Given the repository, when the legal files are checked, then `LICENSE`, `EULA.md`, `THIRD_PARTY_LICENSES.md`, and `MODELS.md` exist, the EULA is marked as a draft needing attorney review, and it names Texas law, Williamson County, legal@serverlessvc.com, the 12 month liability cap, and the pricing change right | SPRINT_PLAN S0-T07 | S0 | ✅ Automated |
 | SC-31 | smoke_legal_licence_check_workflow_wired_runs_script | Smoke | Given `.github/workflows/licence-check.yml` and `deny.toml`, when they are read, then the workflow runs `scripts/licence-check.sh` on pull requests and pushes to develop and `deny.toml` lists the allowlist | SPRINT_PLAN S0-T07 | S0 | ✅ Automated |
 | SC-32 | smoke_legal_no_model_weights_tracked | Smoke | Given the repository, when tracked files are listed, then none is a model weight file | SPRINT_PLAN S0-T07; NFR-016 | S0 | ✅ Automated |
+| SC-35 | unit_docs_ownerchecklist_linkedfromreadme_linkresolves | Unit | Given README.md, when its links are checked, then it links the owner checklist and the five spec docs, every relative link resolves, and the checklist names every owner action listed in S0-T11 | SPRINT_PLAN S0-T11 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 
