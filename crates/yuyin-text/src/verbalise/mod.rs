@@ -87,7 +87,7 @@ pub fn verbaliser_for(sem: &Semiotic) -> Verbaliser {
 ///     let ctx = VerbaliseCtx {
 ///         lang, locale: Locale::In, hint, lexicons: Lexicons::builtin(), tenant: None, source: "KYC",
 ///     };
-///     // `None` means "pass the source text through"; S1-T07 makes this `Some`.
+///     // `None` would mean "pass the source text through".
 ///     let spoken = verbalise(&sem, &ctx).map_or_else(|| "KYC".to_owned(), |v| v.text);
 ///     assert!(!spoken.is_empty());
 /// }
@@ -246,17 +246,17 @@ mod tests {
 
     #[test]
     fn test_to_piece_unverbalised_semiotic_keeps_source_and_is_atomic() {
-        let text = "Your KYC is due";
+        let text = "Your Kyc is due";
         let cs = ClassifiedSpan {
             tagged: span(5..8),
             semiotic: Some(Semiotic::Acronym(crate::classify::acronym::Acronym {
-                term: "KYC".into(),
+                term: "Kyc".into(),
             })),
             context: Lang::En,
         };
         let opts = NormaliseOptions::default();
         let p = to_piece(&cs, text, &opts, Lexicons::builtin());
-        assert_eq!(p.text, "KYC");
+        assert_eq!(p.text, "Kyc");
         assert_eq!(p.source, 5..8);
         assert!(p.atomic);
         assert_eq!(p.pace_hint, None);

@@ -104,4 +104,63 @@ mod tests {
         assert!(lex.get("pan").is_none());
         assert_eq!(lex.len(), 1);
     }
+
+    /// Minimum built-in entries (`SPRINT_PLAN` S1-T07, `TEST_PLAN` NM-ACR-03).
+    const MIN_ENTRIES: usize = 300;
+
+    #[test]
+    fn unit_text_acronym_lexicon_has_at_least_300_entries() {
+        let lex = AcronymLexicon::builtin();
+        assert!(lex.len() >= MIN_ENTRIES, "only {} entries", lex.len());
+        // Every domain is represented.
+        for term in [
+            "NEFT", "RBI", "GSTIN", "LIC", "IRDAI", "TPA", "IMEI", "TRAI", "BSNL", "UIDAI",
+            "AADHAAR", "RTI",
+        ] {
+            assert!(lex.get(term).is_some(), "{term}");
+        }
+    }
+
+    #[test]
+    fn unit_text_acronym_listed_set_all_present() {
+        let lex = AcronymLexicon::builtin();
+        // PRD FR-010 initial entries plus the ones the issue names.
+        for term in [
+            "EMI", "KYC", "UPI", "PAN", "IFSC", "NEFT", "RTGS", "IMPS", "GST", "ATM", "OTP", "SMS",
+            "PIN", "FD", "RD", "SIP", "AMC", "NRI", "TDS", "LIC", "SIM", "NASA",
+        ] {
+            assert!(lex.get(term).is_some(), "{term}");
+        }
+    }
+
+    #[test]
+    fn unit_text_acronyms_currencyunit_codes_notlexicon() {
+        let lex = AcronymLexicon::builtin();
+        for term in ["INR", "USD", "EUR", "GB", "KM", "MB", "KG", "MBPS"] {
+            assert!(lex.get(term).is_none(), "{term}");
+        }
+    }
+
+    #[test]
+    fn test_acronym_data_readings_are_well_formed() {
+        for row in super::super::tsv_rows(DATA, COLUMNS) {
+            let [term, en, hi] = row.as_slice() else {
+                continue;
+            };
+            assert!(
+                term.chars().all(|c| c.is_ascii_uppercase()) && !term.is_empty(),
+                "{term}"
+            );
+            assert!(!en.is_empty() && !hi.is_empty(), "{term}");
+            assert!(
+                hi.chars()
+                    .all(|c| c == ' ' || ('\u{0900}'..='\u{097F}').contains(&c)),
+                "{term}: Hindi reading must be Devanagari"
+            );
+            assert!(!en.contains('\u{2014}') && !hi.contains('\u{2014}'));
+        }
+        // No duplicate terms.
+        let rows = super::super::tsv_rows(DATA, COLUMNS).count();
+        assert_eq!(AcronymLexicon::builtin().len(), rows);
+    }
 }

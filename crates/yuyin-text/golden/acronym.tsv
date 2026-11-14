@@ -1,1 +1,71 @@
 id	lang	class	input	expected	notes
+golden_hi_acronym_kyc_pending	hi	acronym	आपका KYC अधूरा है।	आपका के वाई सी अधूरा है।	letters in Hindi
+golden_hi_acronym_emi_due	hi	acronym	आपकी EMI बाकी है।	आपकी ई एम आई बाकी है।	
+golden_hi_acronym_upi_payment	hi	acronym	UPI से भुगतान करें।	यू पी आई से भुगतान करें।	acronym at start
+golden_hi_acronym_pan_as_word	hi	acronym	अपना PAN कार्ड दिखाइए।	अपना पैन कार्ड दिखाइए।	NM-ACR-02 PAN is a word in Indian usage
+golden_hi_acronym_neft_word	hi	acronym	NEFT से पैसे भेजें।	नेफ्ट से पैसे भेजें।	
+golden_hi_acronym_rtgs_imps	hi	acronym	RTGS या IMPS चुनें।	आर टी जी एस या आई एम पी एस चुनें।	two acronyms
+golden_hi_acronym_ifsc_code	hi	acronym	अपना IFSC कोड बताइए।	अपना आई एफ एस सी कोड बताइए।	
+golden_hi_acronym_gst_tds	hi	acronym	GST और TDS काट लिया गया है।	जी एस टी और टी डी एस काट लिया गया है।	
+golden_hi_acronym_lic_policy	hi	acronym	आपकी LIC पॉलिसी चालू है।	आपकी एल आई सी पॉलिसी चालू है।	insurance
+golden_hi_acronym_sim_word	hi	acronym	नया SIM कार्ड लगाइए।	नया सिम कार्ड लगाइए।	SIM is a word
+golden_hi_acronym_atm_card	hi	acronym	ATM से पैसे निकालें।	ए टी एम से पैसे निकालें।	
+golden_hi_acronym_aadhaar_uidai	hi	acronym	UIDAI आधार जारी करता है।	यू आई डी ए आई आधार जारी करता है।	government
+golden_hi_acronym_sebi_word	hi	acronym	SEBI ने नियम बदले हैं।	सेबी ने नियम बदले हैं।	word reading
+golden_hi_acronym_unknown_caps_xyz	hi	acronym	यह XYZ योजना है।	यह एक्स वाई ज़ेड योजना है।	unknown caps spelled, Z with nukta
+golden_hi_acronym_unknown_caps_two	hi	acronym	यह QZ सेवा है।	यह क्यू ज़ेड सेवा है।	two letters
+golden_hi_acronym_unknown_caps_five	hi	acronym	यह QWXRT सेवा है।	यह क्यू डब्ल्यू एक्स आर टी सेवा है।	five letters
+golden_hi_acronym_six_letters_untouched	hi	acronym	यह QWXRTY सेवा है।	यह QWXRTY सेवा है।	six letters not spelled
+golden_hi_acronym_mixed_case_untouched	hi	acronym	यह Kyc सेवा है।	यह Kyc सेवा है।	not all caps
+golden_hi_acronym_emi_ifsc_sentence	hi	acronym	EMI और IFSC की जानकारी दें।	ई एम आई और आई एफ एस सी की जानकारी दें।	
+golden_hinglish_acronym_kyc_pending	hinglish	acronym	Aapka KYC pending hai.	Aapka के वाई सी pending hai.	Hindi context in Roman Hindi
+golden_hinglish_acronym_emi_due	hinglish	acronym	Aapki EMI due hai.	Aapki ई एम आई due hai.	
+golden_hinglish_acronym_upi_payment	hinglish	acronym	UPI se payment karein.	यू पी आई se payment karein.	
+golden_hinglish_acronym_pan_word	hinglish	acronym	Apna PAN card dikhaiye.	Apna पैन card dikhaiye.	word reading
+golden_hinglish_acronym_neft_imps	hinglish	acronym	NEFT ya IMPS chuniye.	नेफ्ट ya आई एम पी एस chuniye.	
+golden_hinglish_acronym_gst_tds	hinglish	acronym	GST aur TDS kat liya gaya hai.	जी एस टी aur टी डी एस kat liya gaya hai.	
+golden_hinglish_acronym_lic_policy	hinglish	acronym	Aapki LIC policy chalu hai.	Aapki एल आई सी policy chalu hai.	
+golden_hinglish_acronym_sim_word	hinglish	acronym	Naya SIM lagaiye.	Naya सिम lagaiye.	
+golden_hinglish_acronym_unknown_caps	hinglish	acronym	Yeh XYZ yojana hai.	Yeh एक्स वाई ज़ेड yojana hai.	
+golden_hinglish_acronym_devanagari_mixed	hinglish	acronym	आपका KYC pending है।	आपका के वाई सी pending है।	mixed scripts
+golden_hinglish_acronym_ifsc_code	hinglish	acronym	Apna IFSC code batao.	Apna आई एफ एस सी code batao.	
+golden_hinglish_acronym_irdai_tpa	hinglish	acronym	IRDAI aur TPA ke rules.	आई आर डी ए आई aur टी पी ए ke rules.	insurance
+golden_hinglish_acronym_trai_word	hinglish	acronym	TRAI ne naya rule diya.	ट्राई ne naya rule diya.	telecom word reading
+golden_hinglish_acronym_six_letters_untouched	hinglish	acronym	Yeh QWXRTY plan hai.	Yeh QWXRTY plan hai.	six letters not spelled
+golden_hinglish_acronym_lowercase_untouched	hinglish	acronym	Aapka kyc pending hai.	Aapka kyc pending hai.	lower case is not an acronym
+golden_en_in_acronym_kyc_emi_letter_by_letter	en-IN	acronym	KYC and EMI	K Y C and E M I	NM-ACR-01
+golden_en_in_acronym_kyc_pending	en-IN	acronym	Your KYC is pending.	Your K Y C is pending.	FR-010 AC-1
+golden_en_in_acronym_emi_due	en-IN	acronym	Your EMI is due tomorrow.	Your E M I is due tomorrow.	
+golden_en_in_acronym_upi_payment	en-IN	acronym	Pay using UPI today.	Pay using U P I today.	
+golden_en_in_acronym_pan_word	en-IN	acronym	Please show your PAN card.	Please show your pan card.	word reading
+golden_en_in_acronym_neft_word	en-IN	acronym	Transfer by NEFT or RTGS.	Transfer by neft or R T G S.	NEFT is a word, RTGS is spelled
+golden_en_in_acronym_imps_ifsc	en-IN	acronym	IMPS needs the IFSC code.	I M P S needs the I F S C code.	
+golden_en_in_acronym_gst_tds	en-IN	acronym	GST and TDS are deducted.	G S T and T D S are deducted.	
+golden_en_in_acronym_lic_policy	en-IN	acronym	Your LIC policy is active.	Your L I C policy is active.	
+golden_en_in_acronym_sim_word	en-IN	acronym	Insert the new SIM now.	Insert the new sim now.	
+golden_en_in_acronym_otp_word	en-IN	acronym	Share the OTP with nobody.	Share the O T P with nobody.	OTP word; digits are a separate class
+golden_en_in_acronym_nasa_word	en-IN	acronym	NASA and ISRO launched it.	nasa and isro launched it.	words not letters
+golden_en_in_acronym_ltd_expanded	en-IN	acronym	Acme Pvt Ltd	Acme Pvt Ltd	only exact upper case terms
+golden_en_in_acronym_ltd_upper	en-IN	acronym	ACME PVT LTD	A C M E private limited	ACME spelled, PVT and LTD expanded
+golden_en_in_acronym_unknown_caps	en-IN	acronym	The XYZ scheme is new.	The X Y Z scheme is new.	
+golden_en_in_acronym_five_letters	en-IN	acronym	The QWXRT scheme is new.	The Q W X R T scheme is new.	
+golden_en_in_acronym_six_letters_untouched	en-IN	acronym	The QWXRTY scheme is new.	The QWXRTY scheme is new.	
+golden_en_in_acronym_single_letter_untouched	en-IN	acronym	Option A is best.	Option A is best.	one letter is not an acronym
+golden_en_us_acronym_kyc_pending	en-US	acronym	Your KYC is pending.	Your K Y C is pending.	
+golden_en_us_acronym_emi_due	en-US	acronym	Your EMI is due.	Your E M I is due.	
+golden_en_us_acronym_upi_payment	en-US	acronym	Pay via UPI.	Pay via U P I.	
+golden_en_us_acronym_pan_word	en-US	acronym	Enter your PAN here.	Enter your pan here.	word reading
+golden_en_us_acronym_unknown_uppercase_token_spelled	en-US	acronym	The QZX plan is live.	The Q Z X plan is live.	NM-ACR-08
+golden_en_us_acronym_nasa_word	en-US	acronym	NASA launched it.	nasa launched it.	
+golden_en_us_acronym_ram_word	en-US	acronym	The RAM is full.	The ram is full.	
+golden_en_us_acronym_usa_letters	en-US	acronym	He lives in the USA.	He lives in the U S A.	
+golden_en_us_acronym_ceo_letters	en-US	acronym	Ask the CEO.	Ask the C E O.	
+golden_en_us_acronym_faq_letters	en-US	acronym	Read the FAQ first.	Read the F A Q first.	
+golden_en_us_acronym_pdf_letters	en-US	acronym	Open the PDF file.	Open the P D F file.	
+golden_en_us_acronym_ok_word	en-US	acronym	OK, go ahead.	okay, go ahead.	OK is read as a word
+golden_en_us_acronym_two_letters	en-US	acronym	Use the QZ lane.	Use the Q Z lane.	
+golden_en_us_acronym_six_letters_untouched	en-US	acronym	Use the QWXRTY lane.	Use the QWXRTY lane.	
+golden_en_us_acronym_mixed_case_untouched	en-US	acronym	Use the Qzx lane.	Use the Qzx lane.	
+golden_en_us_acronym_lower_case_untouched	en-US	acronym	Use the qzx lane.	Use the qzx lane.	
+golden_en_us_acronym_hdfc_icici	en-US	acronym	HDFC and ICICI offer it.	H D F C and I C I C I offer it.	
+golden_en_us_acronym_two_acronyms_one_sentence	en-US	acronym	RBI and SEBI issued rules.	R B I and sebi issued rules.	

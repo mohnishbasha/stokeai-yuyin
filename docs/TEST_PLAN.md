@@ -299,14 +299,18 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-ACR-01 | golden_en_in_acronym_kyc_emi_letter_by_letter | Golden | Given "KYC" and "EMI", when normalised, then each reads letter by letter | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-02 | golden_hi_acronym_pan_as_word | Golden | Given "PAN" in Indian usage, when normalised, then it reads as a word per the lexicon | FR-010, ARCH acronym rule | S1 | ⚠️ Deferred |
-| NM-ACR-03 | unit_text_acronym_lexicon_has_at_least_300_entries | Unit | Given the built-in lexicon, when counted, then it has at least 300 entries covering banking, insurance, telecom, government | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-04 | unit_text_acronym_listed_set_all_present | Unit | Given EMI, KYC, UPI, PAN, IFSC, NEFT, GST, ATM, OTP, when looked up, then every one has an entry | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-05 | unit_text_acronym_tenant_override_wins | Unit | Given a tenant lexicon mapping a term to a spoken form, when normalised, then the override beats the built-in | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-06 | unit_text_acronym_tenant_override_cap_500 | Unit | Given 501 override entries, when loaded, then the 501st is rejected with a clear error | FR-010, ARCH acronym rule | S1 | ⚠️ Deferred |
-| NM-ACR-07 | unit_text_acronym_crate_does_no_io | Unit | Given the crate, when overrides are needed, then they are passed in as a parameter and no file or network access occurs | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-08 | golden_en_us_acronym_unknown_uppercase_token_spelled | Golden | Given an unknown all-caps token, when normalised, then it is spelled letter by letter | FR-010 | S1 | ⚠️ Deferred |
+| NM-ACR-01 | golden_en_in_acronym_kyc_emi_letter_by_letter | Golden | Given "KYC" and "EMI", when normalised, then each reads letter by letter | FR-010 | S1 | ✅ Automated |
+| NM-ACR-02 | golden_hi_acronym_pan_as_word | Golden | Given "PAN" in Indian usage, when normalised, then it reads as a word per the lexicon | FR-010, ARCH acronym rule | S1 | ✅ Automated |
+| NM-ACR-03 | unit_text_acronym_lexicon_has_at_least_300_entries | Unit | Given the built-in lexicon, when counted, then it has at least 300 entries covering banking, insurance, telecom, government | FR-010 | S1 | ✅ Automated |
+| NM-ACR-04 | unit_text_acronym_listed_set_all_present | Unit | Given EMI, KYC, UPI, PAN, IFSC, NEFT, GST, ATM, OTP, when looked up, then every one has an entry | FR-010 | S1 | ✅ Automated |
+| NM-ACR-05 | unit_text_acronym_tenant_override_wins | Unit | Given a tenant lexicon mapping a term to a spoken form, when normalised, then the override beats the built-in | FR-010 | S1 | ✅ Automated |
+| NM-ACR-06 | unit_text_acronym_tenant_override_cap_500 | Unit | Given 501 override entries, when loaded, then the 501st is rejected with a clear error | FR-010, ARCH acronym rule | S1 | ✅ Automated |
+| NM-ACR-07 | unit_text_acronym_crate_does_no_io | Unit | Given the crate, when overrides are needed, then they are passed in as a parameter and no file or network access occurs | FR-010 | S1 | ✅ Automated |
+| NM-ACR-08 | golden_en_us_acronym_unknown_uppercase_token_spelled | Golden | Given an unknown all-caps token, when normalised, then it is spelled letter by letter | FR-010 | S1 | ✅ Automated |
+| NM-ACR-09 | unit_text_acronyms_override_tenantprecedence_beatsbuiltin | Unit | Given a tenant lexicon that maps "EMI" to "ee em aai" and one that does not, when "EMI" is normalised with each, then the first reads the override and the second the built-in; a language-specific override beats an all-language one and applies only in its language | FR-010 AC-2; SPRINT_PLAN S1-T07 | S1 | ✅ Automated |
+| NM-ACR-10 | unit_text_acronyms_unknowncaps_2to5letters_letterbyletter | Unit | Given all-caps ASCII tokens of 2 to 5 letters that are not in the lexicon, when normalised, then each is spelled letter by letter in the context language; 1 letter, 6 letters, mixed case, and lower case are left alone | FR-010; SPRINT_PLAN S1-T07 | S1 | ✅ Automated |
+| NM-ACR-11 | unit_text_acronyms_builtin_emikycupi_readcorrectly | Unit | Given EMI, KYC, and UPI, when normalised in English and Hindi, then they read "E M I", "K Y C", "U P I" and "ई एम आई", "के वाई सी", "यू पी आई"; word entries such as PAN and NASA read as words | FR-010 AC-1; SPRINT_PLAN S1-T07 | S1 | ✅ Automated |
+| NM-ACR-12 | unit_text_acronyms_currencyunit_codes_notlexicon | Unit | Given currency codes and units owned by other classes (INR, USD, GB, KM), when the lexicon is queried, then it has no entry for them, so money and unit detectors keep ownership | ARCH 5 detector order | S1 | ✅ Automated |
 
 #### 6.2.11 EMAIL
 

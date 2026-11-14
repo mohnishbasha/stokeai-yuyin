@@ -157,4 +157,31 @@ mod tests {
         );
         assert!(lex.insert("T0", "y", None).is_ok());
     }
+
+    #[test]
+    fn unit_text_acronym_tenant_override_cap_500() {
+        let mut lex = TenantLexicon::new();
+        for i in 0..MAX_TENANT_ENTRIES {
+            lex.insert(&format!("T{i}"), "x", None).unwrap();
+        }
+        let err = lex.insert("T500", "x", None).unwrap_err();
+        assert_eq!(err, TextError::TenantLexiconFull { max: 500 });
+        assert_eq!(lex.len(), MAX_TENANT_ENTRIES);
+        assert!(lex.get("T500", Lang::En).is_none());
+        assert!(err.to_string().contains("500"));
+    }
+
+    #[test]
+    fn unit_text_acronym_crate_does_no_io() {
+        // Overrides arrive as a parameter; building and using them touches no file or network.
+        // The source-level proof is `tests/purity.rs` (NM-RUN-07).
+        let mut lex = TenantLexicon::new();
+        lex.insert("EMI", "ee em aai", Some(Lang::En)).unwrap();
+        let mut opts = crate::NormaliseOptions::new(crate::LanguageHint::EnIn);
+        opts.tenant_lexicon = Some(&lex);
+        assert_eq!(
+            crate::normalise_to_string("EMI", &opts).unwrap(),
+            "ee em aai"
+        );
+    }
 }
