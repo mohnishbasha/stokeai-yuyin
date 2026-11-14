@@ -2,6 +2,8 @@
 //!
 //! Placeholder from Sprint 0. The real server arrives in Sprint 3.
 
+#![forbid(unsafe_code)]
+
 mod admission;
 mod auth;
 mod config;

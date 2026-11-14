@@ -2,11 +2,13 @@
 //!
 //! Placeholder from Sprint 0. Behaviour arrives in later sprints.
 
-pub mod opus;
+#![deny(unsafe_code)]
+
 pub mod ogg;
-pub mod wav;
+pub mod opus;
 pub mod pcm;
 pub mod stretch;
+pub mod wav;
 
 /// Crate name, used by the scaffold placeholder test.
 pub const CRATE_NAME: &str = env!("CARGO_PKG_NAME");

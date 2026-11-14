@@ -125,7 +125,7 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 |---|---|---|---|---|---|---|
 | SC-01 | smoke_scaffold_rust_workspace_clean_clone_builds | Smoke | Given a clean clone, when `cargo build --workspace` runs, then it exits 0 | ARCHITECTURE repo layout | S0 | ✅ Automated |
 | SC-02 | smoke_scaffold_bun_workspace_clean_clone_builds | Smoke | Given a clean clone, when `bun install && bun run build` runs, then it exits 0 | ARCHITECTURE repo layout | S0 | ✅ Automated |
-| SC-03 | smoke_scaffold_lint_rust_fmt_clippy_pass | Smoke | Given the scaffold, when `cargo fmt --check` and `cargo clippy --workspace -- -D warnings` run, then both exit 0 | NFR-014 | S0 | ⚠️ Deferred |
+| SC-03 | smoke_scaffold_lint_rust_fmt_clippy_pass | Smoke | Given the scaffold, when `cargo fmt --check` and `cargo clippy --workspace -- -D warnings` run, then both exit 0 | NFR-014 | S0 | ✅ Automated |
 | SC-04 | smoke_scaffold_lint_ts_lint_typecheck_pass | Smoke | Given the scaffold, when `bun run lint` and `bun run type-check` run, then both exit 0 with 0 warnings | ARCHITECTURE repo layout | S0 | ⚠️ Deferred |
 | SC-05 | it_ci_lint_gate_deliberate_error_fails | Integration | Given a PR with a deliberate lint error, when CI runs, then the lint job fails | SPRINT_PLAN S0-T04 | S0 | ⚠️ Deferred |
 | SC-06 | it_ci_coverage_gate_below_threshold_fails | Integration | Given a PR that drops a crate below its threshold in `.coverage-thresholds.toml`, when CI runs, then the coverage job fails | SPRINT_PLAN S0-T04 | S0 | ⚠️ Deferred |
@@ -142,6 +142,8 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-17 | smoke_agent_skills_run_sh_exit_0 | Smoke | Given `.agent/skills/{run-tests,check-types,run-golden,run-bench}/run.sh` are executable, when each runs on the scaffold, then each exits 0 | SPRINT_PLAN S0-T06 | S0 | ⚠️ Deferred |
 | SC-18 | contract_openapi_skeleton_lint_passes | Contract | Given `api/openapi.yaml`, when the OpenAPI linter runs, then it reports no errors | SPRINT_PLAN S0-T09 | S0 | ⚠️ Deferred |
 | SC-19 | smoke_make_help_targets_not_yet_built_exit_0 | Smoke | Given a target for a later sprint, when `make <target>` runs, then it prints "available from Sprint N" and exits 0 | SPRINT_PLAN S0-T12 | S0 | ⚠️ Deferred |
+| SC-20 | smoke_workspace_lints_unsafecode_forbidden_rejectsunsafe | Smoke | Given an `unsafe` block added to each crate, when `cargo check` runs, then it fails via `forbid(unsafe_code)` in every crate except `yuyin-engine` and `yuyin-audio`, where it fails via `deny(unsafe_code)` and passes with a documented `#[allow(unsafe_code)]` | SPRINT_PLAN S0-T02 | S0 | ✅ Automated |
+| SC-21 | smoke_workspace_toolchain_pinned_matchesfile | Smoke | Given `rust-toolchain.toml`, when its channel is read, then it is an exact version and matches the active `rustc` | SPRINT_PLAN S0-T02 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 

@@ -5,6 +5,27 @@ members = ["crates/*"]
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.100"
 license = "LicenseRef-Proprietary"
 publish = false
 repository = "https://github.com/mohnishbasha/stokeai-yuyin"
+
+# Shared lints. Every crate inherits these with `[lints] workspace = true`,
+# except yuyin-engine and yuyin-audio, which repeat them with `unsafe_code = "deny"`
+# because FFI may need documented `#[allow(unsafe_code)]` blocks there.
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+todo = "deny"
+# Pedantic allowlist. Each entry needs a reason.
+# module_name_repetitions: crate-prefixed type names (YuyinError) read better at call sites.
+module_name_repetitions = "allow"
