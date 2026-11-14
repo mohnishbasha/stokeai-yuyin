@@ -43,13 +43,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SpeechRequest'
+              $ref: "#/components/schemas/SpeechRequest"
       responses:
-        '200':
+        "200":
           description: Chunked audio, 24 kHz mono.
           headers:
             X-Request-Id:
-              $ref: '#/components/headers/XRequestId'
+              $ref: "#/components/headers/XRequestId"
             X-Yuyin-Voice:
               schema:
                 type: string
@@ -71,22 +71,22 @@ paths:
               schema:
                 type: string
                 format: binary
-        '400':
-          $ref: '#/components/responses/Error'
-        '401':
-          $ref: '#/components/responses/Error'
-        '402':
-          $ref: '#/components/responses/Error'
-        '403':
-          $ref: '#/components/responses/Error'
-        '413':
-          $ref: '#/components/responses/Error'
-        '422':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
-        '503':
-          $ref: '#/components/responses/Error'
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+        "402":
+          $ref: "#/components/responses/Error"
+        "403":
+          $ref: "#/components/responses/Error"
+        "413":
+          $ref: "#/components/responses/Error"
+        "422":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
+        "503":
+          $ref: "#/components/responses/Error"
   /v1/speech/stream:
     get:
       operationId: streamSpeech
@@ -100,14 +100,14 @@ paths:
         segment, done, error. Limits: 20,000 code points per connection, 10
         minute maximum duration, 30 s idle timeout, ping every 20 s.
       responses:
-        '101':
+        "101":
           description: Switching protocols.
-        '401':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
-        '503':
-          $ref: '#/components/responses/Error'
+        "401":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
+        "503":
+          $ref: "#/components/responses/Error"
   /v1/voices:
     get:
       operationId: listVoices
@@ -128,7 +128,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Voices visible to the caller.
           content:
             application/json:
@@ -139,11 +139,11 @@ paths:
                   voices:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Voice'
-        '401':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
+                      $ref: "#/components/schemas/Voice"
+        "401":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
   /v1/voices/{id}:
     get:
       operationId: getVoice
@@ -157,18 +157,18 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The voice.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Voice'
-        '401':
-          $ref: '#/components/responses/Error'
-        '422':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
+                $ref: "#/components/schemas/Voice"
+        "401":
+          $ref: "#/components/responses/Error"
+        "422":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
   /v1/normalize:
     post:
       operationId: normalizeText
@@ -180,40 +180,40 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NormalizeRequest'
+              $ref: "#/components/schemas/NormalizeRequest"
       responses:
-        '200':
+        "200":
           description: Normalised segments.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NormalizeResponse'
-        '400':
-          $ref: '#/components/responses/Error'
-        '401':
-          $ref: '#/components/responses/Error'
-        '413':
-          $ref: '#/components/responses/Error'
-        '422':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
+                $ref: "#/components/schemas/NormalizeResponse"
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+        "413":
+          $ref: "#/components/responses/Error"
+        "422":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
   /v1/balance:
     get:
       operationId: getBalance
       tags: [billing]
       summary: Get credit balance.
       responses:
-        '200':
+        "200":
           description: Current balance.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Balance'
-        '401':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
+                $ref: "#/components/schemas/Balance"
+        "401":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
   /v1/usage:
     get:
       operationId: getUsage
@@ -240,18 +240,18 @@ paths:
             enum: [day, key, voice, format]
             default: day
       responses:
-        '200':
+        "200":
           description: Usage rows.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usage'
-        '400':
-          $ref: '#/components/responses/Error'
-        '401':
-          $ref: '#/components/responses/Error'
-        '429':
-          $ref: '#/components/responses/Error'
+                $ref: "#/components/schemas/Usage"
+        "400":
+          $ref: "#/components/responses/Error"
+        "401":
+          $ref: "#/components/responses/Error"
+        "429":
+          $ref: "#/components/responses/Error"
   /healthz:
     get:
       operationId: getHealthz
@@ -259,7 +259,7 @@ paths:
       summary: Liveness.
       security: []
       responses:
-        '200':
+        "200":
           description: The process is running.
   /readyz:
     get:
@@ -268,9 +268,9 @@ paths:
       summary: Readiness.
       security: []
       responses:
-        '200':
+        "200":
           description: The model is warmed and the node is not draining.
-        '503':
+        "503":
           description: Not ready.
   /metrics:
     get:
@@ -280,7 +280,7 @@ paths:
       description: Served only on the internal metrics port (YUYIN_METRICS_BIND).
       security: []
       responses:
-        '200':
+        "200":
           description: Prometheus text format.
           content:
             text/plain:
@@ -304,7 +304,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: "#/components/schemas/Error"
   schemas:
     Error:
       type: object
