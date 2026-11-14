@@ -1,0 +1,6 @@
+extends:
+  - recommended
+rules:
+  # /healthz, /readyz, /metrics and the WebSocket upgrade have no client error contract.
+  operation-4xx-response: off
+  operation-2xx-response: off
