@@ -4,13 +4,24 @@
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
-  "workspaces": ["apps/*", "packages/*", "integrations/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "integrations/*"
+  ],
   "scripts": {
     "build": "bun run --filter '*' build",
+    "lint": "eslint . --max-warnings 0 && prettier --check .",
+    "format": "prettier --write .",
+    "type-check": "bun run --filter '*' type-check",
     "test": "bun run --filter '*' test"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.15.0",
+    "prettier": "3.10.1",
     "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
     "vitest": "5.1.0"
   }
 }

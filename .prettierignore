@@ -1,0 +1,15 @@
+# Generated or owned by other tools.
+dist/
+target/
+coverage/
+node_modules/
+bun.lock
+Cargo.lock
+packages/sdk-python/
+# Specification documents and the build prompt are prose; their tables are hand-formatted.
+docs/
+BUILD_PROMPT.md
+yuyin-seed-prompt.md
+*.md
+.claude/
+logs/

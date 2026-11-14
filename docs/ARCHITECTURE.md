@@ -274,6 +274,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: Lockfile diffs are reviewable in PRs. The repository structure (section 16.8) lists `bun.lock` instead of `bun.lockb`. The `.gitignore` rule from the prompt that tracks `bun.lockb` applies to `bun.lock` instead.
 - Status: Accepted.
 
+### ADR-023 TypeScript and ESLint major versions
+
+- Context: The dependency list starts from `typescript ^5` and `eslint ^9` and says to verify the latest stable at implementation time. On 2026-11-13 the latest are TypeScript 7.0.2 and ESLint 10.15.0. `typescript-eslint` 8.72.2, the current release, supports TypeScript `>=4.8.4 <6.1.0` and ESLint 8 to 10.
+- Decision: Pin TypeScript 6.0.3, the newest release `typescript-eslint` supports, and ESLint 10.15.0. Move to TypeScript 7 when `typescript-eslint` supports it.
+- Consequences: Type-aware lint rules (`strictTypeChecked`) work on every package. A Dependabot bump to TypeScript 7 will fail lint until `typescript-eslint` catches up, which is the intended signal.
+- Status: Accepted.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket
@@ -1372,6 +1379,8 @@ Toolchain: Rust 1.100.0, pinned in `rust-toolchain.toml` (stable on 2026-11-13).
 | `wiremock` | current stable | dev |
 
 ### TypeScript
+
+Pinned in Sprint 0 (root `package.json`, verified 2026-11-13): `typescript` 6.0.3, `eslint` 10.15.0, `@eslint/js` 10.0.1, `typescript-eslint` 8.72.2, `prettier` 3.10.1, `vitest` 5.1.0. Two pins differ from the starting constraints below and are recorded in the decision log as ADR-023: TypeScript 6 rather than `^5`, and ESLint 10 rather than `^9`.
 
 | Package | Starting constraint |
 |---|---|
