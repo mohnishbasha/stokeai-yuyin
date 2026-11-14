@@ -311,6 +311,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: Anyone with admin rights on the repository could change the environment, so the environment requires the owner as reviewer. Rotating the key means a new public key in a release and re-issued licences.
 - Status: Accepted.
 
+### ADR-028 No required approving review on `staging`
+
+- Context: `staging` required 1 approving review with admins not exempt. The agent works under the owner's account and GitHub does not let a PR author approve their own PR, so the Sprint End Protocol step "merge `develop` into `staging` via PR" could not complete (owner checklist B3).
+- Decision: On 2026-11-14 the owner set the `staging` rule to 0 required approving reviews. The other `staging` protections stay: changes arrive only by PR, required status checks must pass, and the rule is enforced for admins. Merges into `staging` are done by the owner unless a Claude Code permission rule allows the agent to do them.
+- Consequences: Promotion to `staging` is gated by CI rather than by a second person. Each sprint's `staging` merge commit is tagged `sprint-{n}-complete`. Production promotion (`main`) stays owner only (O14).
+- Status: Accepted.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket
