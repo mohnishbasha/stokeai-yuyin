@@ -3,13 +3,15 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
-# probe_pr <branch> <title> <commit-message> <edit-command>: branches off origin/develop in a
-# temporary worktree, applies the edit, pushes, opens a draft PR, and prints its number.
+# probe_pr <branch> <title> <commit-message> <edit-command>: branches off origin/$PROBE_BASE
+# (default develop) in a temporary worktree, applies the edit, pushes, opens a draft PR against
+# develop, and prints its number.
 probe_pr() {
   local branch="$1" title="$2" msg="$3" edit="$4" wt
   wt="$(mktemp -d)/wt"
-  git -C "$ROOT" fetch -q origin develop
-  git -C "$ROOT" worktree add -q -b "$branch" "$wt" origin/develop
+  local base="${PROBE_BASE:-develop}"
+  git -C "$ROOT" fetch -q origin "$base"
+  git -C "$ROOT" worktree add -q -b "$branch" "$wt" "origin/$base"
   (cd "$wt" && bash -c "$edit" && git commit -qam "$msg" && git push -q -u origin "$branch")
   git -C "$ROOT" worktree remove --force "$wt"
   gh pr create --draft --base develop --head "$branch" --title "$title" \
