@@ -16,3 +16,4 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 - Legal files: proprietary `LICENSE`, draft `EULA.md`, `THIRD_PARTY_LICENSES.md`, `MODELS.md`, and the `licence-check` job (`scripts/licence-check.sh`, `deny.toml`).
 - README with links to the spec docs and the owner checklist.
 - CI workflow (`.github/workflows/ci.yml`) with lint and type-check on amd64 and arm64, unit, coverage gate (`scripts/coverage.sh`, `.coverage-thresholds.toml`), integration, contract, and e2e jobs.
+- Container images: `deploy/docker/Dockerfile.gateway` (cargo-chef, `slim` and `full` targets, distroless, non-root, OCI labels), `Dockerfile.console`, `.dockerignore`, `yuyin-gateway healthcheck`, `make image` and `make image-multiarch`, and a native amd64 and arm64 `image-build` CI job.

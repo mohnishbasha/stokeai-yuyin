@@ -1,0 +1,31 @@
+# syntax=docker/dockerfile:1
+# Console image (ARCHITECTURE 16.4). The console is a placeholder package until Sprint 2, so
+# this builds and ships its compiled output on distroless Node. The Next.js standalone output
+# replaces the COPY below when the app exists.
+FROM oven/bun:1.4.4@sha256:1d22548f177f4ff38e0c15baa3c2c46c6c2060ba2d1bc573bb4720b407548f1d AS build
+WORKDIR /src
+COPY . .
+RUN bun install --frozen-lockfile \
+    && bun run --cwd apps/console build
+
+FROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:13593b7570658e8477de39e2f4a1dd25db2f836d68a0ba771251572d23bb4f8e
+ARG VERSION=0.0.0
+ARG GIT_SHA=unknown
+ARG SOURCE=https://github.com/mohnishbasha/stokeai-yuyin
+ARG CREATED=unknown
+LABEL org.opencontainers.image.title="yuyin-console" \
+      org.opencontainers.image.description="Yuyin customer console" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      org.opencontainers.image.created="${CREATED}" \
+      org.opencontainers.image.source="${SOURCE}" \
+      org.opencontainers.image.vendor="Serverless Ventures LLC" \
+      org.opencontainers.image.licenses="LicenseRef-Proprietary"
+WORKDIR /app
+COPY --from=build /src/apps/console/package.json ./package.json
+COPY --from=build /src/apps/console/dist ./dist
+COPY THIRD_PARTY_LICENSES.md EULA.md /licenses/
+USER 65532:65532
+ENV NODE_ENV=production
+EXPOSE 3000
+CMD ["dist/index.js"]

@@ -14,6 +14,10 @@ NAMESPACE ?= yuyin
 VALUES    ?= values-kind.yaml
 export VERSION REGISTRY PLATFORMS ENGINE NAMESPACE VALUES
 
+GIT_SHA     ?= $(shell git rev-parse HEAD 2>/dev/null || echo unknown)
+SOURCE      ?= https://github.com/mohnishbasha/stokeai-yuyin
+IMAGE_ARGS   = --build-arg VERSION=$(VERSION) --build-arg GIT_SHA=$(GIT_SHA) --build-arg SOURCE=$(SOURCE) --build-arg CREATED=$(shell date -u +%Y-%m-%dT%H:%M:%SZ)
+
 UV := $(shell command -v uv 2>/dev/null)
 later = @echo "make $@: available from Sprint $(1)"
 
@@ -150,11 +154,15 @@ smoke: ## run tests/smoke against whatever is running (URL from YUYIN_SMOKE_URL)
 
 .PHONY: image
 image: ## build all images for the host architecture, load into the local daemon
-	$(call later,0 (S0-T13))
+	docker build -f deploy/docker/Dockerfile.gateway --target full $(IMAGE_ARGS) -t $(REGISTRY)/yuyin-gateway:$(VERSION) .
+	docker build -f deploy/docker/Dockerfile.gateway --target slim $(IMAGE_ARGS) -t $(REGISTRY)/yuyin-gateway-slim:$(VERSION) .
+	docker build -f deploy/docker/Dockerfile.console $(IMAGE_ARGS) -t $(REGISTRY)/yuyin-console:$(VERSION) .
 
 .PHONY: image-multiarch
 image-multiarch: ## buildx build linux/amd64 + linux/arm64 (no load)
-	$(call later,0 (S0-T13))
+	docker buildx build --platform $(PLATFORMS) -f deploy/docker/Dockerfile.gateway --target full $(IMAGE_ARGS) -t $(REGISTRY)/yuyin-gateway:$(VERSION) .
+	docker buildx build --platform $(PLATFORMS) -f deploy/docker/Dockerfile.gateway --target slim $(IMAGE_ARGS) -t $(REGISTRY)/yuyin-gateway-slim:$(VERSION) .
+	docker buildx build --platform $(PLATFORMS) -f deploy/docker/Dockerfile.console $(IMAGE_ARGS) -t $(REGISTRY)/yuyin-console:$(VERSION) .
 
 .PHONY: image-push
 image-push: ## push multi-arch images, sign, attach SBOM and provenance

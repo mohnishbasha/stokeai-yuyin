@@ -1,0 +1,38 @@
+# Keep the build context small and keep secrets out of every image layer (NFR-016).
+# Environment files (example files are not needed in an image either).
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Build output and dependencies
+target/
+**/target/
+node_modules/
+**/node_modules/
+dist/
+.next/
+coverage/
+
+# Version control and agent state
+.git
+.github
+.claude
+.agent
+
+# Logs and scratch
+logs/
+*.log
+
+# Model weights and audio (models are added by their own build stage)
+models/
+*.onnx
+*.safetensors
+*.gguf
+*.pt
+*.bin
+
+# Local helper files
+run-yuyin.sh
+runner.mk
+status.sh
