@@ -4,24 +4,25 @@
 
 ## Commands
 
-The Makefile (S0-T12, lands in Sprint 0) is the documented entry point. Until it exists, use the direct equivalents.
+The root Makefile is the documented entry point; `make help` lists every target. Targets for later sprints print "available from Sprint N" and exit 0.
 
-| Task | Makefile | Direct equivalent (works today) |
+| Task | Makefile | Direct equivalent |
 |---|---|---|
-| Install | `make setup` | `bun install` |
+| Install | `make setup` | `scripts/setup.sh` (checks prerequisites, then `bun install`, `uv sync`) |
 | Build | `make build` | `cargo build --workspace` and `bun run build` |
-| Dev stack | `make dev` | `scripts/dev.sh` (S0-T08) |
-| Test, all | `make test` | `cargo test --workspace && bun run test && (cd packages/sdk-python && uv run --group dev pytest)` |
+| Dev stack | `make dev` | `scripts/dev.sh` (`make down` stops it) |
+| Test, all | `make test` | `cargo test --workspace && bun run test && uv run --project packages/sdk-python pytest -q packages/sdk-python/tests` |
 | Test, Rust | `make test` | `cargo test --workspace` |
 | Test, TypeScript | `make test` | `bun run test` |
-| Test, Python | `make test` | `(cd packages/sdk-python && uv run --group dev pytest)` |
-| Test, golden | `make golden` | `cargo test -p yuyin-text golden` |
-| Test, e2e | `make e2e` | arrives with the console (later sprint) |
+| Test, Python | `make test` | `uv run --project packages/sdk-python pytest -q packages/sdk-python/tests` |
+| Test, golden | `make golden` | `cargo test -p yuyin-text golden` (corpus from Sprint 1) |
+| Test, e2e | `make e2e` | `bash tests/scaffold/e2e_*.sh` (needs Docker) |
 | Scaffold smoke tests | none | `bash tests/scaffold/run.sh` |
-| Lint | `make lint` | `cargo fmt --check && bun run lint` |
-| Type-check | `make type-check` | `cargo clippy --workspace --all-targets -- -D warnings && bun run type-check` |
+| Smoke, running stack | `make smoke` | `bash tests/smoke/run.sh` (URL from `YUYIN_SMOKE_URL`) |
+| Lint | `make lint` | `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && bun run lint` |
+| Type-check | `make type-check` | `bun run type-check` |
 | Benchmarks | `make bench` | harness arrives in Sprint 3 (S3-T13) |
-| Version check | `make check` | `scripts/check-versions.sh` |
+| Version check | `make check-versions` | `scripts/check-versions.sh` |
 
 `make check` is what CI runs: lint, type-check, test, and the version check. Skills that wrap these commands are listed in SKILLS.md and live in `.agent/skills/`.
 
