@@ -375,17 +375,23 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| SG-01 | unit_text_segment_first_segment_capped_about_60_cp | Unit | Given a long sentence, when segmented, then the first segment is about 60 code points or fewer | ARCH pipeline, NFR-001 | S1 | ⚠️ Deferred |
-| SG-02 | unit_text_segment_later_segments_capped_about_200_cp | Unit | Given long text, when segmented, then later segments are about 200 code points or fewer | ARCH pipeline | S1 | ⚠️ Deferred |
-| SG-03 | unit_text_segment_split_on_danda | Unit | Given Hindi text with `।`, when segmented, then splits occur at the danda | FR-005 | S1 | ⚠️ Deferred |
-| SG-04 | unit_text_segment_split_on_latin_punctuation | Unit | Given English with period, comma, semicolon, when segmented, then clause boundaries are used | ARCH pipeline | S1 | ⚠️ Deferred |
-| SG-05 | unit_text_segment_first_split_at_earliest_safe_boundary | Unit | Given text with no punctuation before 60 cp, when segmented, then the earliest safe boundary is chosen and no word is cut | ARCH pipeline | S1 | ⚠️ Deferred |
-| SG-06 | prop_text_segment_char_spans_exact_cover_of_original | Property | Given arbitrary text, when segmented, then `char_span` values tile the original text with no gap or overlap | FR-018, ARCH metering | S1 | ⚠️ Deferred |
-| SG-07 | unit_text_segment_char_span_sum_equals_billed_chars | Unit | Given text, when segmented, then the sum of `char_span` lengths equals the code point count after NFC | FR-018 | S1 | ⚠️ Deferred |
-| SG-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP, when segmented, then `pace_hint` is 0.85 on that segment only | FR-009 | S1 | ⚠️ Deferred |
-| SG-09 | unit_text_segment_lang_preserved_per_segment | Unit | Given a code-switched sentence, when segmented, then each segment carries a lang | FR-004 | S1 | ⚠️ Deferred |
-| SG-10 | unit_text_segment_semiotic_span_never_split_midway | Unit | Given a long number or email near a boundary, when segmented, then the span stays in one segment | FR-006..FR-011 | S1 | ⚠️ Deferred |
-| SG-11 | unit_text_segment_empty_and_whitespace_only_yields_none | Unit | Given empty or whitespace-only text, when segmented, then no segments or a defined error | FR-001 | S1 | ⚠️ Deferred |
+| SG-01 | unit_text_segment_first_segment_capped_about_60_cp | Unit | Given a long sentence, when segmented, then the first segment is about 60 code points or fewer | ARCH pipeline, NFR-001 | S1 | ✅ Automated |
+| SG-02 | unit_text_segment_later_segments_capped_about_200_cp | Unit | Given long text, when segmented, then later segments are about 200 code points or fewer | ARCH pipeline | S1 | ✅ Automated |
+| SG-03 | unit_text_segment_split_on_danda | Unit | Given Hindi text with `।`, when segmented, then splits occur at the danda | FR-005 | S1 | ✅ Automated |
+| SG-04 | unit_text_segment_split_on_latin_punctuation | Unit | Given English with period, comma, semicolon, when segmented, then clause boundaries are used | ARCH pipeline | S1 | ✅ Automated |
+| SG-05 | unit_text_segment_first_split_at_earliest_safe_boundary | Unit | Given text with no punctuation before 60 cp, when segmented, then the earliest safe boundary is chosen and no word is cut | ARCH pipeline | S1 | ✅ Automated |
+| SG-06 | prop_text_segment_char_spans_exact_cover_of_original | Property | Given arbitrary text, when segmented, then `char_span` values tile the original text with no gap or overlap | FR-018, ARCH metering | S1 | ✅ Automated |
+| SG-07 | unit_text_segment_char_span_sum_equals_billed_chars | Unit | Given text, when segmented, then the sum of `char_span` lengths equals the code point count after NFC | FR-018 | S1 | ✅ Automated |
+| SG-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP, when segmented, then `pace_hint` is 0.85 on that segment only | FR-009 | S1 | ✅ Automated |
+| SG-09 | unit_text_segment_lang_preserved_per_segment | Unit | Given a code-switched sentence, when segmented, then each segment carries a lang | FR-004 | S1 | ✅ Automated |
+| SG-10 | unit_text_segment_semiotic_span_never_split_midway | Unit | Given a long number or email near a boundary, when segmented, then the span stays in one segment | FR-006..FR-011 | S1 | ✅ Automated |
+| SG-11 | unit_text_segment_empty_and_whitespace_only_yields_none | Unit | Given empty or whitespace-only text, when segmented, then no segments or a defined error | FR-001 | S1 | ✅ Automated |
+| SG-12 | property_text_segmenter_spans_coverinputexactly_nooverlap | Property | Given arbitrary Unicode including Devanagari and long inputs, when segmented, then spans are contiguous, start at 0, end at the code point count, and never overlap | FR-001, FR-018 | S1 | ✅ Automated |
+| SG-13 | unit_text_segmenter_firstsegment_capped60_earliestboundary | Unit | Given text with clause punctuation before 60 cp, when segmented, then the first segment ends at the earliest clause or sentence boundary and is at most 60 cp | FR-001 | S1 | ✅ Automated |
+| SG-14 | unit_text_segmenter_danda_splitsatsentence | Unit | Given Hindi text with `।` and `॥`, when segmented, then each danda ends a segment | FR-001, FR-005 | S1 | ✅ Automated |
+| SG-15 | unit_text_segmenter_semioticspan_neversplit | Unit | Given an atomic span that straddles the cap or contains a terminator, when segmented, then it stays whole in one segment | FR-001, FR-006..FR-011 | S1 | ✅ Automated |
+| SG-16 | unit_text_segmenter_fallback_clause_then_whitespace_then_grapheme | Unit | Given an over-cap run with no punctuation or whitespace, when segmented, then it is cut only at a grapheme cluster boundary | FR-001 | S1 | ✅ Automated |
+| SG-17 | unit_text_segmenter_laterfallback_prefers_clause_over_whitespace | Unit | Given a later sentence over 200 cp with a comma and spaces, when segmented, then the cut is at the last clause boundary within the cap | FR-001 | S1 | ✅ Automated |
 
 ### 6.5 Engine
 
