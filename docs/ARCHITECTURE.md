@@ -851,7 +851,7 @@ Verify
   make check            lint + type-check + test + check-versions (what CI runs)
 
 Local deploy
-  make dev              native: Postgres, Valkey, stripe-mock in Compose; gateway on the host
+  make dev              native: Postgres, Valkey, stripe-mock in Compose; gateway on the host (console from Sprint 2)
   make run-selfhost     native: release gateway in self-host mode with a dev licence
   make up               full stack in containers from locally built images
   make down             stop and remove the Compose stack
