@@ -267,6 +267,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: DESIGN.md disagrees with the prompt's colour seed on these values. DESIGN.md wins.
 - Status: Accepted.
 
+### ADR-022 Lockfile formats
+
+- Context: The build prompt names `bun.lockb`. Bun 1.2 and later write a text lockfile, `bun.lock`, by default, and the binary format is no longer the default. The Python SDK is managed with `uv`, which writes `uv.lock`.
+- Decision: Commit `bun.lock` (text) at the repository root and `packages/sdk-python/uv.lock`. CI installs with `bun install --frozen-lockfile` and `uv sync --locked`.
+- Consequences: Lockfile diffs are reviewable in PRs. The repository structure (section 16.8) lists `bun.lock` instead of `bun.lockb`. The `.gitignore` rule from the prompt that tracks `bun.lockb` applies to `bun.lock` instead.
+- Status: Accepted.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket
@@ -1213,7 +1220,7 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── VERSION  CHANGELOG.md  LICENSE  EULA.md  THIRD_PARTY_LICENSES.md  README.md
 ├── AGENTS.md  CLAUDE.md  SKILLS.md  SOUL.md
 ├── Cargo.toml  Cargo.lock  rust-toolchain.toml  Makefile  .dockerignore
-├── package.json  bun.lockb  tsconfig.base.json  .coverage-thresholds.toml  .gitignore
+├── package.json  bun.lock  tsconfig.base.json  .coverage-thresholds.toml  .gitignore
 ├── .github/
 │   ├── workflows/{ci.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-check.yml}
 │   ├── ISSUE_TEMPLATE/{task.md,bug_report.md}

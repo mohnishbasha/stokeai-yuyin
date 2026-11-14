@@ -1,0 +1,10 @@
+[package]
+name = "yuyin-audio"
+description = "Audio encoders: Opus in Ogg, WAV, PCM, time stretch."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]

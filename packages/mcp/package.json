@@ -1,0 +1,16 @@
+{
+  "name": "@yuyin-tts/mcp",
+  "version": "0.1.0",
+  "description": "Yuyin MCP server.",
+  "private": false,
+  "license": "SEE LICENSE IN ../../LICENSE",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  }
+}

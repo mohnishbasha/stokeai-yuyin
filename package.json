@@ -1,0 +1,16 @@
+{
+  "name": "yuyin",
+  "version": "0.1.0",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*", "integrations/*"],
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "test": "bun run --filter '*' test"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

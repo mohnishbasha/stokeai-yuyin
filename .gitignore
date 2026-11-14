@@ -1,0 +1,11 @@
+# Rust
+target/
+# TypeScript and Bun
+node_modules/
+dist/
+*.tsbuildinfo
+# Python
+__pycache__/
+.venv/
+# Build runner output
+logs/
