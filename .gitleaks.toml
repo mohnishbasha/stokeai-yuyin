@@ -1,0 +1,22 @@
+# Gitleaks configuration: the default ruleset plus Yuyin API keys (ARCHITECTURE section 12).
+# Key format: yy_live_<prefix>_<secret> or yy_test_<prefix>_<secret>. Tests must build fake keys
+# at runtime instead of storing literals, so this file needs no allowlist for them.
+title = "yuyin gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "yuyin-api-key"
+description = "Yuyin API key (yy_live_ or yy_test_)"
+regex = '''\byy_(?:live|test)_[A-Za-z0-9_-]{16,}'''
+keywords = ["yy_live_", "yy_test_"]
+[rules.allowlist]
+description = "Placeholder in .env.development.example, not a key"
+regexes = ['''yy_(?:live|test)_replace_with_''']
+
+# False positive: the word "S3-compatible" next to a key-like variable name in ARCHITECTURE.md.
+[[allowlists]]
+description = "S3-compatible prose flagged by generic-api-key"
+targetRules = ["generic-api-key"]
+regexes = ['''S3-compatible''']

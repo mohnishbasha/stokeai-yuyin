@@ -22,6 +22,8 @@ The Makefile (S0-T12, lands in Sprint 0) is the documented entry point. Until it
 | Type-check | `make type-check` | `cargo clippy --workspace --all-targets -- -D warnings && bun run type-check` |
 | Benchmarks | `make bench` | harness arrives in Sprint 3 (S3-T13) |
 | Version check | `make check` | `scripts/check-versions.sh` |
+| Dependency audit | none | `scripts/audit.sh` |
+| Install git hooks (gitleaks pre-commit) | none | `scripts/install-hooks.sh` |
 
 `make check` is what CI runs: lint, type-check, test, and the version check. Skills that wrap these commands are listed in SKILLS.md and live in `.agent/skills/`.
 
@@ -36,7 +38,7 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── Cargo.toml  Cargo.lock  rust-toolchain.toml  Makefile  .dockerignore
 ├── package.json  bun.lock  tsconfig.base.json  .coverage-thresholds.toml  .gitignore
 ├── .github/
-│   ├── workflows/{ci.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-check.yml}
+│   ├── workflows/{ci.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-check.yml,security.yml}
 │   ├── ISSUE_TEMPLATE/{task.md,bug_report.md}
 │   ├── pull_request_template.md
 │   └── dependabot.yml

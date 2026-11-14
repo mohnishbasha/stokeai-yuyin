@@ -133,7 +133,7 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-08 | smoke_scripts_check_versions_one_mismatch_exits_1_names_file | Smoke | Given one package version is changed, when `scripts/check-versions.sh` runs, then it exits 1 and the output names the mismatching file | SPRINT_PLAN S0-T05 | S0 | ✅ Automated |
 | SC-09 | smoke_scripts_extract_changelog_unreleased_section_prints | Smoke | Given `CHANGELOG.md` with an `[Unreleased]` section, when `scripts/extract-changelog.sh` runs, then it prints that section | SPRINT_PLAN S0-T05 | S0 | ✅ Automated |
 | SC-10 | smoke_scaffold_licence_check_all_deps_allowed_passes | Smoke | Given the dependency tree, when the licence check runs, then it exits 0 and a disallowed licence would fail it | NFR-017 | S0 | ✅ Automated |
-| SC-11 | it_ci_gitleaks_fake_live_key_rejected | Integration | Given a commit containing a fake `yy_live_` secret, when gitleaks runs, then it fails and names the finding | NFR-016 | S0 | ⚠️ Deferred |
+| SC-11 | it_ci_gitleaks_fake_live_key_rejected | Integration | Given a commit containing a fake `yy_live_` secret, when gitleaks runs, then it fails and names the finding | NFR-016 | S0 | ✅ Automated |
 | SC-12 | smoke_gateway_placeholder_healthz_returns_200 | Smoke | Given the placeholder gateway, when `GET /healthz` is called, then the status is 200 | SPRINT_PLAN S0-T13 | S0 | ⚠️ Deferred |
 | SC-13 | smoke_image_gateway_oci_labels_present | Smoke | Given the built image, when its labels are inspected, then version and commit labels match `VERSION` and git | SPRINT_PLAN S0-T13 | S0 | ⚠️ Deferred |
 | SC-14 | smoke_image_gateway_runs_as_non_root | Smoke | Given the built image, when the configured user is inspected, then it is not root | NFR-016 | S0 | ⚠️ Deferred |
@@ -156,6 +156,9 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-31 | smoke_legal_licence_check_workflow_wired_runs_script | Smoke | Given `.github/workflows/licence-check.yml` and `deny.toml`, when they are read, then the workflow runs `scripts/licence-check.sh` on pull requests and pushes to develop and `deny.toml` lists the allowlist | SPRINT_PLAN S0-T07 | S0 | ✅ Automated |
 | SC-32 | smoke_legal_no_model_weights_tracked | Smoke | Given the repository, when tracked files are listed, then none is a model weight file | SPRINT_PLAN S0-T07; NFR-016 | S0 | ✅ Automated |
 | SC-35 | unit_docs_ownerchecklist_linkedfromreadme_linkresolves | Unit | Given README.md, when its links are checked, then it links the owner checklist and the five spec docs, every relative link resolves, and the checklist names every owner action listed in S0-T11 | SPRINT_PLAN S0-T11 | S0 | ✅ Automated |
+| SC-36 | smoke_secretscan_precommit_fake_key_blocks_commit | Smoke | Given a temporary repo with the tracked pre-commit hook installed, when a fake `yy_live_` or `yy_test_` key generated at runtime is staged, then the commit is rejected and a clean commit succeeds | SPRINT_PLAN S0-T10; NFR-016 | S0 | ✅ Automated |
+| SC-37 | smoke_supplychain_audit_script_current_tree_passes | Smoke | Given the current tree, when `scripts/audit.sh` runs, then `cargo audit`, `cargo deny check advisories bans sources`, and `bun audit` all pass and the script exits 0 | SPRINT_PLAN S0-T10 | S0 | ✅ Automated |
+| SC-38 | smoke_supplychain_dependabot_five_ecosystems_configured | Smoke | Given `.github/dependabot.yml` and `.github/workflows/security.yml`, when they are read, then Dependabot covers cargo, bun, uv, github-actions, and docker weekly against develop and the workflow runs the audit and gitleaks jobs with read-only permissions | SPRINT_PLAN S0-T10 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 
