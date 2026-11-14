@@ -10,6 +10,7 @@ mod config;
 mod drain;
 mod errors;
 mod metrics;
+mod probe;
 mod rest;
 mod usage;
 mod voices;
