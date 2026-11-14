@@ -1,0 +1,12 @@
+# Changelog
+
+All notable changes to Yuyin are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). `VERSION` is the single source of truth for the version number.
+
+Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security. "Changed readings" lists normalisation changes that alter how an existing input is spoken.
+
+## [Unreleased]
+
+### Added
+
+- Monorepo scaffold: Rust workspace, Bun workspace, Python SDK placeholder.
+- Version source of truth (`VERSION`) with `scripts/check-versions.sh` and `scripts/extract-changelog.sh`.
