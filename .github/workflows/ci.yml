@@ -4,6 +4,7 @@
 #     -> unit-tests -> coverage
 #                   -> integration-tests -> e2e-tests
 #                   -> contract-tests
+#                   -> image-build (amd64, arm64 native, no push)
 #   version-check        PRs to staging and main
 #   cli-matrix           stub, active from Sprint 8
 #   harness-smoke-tests  stub, active from Sprint 10
@@ -132,6 +133,32 @@ jobs:
       - name: SDK type drift check
         # Compares the generated SDK types with api/openapi.yaml once the SDKs exist (S5-T03, S5-T04).
         run: "echo 'SDK type drift check: available from Sprint 5'"
+
+  image-build:
+    # Builds the images natively on each architecture's runner (ADR-018) and never pushes.
+    needs: unit-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            platform: linux/amd64
+          - runner: ubuntu-24.04-arm
+            platform: linux/arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build all images for the runner architecture
+        run: make image
+      - name: Image tests (healthz, labels, non-root, no .env in layers)
+        run: |
+          for t in gateway_healthz_returns200 gateway_labels_versionandcommit_present gateway_user_nonroot_asserted layers_noenvfile_asserted; do
+            bash "tests/scaffold/e2e_image_$t.sh"
+          done
+      - name: Build for ${{ matrix.platform }} without pushing
+        env:
+          PLATFORMS: ${{ matrix.platform }}
+        run: bash tests/scaffold/e2e_image_multiarch_amd64_arm64_build.sh
 
   e2e-tests:
     needs: integration-tests

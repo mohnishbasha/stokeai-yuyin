@@ -35,13 +35,52 @@ struct Cli {
 enum Command {
     /// Run the HTTP server (default).
     Serve(config::ServeConfig),
+    /// Probe `/healthz` on the local server and exit non-zero if it is not 200.
+    /// Used as the container health check because the image has no shell or curl.
+    Healthcheck(config::ServeConfig),
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     init_tracing();
+    let cli = Cli::parse();
+    if let Some(Command::Healthcheck(cfg)) = &cli.command {
+        return healthcheck(cfg.bind).await;
+    }
     let shutdown = shutdown_signal()?;
-    run(Cli::parse(), shutdown).await
+    run(cli, shutdown).await
+}
+
+/// Seconds to wait for the health probe before reporting failure.
+const HEALTHCHECK_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(3);
+
+/// Requests `/healthz` from the server bound to `bind` and succeeds only on a 200 response.
+/// A wildcard bind address (0.0.0.0 or ::) is probed through loopback.
+async fn healthcheck(bind: std::net::SocketAddr) -> anyhow::Result<()> {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    let mut target = bind;
+    if target.ip().is_unspecified() {
+        target.set_ip(match target {
+            std::net::SocketAddr::V4(_) => std::net::Ipv4Addr::LOCALHOST.into(),
+            std::net::SocketAddr::V6(_) => std::net::Ipv6Addr::LOCALHOST.into(),
+        });
+    }
+    let probe = async {
+        let mut stream = tokio::net::TcpStream::connect(target).await?;
+        stream
+            .write_all(b"GET /healthz HTTP/1.1\r\nHost: healthcheck\r\nConnection: close\r\n\r\n")
+            .await?;
+        let mut response = String::new();
+        stream.read_to_string(&mut response).await?;
+        anyhow::Ok(response)
+    };
+    let response = tokio::time::timeout(HEALTHCHECK_TIMEOUT, probe).await??;
+    anyhow::ensure!(
+        response.starts_with("HTTP/1.1 200"),
+        "unhealthy: {}",
+        response.lines().next().unwrap_or("empty response")
+    );
+    Ok(())
 }
 
 /// Logs to stderr, filtered by `RUST_LOG` (default `info`). A second call is a no-op.
@@ -73,7 +112,7 @@ async fn serve(
 /// `serve` is the default subcommand.
 fn serve_config(cli: Cli) -> config::ServeConfig {
     match cli.command {
-        Some(Command::Serve(cfg)) => cfg,
+        Some(Command::Serve(cfg) | Command::Healthcheck(cfg)) => cfg,
         None => config::ServeConfig::parse_from(["serve"]),
     }
 }
@@ -149,6 +188,87 @@ mod tests {
         assert!(response.starts_with("HTTP/1.1 200"), "{response}");
         tx.send(()).unwrap();
         server.await.unwrap().unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_main_healthcheck_healthy_server_returns_ok() {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let (tx, rx) = tokio::sync::oneshot::channel::<()>();
+        let server = tokio::spawn(serve(listener, async {
+            let _ = rx.await;
+        }));
+        healthcheck(addr).await.unwrap();
+        tx.send(()).unwrap();
+        server.await.unwrap().unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_main_healthcheck_wildcard_bind_probes_loopback() {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let (tx, rx) = tokio::sync::oneshot::channel::<()>();
+        let server = tokio::spawn(serve(listener, async {
+            let _ = rx.await;
+        }));
+        healthcheck(std::net::SocketAddr::from(([0, 0, 0, 0], port)))
+            .await
+            .unwrap();
+        tx.send(()).unwrap();
+        server.await.unwrap().unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_main_healthcheck_wildcard_v6_bind_targets_v6_loopback() {
+        // Nothing listens on the port, so the probe fails; the point is that it does not hang.
+        let bind = std::net::SocketAddr::from((std::net::Ipv6Addr::UNSPECIFIED, 1));
+        assert!(healthcheck(bind).await.is_err());
+    }
+
+    #[tokio::test]
+    async fn test_main_healthcheck_nothing_listening_returns_error() {
+        let taken = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = taken.local_addr().unwrap();
+        drop(taken);
+        assert!(healthcheck(addr).await.is_err());
+    }
+
+    #[tokio::test]
+    async fn test_main_healthcheck_non_200_returns_error() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            let (mut conn, _) = listener.accept().await.unwrap();
+            let mut buf = [0u8; 64];
+            let _ = conn.read(&mut buf).await;
+            conn.write_all(b"HTTP/1.1 503 Service Unavailable\r\n\r\n")
+                .await
+                .unwrap();
+        });
+        let err = healthcheck(addr).await.unwrap_err();
+        assert!(err.to_string().contains("503"), "{err}");
+    }
+
+    #[tokio::test]
+    async fn test_main_healthcheck_silent_server_returns_error() {
+        use tokio::io::AsyncReadExt;
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            let (mut conn, _) = listener.accept().await.unwrap();
+            let mut buf = [0u8; 64];
+            let _ = conn.read(&mut buf).await;
+        });
+        let err = healthcheck(addr).await.unwrap_err();
+        assert!(err.to_string().contains("empty response"), "{err}");
+    }
+
+    #[test]
+    fn test_main_cli_healthcheck_subcommand_parses_bind() {
+        let cli =
+            Cli::try_parse_from(["yuyin-gateway", "healthcheck", "--bind", "127.0.0.1:9"]).unwrap();
+        assert_eq!(serve_config(cli).bind.to_string(), "127.0.0.1:9");
     }
 
     #[tokio::test]

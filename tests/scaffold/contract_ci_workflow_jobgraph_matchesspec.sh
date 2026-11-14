@@ -9,7 +9,7 @@ const fail = (m) => { console.log("FAIL: " + m); process.exit(1); };
 const needs = (k) => [j[k]?.needs ?? []].flat();
 const want = {
   "lint-and-typecheck": [], "unit-tests": ["lint-and-typecheck"], "coverage": ["unit-tests"],
-  "integration-tests": ["unit-tests"], "contract-tests": ["unit-tests"], "e2e-tests": ["integration-tests"],
+  "integration-tests": ["unit-tests"], "contract-tests": ["unit-tests"], "image-build": ["unit-tests"], "e2e-tests": ["integration-tests"],
   "version-check": [], "cli-matrix": [], "harness-smoke-tests": [],
 };
 for (const [k, n] of Object.entries(want)) {
@@ -20,6 +20,8 @@ const extra = Object.keys(j).filter((k) => !(k in want));
 if (extra.length) fail(`unexpected jobs ${extra}`);
 const runners = j["lint-and-typecheck"].strategy?.matrix?.runner ?? [];
 if (!runners.includes("ubuntu-24.04") || !runners.includes("ubuntu-24.04-arm")) fail("lint-and-typecheck must run on amd64 and arm64");
+const ib = j["image-build"].strategy?.matrix?.include?.map((i) => i.runner) ?? [];
+if (!ib.includes("ubuntu-24.04") || !ib.includes("ubuntu-24.04-arm")) fail("image-build must run on amd64 and arm64");
 const vc = String(j["version-check"].if);
 if (!vc.includes("staging") || !vc.includes("main")) fail("version-check must be limited to PRs to staging and main");
 for (const [k, sprint] of [["cli-matrix", "Sprint 8"], ["harness-smoke-tests", "Sprint 10"]]) {

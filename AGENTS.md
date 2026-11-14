@@ -18,6 +18,7 @@ The root Makefile is the documented entry point; `make help` lists every target.
 | Test, golden | `make golden` | `cargo test -p yuyin-text golden` (corpus from Sprint 1) |
 | Test, e2e | `make e2e` | `bash tests/scaffold/e2e_*.sh` (needs Docker) |
 | Scaffold smoke tests | none | `bash tests/scaffold/run.sh` |
+| Images | `make image` | builds `yuyin-gateway`, `yuyin-gateway-slim`, and `yuyin-console` for the host architecture; `make image-multiarch` builds amd64 and arm64 without loading (needs Docker) |
 | Smoke, running stack | `make smoke` | `bash tests/smoke/run.sh` (URL from `YUYIN_SMOKE_URL`) |
 | Lint | `make lint` | `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && bun run lint && bun run lint:openapi` |
 | Type-check | `make type-check` | `bun run type-check` |

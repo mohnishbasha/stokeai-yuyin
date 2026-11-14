@@ -17,3 +17,4 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 - README with links to the spec docs and the owner checklist.
 - Supply chain checks: Dependabot for five ecosystems, `scripts/audit.sh` (cargo audit, cargo deny, bun audit), a gitleaks config with a `yy_live_`/`yy_test_` rule, a pre-commit hook (`scripts/install-hooks.sh`), and the `security` workflow.
 - CI workflow (`.github/workflows/ci.yml`) with lint and type-check on amd64 and arm64, unit, coverage gate (`scripts/coverage.sh`, `.coverage-thresholds.toml`), integration, contract, and e2e jobs.
+- Container images: `deploy/docker/Dockerfile.gateway` (cargo-chef, `slim` and `full` targets, distroless, non-root, OCI labels), `Dockerfile.console`, `.dockerignore`, `yuyin-gateway healthcheck`, `make image` and `make image-multiarch`, and a native amd64 and arm64 `image-build` CI job.
