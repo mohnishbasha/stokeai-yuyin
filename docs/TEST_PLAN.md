@@ -132,7 +132,7 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-07 | smoke_scripts_check_versions_aligned_exits_0 | Smoke | Given `VERSION` is 0.1.0 and all package manifests match, when `scripts/check-versions.sh` runs, then it exits 0 | SPRINT_PLAN S0-T05 | S0 | ✅ Automated |
 | SC-08 | smoke_scripts_check_versions_one_mismatch_exits_1_names_file | Smoke | Given one package version is changed, when `scripts/check-versions.sh` runs, then it exits 1 and the output names the mismatching file | SPRINT_PLAN S0-T05 | S0 | ✅ Automated |
 | SC-09 | smoke_scripts_extract_changelog_unreleased_section_prints | Smoke | Given `CHANGELOG.md` with an `[Unreleased]` section, when `scripts/extract-changelog.sh` runs, then it prints that section | SPRINT_PLAN S0-T05 | S0 | ✅ Automated |
-| SC-10 | smoke_scaffold_licence_check_all_deps_allowed_passes | Smoke | Given the dependency tree, when the licence check runs, then it exits 0 and a disallowed licence would fail it | NFR-017 | S0 | ⚠️ Deferred |
+| SC-10 | smoke_scaffold_licence_check_all_deps_allowed_passes | Smoke | Given the dependency tree, when the licence check runs, then it exits 0 and a disallowed licence would fail it | NFR-017 | S0 | ✅ Automated |
 | SC-11 | it_ci_gitleaks_fake_live_key_rejected | Integration | Given a commit containing a fake `yy_live_` secret, when gitleaks runs, then it fails and names the finding | NFR-016 | S0 | ⚠️ Deferred |
 | SC-12 | smoke_gateway_placeholder_healthz_returns_200 | Smoke | Given the placeholder gateway, when `GET /healthz` is called, then the status is 200 | SPRINT_PLAN S0-T13 | S0 | ⚠️ Deferred |
 | SC-13 | smoke_image_gateway_oci_labels_present | Smoke | Given the built image, when its labels are inspected, then version and commit labels match `VERSION` and git | SPRINT_PLAN S0-T13 | S0 | ⚠️ Deferred |
@@ -152,6 +152,10 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-27 | contract_openapi_paths_allcontractpaths_present | Contract | Given `api/openapi.yaml`, when its paths and methods are listed, then every path and method in ARCHITECTURE section 11 is present | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
 | SC-28 | smoke_scripts_check_versions_openapi_mismatch_exits_1_names_file | Smoke | Given `info.version` in `api/openapi.yaml` differs from `VERSION`, when `scripts/check-versions.sh` runs, then it exits 1 and names `api/openapi.yaml` | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
 | SC-29 | contract_openapi_operationids_unique_present | Contract | Given `api/openapi.yaml`, when every operation is inspected, then each has a unique `operationId` and at least one tag | SPRINT_PLAN S0-T09 | S0 | ✅ Automated |
+| SC-30 | smoke_legal_files_present_eula_terms_present | Smoke | Given the repository, when the legal files are checked, then `LICENSE`, `EULA.md`, `THIRD_PARTY_LICENSES.md`, and `MODELS.md` exist, the EULA is marked as a draft needing attorney review, and it names Texas law, Williamson County, legal@serverlessvc.com, the 12 month liability cap, and the pricing change right | SPRINT_PLAN S0-T07 | S0 | ✅ Automated |
+| SC-31 | smoke_legal_licence_check_workflow_wired_runs_script | Smoke | Given `.github/workflows/licence-check.yml` and `deny.toml`, when they are read, then the workflow runs `scripts/licence-check.sh` on pull requests and pushes to develop and `deny.toml` lists the allowlist | SPRINT_PLAN S0-T07 | S0 | ✅ Automated |
+| SC-32 | smoke_legal_no_model_weights_tracked | Smoke | Given the repository, when tracked files are listed, then none is a model weight file | SPRINT_PLAN S0-T07; NFR-016 | S0 | ✅ Automated |
+| SC-35 | unit_docs_ownerchecklist_linkedfromreadme_linkresolves | Unit | Given README.md, when its links are checked, then it links the owner checklist and the five spec docs, every relative link resolves, and the checklist names every owner action listed in S0-T11 | SPRINT_PLAN S0-T11 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 
