@@ -40,3 +40,9 @@ mod tests {
         assert_eq!(res.status(), StatusCode::NOT_FOUND);
     }
 }
+
+/// Deliberate lint error.
+pub fn lint_probe() -> bool {
+    let probe = vec![1];
+    probe.len() == 0
+}
