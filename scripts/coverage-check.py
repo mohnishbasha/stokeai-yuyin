@@ -6,6 +6,7 @@ Inputs (all paths relative to the repository root unless absolute):
   --rust        cargo tarpaulin JSON report (tarpaulin-report.json)
   --ts          vitest json-summary reports (coverage-summary.json), repeatable
   --python      coverage.py JSON report (coverage.json)
+  --python-base directory pytest ran in; coverage.py paths are relative to it
 """
 
 import argparse
@@ -47,6 +48,7 @@ def main() -> int:
     ap.add_argument("--rust")
     ap.add_argument("--ts", action="append", default=[])
     ap.add_argument("--python")
+    ap.add_argument("--python-base", default="packages/sdk-python")
     ap.add_argument("--root", default=".")
     args = ap.parse_args()
     root = os.path.realpath(args.root)
@@ -108,7 +110,7 @@ def main() -> int:
     if args.python:
         with open(args.python) as fh:
             report = json.load(fh)
-        base = os.path.dirname(os.path.realpath(args.python))
+        base = os.path.join(root, args.python_base)
         for path, entry in report.get("files", {}).items():
             rel = os.path.relpath(os.path.join(base, path), root)
             s = entry["summary"]
