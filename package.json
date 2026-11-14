@@ -17,6 +17,9 @@
     "type-check": "bun run --filter '*' type-check",
     "test": "bun run --filter '*' test"
   },
+  "overrides": {
+    "minimatch": "^11.0.8"
+  },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@redocly/cli": "2.78.0",
