@@ -2,12 +2,14 @@
 //!
 //! Placeholder from Sprint 0. Behaviour arrives in later sprints.
 
-pub mod tag;
+#![forbid(unsafe_code)]
+
 pub mod classify;
-pub mod verbalise;
-pub mod translit;
-pub mod segment;
 pub mod lexicon;
+pub mod segment;
+pub mod tag;
+pub mod translit;
+pub mod verbalise;
 
 /// Crate name, used by the scaffold placeholder test.
 pub const CRATE_NAME: &str = env!("CARGO_PKG_NAME");

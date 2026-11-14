@@ -1335,6 +1335,8 @@ To be pinned at implementation; starting constraints. Verify the latest stable r
 
 ### Rust
 
+Toolchain: Rust 1.100.0, pinned in `rust-toolchain.toml` (stable on 2026-11-13). Workspace `rust-version = "1.100"`. Shared lints live in `[workspace.lints]` in the root `Cargo.toml`; `yuyin-engine` and `yuyin-audio` repeat them with `unsafe_code = "deny"`. Pedantic allowlist: `module_name_repetitions` (crate-prefixed type names read better at call sites).
+
 | Crate | Starting constraint | Notes |
 |---|---|---|
 | `tokio` | `1`, features `rt-multi-thread`, `macros`, `signal`, `sync`, `time` | |

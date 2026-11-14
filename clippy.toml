@@ -1,0 +1,4 @@
+# Tests may unwrap, expect, and panic. Library and binary code may not (ARCHITECTURE section 19).
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
