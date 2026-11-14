@@ -11,4 +11,5 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 - Monorepo scaffold: Rust workspace, Bun workspace, Python SDK placeholder.
 - Version source of truth (`VERSION`) with `scripts/check-versions.sh` and `scripts/extract-changelog.sh`.
 - Agent repository files: AGENTS.md, CLAUDE.md, SKILLS.md, SOUL.md, and four agent skills.
+- Legal files: proprietary `LICENSE`, draft `EULA.md`, `THIRD_PARTY_LICENSES.md`, `MODELS.md`, and the `licence-check` job (`scripts/licence-check.sh`, `deny.toml`).
 - README with links to the spec docs and the owner checklist.
