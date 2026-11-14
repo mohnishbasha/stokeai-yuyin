@@ -65,3 +65,6 @@ licence.json
 
 # Build runner output (local)
 logs/
+
+# Local dev stack state (scripts/dev.sh)
+.dev/

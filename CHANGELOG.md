@@ -7,7 +7,7 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 ## [Unreleased]
 
 ### Added
-
+- Local dev stack: `deploy/compose/docker-compose.dev.yml` (Postgres 16, Valkey, stripe-mock), `scripts/dev.sh`, `.env.development.example`, and a placeholder gateway serving `/healthz`.
 - Monorepo scaffold: Rust workspace, Bun workspace, Python SDK placeholder.
 - Version source of truth (`VERSION`) with `scripts/check-versions.sh` and `scripts/extract-changelog.sh`.
 - Agent repository files: AGENTS.md, CLAUDE.md, SKILLS.md, SOUL.md, and four agent skills.

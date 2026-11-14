@@ -10,6 +10,17 @@ license = "LicenseRef-Proprietary"
 publish = false
 repository = "https://github.com/mohnishbasha/stokeai-yuyin"
 
+# Shared dependency versions (ARCHITECTURE section 19). Crates opt in with `{ workspace = true }`.
+[workspace.dependencies]
+anyhow = "1.0.104"
+axum = { version = "0.8.9", default-features = false, features = ["http1", "http2", "tokio", "ws"] }
+clap = { version = "4.6.7", features = ["derive", "env"] }
+http-body-util = "0.1.5"
+tokio = { version = "1.54.1", features = ["rt-multi-thread", "macros", "signal", "sync", "time", "net"] }
+tower = { version = "0.5.3", features = ["util"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter", "fmt"] }
+
 # Shared lints. Every crate inherits these with `[lints] workspace = true`,
 # except yuyin-engine and yuyin-audio, which repeat them with `unsafe_code = "deny"`
 # because FFI may need documented `#[allow(unsafe_code)]` blocks there.
