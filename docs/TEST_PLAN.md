@@ -149,6 +149,7 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 | SC-24 | smoke_agent_files_required_present_allexist | Smoke | Given the repository, when the agent files are checked, then every file from S0-T06 exists and carries the content Appendix J requires | SPRINT_PLAN S0-T06 | S0 | ✅ Automated |
 | SC-25 | e2e_devstack_startup_allservices_healthzreturns200 | E2E | Given Docker is running and the default ports may be taken, when `scripts/dev.sh --detach` runs with the port override variables, then Postgres, Valkey, and stripe-mock are running and the gateway `/healthz` returns 200 | SPRINT_PLAN S0-T08 | S0 | ✅ Automated |
 | SC-26 | unit_env_example_nosecrets_passesscan | Unit | Given `.env.development.example` is tracked, when gitleaks scans it, then it finds nothing, and the same file with a live-looking key added is flagged | SPRINT_PLAN S0-T08; NFR-016 | S0 | ✅ Automated |
+| SC-35 | unit_docs_ownerchecklist_linkedfromreadme_linkresolves | Unit | Given README.md, when its links are checked, then it links the owner checklist and the five spec docs, every relative link resolves, and the checklist names every owner action listed in S0-T11 | SPRINT_PLAN S0-T11 | S0 | ✅ Automated |
 
 ### 6.2 Normalisation
 
