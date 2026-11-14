@@ -372,11 +372,11 @@ Normalisation is deterministic: the same input and options give the same output 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| EN-01 | unit_engine_fake_synthesise_deterministic_output | Unit | Given `FakeEngine` and the same segment, when run twice, then samples are identical | ARCH engine | S1 | ⚠️ Deferred |
-| EN-02 | unit_engine_fake_length_proportional_to_text | Unit | Given longer text, when synthesised, then duration grows proportionally | ARCH engine | S1 | ⚠️ Deferred |
-| EN-03 | unit_engine_fake_configurable_delay_applied | Unit | Given a configured delay, when synthesised, then the first chunk is delayed by that amount | ARCH engine | S1 | ⚠️ Deferred |
-| EN-04 | unit_engine_synthesise_cancel_token_stops_promptly | Unit | Given a cancelled token mid-segment, when synthesising, then it returns promptly and calls the sink no further | ARCH engine, FR-001 | S3 | ⚠️ Deferred |
-| EN-05 | unit_engine_synthesise_sink_closed_returns_error | Unit | Given a sink that returns `SinkClosed`, when synthesising, then the engine stops and surfaces it | ARCH engine | S3 | ⚠️ Deferred |
+| EN-01 | unit_engine_fakeengine_synthesise_deterministicoutput | Unit | Given `FakeEngine` and the same segment, when run twice, then samples are identical | ARCH engine | S1 | ✅ Automated |
+| EN-02 | unit_engine_fakeengine_textlength_proportionalduration | Unit | Given longer text, when synthesised, then duration grows proportionally | ARCH engine | S1 | ✅ Automated |
+| EN-03 | unit_engine_fakeengine_configurable_delay_applied | Unit | Given a configured delay, when synthesised, then the first chunk is delayed by that amount | ARCH engine | S1 | ✅ Automated |
+| EN-04 | unit_engine_fakeengine_cancel_midsegment_stops_sink_calls | Unit | Given a token cancelled mid-segment, when synthesising, then it returns `Cancelled` and calls the sink no further | ARCH engine, FR-001 | S1 | ✅ Automated |
+| EN-05 | unit_engine_fakeengine_sinkclosed_propagates | Unit | Given a sink that returns `SinkClosed`, when synthesising, then the engine stops and surfaces it | ARCH engine | S1 | ✅ Automated |
 | EN-06 | it_engine_onnx_real_voice_decodable_correct_sample_rate | Integration | Given a real model, when a segment is synthesised, then audio is 24 kHz and decodable, checked by duration not bytes | NFR-017, ARCH engine | S3 | ⚠️ Deferred |
 | EN-07 | it_engine_onnx_emits_chunks_before_segment_complete | Integration | Given a streaming-capable model, when synthesising, then the first sink call occurs before the segment finishes | FR-001, NFR-001 | S3 | ⚠️ Deferred |
 | EN-08 | it_engine_onnx_intra_op_threads_one | Integration | Given the engine config, when a session is created, then intra-op and inter-op threads are 1 | NFR-002 | S3 | ⚠️ Deferred |
@@ -390,6 +390,15 @@ Normalisation is deterministic: the same input and options give the same output 
 | EN-16 | it_voices_registry_covers_four_languages | Integration | Given the registry, when queried, then at least 6 public voices cover hi, hinglish, en-IN, en-US | FR-003 | S3 | ⚠️ Deferred |
 | EN-17 | it_engine_memory_with_all_voices_under_2_gib | Integration | Given all v1 voices loaded, when memory is measured, then it is at most 2 GiB | NFR-013 | S3 | ⚠️ Deferred |
 | EN-18 | it_engine_cold_start_ready_within_20s | Integration | Given a cold gateway start, when timed to ready, then it is at most 20 s | NFR-012 | S3 | ⚠️ Deferred |
+| EN-19 | unit_engine_fakeengine_cancel_stopswithin20ms | Unit | Given a per-chunk delay of 1 s, when the token is cancelled mid-delay, then `synthesise` returns `Cancelled` within 20 ms and the sink is never called | ARCH engine, FR-001 | S1 | ✅ Automated |
+| EN-20 | unit_engine_fakeengine_warmup_returns_duration | Unit | Given a large chunk delay, when `warmup` runs, then it returns a duration well under 1 s | ARCH engine, NFR-012 | S1 | ✅ Automated |
+| EN-21 | unit_engine_fakeengine_voices_and_samplerate_reported | Unit | Given `FakeEngine`, when queried, then `id` is `fake`, sample rate is 24000, and two voices are listed | ARCH engine | S1 | ✅ Automated |
+| EN-22 | unit_engine_fakeengine_unknown_voice_rejected | Unit | Given an unknown voice id, when synthesising, then `UnknownVoice` is returned | ARCH engine | S1 | ✅ Automated |
+| EN-23 | unit_engine_fakeengine_precancelled_token_returns_cancelled | Unit | Given an already cancelled token, when synthesising, then `Cancelled` is returned before any sink call | ARCH engine | S1 | ✅ Automated |
+| EN-24 | unit_engine_fakeengine_empty_text_emits_nothing | Unit | Given empty text, when synthesised, then no chunks and zero duration | ARCH engine | S1 | ✅ Automated |
+| EN-25 | unit_engine_fakeengine_chunks_respect_chunk_size | Unit | Given a configured chunk size, when synthesised, then every sink call has that size except possibly the last | ARCH engine | S1 | ✅ Automated |
+| EN-26 | unit_engine_traits_error_display_and_conversion | Unit | Given each `EngineError` variant and `SinkClosed`, when displayed or converted, then messages and mapping are as specified | ARCH engine | S1 | ✅ Automated |
+| EN-27 | unit_engine_traits_cancellation_token_clones_share_state | Unit | Given a cloned `CancellationToken`, when one clone cancels, then every clone reports cancelled | ARCH engine | S1 | ✅ Automated |
 | EN-19 | unit_audio_pace_clamped_0_5_to_2_0 | Unit | Given pace values outside the range, when applied, then they are rejected at validation or clamped as specified | FR-013 | S3 | ⚠️ Deferred |
 | EN-20 | unit_audio_wsola_pace_preserves_pitch_changes_duration | Unit | Given a model without native duration control, when pace is 2.0, then duration halves within tolerance and pitch is preserved | FR-013 | S3 | ⚠️ Deferred |
 | EN-21 | it_engine_pace_0_5_and_2_0_duration_ratio | Integration | Given pace 0.5 and 2.0, when synthesising, then duration ratios are near 2x and 0.5x | FR-013 | S3 | ⚠️ Deferred |

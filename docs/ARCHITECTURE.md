@@ -457,7 +457,7 @@ pub trait SynthesisEngine: Send + Sync {
     /// as soon as they are available. Must be cancellable through `cancel`.
     fn synthesise(
         &self,
-        segment: &Segment,
+        segment: &SegmentInput,
         voice: &VoiceId,
         opts: &SynthOptions,
         cancel: &CancellationToken,
@@ -466,6 +466,8 @@ pub trait SynthesisEngine: Send + Sync {
     fn warmup(&self) -> Result<Duration, EngineError>;
 }
 ```
+
+`SegmentInput { text: String, lang: SegmentLang (Hi | En), pace_hint: f32 }` is the engine-side input type. `yuyin-engine` does not depend on `yuyin-text`; the gateway maps each `yuyin_text::Segment` onto a `SegmentInput`. Supporting types in `traits.rs`: `VoiceId(String)`, `VoiceInfo { id, name, language }`, `SynthOptions { speed }`, `SegmentStats { samples, chunks, audio_duration }`, `SinkClosed`, `EngineError { Cancelled, SinkClosed, UnknownVoice, Internal }`, and `CancellationToken`, a clonable `Arc<AtomicBool>` with no async runtime dependency. A cancelled token makes `synthesise` return `EngineError::Cancelled`; a closed sink returns `EngineError::SinkClosed`. `FakeEngine` is configured by `FakeConfig { chunk_samples, chunk_delay, samples_per_char }` and checks the token at least every 2 ms, so cancellation returns within 20 ms.
 
 Threading model:
 

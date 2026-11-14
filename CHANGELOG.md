@@ -7,6 +7,7 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 ## [Unreleased]
 
 ### Added
+- `SynthesisEngine` trait with supporting types and a deterministic `FakeEngine` (sine sweep, configurable delay and chunk size, cancellation within 20 ms) in `yuyin-engine`.
 - Local dev stack: `deploy/compose/docker-compose.dev.yml` (Postgres 16, Valkey, stripe-mock), `scripts/dev.sh`, `.env.development.example`, and a placeholder gateway serving `/healthz`.
 - Monorepo scaffold: Rust workspace, Bun workspace, Python SDK placeholder.
 - Version source of truth (`VERSION`) with `scripts/check-versions.sh` and `scripts/extract-changelog.sh`.
