@@ -9,6 +9,10 @@ repository.workspace = true
 rust-version.workspace = true
 
 [dependencies]
+# Allowlisted in tests/purity.rs: yuyin-text stays pure (no I/O, no network, no clock).
+thiserror = { workspace = true }
+unicode-normalization = { workspace = true }
+unicode-segmentation = { workspace = true }
 
 [lints]
 workspace = true

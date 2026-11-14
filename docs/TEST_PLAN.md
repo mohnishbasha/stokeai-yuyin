@@ -169,6 +169,21 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 
 Normalisation is deterministic: the same input and options give the same output (determinism scenarios in 6.2.14). Language columns in the Given clause use hi, hinglish, en-IN, en-US. Expected readings below are summaries; the exact strings live in the golden corpus.
 
+#### 6.2.0 Golden runner and crate purity
+
+| ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
+|---|---|---|---|---|---|---|
+| NM-RUN-01 | unit_text_goldenrunner_allrows_passes | Unit | Given every `golden/*.tsv` file, when each row is normalised with its language, then every row matches `expected`, ids are unique and well formed, and the corpus is at least the current floor (raised to 400 at the end of Sprint 1) | SPRINT_PLAN S1-T01; NFR-011 | S1 | ✅ Automated |
+| NM-RUN-02 | unit_text_goldenrunner_regressionrow_failsci | Unit | Given a row whose expected reading differs from the output, when the runner runs, then it reports that row as a failure, so CI fails | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-03 | unit_text_goldenrunner_perclassreport_countsprinted | Unit | Given rows in two classes, when the runner runs, then the summary prints passed and total per class and in total | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-04 | unit_text_goldenrunner_badrows_rejected | Unit | Given a wrong header, a short row, a duplicate id, an id with the wrong prefix, or an unsupported language, when the corpus is parsed and validated, then it is rejected | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-05 | unit_scripts_goldenadd_validrow_appended | Unit | Given a golden file, when `scripts/golden-add.sh` adds a valid row, then the row is appended with id `golden_{lang}_{class}_{name}`; a duplicate id, an unsupported language, a tab in a field, or a missing file is rejected and the file is unchanged | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-06 | unit_text_purity_dependencies_allowlisted | Unit | Given `crates/yuyin-text/Cargo.toml`, when its `[dependencies]` are read, then every one is on the allowlist (`thiserror`, `unicode-normalization`, `unicode-segmentation`) | Sprint 1 gate; ARCH 5 | S1 | ✅ Automated |
+| NM-RUN-07 | unit_text_purity_source_noio | Unit | Given the `yuyin-text` source tree, when it is scanned, then no file uses file, network, process, environment, clock, thread, async, or random APIs | Sprint 1 gate; ARCH 5 | S1 | ✅ Automated |
+| NM-RUN-08 | unit_text_purity_checker_detects_violations | Unit | Given a manifest with an extra dependency and sources using `std::fs` and `std::net`, when the purity checks run on them, then each is reported, and comments and `include_str!` are not | Sprint 1 gate | S1 | ✅ Automated |
+
+Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to S1-T08), taking the corpus past 400 rows at the Sprint 1 gate. Each later sprint that touches the text front-end adds rows, and every wrong reading reported after launch becomes a row, so the corpus reaches 1,500 rows by v1.0.0. The runner's `MIN_ROWS` floor is raised as the corpus grows, so it never shrinks.
+
 #### 6.2.1 MONEY
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |

@@ -1,0 +1,45 @@
+id	lang	class	input	expected	notes
+golden_hi_plain_greeting	hi	plain	नमस्ते।	नमस्ते।	single sentence with danda
+golden_hi_plain_how_are_you	hi	plain	आप कैसे हैं?	आप कैसे हैं?	question mark kept
+golden_hi_plain_two_sentences	hi	plain	नमस्ते। आप कैसे हैं?	नमस्ते। आप कैसे हैं?	two segments joined with one space
+golden_hi_plain_thanks	hi	plain	आपका बहुत धन्यवाद।	आपका बहुत धन्यवाद।
+golden_hi_plain_comma_clause	hi	plain	कृपया रुकिए, हम आपको जोड़ रहे हैं।	कृपया रुकिए, हम आपको जोड़ रहे हैं।	comma kept, nukta in जोड़
+golden_hi_plain_exclamation	hi	plain	बधाई हो! आपका काम पूरा हुआ।	बधाई हो! आपका काम पूरा हुआ।
+golden_hi_plain_double_space_collapsed	hi	plain	आज  मौसम  अच्छा है।	आज मौसम अच्छा है।	whitespace runs collapse to one space
+golden_hi_plain_conjuncts	hi	plain	क्षमा कीजिए, श्रीमान।	क्षमा कीजिए, श्रीमान।	conjuncts क्ष and श्र
+golden_hi_plain_candrabindu	hi	plain	हाँ, मैं वहाँ पहुँच गया।	हाँ, मैं वहाँ पहुँच गया।	candrabindu kept
+golden_hi_plain_double_danda	hi	plain	यह अंतिम पंक्ति है॥	यह अंतिम पंक्ति है॥	double danda kept
+golden_hi_plain_nukta_words	hi	plain	ज़रूरी फ़ाइल भेज दी गई है।	ज़रूरी फ़ाइल भेज दी गई है।	nukta letters ज़ and फ़
+golden_hinglish_plain_greeting	hinglish	plain	Namaste, aap kaise hain?	Namaste, aap kaise hain?	Roman Hindi passes through as typed
+golden_hinglish_plain_kya_haal	hinglish	plain	Kya haal hai?	Kya haal hai?
+golden_hinglish_plain_code_switch	hinglish	plain	Aapka account update ho gaya hai.	Aapka account update ho gaya hai.	English words inside a Hindi matrix
+golden_hinglish_plain_two_sentences	hinglish	plain	Shukriya. Phir milenge!	Shukriya. Phir milenge!
+golden_hinglish_plain_please_wait	hinglish	plain	Kripya thoda intezaar kijiye.	Kripya thoda intezaar kijiye.
+golden_hinglish_plain_mixed_script	hinglish	plain	Aapka order भेज दिया गया hai.	Aapka order भेज दिया गया hai.	Devanagari and Roman in one sentence
+golden_hinglish_plain_double_space_collapsed	hinglish	plain	Kal  milte  hain.	Kal milte hain.	whitespace runs collapse to one space
+golden_hinglish_plain_question	hinglish	plain	Kya aap call back chahte hain?	Kya aap call back chahte hain?
+golden_hinglish_plain_danda	hinglish	plain	Aapka swagat hai।	Aapka swagat hai।	danda after Roman text
+golden_hinglish_plain_comma	hinglish	plain	Haan, main samajh gaya.	Haan, main samajh gaya.
+golden_hinglish_plain_exclamation	hinglish	plain	Bahut badhiya! Dhanyavaad.	Bahut badhiya! Dhanyavaad.
+golden_en_in_plain_greeting	en-IN	plain	Good morning.	Good morning.
+golden_en_in_plain_question	en-IN	plain	How may I help you today?	How may I help you today?
+golden_en_in_plain_two_sentences	en-IN	plain	Thank you for calling. Have a nice day!	Thank you for calling. Have a nice day!
+golden_en_in_plain_british_spelling	en-IN	plain	Your colour preference has been saved.	Your colour preference has been saved.	spelling passes through unchanged
+golden_en_in_plain_apostrophe	en-IN	plain	We're sorry, the line isn't available.	We're sorry, the line isn't available.	apostrophes kept
+golden_en_in_plain_semicolon	en-IN	plain	Please hold; an agent will join shortly.	Please hold; an agent will join shortly.	semicolon kept
+golden_en_in_plain_double_space_collapsed	en-IN	plain	Please  stay  on the line.	Please stay on the line.	whitespace runs collapse to one space
+golden_en_in_plain_hindi_word	en-IN	plain	Namaste and welcome.	Namaste and welcome.
+golden_en_in_plain_quotes	en-IN	plain	Say "yes" to confirm.	Say "yes" to confirm.	quotes kept
+golden_en_in_plain_hyphen_word	en-IN	plain	This is a one-time message.	This is a one-time message.	hyphenated word kept
+golden_en_in_plain_parentheses	en-IN	plain	Your request (as discussed) is complete.	Your request (as discussed) is complete.	parentheses kept
+golden_en_us_plain_greeting	en-US	plain	Hello there.	Hello there.
+golden_en_us_plain_two_sentences	en-US	plain	Hello there. How are you?	Hello there. How are you?
+golden_en_us_plain_american_spelling	en-US	plain	Your favorite color is saved.	Your favorite color is saved.	spelling passes through unchanged
+golden_en_us_plain_exclamation	en-US	plain	Welcome back!	Welcome back!
+golden_en_us_plain_comma	en-US	plain	Sure, I can help with that.	Sure, I can help with that.
+golden_en_us_plain_double_space_collapsed	en-US	plain	See  you  soon.	See you soon.	whitespace runs collapse to one space
+golden_en_us_plain_ellipsis	en-US	plain	Please wait... connecting you now.	Please wait... connecting you now.	ellipsis followed by a space ends a segment
+golden_en_us_plain_colon	en-US	plain	Note: this call may be recorded.	Note: this call may be recorded.	colon kept
+golden_en_us_plain_question_pair	en-US	plain	Did that help? Is there anything else?	Did that help? Is there anything else?
+golden_en_us_plain_dash	en-US	plain	Thanks for waiting - we're almost done.	Thanks for waiting - we're almost done.	spaced hyphen kept
+golden_en_us_plain_accented	en-US	plain	Meet me at the café.	Meet me at the café.	Latin-1 letter kept
