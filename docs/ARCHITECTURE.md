@@ -236,9 +236,9 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 
 ### ADR-017 Default branch
 
-- Context: The repository used `master`. The branch strategy calls for `main`.
-- Decision: Rename the default branch to `main` per the branch strategy.
-- Consequences: Local clones and any tooling that references `master` must be updated. Branch protection is configured on `main` and `staging`.
+- Context: The repository used `master`. The branch strategy uses three long-lived branches: `develop` for integration, `staging` for the staging environment, and `main` for released code.
+- Decision: `develop` is the default branch. Pull requests target `develop`, and `Closes #n` in a PR into `develop` closes the issue (owner checklist B5, resolved 2026-11-13). `staging` and `main` are promotion branches that receive merges from `develop` and `staging` respectively.
+- Consequences: Local clones and any tooling that references `master` must be updated. Branch protection is configured on `develop`, `staging`, and `main`. CI runs on every pull request and on pushes to `develop`; `version-check` runs only on pull requests to `staging` and `main`.
 - Status: Accepted.
 
 ### ADR-018 Container build strategy
@@ -834,16 +834,24 @@ Build
   make build-docs       bun run --cwd apps/docs build
   make build-sdk        build TypeScript and Python SDK packages
   make build-cli        bun build --compile for the host platform -> dist/cli/yuyin
+  make build-cli-all    CLI binaries for all platforms
   make build-mcp        build the MCP server package
   make build-wasm       build yuyin-count-wasm for the console
   make models           scripts/fetch-models.sh with checksum verification
+  make dist-selfhost    self-host tarball with checksums
 
 Verify
-  make lint  make type-check  make test  make golden  make e2e  make bench
+  make lint             cargo fmt and clippy, eslint and prettier, OpenAPI lint
+  make type-check       TypeScript type check for every package
+  make test             Rust, TypeScript, and Python unit tests
+  make check-versions   every manifest matches VERSION
+  make golden           text normalisation golden corpus
+  make e2e              end-to-end tests (needs Docker)
+  make bench            benchmark harness
   make check            lint + type-check + test + check-versions (what CI runs)
 
 Local deploy
-  make dev              native: Postgres, Valkey, stripe-mock in Compose; gateway and console on the host with reload
+  make dev              native: Postgres, Valkey, stripe-mock in Compose; gateway on the host (console from Sprint 2)
   make run-selfhost     native: release gateway in self-host mode with a dev licence
   make up               full stack in containers from locally built images
   make down             stop and remove the Compose stack
@@ -866,9 +874,12 @@ Kubernetes (Helm)
   make helm-test        helm test + smoke suite through the ingress
   make helm-uninstall   remove the release
   make kind-down        delete the local cluster
+
+Help
+  make help             list every target
 ```
 
-Additional targets referenced elsewhere: `make build-cli-all` (all CLI platforms) and `make dist-selfhost` (self-host tarball).
+Targets for later sprints print "available from Sprint N" and exit 0 until their sprint builds them.
 
 Variables: `VERSION` (defaults to the `VERSION` file), `REGISTRY` (defaults to `ghcr.io/mohnishbasha`, see ADR-016), `PLATFORMS` (defaults to `linux/arm64,linux/amd64`; the Stoke cluster needs `linux/arm64`), `ENGINE` (`fake` or `onnx`), `NAMESPACE` (defaults to `yuyin`), `VALUES` (defaults to `values-kind.yaml`).
 
@@ -1234,13 +1245,15 @@ Chart verification (CI, every PR that touches `deploy/` or the gateway):
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `ci.yml` | every PR | `make check`, image build for both architectures on native runners (no push), `make helm-lint` |
+| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`; Playwright from Sprint 2), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
+| `security.yml` | every PR, pushes to `develop`, and weekly | `audit` (`scripts/audit.sh`: `cargo audit`, `cargo deny check advisories bans sources`, `bun audit`) and `gitleaks` (full history scan with `.gitleaks.toml`) |
+| `licence-check.yml` | every PR and pushes to `develop` | `licence-check` (`scripts/licence-check.sh`, allowlist in `deny.toml`) |
 | `kind.yml` | PRs touching `deploy/` or `crates/`, and all PRs to `staging` | chart verification steps 3 to 5 |
 | `deploy-staging.yml` | merge to `staging` | push `:sha-` and `:staging` images, sign, `helm upgrade` staging by digest against the Stoke cluster (kubeconfig from the `STOKE_KUBECONFIG` GitHub Actions secret), smoke suite |
 | `release.yml` | signed `v*` tag | multi-arch images, SBOM, provenance, cosign, model artifact, OCI chart, CLI binaries, self-host tarball, GitHub Release |
 | production deploy | owner, manually | `helm upgrade` by digest with canary, as in the Release Checklist |
 
-Other workflows in the repository: `weekly-fuzz.yml`, `licence-check.yml`, and `licence-sign.yml` (manual `workflow_dispatch` only, protected `licensing` environment, ADR-027). Production promotion and live Stripe keys are owner actions.
+Other workflows planned: `weekly-fuzz.yml` and `licence-sign.yml` (manual `workflow_dispatch` only, protected `licensing` environment, ADR-027). Production promotion and live Stripe keys are owner actions.
 
 ### 16.7 Sprint ownership
 
@@ -1262,8 +1275,11 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── AGENTS.md  CLAUDE.md  SKILLS.md  SOUL.md
 ├── Cargo.toml  Cargo.lock  rust-toolchain.toml  Makefile  .dockerignore
 ├── package.json  bun.lock  tsconfig.base.json  .coverage-thresholds.toml  .gitignore
+├── deny.toml  .gitleaks.toml  .prettierignore  redocly.yaml  clippy.toml  rustfmt.toml  .env.development.example
+├── .githooks/pre-commit
 ├── .github/
-│   ├── workflows/{ci.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-check.yml,licence-sign.yml}
+│   ├── workflows/{ci.yml,security.yml,licence-check.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-sign.yml}
+│   ├── actions/setup/action.yml
 │   ├── ISSUE_TEMPLATE/{task.md,bug_report.md}
 │   ├── pull_request_template.md
 │   └── dependabot.yml
@@ -1290,8 +1306,9 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 │   ├── compose/{docker-compose.dev.yml,docker-compose.local.yml,docker-compose.selfhost.yml,docker-compose.prod.yml}
 │   ├── helm/yuyin/
 │   ├── systemd/yuyin-gateway.service
-│   └── (terraform/ is Next phase and is not created in the current phase)
-├── scripts/{dev.sh,check-versions.sh,bump-version.sh,extract-changelog.sh,validate-fixtures.sh,golden-add.sh,listening-sheet.sh,fetch-models.sh}
+│   └── terraform/{modules/,envs/stage/,envs/prod/}   (empty placeholders; Terraform is Next phase)
+├── scripts/{setup.sh,dev.sh,check-versions.sh,bump-version.sh,extract-changelog.sh,validate-fixtures.sh,golden-add.sh,listening-sheet.sh,fetch-models.sh,audit.sh,licence-check.sh,coverage.sh,coverage-check.py,install-hooks.sh}
+├── tests/{scaffold/,smoke/,ci/}
 └── docs/
     ├── PRD.md  ARCHITECTURE.md  DESIGN.md  SPRINT_PLAN.md  TEST_PLAN.md
     ├── RETROSPECTIVES.md  OWNER_CHECKLIST.md  THREAT_MODEL.md  DATA_INVENTORY.md
