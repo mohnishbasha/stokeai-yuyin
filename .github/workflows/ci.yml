@@ -33,7 +33,7 @@ jobs:
         runner: [ubuntu-24.04, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
         with:
           rust-cache-key: ${{ matrix.runner }}
@@ -46,7 +46,7 @@ jobs:
     needs: lint-and-typecheck
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - name: Unit tests (cargo test, vitest, pytest)
         run: make test
@@ -64,7 +64,7 @@ jobs:
     needs: unit-tests
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
         with:
           rust-cache-key: coverage
@@ -102,7 +102,7 @@ jobs:
       DATABASE_URL: postgres://yuyin:yuyin-ci-only@127.0.0.1:5432/yuyin
       VALKEY_URL: redis://127.0.0.1:6379
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - name: Service containers reachable
         run: |
@@ -122,7 +122,7 @@ jobs:
     needs: unit-tests
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.4
@@ -137,7 +137,7 @@ jobs:
     needs: integration-tests
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - name: Dev stack end to end (scripts/dev.sh, all services, /healthz)
         run: bash tests/scaffold/e2e_devstack_startup_allservices_healthzreturns200.sh
@@ -152,7 +152,7 @@ jobs:
     if: github.event_name == 'pull_request' && (github.base_ref == 'staging' || github.base_ref == 'main')
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: All manifests match VERSION
         run: scripts/check-versions.sh
 
