@@ -1,0 +1,10 @@
+[package]
+name = "yuyin-count-wasm"
+description = "WASM build of the character counter for the console."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]

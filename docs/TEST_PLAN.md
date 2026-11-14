@@ -123,8 +123,8 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| SC-01 | smoke_scaffold_rust_workspace_clean_clone_builds | Smoke | Given a clean clone, when `cargo build --workspace` runs, then it exits 0 | ARCHITECTURE repo layout | S0 | ⚠️ Deferred |
-| SC-02 | smoke_scaffold_bun_workspace_clean_clone_builds | Smoke | Given a clean clone, when `bun install && bun run build` runs, then it exits 0 | ARCHITECTURE repo layout | S0 | ⚠️ Deferred |
+| SC-01 | smoke_scaffold_rust_workspace_clean_clone_builds | Smoke | Given a clean clone, when `cargo build --workspace` runs, then it exits 0 | ARCHITECTURE repo layout | S0 | ✅ Automated |
+| SC-02 | smoke_scaffold_bun_workspace_clean_clone_builds | Smoke | Given a clean clone, when `bun install && bun run build` runs, then it exits 0 | ARCHITECTURE repo layout | S0 | ✅ Automated |
 | SC-03 | smoke_scaffold_lint_rust_fmt_clippy_pass | Smoke | Given the scaffold, when `cargo fmt --check` and `cargo clippy --workspace -- -D warnings` run, then both exit 0 | NFR-014 | S0 | ⚠️ Deferred |
 | SC-04 | smoke_scaffold_lint_ts_lint_typecheck_pass | Smoke | Given the scaffold, when `bun run lint` and `bun run type-check` run, then both exit 0 with 0 warnings | ARCHITECTURE repo layout | S0 | ⚠️ Deferred |
 | SC-05 | it_ci_lint_gate_deliberate_error_fails | Integration | Given a PR with a deliberate lint error, when CI runs, then the lint job fails | SPRINT_PLAN S0-T04 | S0 | ⚠️ Deferred |

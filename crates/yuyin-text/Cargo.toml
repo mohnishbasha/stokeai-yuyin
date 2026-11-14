@@ -1,0 +1,10 @@
+[package]
+name = "yuyin-text"
+description = "Text front-end: language tagging, normalisation, transliteration, segmentation."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
