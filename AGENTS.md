@@ -39,8 +39,11 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── AGENTS.md  CLAUDE.md  SKILLS.md  SOUL.md
 ├── Cargo.toml  Cargo.lock  rust-toolchain.toml  Makefile  .dockerignore
 ├── package.json  bun.lock  tsconfig.base.json  .coverage-thresholds.toml  .gitignore
+├── deny.toml  .gitleaks.toml  .prettierignore  redocly.yaml  clippy.toml  rustfmt.toml  .env.development.example
+├── .githooks/pre-commit
 ├── .github/
-│   ├── workflows/{ci.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-check.yml,security.yml}
+│   ├── workflows/{ci.yml,security.yml,licence-check.yml,release.yml,deploy-staging.yml,weekly-fuzz.yml,licence-sign.yml}
+│   ├── actions/setup/action.yml
 │   ├── ISSUE_TEMPLATE/{task.md,bug_report.md}
 │   ├── pull_request_template.md
 │   └── dependabot.yml
@@ -67,8 +70,9 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 │   ├── compose/{docker-compose.dev.yml,docker-compose.local.yml,docker-compose.selfhost.yml,docker-compose.prod.yml}
 │   ├── helm/yuyin/
 │   ├── systemd/yuyin-gateway.service
-│   └── terraform/{modules/,envs/stage/,envs/prod/}
-├── scripts/{dev.sh,check-versions.sh,bump-version.sh,extract-changelog.sh,validate-fixtures.sh,golden-add.sh,listening-sheet.sh,fetch-models.sh}
+│   └── terraform/{modules/,envs/stage/,envs/prod/}   (empty placeholders; Terraform is Next phase)
+├── scripts/{setup.sh,dev.sh,check-versions.sh,bump-version.sh,extract-changelog.sh,validate-fixtures.sh,golden-add.sh,listening-sheet.sh,fetch-models.sh,audit.sh,licence-check.sh,coverage.sh,coverage-check.py,install-hooks.sh}
+├── tests/{scaffold/,smoke/,ci/}
 └── docs/
     ├── PRD.md  ARCHITECTURE.md  DESIGN.md  SPRINT_PLAN.md  TEST_PLAN.md
     ├── RETROSPECTIVES.md  OWNER_CHECKLIST.md  THREAT_MODEL.md  DATA_INVENTORY.md

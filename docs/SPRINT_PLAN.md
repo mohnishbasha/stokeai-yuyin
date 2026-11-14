@@ -46,7 +46,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `cargo build --workspace` exits 0 on a clean clone
   - [ ] `bun install && bun run build` exits 0 on a clean clone
   - [ ] Every crate and package has one passing placeholder test
-- **Test scenarios to add:** unit_workspace_crates_placeholder_compiles_passes, unit_workspace_packages_placeholder_builds_passes, e2e_repo_cleanclone_build_exits_zero
+- **Test scenarios to add:** smoke_scaffold_rust_workspace_clean_clone_builds, smoke_scaffold_bun_workspace_clean_clone_builds
 
 ### S0-T02: Rust workspace and toolchain
 - **Issue:** #2
@@ -60,7 +60,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `cargo clippy --workspace -- -D warnings` exits 0
   - [ ] `unsafe_code` is forbid in all crates except the two named, where it is deny with documented allows
   - [ ] Toolchain version is pinned in `rust-toolchain.toml`
-- **Test scenarios to add:** unit_workspace_lints_unsafecode_forbidden_rejectsunsafe, unit_workspace_toolchain_pinned_matchesfile
+- **Test scenarios to add:** smoke_workspace_lints_unsafecode_forbidden_rejectsunsafe, smoke_workspace_toolchain_pinned_matchesfile, smoke_scaffold_lint_rust_fmt_clippy_pass
 
 ### S0-T03: Bun workspace, TypeScript base config, ESLint, Prettier
 - **Issue:** #3
@@ -75,7 +75,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `bun run test` exits 0
   - [ ] `bun run build` exits 0
   - [ ] Base tsconfig enables the three strictness flags
-- **Test scenarios to add:** unit_tsconfig_base_strictflags_enabled, unit_workspace_scripts_allfour_exitzero
+- **Test scenarios to add:** smoke_tsconfig_base_strictflags_enabled, smoke_workspace_scripts_allfour_exitzero, smoke_scaffold_lint_ts_lint_typecheck_pass
 
 ### S0-T04: CI pipeline
 - **Issue:** #4
@@ -89,7 +89,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] A PR that drops coverage under threshold fails CI
   - [ ] Job dependency graph matches the list above
   - [ ] Stub jobs for Sprint 8 and Sprint 10 are present and skipped with a clear message
-- **Test scenarios to add:** e2e_ci_lintjob_deliberateerror_failspr, e2e_ci_coveragejob_belowthreshold_failspr, contract_ci_workflow_jobgraph_matchesspec
+- **Test scenarios to add:** it_ci_lint_gate_deliberate_error_fails, it_ci_coverage_gate_below_threshold_fails, contract_ci_workflow_jobgraph_matchesspec, e2e_ci_lintjob_deliberateerror_failspr, e2e_ci_coveragejob_belowthreshold_failspr
 
 ### S0-T05: Version source of truth and scripts
 - **Issue:** #5
@@ -103,7 +103,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] Changing one package version makes `check-versions.sh` exit 1 naming the file
   - [ ] `extract-changelog.sh` extracts the section for a given version
   - [ ] `CHANGELOG.md` has an `[Unreleased]` section
-- **Test scenarios to add:** unit_scripts_checkversions_mismatch_exitsonenamesfile, unit_scripts_checkversions_allmatch_exitszero, unit_scripts_extractchangelog_knownversion_returnssection
+- **Test scenarios to add:** smoke_scripts_check_versions_aligned_exits_0, smoke_scripts_check_versions_one_mismatch_exits_1_names_file, smoke_scripts_extract_changelog_unreleased_section_prints
 
 ### S0-T06: Agent repository files
 - **Issue:** #6
@@ -117,7 +117,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] Each `run.sh` is executable
   - [ ] Each `run.sh` exits 0 on the scaffold
   - [ ] Content satisfies Appendix J
-- **Test scenarios to add:** unit_agent_skills_runsh_executable_exitszero, unit_agent_files_required_present_allexist
+- **Test scenarios to add:** smoke_agent_skills_run_sh_exit_0, smoke_agent_files_required_present_allexist
 
 ### S0-T07: Licence and legal files
 - **Issue:** #7
@@ -130,7 +130,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `LICENSE`, `EULA.md`, `THIRD_PARTY_LICENSES.md`, `MODELS.md` exist
   - [ ] EULA is marked as a draft needing attorney review
   - [ ] CI job `licence-check` fails on any dependency with a licence outside the allowlist (MIT, Apache-2.0, BSD-2, BSD-3, ISC, Zlib, Unicode, MPL-2.0 for unmodified use)
-- **Test scenarios to add:** e2e_ci_licencecheck_disallowedlicence_fails, e2e_ci_licencecheck_allowlistonly_passes
+- **Test scenarios to add:** smoke_legal_files_present_eula_terms_present, smoke_legal_licence_check_workflow_wired_runs_script, smoke_legal_no_model_weights_tracked, smoke_scaffold_licence_check_all_deps_allowed_passes
 
 ### S0-T08: Local dev stack
 - **Issue:** #8
@@ -143,7 +143,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `scripts/dev.sh` brings up the stack
   - [ ] `/healthz` on the placeholder gateway returns 200
   - [ ] `.env.development.example` is committed and contains no real secrets
-- **Test scenarios to add:** e2e_devstack_startup_allservices_healthzreturns200, unit_env_example_noSecrets_passesscan
+- **Test scenarios to add:** e2e_devstack_startup_allservices_healthzreturns200, unit_env_example_nosecrets_passesscan
 
 ### S0-T09: OpenAPI skeleton and contract lint
 - **Issue:** #9
@@ -156,7 +156,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] Every contract path is present in the file
   - [ ] Lint exits 0 in CI
   - [ ] The file is documented as the single source for SDK types and docs reference
-- **Test scenarios to add:** contract_openapi_spec_lint_exitszero, contract_openapi_paths_allcontractpaths_present
+- **Test scenarios to add:** smoke_contract_openapi_skeleton_lint_passes, smoke_contract_openapi_paths_allcontractpaths_present, smoke_contract_openapi_operationids_unique_present, smoke_scripts_check_versions_openapi_mismatch_exits_1_names_file
 
 ### S0-T10: Dependabot, audit jobs, secret scanning
 - **Issue:** #10
@@ -170,7 +170,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `cargo audit` and `cargo deny` run in CI
   - [ ] npm audit equivalent runs in CI
   - [ ] A commit containing a fake `yy_live_` secret is rejected
-- **Test scenarios to add:** e2e_secretscan_fakeliveKey_commitrejected, e2e_ci_audit_knownvuln_fails
+- **Test scenarios to add:** smoke_secretscan_precommit_fake_key_blocks_commit, smoke_supplychain_audit_script_current_tree_passes, smoke_supplychain_dependabot_five_ecosystems_configured, it_ci_gitleaks_fake_live_key_rejected
 
 ### S0-T11: Owner checklist
 - **Issue:** #11
@@ -196,7 +196,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] `make dev` brings up the dev stack
   - [ ] `make help` lists every target from its comments
   - [ ] Unbuilt targets print "available from Sprint N" and exit 0
-- **Test scenarios to add:** e2e_make_setupbuildcheck_freshcontainer_exitszero, unit_make_help_alltargets_listed, unit_make_futuretarget_notbuilt_printsavailablemessage
+- **Test scenarios to add:** e2e_make_setupbuildcheck_freshcontainer_exitszero, unit_make_help_alltargets_listed, smoke_make_help_targets_not_yet_built_exit_0
 
 ### S0-T13: Container skeletons and image build in CI
 - **Issue:** #13
@@ -211,7 +211,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] A test asserts the image user is non-root
   - [ ] A test asserts no `.env` file exists in any layer
   - [ ] CI builds linux/amd64 and linux/arm64 on every PR without pushing
-- **Test scenarios to add:** e2e_image_gateway_healthz_returns200, security_image_labels_versionandcommit_present, security_image_user_nonroot_asserted, security_image_layers_noenvfile_asserted
+- **Test scenarios to add:** e2e_image_gateway_healthz_returns200, e2e_image_gateway_labels_versionandcommit_present, e2e_image_gateway_user_nonroot_asserted, e2e_image_layers_noenvfile_asserted, e2e_image_multiarch_amd64_arm64_build
 
 ### Sprint 0 gate
 - [ ] `make setup && make build && make check` passes on a clean clone
