@@ -15,7 +15,10 @@ mod usage;
 mod voices;
 mod ws;
 
+use std::future::Future;
+
 use clap::{Parser, Subcommand};
+use tokio::net::TcpListener;
 use tracing_subscriber::EnvFilter;
 
 /// Version and commit reported by `--version` (`YUYIN_GIT_SHA` is set at build time).
@@ -36,46 +39,68 @@ enum Command {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    tracing_subscriber::fmt()
+    init_tracing();
+    let shutdown = shutdown_signal()?;
+    run(Cli::parse(), shutdown).await
+}
+
+/// Logs to stderr, filtered by `RUST_LOG` (default `info`). A second call is a no-op.
+fn init_tracing() {
+    let _ = tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()))
-        .init();
-    let cli = Cli::parse();
-    let serve = match cli.command {
-        Some(Command::Serve(cfg)) => cfg,
-        None => config::ServeConfig::parse_from(["serve"]),
-    };
-    let listener = tokio::net::TcpListener::bind(serve.bind).await?;
-    tracing::info!(bind = %serve.bind, version = LONG_VERSION, "gateway listening");
+        .try_init();
+}
+
+/// Binds the configured address and serves until `shutdown` resolves.
+async fn run(cli: Cli, shutdown: impl Future<Output = ()> + Send + 'static) -> anyhow::Result<()> {
+    let cfg = serve_config(cli);
+    let listener = TcpListener::bind(cfg.bind).await?;
+    serve(listener, shutdown).await
+}
+
+/// Serves the router on `listener` until `shutdown` resolves.
+async fn serve(
+    listener: TcpListener,
+    shutdown: impl Future<Output = ()> + Send + 'static,
+) -> anyhow::Result<()> {
+    tracing::info!(bind = %listener.local_addr()?, version = LONG_VERSION, "gateway listening");
     axum::serve(listener, rest::router())
-        .with_graceful_shutdown(shutdown_signal())
+        .with_graceful_shutdown(shutdown)
         .await?;
     Ok(())
 }
 
-/// Resolves on Ctrl-C or SIGTERM. Draining arrives in Sprint 3.
-async fn shutdown_signal() {
-    let ctrl_c = async {
-        let _ = tokio::signal::ctrl_c().await;
-    };
+/// `serve` is the default subcommand.
+fn serve_config(cli: Cli) -> config::ServeConfig {
+    match cli.command {
+        Some(Command::Serve(cfg)) => cfg,
+        None => config::ServeConfig::parse_from(["serve"]),
+    }
+}
+
+/// Registers the Ctrl-C and SIGTERM handlers now and returns a future that resolves on
+/// either. Draining arrives in Sprint 3.
+fn shutdown_signal() -> std::io::Result<impl Future<Output = ()>> {
     #[cfg(unix)]
-    let term = async {
-        match tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate()) {
-            Ok(mut s) => {
-                s.recv().await;
-            }
-            Err(e) => {
-                tracing::warn!(error = %e, "cannot listen for SIGTERM");
+    let mut term = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
+    Ok(async move {
+        let ctrl_c = async {
+            if tokio::signal::ctrl_c().await.is_err() {
                 std::future::pending::<()>().await;
             }
+        };
+        #[cfg(unix)]
+        let term = async move {
+            term.recv().await;
+        };
+        #[cfg(not(unix))]
+        let term = std::future::pending::<()>();
+        tokio::select! {
+            () = ctrl_c => {},
+            () = term => {},
         }
-    };
-    #[cfg(not(unix))]
-    let term = std::future::pending::<()>();
-    tokio::select! {
-        () = ctrl_c => {},
-        () = term => {},
-    }
-    tracing::info!("shutdown signal received");
+        tracing::info!("shutdown signal received");
+    })
 }
 
 #[cfg(test)]
@@ -91,5 +116,68 @@ mod tests {
     fn test_main_cli_no_subcommand_parses() {
         let cli = Cli::try_parse_from(["yuyin-gateway"]).unwrap();
         assert!(cli.command.is_none());
+    }
+
+    #[test]
+    fn test_main_serve_config_no_subcommand_uses_default_bind() {
+        let cli = Cli::try_parse_from(["yuyin-gateway"]).unwrap();
+        assert_eq!(serve_config(cli).bind.to_string(), config::DEFAULT_BIND);
+    }
+
+    #[test]
+    fn test_main_serve_config_bind_flag_overrides_default() {
+        let cli = Cli::try_parse_from(["yuyin-gateway", "serve", "--bind", "127.0.0.1:9"]).unwrap();
+        assert_eq!(serve_config(cli).bind.to_string(), "127.0.0.1:9");
+    }
+
+    #[tokio::test]
+    async fn test_main_serve_healthz_then_shutdown_returns_ok() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        let (tx, rx) = tokio::sync::oneshot::channel::<()>();
+        let server = tokio::spawn(serve(listener, async {
+            let _ = rx.await;
+        }));
+        let mut stream = tokio::net::TcpStream::connect(addr).await.unwrap();
+        stream
+            .write_all(b"GET /healthz HTTP/1.1\r\nHost: test\r\nConnection: close\r\n\r\n")
+            .await
+            .unwrap();
+        let mut response = String::new();
+        stream.read_to_string(&mut response).await.unwrap();
+        assert!(response.starts_with("HTTP/1.1 200"), "{response}");
+        tx.send(()).unwrap();
+        server.await.unwrap().unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_main_run_shutdown_ready_returns_ok() {
+        init_tracing();
+        init_tracing();
+        let cli = Cli::try_parse_from(["yuyin-gateway", "serve", "--bind", "127.0.0.1:0"]).unwrap();
+        run(cli, std::future::ready(())).await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_main_run_address_in_use_returns_error() {
+        let taken = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = taken.local_addr().unwrap().to_string();
+        let cli = Cli::try_parse_from(["yuyin-gateway", "serve", "--bind", &addr]).unwrap();
+        assert!(run(cli, std::future::pending()).await.is_err());
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    async fn test_main_shutdown_signal_sigterm_resolves() {
+        let shutdown = shutdown_signal().unwrap();
+        let status = std::process::Command::new("kill")
+            .args(["-TERM", &std::process::id().to_string()])
+            .status()
+            .unwrap();
+        assert!(status.success());
+        tokio::time::timeout(std::time::Duration::from_secs(5), shutdown)
+            .await
+            .unwrap();
     }
 }

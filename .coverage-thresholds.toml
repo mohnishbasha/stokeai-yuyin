@@ -1,0 +1,22 @@
+# Line coverage thresholds in percent. CI fails when a measured value drops below one.
+# Mirrored in docs/TEST_PLAN.md section 3; change both together.
+# A path that does not exist yet, or a crate with no instrumented lines yet, is reported
+# and skipped.
+[rust]
+yuyin-text = 92
+yuyin-audio = 85
+yuyin-meter = 90
+yuyin-engine = 75
+yuyin-gateway = 80
+yuyin-licence = 90
+
+[typescript]
+"apps/console/src/lib" = 85
+"apps/console/src/components" = 75
+"packages/sdk-ts/src" = 85
+"packages/cli/src" = 80
+"packages/mcp/src" = 80
+"integrations/pi/src" = 70
+
+[python]
+"packages/sdk-python/yuyin" = 85
