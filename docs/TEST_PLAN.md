@@ -507,7 +507,7 @@ Normalisation is deterministic: the same input and options give the same output 
 | AK-20 | it_tenant_isolation_forged_tenant_id_in_body_ignored | Integration | Given a forged `tenant_id` in a request body, when processed, then it is ignored and the caller's tenant is used | NFR-008 | S4 | ⚠️ Deferred |
 | AK-21 | it_roles_owner_admin_developer_billing_permissions | Integration | Given each role, when performing console actions, then permissions match the role matrix (for example billing cannot create keys) | FR-021 | S4 | ⚠️ Deferred |
 | AK-22 | it_auth_rate_limit_20_rps_per_key_429 | Integration | Given 21 requests in one second, when the 21st arrives, then 429 `rate_limited` | FR-019 | S4 | ⚠️ Deferred |
-| AK-23 | it_secrets_scan_repo_has_no_secret_material | Integration | Given the repository, when scanned, then no secrets exist and runtime secrets come from the secret store | NFR-016 | S0 | ⚠️ Deferred |
+| AK-23 | it_secrets_scan_repo_has_no_secret_material | Integration | Given the repository, when scanned, then gitleaks finds no secrets in the full history and no environment file (other than `*.example`) or model weight is tracked. Runtime secrets coming from the secret store is checked when the gateway reads secrets (Sprint 3 onward) | NFR-016 | S0 | ✅ Automated |
 
 ### 6.10 Metering and ledger
 
