@@ -1268,6 +1268,20 @@ Model weights are not committed to git. `scripts/fetch-models.sh` downloads them
 
 ---
 
+### 16.9 Versioning
+
+One semantic version covers the gateway, console, SDKs, CLI, MCP server, and Helm chart. The root `VERSION` file is the single source of truth. `scripts/check-versions.sh` compares every derived version field with it and exits 1 naming the first file that differs; CI runs it on PRs to `staging` and `main`, and `make check` runs it locally.
+
+| Derived field | Checked from |
+|---|---|
+| `Cargo.toml` `[workspace.package] version` (every crate inherits it) | Sprint 0 |
+| Root `package.json` and `apps/console`, `apps/docs`, `packages/sdk-ts`, `packages/cli`, `packages/mcp`, `integrations/pi` `package.json` | Sprint 0 |
+| `packages/sdk-python/pyproject.toml` | Sprint 0 |
+| `api/openapi.yaml` `info.version` | Sprint 0 (S0-T09) |
+| `deploy/helm/yuyin/Chart.yaml` `version` and `appVersion` | Sprint 3 |
+
+A file is added to the script in the PR that creates it, never skipped silently. `apps/docs` is checked although the build prompt's script omits it, because it carries a version field. `CHANGELOG.md` follows Keep a Changelog with an `[Unreleased]` section that is always present; `scripts/extract-changelog.sh <version>` prints one section for release notes.
+
 ## 17. Failure modes table
 
 Policy seed: if Redis is down, the gateway fails closed for organizations without a recent cached balance and serves others for up to 60 seconds from the local cache, then fails closed.
