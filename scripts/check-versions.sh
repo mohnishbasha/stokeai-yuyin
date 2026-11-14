@@ -18,8 +18,8 @@ for pkg in apps/console apps/docs packages/sdk-ts packages/cli packages/mcp inte
   check "$(jq -r '.version' "$pkg/package.json")" "$pkg/package.json"
 done
 check "$(grep -m1 '^version' packages/sdk-python/pyproject.toml | cut -d'"' -f2)" "packages/sdk-python/pyproject.toml"
+check "$(awk '/^info:/{i=1;next} i&&/^  version:/{print $2;exit}' api/openapi.yaml)" "api/openapi.yaml info.version"
 # Added in the sprint that creates them (never skipped silently):
-#   api/openapi.yaml info.version            S0-T09
 #   deploy/helm/yuyin/Chart.yaml version     Sprint 3
 #   deploy/helm/yuyin/Chart.yaml appVersion  Sprint 3
 

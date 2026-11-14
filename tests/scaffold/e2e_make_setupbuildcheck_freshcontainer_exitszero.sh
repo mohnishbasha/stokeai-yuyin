@@ -6,7 +6,7 @@ src="$(clean_clone)"
 rust="$(sed -nE 's/^channel = "(.*)"/\1/p' "$ROOT/rust-toolchain.toml")"
 bun="$(bun --version)"
 docker run --rm -v "$src:/src" -w /src "rust:${rust}-bookworm" bash -euc "
-  apt-get update -qq && apt-get install -y -qq unzip >/dev/null
+  apt-get update -qq && apt-get install -y -qq unzip jq >/dev/null
   curl -fsSL https://bun.sh/install | bash -s bun-v${bun} >/dev/null
   curl -LsSf https://astral.sh/uv/install.sh | sh >/dev/null
   export PATH=\$HOME/.bun/bin:\$HOME/.local/bin:\$PATH

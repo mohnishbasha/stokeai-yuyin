@@ -19,7 +19,7 @@ The root Makefile is the documented entry point; `make help` lists every target.
 | Test, e2e | `make e2e` | `bash tests/scaffold/e2e_*.sh` (needs Docker) |
 | Scaffold smoke tests | none | `bash tests/scaffold/run.sh` |
 | Smoke, running stack | `make smoke` | `bash tests/smoke/run.sh` (URL from `YUYIN_SMOKE_URL`) |
-| Lint | `make lint` | `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && bun run lint` |
+| Lint | `make lint` | `cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && bun run lint && bun run lint:openapi` |
 | Type-check | `make type-check` | `bun run type-check` |
 | Benchmarks | `make bench` | harness arrives in Sprint 3 (S3-T13) |
 | Version check | `make check-versions` | `scripts/check-versions.sh` |

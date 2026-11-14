@@ -81,10 +81,11 @@ dist-selfhost: ## self-host tarball with checksums
 ##@ Verify
 
 .PHONY: lint
-lint: ## cargo fmt and clippy, eslint and prettier
+lint: ## cargo fmt and clippy, eslint and prettier, OpenAPI lint
 	cargo fmt --all --check
 	cargo clippy --workspace --all-targets --locked -- -D warnings
 	bun run lint
+	bun run lint:openapi
 
 .PHONY: type-check
 type-check: ## TypeScript type check for every package
