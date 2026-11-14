@@ -42,10 +42,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "Repository layout"; BUILD_PROMPT Appendix B
 - **Description:** Create the monorepo tree defined in Appendix B (Rust crates, apps, packages, integrations, deploy, bench, api, docs, scripts, config). Every crate and package compiles with a placeholder implementation and contains one passing test, so later sprints only fill in behaviour.
 - **Acceptance criteria:**
-  - [ ] The directory tree matches Appendix B
-  - [ ] `cargo build --workspace` exits 0 on a clean clone
-  - [ ] `bun install && bun run build` exits 0 on a clean clone
-  - [ ] Every crate and package has one passing placeholder test
+  - [x] The directory tree matches Appendix B
+  - [x] `cargo build --workspace` exits 0 on a clean clone
+  - [x] `bun install && bun run build` exits 0 on a clean clone
+  - [x] Every crate and package has one passing placeholder test
 - **Test scenarios to add:** smoke_scaffold_rust_workspace_clean_clone_builds, smoke_scaffold_bun_workspace_clean_clone_builds
 
 ### S0-T02: Rust workspace and toolchain
@@ -56,10 +56,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "Technology choices"
 - **Description:** Add `rust-toolchain.toml` pinned to current stable. Workspace `Cargo.toml` with `[workspace.package]` version, edition 2021 or later, and shared lints: `unsafe_code = "forbid"` everywhere except `yuyin-engine` and `yuyin-audio`, where FFI may need it and the lint is `deny` with documented allows. Add `rustfmt.toml` and `clippy.toml`.
 - **Acceptance criteria:**
-  - [ ] `cargo fmt --check` exits 0
-  - [ ] `cargo clippy --workspace -- -D warnings` exits 0
-  - [ ] `unsafe_code` is forbid in all crates except the two named, where it is deny with documented allows
-  - [ ] Toolchain version is pinned in `rust-toolchain.toml`
+  - [x] `cargo fmt --check` exits 0
+  - [x] `cargo clippy --workspace -- -D warnings` exits 0
+  - [x] `unsafe_code` is forbid in all crates except the two named, where it is deny with documented allows
+  - [x] Toolchain version is pinned in `rust-toolchain.toml`
 - **Test scenarios to add:** smoke_workspace_lints_unsafecode_forbidden_rejectsunsafe, smoke_workspace_toolchain_pinned_matchesfile, smoke_scaffold_lint_rust_fmt_clippy_pass
 
 ### S0-T03: Bun workspace, TypeScript base config, ESLint, Prettier
@@ -70,11 +70,11 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "Technology choices"
 - **Description:** Root `package.json` with workspaces `apps/*`, `packages/*`, `integrations/*`. `tsconfig.base.json` with `strict`, `noUncheckedIndexedAccess`, and `exactOptionalPropertyTypes`. ESLint and Prettier configured. Scripts: `lint`, `type-check`, `test`, `build`.
 - **Acceptance criteria:**
-  - [ ] `bun run lint` exits 0
-  - [ ] `bun run type-check` exits 0
-  - [ ] `bun run test` exits 0
-  - [ ] `bun run build` exits 0
-  - [ ] Base tsconfig enables the three strictness flags
+  - [x] `bun run lint` exits 0
+  - [x] `bun run type-check` exits 0
+  - [x] `bun run test` exits 0
+  - [x] `bun run build` exits 0
+  - [x] Base tsconfig enables the three strictness flags
 - **Test scenarios to add:** smoke_tsconfig_base_strictflags_enabled, smoke_workspace_scripts_allfour_exitzero, smoke_scaffold_lint_ts_lint_typecheck_pass
 
 ### S0-T04: CI pipeline
@@ -85,10 +85,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "CI and release pipeline"; TEST_PLAN "Coverage thresholds"
 - **Description:** Create `.github/workflows/ci.yml` with the jobs: `lint-and-typecheck` (ubuntu amd64 and arm64 runners; fmt, clippy, eslint, tsc), `unit-tests` (needs lint; cargo test, vitest, pytest), `coverage` (needs unit; tarpaulin and vitest coverage, fails under thresholds), `integration-tests` (needs unit; Postgres and Valkey service containers), `contract-tests` (needs unit; OpenAPI lint, SDK type drift check), `e2e-tests` (needs integration; Playwright against local stack), `version-check` (PRs to staging and main; `scripts/check-versions.sh`), `cli-matrix` (macOS, Linux, Windows; builds and smoke-tests the CLI, active from Sprint 8), `harness-smoke-tests` (staging and release only, active from Sprint 10). Jobs for later sprints exist as documented stubs.
 - **Acceptance criteria:**
-  - [ ] A PR with a deliberate lint error fails CI
-  - [ ] A PR that drops coverage under threshold fails CI
-  - [ ] Job dependency graph matches the list above
-  - [ ] Stub jobs for Sprint 8 and Sprint 10 are present and skipped with a clear message
+  - [x] A PR with a deliberate lint error fails CI
+  - [x] A PR that drops coverage under threshold fails CI
+  - [x] Job dependency graph matches the list above
+  - [x] Stub jobs for Sprint 8 and Sprint 10 are present and skipped with a clear message
 - **Test scenarios to add:** it_ci_lint_gate_deliberate_error_fails, it_ci_coverage_gate_below_threshold_fails, contract_ci_workflow_jobgraph_matchesspec, e2e_ci_lintjob_deliberateerror_failspr, e2e_ci_coveragejob_belowthreshold_failspr
 
 ### S0-T05: Version source of truth and scripts
@@ -99,10 +99,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** BUILD_PROMPT "Versioning, Changelog, and Release"; ARCHITECTURE "Versioning"
 - **Description:** Root `VERSION` file containing `0.1.0`. Add `scripts/check-versions.sh` and `scripts/extract-changelog.sh` exactly as given in the Versioning section. Add `CHANGELOG.md` with an `[Unreleased]` section.
 - **Acceptance criteria:**
-  - [ ] `VERSION` contains `0.1.0`
-  - [ ] Changing one package version makes `check-versions.sh` exit 1 naming the file
-  - [ ] `extract-changelog.sh` extracts the section for a given version
-  - [ ] `CHANGELOG.md` has an `[Unreleased]` section
+  - [x] `VERSION` contains `0.1.0`
+  - [x] Changing one package version makes `check-versions.sh` exit 1 naming the file
+  - [x] `extract-changelog.sh` extracts the section for a given version
+  - [x] `CHANGELOG.md` has an `[Unreleased]` section
 - **Test scenarios to add:** smoke_scripts_check_versions_aligned_exits_0, smoke_scripts_check_versions_one_mismatch_exits_1_names_file, smoke_scripts_extract_changelog_unreleased_section_prints
 
 ### S0-T06: Agent repository files
@@ -113,10 +113,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** BUILD_PROMPT Appendix J; ARCHITECTURE "Repository layout"
 - **Description:** Generate `.gitignore`, `AGENTS.md`, `CLAUDE.md`, `SKILLS.md`, `SOUL.md`, and the skills `.agent/skills/run-tests/{SKILL.md,run.sh}`, `.agent/skills/check-types/{SKILL.md,run.sh}`, `.agent/skills/run-golden/{SKILL.md,run.sh}` (runs the normalisation golden corpus), and `.agent/skills/run-bench/{SKILL.md,run.sh}`. Content requirements are in Appendix J.
 - **Acceptance criteria:**
-  - [ ] All listed files exist
-  - [ ] Each `run.sh` is executable
-  - [ ] Each `run.sh` exits 0 on the scaffold
-  - [ ] Content satisfies Appendix J
+  - [x] All listed files exist
+  - [x] Each `run.sh` is executable
+  - [x] Each `run.sh` exits 0 on the scaffold
+  - [x] Content satisfies Appendix J
 - **Test scenarios to add:** smoke_agent_skills_run_sh_exit_0, smoke_agent_files_required_present_allexist
 
 ### S0-T07: Licence and legal files
@@ -127,9 +127,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD "Licensing"; ARCHITECTURE "Dependency licence policy"
 - **Description:** `LICENSE` (proprietary, all rights reserved, Serverless Ventures LLC, 2026). `EULA.md` for the self-host edition: governing law Texas, venue Williamson County, contact legal@serverlessvc.com, liability cap at trailing 12 months of fees, and a clause reserving the right to change pricing and tiers. `THIRD_PARTY_LICENSES.md` generated by `cargo about` and a licence checker for npm, plus a hand-maintained `MODELS.md` section for model and voice licences. Mark the EULA as a draft needing attorney review. Add the CI job `licence-check`.
 - **Acceptance criteria:**
-  - [ ] `LICENSE`, `EULA.md`, `THIRD_PARTY_LICENSES.md`, `MODELS.md` exist
-  - [ ] EULA is marked as a draft needing attorney review
-  - [ ] CI job `licence-check` fails on any dependency with a licence outside the allowlist (MIT, Apache-2.0, BSD-2, BSD-3, ISC, Zlib, Unicode, MPL-2.0 for unmodified use)
+  - [x] `LICENSE`, `EULA.md`, `THIRD_PARTY_LICENSES.md`, `MODELS.md` exist
+  - [x] EULA is marked as a draft needing attorney review
+  - [x] CI job `licence-check` fails on any dependency with a licence outside the allowlist (MIT, Apache-2.0, BSD-2, BSD-3, ISC, Zlib, Unicode, MPL-2.0 for unmodified use)
 - **Test scenarios to add:** smoke_legal_files_present_eula_terms_present, smoke_legal_licence_check_workflow_wired_runs_script, smoke_legal_no_model_weights_tracked, smoke_scaffold_licence_check_all_deps_allowed_passes
 
 ### S0-T08: Local dev stack
@@ -140,9 +140,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "Local development"
 - **Description:** `docker-compose.dev.yml` with Postgres 16, Valkey, and `stripe-mock`. `scripts/dev.sh` starts everything. Commit `.env.development.example`. The placeholder gateway exposes `/healthz`.
 - **Acceptance criteria:**
-  - [ ] `scripts/dev.sh` brings up the stack
-  - [ ] `/healthz` on the placeholder gateway returns 200
-  - [ ] `.env.development.example` is committed and contains no real secrets
+  - [x] `scripts/dev.sh` brings up the stack
+  - [x] `/healthz` on the placeholder gateway returns 200
+  - [x] `.env.development.example` is committed and contains no real secrets
 - **Test scenarios to add:** e2e_devstack_startup_allservices_healthzreturns200, unit_env_example_nosecrets_passesscan
 
 ### S0-T09: OpenAPI skeleton and contract lint
@@ -153,9 +153,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-001, FR-003, FR-012, FR-020; ARCHITECTURE "API contract"
 - **Description:** `api/openapi.yaml` with every path from the contract stubbed. Lint with Spectral or Redocly in CI. The file is the single source for SDK types and the docs reference.
 - **Acceptance criteria:**
-  - [ ] Every contract path is present in the file
-  - [ ] Lint exits 0 in CI
-  - [ ] The file is documented as the single source for SDK types and docs reference
+  - [x] Every contract path is present in the file
+  - [x] Lint exits 0 in CI
+  - [x] The file is documented as the single source for SDK types and docs reference
 - **Test scenarios to add:** smoke_contract_openapi_skeleton_lint_passes, smoke_contract_openapi_paths_allcontractpaths_present, smoke_contract_openapi_operationids_unique_present, smoke_scripts_check_versions_openapi_mismatch_exits_1_names_file
 
 ### S0-T10: Dependabot, audit jobs, secret scanning
@@ -166,10 +166,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "Supply chain"; PRD NFR "Security"
 - **Description:** Dependabot for cargo, npm, pip, GitHub Actions, and Docker. `cargo audit` and `cargo deny` in CI. `bun audit` or equivalent. Gitleaks as a pre-commit hook and in CI.
 - **Acceptance criteria:**
-  - [ ] Dependabot configured for all five ecosystems
-  - [ ] `cargo audit` and `cargo deny` run in CI
-  - [ ] npm audit equivalent runs in CI
-  - [ ] A commit containing a fake `yy_live_` secret is rejected
+  - [x] Dependabot configured for all five ecosystems
+  - [x] `cargo audit` and `cargo deny` run in CI
+  - [x] npm audit equivalent runs in CI
+  - [x] A commit containing a fake `yy_live_` secret is rejected
 - **Test scenarios to add:** smoke_secretscan_precommit_fake_key_blocks_commit, smoke_supplychain_audit_script_current_tree_passes, smoke_supplychain_dependabot_five_ecosystems_configured, it_ci_gitleaks_fake_live_key_rejected
 
 ### S0-T11: Owner checklist
@@ -180,8 +180,8 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** BUILD_PROMPT "Things only the owner does"
 - **Description:** `docs/OWNER_CHECKLIST.md` listing every action only the owner can take, with the sprint by which it is needed: DNS for `yuyin.openstoke.com` subdomains, Stoke cluster access (`STOKE_KUBECONFIG`), Stripe account and products, npm and PyPI org, GHCR access, pricing decision, voice name approval, attorney review of legal pages, and the licence signing key secret. AWS, Clerk, the NileDB or Neon account and Vercel are listed under Next phase, and the trademark check is a Pending TODO at the end of the plan that blocks no gate.
 - **Acceptance criteria:**
-  - [ ] File exists with every item above and a needed-by sprint
-  - [ ] File is linked from the README
+  - [x] File exists with every item above and a needed-by sprint
+  - [x] File is linked from the README
 - **Test scenarios to add:** unit_docs_ownerchecklist_linkedfromreadme_linkresolves
 
 ### S0-T12: Makefile and build entry points
@@ -192,10 +192,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** BUILD_PROMPT "Build and Deployment"; ARCHITECTURE "Build entry points"
 - **Description:** Root `Makefile` with every target listed in the Build and Deployment section. Targets for things that do not exist yet print "available from Sprint N" and exit 0. `make help` is generated from target comments. `make setup` checks prerequisites and reports what is missing.
 - **Acceptance criteria:**
-  - [ ] In a fresh container, `make setup && make build && make check` exits 0
-  - [ ] `make dev` brings up the dev stack
-  - [ ] `make help` lists every target from its comments
-  - [ ] Unbuilt targets print "available from Sprint N" and exit 0
+  - [x] In a fresh container, `make setup && make build && make check` exits 0
+  - [x] `make dev` brings up the dev stack
+  - [x] `make help` lists every target from its comments
+  - [x] Unbuilt targets print "available from Sprint N" and exit 0
 - **Test scenarios to add:** e2e_make_setupbuildcheck_freshcontainer_exitszero, unit_make_help_alltargets_listed, smoke_make_help_targets_not_yet_built_exit_0
 
 ### S0-T13: Container skeletons and image build in CI
@@ -206,23 +206,23 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** BUILD_PROMPT "Build and Deployment" image rules; ARCHITECTURE "Container images"
 - **Description:** `deploy/docker/Dockerfile.gateway` (multi-stage with `cargo-chef`, `slim` and `full` targets), `Dockerfile.console`, and `.dockerignore`. OCI labels wired to `VERSION` and the commit. `make image` works for the placeholder gateway. CI builds both architectures on every PR without pushing.
 - **Acceptance criteria:**
-  - [ ] `docker run` of the placeholder image answers `/healthz`
-  - [ ] A test asserts the OCI labels are present and correct
-  - [ ] A test asserts the image user is non-root
-  - [ ] A test asserts no `.env` file exists in any layer
-  - [ ] CI builds linux/amd64 and linux/arm64 on every PR without pushing
+  - [x] `docker run` of the placeholder image answers `/healthz`
+  - [x] A test asserts the OCI labels are present and correct
+  - [x] A test asserts the image user is non-root
+  - [x] A test asserts no `.env` file exists in any layer
+  - [x] CI builds linux/amd64 and linux/arm64 on every PR without pushing
 - **Test scenarios to add:** e2e_image_gateway_healthz_returns200, e2e_image_gateway_labels_versionandcommit_present, e2e_image_gateway_user_nonroot_asserted, e2e_image_layers_noenvfile_asserted, e2e_image_multiarch_amd64_arm64_build
 
 ### Sprint 0 gate
-- [ ] `make setup && make build && make check` passes on a clean clone
-- [ ] `make dev` starts the local stack and `make smoke` passes against it
-- [ ] `make image` builds for linux/amd64 and linux/arm64 in CI
-- [ ] All five spec docs committed and linked from the README
-- [ ] CI green on `develop`
-- [ ] All agent files present
-- [ ] `check-versions.sh` passes
-- [ ] Licence check passes
-- [ ] Every sprint issue exists on the board
+- [x] `make setup && make build && make check` passes on a clean clone
+- [x] `make dev` starts the local stack and `make smoke` passes against it
+- [x] `make image` builds for linux/amd64 and linux/arm64 in CI
+- [x] All five spec docs committed and linked from the README
+- [x] CI green on `develop`
+- [x] All agent files present
+- [x] `check-versions.sh` passes
+- [x] Licence check passes
+- [x] Every sprint issue exists on the board
 
 ---
 
