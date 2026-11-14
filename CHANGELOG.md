@@ -11,7 +11,9 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 - Monorepo scaffold: Rust workspace, Bun workspace, Python SDK placeholder.
 - Version source of truth (`VERSION`) with `scripts/check-versions.sh` and `scripts/extract-changelog.sh`.
 - Agent repository files: AGENTS.md, CLAUDE.md, SKILLS.md, SOUL.md, and four agent skills.
+- Root `Makefile` with every target from ARCHITECTURE 16.1, `make help`, `scripts/setup.sh`, and a `tests/smoke` suite for `make smoke`.
 - OpenAPI 3.1 skeleton at `api/openapi.yaml` covering every contract path, with Redocly lint (`bun run lint:openapi`) and a version check against `VERSION`.
 - Legal files: proprietary `LICENSE`, draft `EULA.md`, `THIRD_PARTY_LICENSES.md`, `MODELS.md`, and the `licence-check` job (`scripts/licence-check.sh`, `deny.toml`).
 - README with links to the spec docs and the owner checklist.
 - Supply chain checks: Dependabot for five ecosystems, `scripts/audit.sh` (cargo audit, cargo deny, bun audit), a gitleaks config with a `yy_live_`/`yy_test_` rule, a pre-commit hook (`scripts/install-hooks.sh`), and the `security` workflow.
+- CI workflow (`.github/workflows/ci.yml`) with lint and type-check on amd64 and arm64, unit, coverage gate (`scripts/coverage.sh`, `.coverage-thresholds.toml`), integration, contract, and e2e jobs.

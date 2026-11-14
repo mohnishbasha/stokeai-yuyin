@@ -68,3 +68,7 @@ logs/
 
 # Local dev stack state (scripts/dev.sh)
 .dev/
+
+# Local Claude Code state
+.claude/settings.local.json
+.claude/worktrees/
