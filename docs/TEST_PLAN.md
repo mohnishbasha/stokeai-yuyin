@@ -197,19 +197,24 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-MON-01 | golden_hi_money_indian_grouping_lakh_reads_in_hindi | Golden | Given hi text "₹1,25,000", when normalised, then "एक लाख पच्चीस हज़ार रुपये" | FR-007, ARCH pipeline | S1 | ⚠️ Deferred |
-| NM-MON-02 | golden_hi_money_western_grouping_parses_same_value | Golden | Given hi text "₹125,000", when normalised, then the reading equals NM-MON-01 | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-03 | golden_hi_money_paise_reads_rupees_and_paise | Golden | Given hi text "₹250.50", when normalised, then rupees and पैसे are both read | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-04 | golden_hi_money_lakh_crore_suffix_expands | Golden | Given "₹1.5 lakh" and "₹2 Cr", when normalised, then they read as डेढ़ लाख and दो करोड़ रुपये | FR-006, FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-05 | golden_hi_money_rs_trailing_slash_dash_form | Golden | Given "Rs 12,450/-", when normalised, then the trailing "/-" is dropped and the amount read in rupees | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-06 | golden_hi_money_prefix_variants_all_read_rupees | Golden | Given "Rs.", "INR", "रु" prefixes with the same amount, when normalised, then all read identically | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-07 | golden_hinglish_money_amount_in_roman_sentence_reads_hindi_digits | Golden | Given hinglish "Aapka EMI ₹4,500 hai", when normalised, then the amount is read in Hindi in the sentence language | FR-007, FR-004 | S1 | ⚠️ Deferred |
-| NM-MON-08 | golden_en_in_money_indian_grouping_reads_lakh_in_english | Golden | Given en-IN "₹1,25,000", when normalised, then "one lakh twenty-five thousand rupees" | FR-007, FR-006 | S1 | ⚠️ Deferred |
-| NM-MON-09 | golden_en_us_money_usd_with_cents | Golden | Given en-US "$1,234.56", when normalised, then "one thousand two hundred thirty-four dollars and fifty-six cents" | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-10 | golden_en_us_money_singular_one_dollar_one_cent | Golden | Given "$1.01", when normalised, then singular "dollar" and "cent" are used | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-11 | golden_en_us_money_usd_code_suffix | Golden | Given "250 USD", when normalised, then it reads as two hundred fifty US dollars | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-12 | golden_hi_money_usd_in_hindi_sentence_reads_dollar_in_hindi | Golden | Given hi sentence containing "$20", when normalised, then the amount is read in Hindi with डॉलर | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-13 | golden_en_in_money_negative_amount_reads_minus | Golden | Given "-₹500", when normalised, then a spoken "minus" precedes the amount | FR-007 | S1 | ⚠️ Deferred |
+| NM-MON-01 | golden_hi_money_indian_grouping_lakh_reads_in_hindi | Golden | Given hi text "₹1,25,000", when normalised, then "एक लाख पच्चीस हज़ार रुपये" | FR-007, ARCH pipeline | S1 | ✅ Automated |
+| NM-MON-02 | golden_hi_money_western_grouping_parses_same_value | Golden | Given hi text "₹125,000", when normalised, then the reading equals NM-MON-01 | FR-007 | S1 | ✅ Automated |
+| NM-MON-03 | golden_hi_money_paise_reads_rupees_and_paise | Golden | Given hi text "₹250.50", when normalised, then rupees and पैसे are both read | FR-007 | S1 | ✅ Automated |
+| NM-MON-04 | golden_hi_money_lakh_crore_suffix_expands | Golden | Given "₹1.5 lakh" and "₹2 Cr", when normalised, then they read as डेढ़ लाख and दो करोड़ रुपये | FR-006, FR-007 | S1 | ✅ Automated |
+| NM-MON-05 | golden_hi_money_rs_trailing_slash_dash_form | Golden | Given "Rs 12,450/-", when normalised, then the trailing "/-" is dropped and the amount read in rupees | FR-007 | S1 | ✅ Automated |
+| NM-MON-06 | golden_hi_money_prefix_variants_all_read_rupees | Golden | Given "Rs.", "INR", "रु" prefixes with the same amount, when normalised, then all read identically | FR-007 | S1 | ✅ Automated |
+| NM-MON-07 | golden_hinglish_money_amount_in_roman_sentence_reads_hindi_digits | Golden | Given hinglish "Aapka bill ₹4,500 hai", when normalised, then the amount is read in Hindi in the sentence language | FR-007, FR-004 | S1 | ✅ Automated |
+| NM-MON-08 | golden_en_in_money_indian_grouping_reads_lakh_in_english | Golden | Given en-IN "₹1,25,000", when normalised, then "one lakh twenty-five thousand rupees" | FR-007, FR-006 | S1 | ✅ Automated |
+| NM-MON-09 | golden_en_us_money_usd_with_cents | Golden | Given en-US "$1,234.56", when normalised, then "one thousand two hundred thirty-four dollars and fifty-six cents" | FR-007 | S1 | ✅ Automated |
+| NM-MON-10 | golden_en_us_money_singular_one_dollar_one_cent | Golden | Given "$1.01", when normalised, then singular "dollar" and "cent" are used | FR-007 | S1 | ✅ Automated |
+| NM-MON-11 | golden_en_us_money_usd_code_suffix | Golden | Given "250 USD", when normalised, then it reads as two hundred fifty dollars | FR-007 | S1 | ✅ Automated |
+| NM-MON-12 | golden_hi_money_usd_in_hindi_sentence_reads_dollar_in_hindi | Golden | Given hi sentence containing "$20", when normalised, then the amount is read in Hindi with डॉलर | FR-007 | S1 | ✅ Automated |
+| NM-MON-13 | golden_en_in_money_negative_amount_reads_minus | Golden | Given "-₹500", when normalised, then a spoken "minus" precedes the amount | FR-007 | S1 | ✅ Automated |
+| NM-MON-14 | unit_text_currency_rupeesymbol_spoken_matchesgolden | Unit | Given ₹, Rs, Rs., INR, रु before or after "12,450" and $, USD for dollars, when normalised in all four languages, then every marker reads the same spoken amount as its golden rows | FR-007 | S1 | ✅ Automated |
+| NM-MON-15 | unit_text_currency_paise_fractionalamount_verbalised | Unit | Given "₹250.50", "$1,234.56", "₹10.5", "$1.01", "₹0.75", "Rs 5.00", when normalised, then paise and cents are read, one digit means tenths, singular forms are used, and an empty minor part is dropped | FR-007 | S1 | ✅ Automated |
+| NM-MON-16 | unit_text_currency_lakhcroreshorthand_expanded | Unit | Given "₹1.5 lakh", "₹2 Cr", "₹2.5 crore", "$3 million", when normalised, then Hindi reads डेढ़ लाख, दो करोड़, ढाई करोड़ and English keeps the writer's scale word | FR-006, FR-007 | S1 | ✅ Automated |
+| NM-MON-17 | unit_text_currency_trailingslashdash_ignored | Unit | Given "Rs 12,450/-" and "Rs. 1,000.25/-", when normalised, then the trailing "/-" is part of the span and is not spoken | FR-007 | S1 | ✅ Automated |
+| NM-MON-18 | unit_text_currency_markerwithoutamount_passesthrough | Unit | Given "$" or "Rs" with no amount, when normalised, then the text passes through unchanged | FR-007 | S1 | ✅ Automated |
 
 #### 6.2.2 DATE
 

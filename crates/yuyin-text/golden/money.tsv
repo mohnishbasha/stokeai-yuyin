@@ -1,1 +1,275 @@
 id	lang	class	input	expected	notes
+golden_hi_money_inr_rupeesymbol_5	hi	money	₹5	पाँच रुपये	
+golden_hi_money_inr_rs_50	hi	money	Rs 50	पचास रुपये	
+golden_hi_money_inr_rsdot_99	hi	money	Rs. 99	निन्यानवे रुपये	
+golden_hi_money_inr_inr_100	hi	money	INR 100	एक सौ रुपये	
+golden_hi_money_inr_ru_250	hi	money	रु 250	दो सौ पचास रुपये	
+golden_hi_money_inr_rsslashdash_499	hi	money	Rs 499/-	चार सौ निन्यानवे रुपये	
+golden_hi_money_inr_rsdotslashdash_1000	hi	money	Rs. 1,000/-	एक हज़ार रुपये	
+golden_hi_money_inr_inrsuffix_4500	hi	money	4,500 INR	चार हज़ार पाँच सौ रुपये	
+golden_hi_money_inr_rupeesymbol_12450	hi	money	₹12,450	बारह हज़ार चार सौ पचास रुपये	
+golden_hi_money_inr_rs_99999	hi	money	Rs 99,999	निन्यानवे हज़ार नौ सौ निन्यानवे रुपये	
+golden_hi_money_inr_rsdot_125000	hi	money	Rs. 1,25,000	एक लाख पच्चीस हज़ार रुपये	NM-MON-01/06
+golden_hi_money_inr_inr_1000000	hi	money	INR 10,00,000	दस लाख रुपये	
+golden_hi_money_inr_ru_25000000	hi	money	रु 2,50,00,000	दो करोड़ पचास लाख रुपये	
+golden_hi_money_usd_dollarsymbol_5	hi	money	$5	पाँच डॉलर	
+golden_hi_money_usd_usd_99	hi	money	USD 99	निन्यानवे डॉलर	
+golden_hi_money_usd_usdsuffix_250	hi	money	250 USD	दो सौ पचास डॉलर	
+golden_hi_money_usd_dollarsymbol_4500	hi	money	$4,500	चार हज़ार पाँच सौ डॉलर	
+golden_hi_money_usd_usd_12450	hi	money	USD 12,450	बारह हज़ार चार सौ पचास डॉलर	
+golden_hi_money_usd_usdsuffix_125000	hi	money	1,25,000 USD	एक लाख पच्चीस हज़ार डॉलर	
+golden_hinglish_money_inr_rs_5	hinglish	money	Rs 5	पाँच रुपये	
+golden_hinglish_money_inr_rsdot_50	hinglish	money	Rs. 50	पचास रुपये	
+golden_hinglish_money_inr_inr_99	hinglish	money	INR 99	निन्यानवे रुपये	
+golden_hinglish_money_inr_ru_100	hinglish	money	रु 100	एक सौ रुपये	
+golden_hinglish_money_inr_rsslashdash_250	hinglish	money	Rs 250/-	दो सौ पचास रुपये	
+golden_hinglish_money_inr_rsdotslashdash_499	hinglish	money	Rs. 499/-	चार सौ निन्यानवे रुपये	
+golden_hinglish_money_inr_inrsuffix_1000	hinglish	money	1,000 INR	एक हज़ार रुपये	
+golden_hinglish_money_inr_rupeesymbol_4500	hinglish	money	₹4,500	चार हज़ार पाँच सौ रुपये	
+golden_hinglish_money_inr_rs_12450	hinglish	money	Rs 12,450	बारह हज़ार चार सौ पचास रुपये	
+golden_hinglish_money_inr_rsdot_99999	hinglish	money	Rs. 99,999	निन्यानवे हज़ार नौ सौ निन्यानवे रुपये	
+golden_hinglish_money_inr_inr_125000	hinglish	money	INR 1,25,000	एक लाख पच्चीस हज़ार रुपये	NM-MON-01/06
+golden_hinglish_money_inr_ru_1000000	hinglish	money	रु 10,00,000	दस लाख रुपये	
+golden_hinglish_money_inr_rsslashdash_25000000	hinglish	money	Rs 2,50,00,000/-	दो करोड़ पचास लाख रुपये	
+golden_hinglish_money_usd_usd_5	hinglish	money	USD 5	पाँच डॉलर	
+golden_hinglish_money_usd_usdsuffix_99	hinglish	money	99 USD	निन्यानवे डॉलर	
+golden_hinglish_money_usd_dollarsymbol_250	hinglish	money	$250	दो सौ पचास डॉलर	
+golden_hinglish_money_usd_usd_4500	hinglish	money	USD 4,500	चार हज़ार पाँच सौ डॉलर	
+golden_hinglish_money_usd_usdsuffix_12450	hinglish	money	12,450 USD	बारह हज़ार चार सौ पचास डॉलर	
+golden_hinglish_money_usd_dollarsymbol_125000	hinglish	money	$1,25,000	एक लाख पच्चीस हज़ार डॉलर	
+golden_en_in_money_inr_rsdot_5	en-IN	money	Rs. 5	five rupees	
+golden_en_in_money_inr_inr_50	en-IN	money	INR 50	fifty rupees	
+golden_en_in_money_inr_ru_99	en-IN	money	रु 99	ninety-nine rupees	
+golden_en_in_money_inr_rsslashdash_100	en-IN	money	Rs 100/-	one hundred rupees	
+golden_en_in_money_inr_rsdotslashdash_250	en-IN	money	Rs. 250/-	two hundred fifty rupees	
+golden_en_in_money_inr_inrsuffix_499	en-IN	money	499 INR	four hundred ninety-nine rupees	
+golden_en_in_money_inr_rupeesymbol_1000	en-IN	money	₹1,000	one thousand rupees	
+golden_en_in_money_inr_rs_4500	en-IN	money	Rs 4,500	four thousand five hundred rupees	
+golden_en_in_money_inr_rsdot_12450	en-IN	money	Rs. 12,450	twelve thousand four hundred fifty rupees	
+golden_en_in_money_inr_inr_99999	en-IN	money	INR 99,999	ninety-nine thousand nine hundred ninety-nine rupees	
+golden_en_in_money_inr_ru_125000	en-IN	money	रु 1,25,000	one lakh twenty-five thousand rupees	NM-MON-01/06
+golden_en_in_money_inr_rsslashdash_1000000	en-IN	money	Rs 10,00,000/-	ten lakh rupees	
+golden_en_in_money_inr_rsdotslashdash_25000000	en-IN	money	Rs. 2,50,00,000/-	two crore fifty lakh rupees	
+golden_en_in_money_usd_usdsuffix_5	en-IN	money	5 USD	five dollars	
+golden_en_in_money_usd_dollarsymbol_99	en-IN	money	$99	ninety-nine dollars	
+golden_en_in_money_usd_usd_250	en-IN	money	USD 250	two hundred fifty dollars	
+golden_en_in_money_usd_usdsuffix_4500	en-IN	money	4,500 USD	four thousand five hundred dollars	
+golden_en_in_money_usd_dollarsymbol_12450	en-IN	money	$12,450	twelve thousand four hundred fifty dollars	
+golden_en_in_money_usd_usd_125000	en-IN	money	USD 1,25,000	one lakh twenty-five thousand dollars	
+golden_en_us_money_inr_inr_5	en-US	money	INR 5	five rupees	
+golden_en_us_money_inr_ru_50	en-US	money	रु 50	fifty rupees	
+golden_en_us_money_inr_rsslashdash_99	en-US	money	Rs 99/-	ninety-nine rupees	
+golden_en_us_money_inr_rsdotslashdash_100	en-US	money	Rs. 100/-	one hundred rupees	
+golden_en_us_money_inr_inrsuffix_250	en-US	money	250 INR	two hundred fifty rupees	
+golden_en_us_money_inr_rupeesymbol_499	en-US	money	₹499	four hundred ninety-nine rupees	
+golden_en_us_money_inr_rs_1000	en-US	money	Rs 1,000	one thousand rupees	
+golden_en_us_money_inr_rsdot_4500	en-US	money	Rs. 4,500	four thousand five hundred rupees	
+golden_en_us_money_inr_inr_12450	en-US	money	INR 12,450	twelve thousand four hundred fifty rupees	
+golden_en_us_money_inr_ru_99999	en-US	money	रु 99,999	ninety-nine thousand nine hundred ninety-nine rupees	
+golden_en_us_money_inr_rsslashdash_125000	en-US	money	Rs 125,000/-	one hundred twenty-five thousand rupees	NM-MON-01/06
+golden_en_us_money_inr_rsdotslashdash_1000000	en-US	money	Rs. 1,000,000/-	one million rupees	
+golden_en_us_money_inr_inrsuffix_25000000	en-US	money	25,000,000 INR	twenty-five million rupees	
+golden_en_us_money_usd_dollarsymbol_5	en-US	money	$5	five dollars	
+golden_en_us_money_usd_usd_99	en-US	money	USD 99	ninety-nine dollars	
+golden_en_us_money_usd_usdsuffix_250	en-US	money	250 USD	two hundred fifty dollars	
+golden_en_us_money_usd_dollarsymbol_4500	en-US	money	$4,500	four thousand five hundred dollars	
+golden_en_us_money_usd_usd_12450	en-US	money	USD 12,450	twelve thousand four hundred fifty dollars	
+golden_en_us_money_usd_usdsuffix_125000	en-US	money	125,000 USD	one hundred twenty-five thousand dollars	
+golden_hi_money_variant_rupeesymbol_2500	hi	money	₹2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_rs_2500	hi	money	Rs 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_rsdot_2500	hi	money	Rs. 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_inr_2500	hi	money	INR 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_ru_2500	hi	money	रु 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_rsslashdash_2500	hi	money	Rs 2,500/-	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_rsdotslashdash_2500	hi	money	Rs. 2,500/-	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hi_money_variant_inrsuffix_2500	hi	money	2,500 INR	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_rupeesymbol_2500	hinglish	money	₹2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_rs_2500	hinglish	money	Rs 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_rsdot_2500	hinglish	money	Rs. 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_inr_2500	hinglish	money	INR 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_ru_2500	hinglish	money	रु 2,500	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_rsslashdash_2500	hinglish	money	Rs 2,500/-	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_rsdotslashdash_2500	hinglish	money	Rs. 2,500/-	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_hinglish_money_variant_inrsuffix_2500	hinglish	money	2,500 INR	दो हज़ार पाँच सौ रुपये	all markers read alike
+golden_en_in_money_variant_rupeesymbol_2500	en-IN	money	₹2,500	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_rs_2500	en-IN	money	Rs 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_rsdot_2500	en-IN	money	Rs. 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_inr_2500	en-IN	money	INR 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_ru_2500	en-IN	money	रु 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_rsslashdash_2500	en-IN	money	Rs 2,500/-	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_rsdotslashdash_2500	en-IN	money	Rs. 2,500/-	two thousand five hundred rupees	all markers read alike
+golden_en_in_money_variant_inrsuffix_2500	en-IN	money	2,500 INR	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_rupeesymbol_2500	en-US	money	₹2,500	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_rs_2500	en-US	money	Rs 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_rsdot_2500	en-US	money	Rs. 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_inr_2500	en-US	money	INR 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_ru_2500	en-US	money	रु 2,500	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_rsslashdash_2500	en-US	money	Rs 2,500/-	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_rsdotslashdash_2500	en-US	money	Rs. 2,500/-	two thousand five hundred rupees	all markers read alike
+golden_en_us_money_variant_inrsuffix_2500	en-US	money	2,500 INR	two thousand five hundred rupees	all markers read alike
+golden_hi_money_singular_one_rupee	hi	money	₹1	एक रुपया	
+golden_hi_money_singular_one_dollar	hi	money	$1	एक डॉलर	
+golden_hi_money_zero_rupees	hi	money	₹0	शून्य रुपये	
+golden_hinglish_money_singular_one_rupee	hinglish	money	₹1	एक रुपया	
+golden_hinglish_money_singular_one_dollar	hinglish	money	$1	एक डॉलर	
+golden_hinglish_money_zero_rupees	hinglish	money	₹0	शून्य रुपये	
+golden_en_in_money_singular_one_rupee	en-IN	money	₹1	one rupee	
+golden_en_in_money_singular_one_dollar	en-IN	money	$1	one dollar	
+golden_en_in_money_zero_rupees	en-IN	money	₹0	zero rupees	
+golden_en_us_money_singular_one_rupee	en-US	money	₹1	one rupee	
+golden_en_us_money_singular_one_dollar	en-US	money	$1	one dollar	
+golden_en_us_money_zero_rupees	en-US	money	₹0	zero rupees	
+golden_hi_money_paise_5050	hi	money	₹250.50	दो सौ पचास रुपये पचास पैसे	NM-MON-03
+golden_hi_money_paise_9950	hi	money	₹99.50	निन्यानवे रुपये पचास पैसे	
+golden_hi_money_paise_single_digit	hi	money	₹10.5	दस रुपये पचास पैसे	
+golden_hi_money_paise_one_paisa	hi	money	₹5.01	पाँच रुपये एक पैसा	
+golden_hi_money_paise_paise_only	hi	money	₹0.75	पचहत्तर पैसे	
+golden_hi_money_paise_zero_paise	hi	money	Rs 5.00	पाँच रुपये	
+golden_hi_money_paise_grouped_paise	hi	money	Rs 12,450.75	बारह हज़ार चार सौ पचास रुपये पचहत्तर पैसे	
+golden_hi_money_paise_paise_slash	hi	money	Rs. 1,000.25/-	एक हज़ार रुपये पच्चीस पैसे	
+golden_hi_money_paise_three_digits	hi	money	₹1.234	एक दशमलव दो तीन चार रुपये	
+golden_hinglish_money_paise_5050	hinglish	money	₹250.50	दो सौ पचास रुपये पचास पैसे	NM-MON-03
+golden_hinglish_money_paise_9950	hinglish	money	₹99.50	निन्यानवे रुपये पचास पैसे	
+golden_hinglish_money_paise_single_digit	hinglish	money	₹10.5	दस रुपये पचास पैसे	
+golden_hinglish_money_paise_one_paisa	hinglish	money	₹5.01	पाँच रुपये एक पैसा	
+golden_hinglish_money_paise_paise_only	hinglish	money	₹0.75	पचहत्तर पैसे	
+golden_hinglish_money_paise_zero_paise	hinglish	money	Rs 5.00	पाँच रुपये	
+golden_hinglish_money_paise_grouped_paise	hinglish	money	Rs 12,450.75	बारह हज़ार चार सौ पचास रुपये पचहत्तर पैसे	
+golden_hinglish_money_paise_paise_slash	hinglish	money	Rs. 1,000.25/-	एक हज़ार रुपये पच्चीस पैसे	
+golden_hinglish_money_paise_three_digits	hinglish	money	₹1.234	एक दशमलव दो तीन चार रुपये	
+golden_en_in_money_paise_5050	en-IN	money	₹250.50	two hundred fifty rupees and fifty paise	NM-MON-03
+golden_en_in_money_paise_9950	en-IN	money	₹99.50	ninety-nine rupees and fifty paise	
+golden_en_in_money_paise_single_digit	en-IN	money	₹10.5	ten rupees and fifty paise	
+golden_en_in_money_paise_one_paisa	en-IN	money	₹5.01	five rupees and one paisa	
+golden_en_in_money_paise_paise_only	en-IN	money	₹0.75	seventy-five paise	
+golden_en_in_money_paise_zero_paise	en-IN	money	Rs 5.00	five rupees	
+golden_en_in_money_paise_grouped_paise	en-IN	money	Rs 12,450.75	twelve thousand four hundred fifty rupees and seventy-five paise	
+golden_en_in_money_paise_paise_slash	en-IN	money	Rs. 1,000.25/-	one thousand rupees and twenty-five paise	
+golden_en_in_money_paise_three_digits	en-IN	money	₹1.234	one point two three four rupees	
+golden_en_us_money_paise_5050	en-US	money	₹250.50	two hundred fifty rupees and fifty paise	NM-MON-03
+golden_en_us_money_paise_9950	en-US	money	₹99.50	ninety-nine rupees and fifty paise	
+golden_en_us_money_paise_single_digit	en-US	money	₹10.5	ten rupees and fifty paise	
+golden_en_us_money_paise_one_paisa	en-US	money	₹5.01	five rupees and one paisa	
+golden_en_us_money_paise_paise_only	en-US	money	₹0.75	seventy-five paise	
+golden_en_us_money_paise_zero_paise	en-US	money	Rs 5.00	five rupees	
+golden_en_us_money_paise_grouped_paise	en-US	money	Rs 12,450.75	twelve thousand four hundred fifty rupees and seventy-five paise	
+golden_en_us_money_paise_paise_slash	en-US	money	Rs. 1,000.25/-	one thousand rupees and twenty-five paise	
+golden_en_us_money_paise_three_digits	en-US	money	₹1.234	one point two three four rupees	
+golden_hi_money_cents_fourtwentyfive	hi	money	$4.25	चार डॉलर पच्चीस सेंट	
+golden_hi_money_cents_grouped	hi	money	$1,234.56	एक हज़ार दो सौ चौंतीस डॉलर छप्पन सेंट	NM-MON-09/10
+golden_hi_money_cents_one_one	hi	money	$1.01	एक डॉलर एक सेंट	NM-MON-09/10
+golden_hi_money_cents_cents_only	hi	money	$0.99	निन्यानवे सेंट	
+golden_hi_money_cents_usd_code	hi	money	USD 19.99	उन्नीस डॉलर निन्यानवे सेंट	
+golden_hinglish_money_cents_fourtwentyfive	hinglish	money	$4.25	चार डॉलर पच्चीस सेंट	
+golden_hinglish_money_cents_grouped	hinglish	money	$1,234.56	एक हज़ार दो सौ चौंतीस डॉलर छप्पन सेंट	NM-MON-09/10
+golden_hinglish_money_cents_one_one	hinglish	money	$1.01	एक डॉलर एक सेंट	NM-MON-09/10
+golden_hinglish_money_cents_cents_only	hinglish	money	$0.99	निन्यानवे सेंट	
+golden_hinglish_money_cents_usd_code	hinglish	money	USD 19.99	उन्नीस डॉलर निन्यानवे सेंट	
+golden_en_in_money_cents_fourtwentyfive	en-IN	money	$4.25	four dollars and twenty-five cents	
+golden_en_in_money_cents_grouped	en-IN	money	$1,234.56	one thousand two hundred thirty-four dollars and fifty-six cents	NM-MON-09/10
+golden_en_in_money_cents_one_one	en-IN	money	$1.01	one dollar and one cent	NM-MON-09/10
+golden_en_in_money_cents_cents_only	en-IN	money	$0.99	ninety-nine cents	
+golden_en_in_money_cents_usd_code	en-IN	money	USD 19.99	nineteen dollars and ninety-nine cents	
+golden_en_us_money_cents_fourtwentyfive	en-US	money	$4.25	four dollars and twenty-five cents	
+golden_en_us_money_cents_grouped	en-US	money	$1,234.56	one thousand two hundred thirty-four dollars and fifty-six cents	NM-MON-09/10
+golden_en_us_money_cents_one_one	en-US	money	$1.01	one dollar and one cent	NM-MON-09/10
+golden_en_us_money_cents_cents_only	en-US	money	$0.99	ninety-nine cents	
+golden_en_us_money_cents_usd_code	en-US	money	USD 19.99	nineteen dollars and ninety-nine cents	
+golden_hi_money_scale_lakh_half	hi	money	₹1.5 lakh	डेढ़ लाख रुपये	NM-MON-04
+golden_hi_money_scale_crore	hi	money	₹2 Cr	दो करोड़ रुपये	NM-MON-04
+golden_hi_money_scale_crore_half	hi	money	₹2.5 crore	ढाई करोड़ रुपये	
+golden_hi_money_scale_lakh_int	hi	money	Rs 5 lakh	पाँच लाख रुपये	
+golden_hi_money_scale_lac	hi	money	INR 3 lac	तीन लाख रुपये	
+golden_hi_money_scale_hindi_lakh	hi	money	₹10 लाख	दस लाख रुपये	
+golden_hi_money_scale_hindi_crore	hi	money	₹3 करोड़	तीन करोड़ रुपये	
+golden_hi_money_scale_thousand_k	hi	money	$5 K	पाँच हज़ार डॉलर	
+golden_hi_money_scale_million	hi	money	$3 million	तीन मिलियन डॉलर	
+golden_hi_money_scale_billion	hi	money	$2.5 bn	ढाई बिलियन डॉलर	
+golden_hi_money_scale_lakh_decimal	hi	money	₹3.25 lakh	तीन दशमलव दो पाँच लाख रुपये	
+golden_hi_money_scale_suffix_scale	hi	money	5 lakh INR	पाँच लाख रुपये	
+golden_hinglish_money_scale_lakh_half	hinglish	money	₹1.5 lakh	डेढ़ लाख रुपये	NM-MON-04
+golden_hinglish_money_scale_crore	hinglish	money	₹2 Cr	दो करोड़ रुपये	NM-MON-04
+golden_hinglish_money_scale_crore_half	hinglish	money	₹2.5 crore	ढाई करोड़ रुपये	
+golden_hinglish_money_scale_lakh_int	hinglish	money	Rs 5 lakh	पाँच लाख रुपये	
+golden_hinglish_money_scale_lac	hinglish	money	INR 3 lac	तीन लाख रुपये	
+golden_hinglish_money_scale_hindi_lakh	hinglish	money	₹10 लाख	दस लाख रुपये	
+golden_hinglish_money_scale_hindi_crore	hinglish	money	₹3 करोड़	तीन करोड़ रुपये	
+golden_hinglish_money_scale_thousand_k	hinglish	money	$5 K	पाँच हज़ार डॉलर	
+golden_hinglish_money_scale_million	hinglish	money	$3 million	तीन मिलियन डॉलर	
+golden_hinglish_money_scale_billion	hinglish	money	$2.5 bn	ढाई बिलियन डॉलर	
+golden_hinglish_money_scale_lakh_decimal	hinglish	money	₹3.25 lakh	तीन दशमलव दो पाँच लाख रुपये	
+golden_hinglish_money_scale_suffix_scale	hinglish	money	5 lakh INR	पाँच लाख रुपये	
+golden_en_in_money_scale_lakh_half	en-IN	money	₹1.5 lakh	one point five lakh rupees	NM-MON-04
+golden_en_in_money_scale_crore	en-IN	money	₹2 Cr	two crore rupees	NM-MON-04
+golden_en_in_money_scale_crore_half	en-IN	money	₹2.5 crore	two point five crore rupees	
+golden_en_in_money_scale_lakh_int	en-IN	money	Rs 5 lakh	five lakh rupees	
+golden_en_in_money_scale_lac	en-IN	money	INR 3 lac	three lakh rupees	
+golden_en_in_money_scale_hindi_lakh	en-IN	money	₹10 लाख	ten lakh rupees	
+golden_en_in_money_scale_hindi_crore	en-IN	money	₹3 करोड़	three crore rupees	
+golden_en_in_money_scale_thousand_k	en-IN	money	$5 K	five thousand dollars	
+golden_en_in_money_scale_million	en-IN	money	$3 million	three million dollars	
+golden_en_in_money_scale_billion	en-IN	money	$2.5 bn	two point five billion dollars	
+golden_en_in_money_scale_lakh_decimal	en-IN	money	₹3.25 lakh	three point two five lakh rupees	
+golden_en_in_money_scale_suffix_scale	en-IN	money	5 lakh INR	five lakh rupees	
+golden_en_us_money_scale_lakh_half	en-US	money	₹1.5 lakh	one point five lakh rupees	NM-MON-04
+golden_en_us_money_scale_crore	en-US	money	₹2 Cr	two crore rupees	NM-MON-04
+golden_en_us_money_scale_crore_half	en-US	money	₹2.5 crore	two point five crore rupees	
+golden_en_us_money_scale_lakh_int	en-US	money	Rs 5 lakh	five lakh rupees	
+golden_en_us_money_scale_lac	en-US	money	INR 3 lac	three lakh rupees	
+golden_en_us_money_scale_hindi_lakh	en-US	money	₹10 लाख	ten lakh rupees	
+golden_en_us_money_scale_hindi_crore	en-US	money	₹3 करोड़	three crore rupees	
+golden_en_us_money_scale_thousand_k	en-US	money	$5 K	five thousand dollars	
+golden_en_us_money_scale_million	en-US	money	$3 million	three million dollars	
+golden_en_us_money_scale_billion	en-US	money	$2.5 bn	two point five billion dollars	
+golden_en_us_money_scale_lakh_decimal	en-US	money	₹3.25 lakh	three point two five lakh rupees	
+golden_en_us_money_scale_suffix_scale	en-US	money	5 lakh INR	five lakh rupees	
+golden_hi_money_negative_symbol_first	hi	money	-₹500	माइनस पाँच सौ रुपये	
+golden_hi_money_negative_sign_inside	hi	money	₹-500	माइनस पाँच सौ रुपये	
+golden_hi_money_negative_dollar	hi	money	-$4.25	माइनस चार डॉलर पच्चीस सेंट	
+golden_hinglish_money_negative_symbol_first	hinglish	money	-₹500	माइनस पाँच सौ रुपये	
+golden_hinglish_money_negative_sign_inside	hinglish	money	₹-500	माइनस पाँच सौ रुपये	
+golden_hinglish_money_negative_dollar	hinglish	money	-$4.25	माइनस चार डॉलर पच्चीस सेंट	
+golden_en_in_money_negative_symbol_first	en-IN	money	-₹500	minus five hundred rupees	
+golden_en_in_money_negative_sign_inside	en-IN	money	₹-500	minus five hundred rupees	
+golden_en_in_money_negative_dollar	en-IN	money	-$4.25	minus four dollars and twenty-five cents	
+golden_en_us_money_negative_symbol_first	en-US	money	-₹500	minus five hundred rupees	
+golden_en_us_money_negative_sign_inside	en-US	money	₹-500	minus five hundred rupees	
+golden_en_us_money_negative_dollar	en-US	money	-$4.25	minus four dollars and twenty-five cents	
+golden_hi_money_sentence_bill	hi	money	आपका बिल ₹4,500 है।	आपका बिल चार हज़ार पाँच सौ रुपये है।	
+golden_hi_money_sentence_two	hi	money	₹100 और ₹200 जमा हुए।	एक सौ रुपये और दो सौ रुपये जमा हुए।	
+golden_hi_money_sentence_rsdot_end	hi	money	कुल राशि Rs. 12,450/- है।	कुल राशि बारह हज़ार चार सौ पचास रुपये है।	
+golden_hi_money_sentence_marker_only	hi	money	रु की कीमत बढ़ी।	रु की कीमत बढ़ी।	
+golden_hinglish_money_sentence_emi	hinglish	money	Aapka bill ₹4,500 hai	Aapka bill चार हज़ार पाँच सौ रुपये hai	
+golden_hinglish_money_sentence_two	hinglish	money	Balance ₹100 aur ₹200 hai	Balance एक सौ रुपये aur दो सौ रुपये hai	
+golden_hinglish_money_sentence_rs_end	hinglish	money	Total Rs 12,450/- hai.	Total बारह हज़ार चार सौ पचास रुपये hai.	
+golden_hinglish_money_sentence_marker_only	hinglish	money	Rs ki value badhi	Rs ki value badhi	
+golden_en_in_money_sentence_emi	en-IN	money	Your rent is ₹4,500 per month.	Your rent is four thousand five hundred rupees per month.	
+golden_en_in_money_sentence_two	en-IN	money	Pay ₹100 or ₹200 today.	Pay one hundred rupees or two hundred rupees today.	
+golden_en_in_money_sentence_rs_end	en-IN	money	The total is Rs. 12,450/-.	The total is twelve thousand four hundred fifty rupees.	
+golden_en_in_money_sentence_marker_only	en-IN	money	The Rs is weak today.	The Rs is weak today.	
+golden_en_us_money_sentence_price	en-US	money	The price is $4.25 today.	The price is four dollars and twenty-five cents today.	
+golden_en_us_money_sentence_two	en-US	money	Send $100 or $200 now.	Send one hundred dollars or two hundred dollars now.	
+golden_en_us_money_sentence_usd_end	en-US	money	Total: USD 1,250.	Total: one thousand two hundred fifty dollars.	
+golden_en_us_money_sentence_marker_only	en-US	money	The $ sign is common.	The $ sign is common.	
+golden_hi_money_devanagari_digits	hi	money	₹१,२५,०००	एक लाख पच्चीस हज़ार रुपये	
+golden_hinglish_money_devanagari_digits	hinglish	money	₹१,२५,०००	एक लाख पच्चीस हज़ार रुपये	
+golden_en_in_money_devanagari_digits	en-IN	money	₹१,२५,०००	one lakh twenty-five thousand rupees	
+golden_en_us_money_devanagari_digits	en-US	money	₹१,२५,०००	one hundred twenty-five thousand rupees	
+golden_hi_money_spec_ruppee_symbol	hi	money	₹12,450	बारह हज़ार चार सौ पचास रुपये	FR-007
+golden_hi_money_spec_western_same_as_indian	hi	money	₹125,000	एक लाख पच्चीस हज़ार रुपये	NM-MON-02
+golden_en_in_money_spec_rs_trailing	en-IN	money	Rs 12,450/-	twelve thousand four hundred fifty rupees	NM-MON-05
+golden_en_us_money_spec_rupee_in_us	en-US	money	₹1,25,000	one hundred twenty-five thousand rupees	Indian grouping parses; US words
+golden_en_us_money_spec_usd_cents	en-US	money	$1,234.56	one thousand two hundred thirty-four dollars and fifty-six cents	NM-MON-09
+golden_hi_money_indian_grouping_lakh_reads_in_hindi	hi	money	₹1,25,000	एक लाख पच्चीस हज़ार रुपये	NM-MON-01
+golden_hi_money_western_grouping_parses_same_value	hi	money	₹125,000	एक लाख पच्चीस हज़ार रुपये	NM-MON-02
+golden_hi_money_paise_reads_rupees_and_paise	hi	money	₹250.50	दो सौ पचास रुपये पचास पैसे	NM-MON-03
+golden_hi_money_lakh_crore_suffix_expands	hi	money	₹1.5 lakh और ₹2 Cr	डेढ़ लाख रुपये और दो करोड़ रुपये	NM-MON-04
+golden_hi_money_rs_trailing_slash_dash_form	hi	money	Rs 12,450/-	बारह हज़ार चार सौ पचास रुपये	NM-MON-05
+golden_hi_money_prefix_variants_all_read_rupees	hi	money	Rs. 500, INR 500, रु 500	पाँच सौ रुपये, पाँच सौ रुपये, पाँच सौ रुपये	NM-MON-06
+golden_hinglish_money_amount_in_roman_sentence_reads_hindi_digits	hinglish	money	Aapka bill ₹4,500 hai	Aapka bill चार हज़ार पाँच सौ रुपये hai	NM-MON-07
+golden_en_in_money_indian_grouping_reads_lakh_in_english	en-IN	money	₹1,25,000	one lakh twenty-five thousand rupees	NM-MON-08
+golden_en_us_money_usd_with_cents	en-US	money	$1,234.56	one thousand two hundred thirty-four dollars and fifty-six cents	NM-MON-09
+golden_en_us_money_singular_one_dollar_one_cent	en-US	money	$1.01	one dollar and one cent	NM-MON-10
+golden_en_us_money_usd_code_suffix	en-US	money	250 USD	two hundred fifty dollars	NM-MON-11
+golden_hi_money_usd_in_hindi_sentence_reads_dollar_in_hindi	hi	money	उसने $20 दिए।	उसने बीस डॉलर दिए।	NM-MON-12
+golden_en_in_money_negative_amount_reads_minus	en-IN	money	-₹500	minus five hundred rupees	NM-MON-13
