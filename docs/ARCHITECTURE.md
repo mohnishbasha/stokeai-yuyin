@@ -223,9 +223,9 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 ### ADR-015 Speech engine selection
 
 - Context: D9 fixes the approach (open-weights, ONNX, CPU) but not the model or the binding (`ort` directly, or `sherpa-onnx` bindings). Quality in Hindi and Hinglish, real-time factor, memory, and licence differ between candidates.
-- Decision: Not yet taken. The choice is made by the Sprint 1 bake-off in `bench/engine-bakeoff/` using the published method in `bench/METHOD.md`: time to first audio, real-time factor per core, peak memory, listening-sheet scores, and licence review. The result, model sources, and checksums are recorded here and in `config/models.sha256`.
+- Decision: Not yet taken. The Sprint 1 bake-off (`bench/engine-bakeoff/`) found no Hindi voice that is both acceptable and licence-clean, so per the task rule no engine is chosen and the owner decision is raised in issue #184. The full record (candidates, licence register, measurements, owner options, fallback) is in `docs/adr/ADR-015-engine-selection.md`, with evidence in `docs/licences/`. Model sources and checksums are recorded in `config/models.sha256` once an engine is decided.
 - Consequences: Dependency lines for `ort` and `sherpa-onnx` stay conditional until this is decided. `scripts/fetch-models.sh` reads its sources from this ADR. Until decided, `FakeEngine` is used for all development.
-- Status: Proposed. Decided by the Sprint 1 bake-off.
+- Status: Proposed, blocked on owner decision #184. See `docs/adr/ADR-015-engine-selection.md`.
 
 ### ADR-016 Repository location
 
