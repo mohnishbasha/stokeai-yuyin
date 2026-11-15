@@ -2,7 +2,7 @@
 
 Actions only the owner can take. The agent prepares each one, records it here, and stops. Nothing in this list is ever done by the agent.
 
-Last updated: 2026-11-14
+Last updated: 2026-11-15
 
 ## Blocking now
 
@@ -26,6 +26,7 @@ Recheck history: B1 and B2 were rechecked on seven runs between 2026-11-10 and 2
 | O15 | Add the `YUYIN_LICENCE_SIGNING_KEY` GitHub Actions secret (Ed25519 private key) in a protected `licensing` environment | 7 | Licences are signed by a manual `workflow_dispatch` workflow. The private key never enters the repository |
 | O16 | Stoke cluster access: GitHub Actions secret `STOKE_KUBECONFIG`, target namespace, storage class for CloudNativePG, ingress controller, and a TLS certificate for `*.yuyin.openstoke.com` | 3 | CI runs `helm upgrade` against the Stoke ARM64 cluster (DGX Spark bundles). Staging smoke runs every sprint end from Sprint 3 |
 | O17 | Make the `ci`, `security`, and `licence-check` jobs required status checks on `develop` (branch protection) | 1 | In Sprint 0, Dependabot PR #165 merged while CI was red and broke `develop` (fixed in #166). This is a repository governance setting, so the owner changes it |
+| O18 | Decide the speech engine path in issue #184: no open-weights Hindi voice from the Sprint 1 bake-off is licence-clean (options 1 to 4 are in the issue) | 3 | Blocks S3-T18 (#198) and S3-T01 (ONNX engine). ADR-015 stays Proposed until then. NM-LNG-03 in #199 also depends on it |
 
 ## Next phase
 

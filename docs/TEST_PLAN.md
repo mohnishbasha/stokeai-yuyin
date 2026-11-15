@@ -182,7 +182,7 @@ Normalisation is deterministic: the same input and options give the same output 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-RUN-01 | unit_text_goldenrunner_allrows_passes | Unit | Given every `golden/*.tsv` file, when each row is normalised with its language, then every row matches `expected`, ids are unique and well formed, and the corpus is at least the current floor (raised to 400 at the end of Sprint 1) | SPRINT_PLAN S1-T01; NFR-011 | S1 | ✅ Automated |
+| NM-RUN-01 | unit_text_goldenrunner_allrows_passes | Unit | Given every `golden/*.tsv` file, when each row is normalised with its language, then every row matches `expected`, ids are unique and well formed, and the corpus is at least the current floor (1,244 rows at the end of Sprint 1) | SPRINT_PLAN S1-T01; NFR-011 | S1 | ✅ Automated |
 | NM-RUN-02 | unit_text_goldenrunner_regressionrow_failsci | Unit | Given a row whose expected reading differs from the output, when the runner runs, then it reports that row as a failure, so CI fails | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
 | NM-RUN-03 | unit_text_goldenrunner_perclassreport_countsprinted | Unit | Given rows in two classes, when the runner runs, then the summary prints passed and total per class and in total | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
 | NM-RUN-04 | unit_text_goldenrunner_badrows_rejected | Unit | Given a wrong header, a short row, a duplicate id, an id with the wrong prefix, or an unsupported language, when the corpus is parsed and validated, then it is rejected | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
@@ -373,7 +373,7 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 |---|---|---|---|---|---|---|
 | NM-RNG-01 | golden_en_in_range_10_15_days | Golden | Given "10-15 days", when normalised, then "ten to fifteen days" | FR-011 | S1 | ✅ Automated |
 | NM-RNG-02 | golden_hi_range_hindi_se | Golden | Given hi "10-15 दिन", when normalised, then "दस से पंद्रह दिन" | FR-011 | S1 | ✅ Automated |
-| NM-RNG-03 | golden_en_us_range_money_range | Golden | Given "$5-$10", when normalised, then "five to ten dollars" | FR-011, FR-007 | S1 | ⚠️ Deferred |
+| NM-RNG-03 | golden_en_us_range_money_range | Golden | Given "$5-$10", when normalised, then "five to ten dollars" | FR-011, FR-007 | S1 | ⚠️ Deferred, carried to #199 |
 | NM-RNG-04 | golden_hinglish_range_hyphenated_word_not_range | Golden | Given "e-mail" or "T-shirt", when normalised, then it is not treated as a range | FR-011 | S1 | ✅ Automated |
 | NM-OTH-01 | unit_text_units_mbps_expandedcorrectly | Unit | Given "100 Mbps" and "5 km", when normalised, then megabits per second and kilometres (kilometers in en-US) | FR-011 | S1 | ✅ Automated |
 | NM-OTH-02 | unit_text_ranges_daysrange_readasrange | Unit | Given "10-15 days" and "e-mail", when normalised, then the range reads "ten to fifteen days" and the hyphenated word is untouched | FR-011 | S1 | ✅ Automated |
@@ -384,9 +384,9 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-LNG-01 | golden_hi_mixed_all_classes_in_hindi_sentence | Golden | Given a hi sentence with money, date, time, and OTP, when normalised, then every span is verbalised in Hindi | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred |
-| NM-LNG-02 | golden_en_mixed_all_classes_in_english_sentence | Golden | Given an en-IN and an en-US sentence with the same classes, when normalised, then each is verbalised in English under its locale | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred |
-| NM-LNG-03 | golden_hinglish_roman_hindi_transliterated_where_engine_needs | Golden | Given Roman Hindi, when the engine requires Devanagari, then the span is transliterated | FR-005, ARCH pipeline | S1 | ⚠️ Deferred |
+| NM-LNG-01 | golden_hi_mixed_all_classes_in_hindi_sentence | Golden | Given a hi sentence with money, date, time, and OTP, when normalised, then every span is verbalised in Hindi | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred, carried to #199 |
+| NM-LNG-02 | golden_en_mixed_all_classes_in_english_sentence | Golden | Given an en-IN and an en-US sentence with the same classes, when normalised, then each is verbalised in English under its locale | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred, carried to #199 |
+| NM-LNG-03 | golden_hinglish_roman_hindi_transliterated_where_engine_needs | Golden | Given Roman Hindi, when the engine requires Devanagari, then the span is transliterated | FR-005, ARCH pipeline | S1 | ⚠️ Deferred, carried to #199 |
 | NM-DET-01 | property_text_normalise_sameinput_deterministicoutput | Property | Given arbitrary Unicode and fixed options, when normalised twice, then outputs are identical. 10,000 cases in `crates/yuyin-text/tests/property.rs` | NFR-011, ARCH determinism | S1 | ✅ Automated |
 | NM-DET-02 | property_text_normalise_arbitraryunicode_neverpanics | Property | Given arbitrary Unicode including control characters, when normalised, then no panic occurs and only `Empty` or `TooLong` errors appear. 10,000 cases | FR-001, NFR-011 | S1 | ✅ Automated |
 | NM-DET-03 | property_text_normalise_normalizetrue_noasciidigits | Property | Given `normalize = true`, when normalised, then the output contains no ASCII digits. No exceptions: digits no class claims (`a0`, `007`, `3/0`, runs over 18 digits) are read one by one by the leftover-digit safety net in `verbalise::to_piece`. 10,000 cases | FR-006 | S1 | ✅ Automated |
@@ -409,8 +409,8 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | LT-08 | test_tag_digits_take_matrix_language | Unit | Given `auto` and an English sentence, when tagged, then it resolves to en | FR-004 | S1 | ✅ Automated |
 | LT-10 | test_tag_acronyms_and_names_are_english | Unit | Given "Aapka account KYC pending hai", when tagged, then Hindi and English spans carry their own langs | FR-004, FR-005 | S1 | ✅ Automated |
 | LT-11 | test_tag_scripts_for_each_token_kind | Unit | Given Devanagari and Latin in one sentence, when tagged, then spans split on script boundaries | FR-005 | S1 | ✅ Automated |
-| LT-12 | unit_text_tag_unsupported_language_value_rejected | Unit | Given `language: "fr"`, when validated, then `unsupported_language` is returned | FR-004, ARCH error codes | S1 | ⚠️ Deferred |
-| LT-13 | prop_text_tag_spans_cover_input_exactly | Property | Given arbitrary text, when tagged, then spans are contiguous and cover the whole input | FR-005 | S1 | ⚠️ Deferred |
+| LT-12 | unit_text_tag_unsupported_language_value_rejected | Unit | Given `language: "fr"`, when validated, then `unsupported_language` is returned | FR-004, ARCH error codes | S1 | ⚠️ Deferred, carried to #199 |
+| LT-13 | prop_text_tag_spans_cover_input_exactly | Property | Given arbitrary text, when tagged, then spans are contiguous and cover the whole input | FR-005 | S1 | ⚠️ Deferred, carried to #199 |
 | LT-14 | unit_text_tagger_devanagari_tokenstaggedhindi | Unit | Given Devanagari words, when tagged under any hint, then every word is script Deva and lang hi | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
 | LT-15 | unit_text_tagger_romanhindi_lexiconhit_taggedhindi | Unit | Given "kya haal hai", when tagged, then each word is script Latn and lang hi through the bundled lexicon of at least 20,000 forms | FR-005, FR-004; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
 | LT-16 | unit_text_tagger_unknownword_ngramscorer_classified | Unit | Given words in neither lexicon, when tagged, then the n-gram scorer classifies a Hindi-shaped word as hi and an English-shaped word as en | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
