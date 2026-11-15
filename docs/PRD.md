@@ -1002,8 +1002,8 @@ The `normalize` option does not change the bill: the count is taken before norma
 | OQ-10 | Do `yy_test_` keys synthesise real audio, and are they billed? Proposed: real audio from a fixed test voice set, no charge, low rate limit. |
 | OQ-11 | Can a refund drive a balance below zero (for example when credits were already spent)? Proposed: allow a negative balance, block new requests with 402, and flag for the operator. |
 | OQ-12 | Does the launch grant expire? Proposed: no expiry in v1. |
-| OQ-13 | Which speech engine and voices pass the Sprint 1 bake-off, and what are their licences (ADR-015)? NFR-017 depends on this. |
-| OQ-14 | Do NFR-001 and NFR-002 hold on the chosen engine? Results come only from our benchmark harness. If they fail, a `type: perf` issue is opened and the numbers are not adjusted. |
+| OQ-13 | Which speech engine and voices pass the Sprint 1 bake-off, and what are their licences (ADR-015)? NFR-017 depends on this. Status: the Sprint 1 bake-off found no Hindi voice that is both acceptable and licence-clean, so no engine is chosen. ADR-015 is Proposed and blocked on owner issue #184. |
+| OQ-14 | Do NFR-001 and NFR-002 hold on the chosen engine? Results come only from our benchmark harness. If they fail, a `type: perf` issue is opened and the numbers are not adjusted. Status: not answerable until ADR-015 (issue #184) selects an engine. |
 | OQ-15 | Resolved for now by ADR-026: Stoke Kubernetes on ARM64. EKS or ECS and Graviton are Next phase. |
 | OQ-16 | Business verification process for lifting `policy_review_required`: who reviews and what documents are accepted? |
 | OQ-17 | Identity verification provider for custom voice speakers (manual operator check in v1, or a vendor)? |

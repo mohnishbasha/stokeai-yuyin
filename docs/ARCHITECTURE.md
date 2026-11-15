@@ -182,7 +182,7 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 
 - Context: Training a foundation model is out of scope for v1.
 - Decision: Open-weights neural TTS run through ONNX Runtime on CPU, behind a `SynthesisEngine` trait, chosen by a measured bake-off in Sprint 1.
-- Consequences: Model and voice licences must be reviewed by hand. The trait allows our own model later. The specific model is ADR-015.
+- Consequences: Model and voice licences must be reviewed by hand. The trait allows our own model later. The specific model is not yet chosen: ADR-015 is Proposed and blocked on owner issue #184.
 - Status: Accepted.
 
 ### ADR-010 Primary region (D10)
@@ -406,12 +406,12 @@ Rust signatures (names are normative, field details may be refined in implementa
 | 1. Clean | `lib.rs` | `&str`, `&NormaliseOptions` | `Result<CleanText, TextError>` where `CleanText(String)` is NFC, control-free, length-validated (`TextError::TooLong`, `TextError::Empty`) |
 | 2. Tokenise | `lib.rs` | `&CleanText` | `Vec<Span>` where `Span { range: Range<usize>, kind: SpanKind }` and `SpanKind` is word, number, punctuation, space (uses `unicode-segmentation`) |
 | 3. Tag | `tag.rs` | `&[Span]`, `&CleanText`, `&Lexicons`, `LanguageHint` | `Vec<TaggedSpan>` where `TaggedSpan { span: Span, script: Script, lang: Lang }`, `Script` is `Deva \| Latn \| Digit \| Symbol`, `Lang` is `Hi \| En` |
-| 4. Classify | `classify.rs` | `&[TaggedSpan]`, `&Lexicons`, `Locale` | `Vec<ClassifiedSpan>` where `ClassifiedSpan { tagged: TaggedSpan, semiotic: Option<Semiotic> }`; `Semiotic` has variants `Money, Date, Time, Phone, Otp, Cardinal, Ordinal, Percent, Unit, Acronym, Email, Url, Range`, each carrying its parsed value |
-| 5. Verbalise | `verbalise/` | `&ClassifiedSpan`, `Lang` (context language), `Locale` | `Verbalised { text: String, lang: Lang, pace_hint: Option<f32> }` (one submodule per semiotic class; number words from `data/hindi_numbers.tsv`) |
-| 6. Transliterate | `translit.rs` | `&[Verbalised]`, `EngineNeeds` | `Vec<Verbalised>` with Roman Hindi converted to Devanagari where `EngineNeeds::devanagari` is set |
-| 7. Segment | `segment.rs` | `&[Verbalised]`, `SegmentOptions` | `Vec<Segment>` where `Segment { text: String, lang: Lang, pace_hint: f32, char_span: Range<usize> }` |
+| 4. Classify | `classify/` (`mod.rs` plus `number.rs`, `money.rs`, `datetime.rs`, `digits.rs`, `other.rs`, `acronym.rs`) | `&ClassifyCtx` (tagged tokens, per-token context language, `Locale`, `LanguageHint`, `&Lexicons`, optional tenant lexicon) | `Vec<ClassifiedSpan>` where `ClassifiedSpan { tagged: TaggedSpan, semiotic: Option<Semiotic> }`; `Semiotic` has variants `Money, Date, Time, Phone, Otp, Cardinal, Ordinal, Percent, Unit, Acronym, Email, Url, Range`, each carrying its parsed value |
+| 5. Verbalise | `verbalise/` | `&ClassifiedSpan`, `&VerbaliseCtx` (context language, `Locale`) | `Verbalised { text: String, lang: Lang, pace_hint: Option<f32> }` (one submodule per semiotic class; number words from `data/hindi_numbers.tsv`) |
+| 6. Transliterate | `translit.rs` | `Vec<Verbalised>`, `EngineNeeds` | `Vec<Verbalised>`. Stub at the end of Sprint 1: identity, and `normalise` does not call it yet. Roman Hindi to Devanagari conversion lands once the lexicon carries readings |
+| 7. Segment | `segment.rs` | `&CleanText`, `&[Piece]` (one per token or semiotic span, after verbalisation), `SegmentOptions { first_max_chars, max_chars }` | `Vec<Segment>` where `Segment { text: String, lang: Lang, pace_hint: f32, char_span: Range<usize> }` |
 
-Top-level entry points: `pub fn normalise(text: &str, opts: &NormaliseOptions) -> Result<Vec<Segment>, TextError>`. Character counting is not done here: the single counter lives in `yuyin-meter/count.rs`. `NormaliseOptions` holds `language: LanguageHint` (`Auto, Hi, Hinglish, EnIn, EnUs`), `locale: Locale`, `tenant_lexicon: Option<&TenantLexicon>`, and `max_chars`. `char_span` always refers to code point offsets in the original NFC text, so the meter can sum delivered characters even when verbalisation changes the length. Every public function has a doctest with a Hindi and an English example. The pipeline when `normalize=false`: stages 1, 2, 3, and 7 run; stages 4 to 6 are skipped.
+Top-level entry points: `pub fn normalise(text: &str, opts: &NormaliseOptions) -> Result<Vec<Segment>, TextError>`. Character counting is not done here: the single counter lives in `yuyin-meter/count.rs`. `normalise_to_string` returns the segments joined as one string (used by the golden runner and doctests). `NormaliseOptions` holds `language: LanguageHint` (`Auto, Hi, Hinglish, EnIn, EnUs`), `locale: Locale`, `tenant_lexicon: Option<&TenantLexicon>`, `max_chars`, and `normalize: bool`. `TextError` has `Empty`, `TooLong`, `UnsupportedLanguage`, `TenantLexiconFull`, and an invalid-tenant-entry variant. `char_span` always refers to code point offsets in the original NFC text, so the meter can sum delivered characters even when verbalisation changes the length. Every public function has a doctest with a Hindi and an English example. The pipeline when `normalize=false`: stages 1, 2, 3, and 7 run; stages 4 to 6 are skipped.
 
 ### 5.2 Normalisation rules
 
@@ -462,7 +462,7 @@ Quality gate: a golden corpus under `crates/yuyin-text/golden/*.tsv` holds input
 
 ## 6. Engine abstraction
 
-Crate: `yuyin-engine`. Nothing above it knows which model is running. A second engine can be added without touching the gateway. Implementations: `FakeEngine` (`fake.rs`, deterministic tones, used in dev and CI) and the ONNX engine (`onnx.rs`, chosen by ADR-015).
+Crate: `yuyin-engine`. Nothing above it knows which model is running. A second engine can be added without touching the gateway. Implementations: `FakeEngine` (`fake.rs`, deterministic tones, used in dev and CI) and the ONNX engine (`onnx.rs`, a stub). No ONNX engine has been chosen: ADR-015 is Proposed and blocked on owner issue #184.
 
 ```rust
 pub trait SynthesisEngine: Send + Sync {
@@ -501,8 +501,8 @@ Voice registry (`registry.rs`): loads `config/voices.toml` plus private voices f
 
 Goal: time to first audio (TTFA) as low as possible, then keep audio flowing ahead of playback.
 
-- Segmentation (`segment.rs`) splits at clause boundaries (sentence terminators, commas, semicolons, danda `।`, and line breaks). The first segment is deliberately short (target a small number of words, set in `config/limits.toml`) so the first synthesis call finishes quickly. Later segments are longer for prosody.
-- A language switch inside a sentence starts a new segment, tagged with its own `lang`, so the engine receives single-language segments.
+- Segmentation (`segment.rs`) splits at clause boundaries (sentence terminators, commas, semicolons, danda `।`, and line breaks). The first segment is deliberately short (at most 60 code points, `FIRST_SEGMENT_MAX_CP` in `segment.rs`) so the first synthesis call finishes quickly. Later segments are longer for prosody (at most 200 code points, `LATER_SEGMENT_MAX_CP`). Both are `SegmentOptions` defaults, not read from `config/limits.toml`.
+- Each segment carries the context language of its sentence. A code-switched span inside a sentence does not start a new segment, so a Hinglish sentence reaches the engine as one segment in the sentence's matrix language.
 - Pace: `pace_hint` from the normaliser (for example 0.85 for OTP digits) multiplies the request `pace`. The engine receives the combined value; where the model cannot change speed natively, `yuyin-audio/stretch.rs` time-stretches PCM.
 - Pipeline: segment N+1 is queued while segment N is being encoded and written. The per-stream bounded channel holds a small number of PCM chunks; when full, the worker blocks on that stream only.
 - Opus: 24 kHz mono encoded in fixed frames (frame size is set in `yuyin-audio`; Ogg pages are flushed per frame group so the client can decode incrementally). PCM is signed 16-bit little-endian at 24 kHz. WAV carries a streaming header with an unknown length (maximum-size data field) because the length is not known up front.
@@ -1312,8 +1312,8 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── api/openapi.yaml
 ├── config/{pricing.toml,voices.toml,capacity.toml,limits.toml,policy-patterns.toml}
 ├── crates/
-│   ├── yuyin-text/    src/{lib.rs,tag.rs,classify.rs,verbalise/,translit.rs,segment.rs,lexicon.rs}
-│   │                  data/{acronyms.tsv,roman_hindi_lexicon.tsv,hindi_numbers.tsv}  golden/*.tsv  tests/
+│   ├── yuyin-text/    src/{lib.rs,tag.rs,classify/,verbalise/,translit.rs,segment.rs,lexicon/}
+│   │                  data/{acronyms.tsv,english_lexicon.txt,hindi_numbers.tsv,roman_hindi_lexicon.tsv,tagger_ngram.tsv}  golden/*.tsv  tests/
 │   ├── yuyin-engine/  src/{lib.rs,traits.rs,fake.rs,onnx.rs,registry.rs,pool.rs}
 │   ├── yuyin-audio/   src/{lib.rs,opus.rs,ogg.rs,wav.rs,pcm.rs,stretch.rs}
 │   ├── yuyin-meter/   src/{lib.rs,count.rs,price.rs,reserve.rs,batcher.rs,lua/}
