@@ -69,3 +69,10 @@ golden_en_us_acronym_mixed_case_untouched	en-US	acronym	Use the Qzx lane.	Use th
 golden_en_us_acronym_lower_case_untouched	en-US	acronym	Use the qzx lane.	Use the qzx lane.	
 golden_en_us_acronym_hdfc_icici	en-US	acronym	HDFC and ICICI offer it.	H D F C and I C I C I offer it.	
 golden_en_us_acronym_two_acronyms_one_sentence	en-US	acronym	RBI and SEBI issued rules.	R B I and sebi issued rules.	
+golden_hi_acronym_atm_ifsc	hi	acronym	ATM और IFSC कोड	ए टी एम और आई एफ एस सी कोड	two acronyms, Devanagari context
+golden_hi_acronym_gst_rate	hi	acronym	GST की दर बताइए।	जी एस टी की दर बताइए।	
+golden_hinglish_acronym_upi_neft	hinglish	acronym	UPI aur NEFT dono chalte hain.	यू पी आई aur नेफ्ट dono chalte hain.	
+golden_hinglish_acronym_sim_card	hinglish	acronym	Naya SIM card chahiye.	Naya सिम card chahiye.	
+golden_en_in_acronym_ceo	en-IN	acronym	Ask the CEO.	Ask the C E O.	
+golden_en_in_acronym_upi_ifsc	en-IN	acronym	Share your UPI and IFSC.	Share your U P I and I F S C.	
+golden_en_us_acronym_faq_pdf	en-US	acronym	Read the FAQ and the PDF.	Read the F A Q and the P D F.	

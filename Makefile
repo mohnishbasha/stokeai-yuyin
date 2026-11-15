@@ -110,8 +110,8 @@ check-versions: ## every manifest matches VERSION
 	scripts/check-versions.sh
 
 .PHONY: golden
-golden: ## text normalisation golden corpus
-	$(call later,1)
+golden: ## text normalisation golden corpus (prints per-class pass counts)
+	cargo test -p yuyin-text --test golden --locked -- --nocapture
 
 .PHONY: e2e
 e2e: ## end-to-end tests (needs Docker)
