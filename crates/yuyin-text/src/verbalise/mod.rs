@@ -166,6 +166,7 @@ pub(crate) mod samples {
                 second: None,
                 meridiem: Some(datetime::Meridiem::Pm),
                 hours_suffix: false,
+                duration: false,
             }),
             Semiotic::Phone(digits::Phone {
                 country_code: Some("91".into()),

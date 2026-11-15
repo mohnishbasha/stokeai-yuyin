@@ -220,28 +220,35 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-DAT-01 | golden_hi_date_dd_mm_yyyy_default | Golden | Given hi "05/03/2026", when normalised, then it reads as 5 March (day first) | FR-008, ARCH date rule | S1 | ⚠️ Deferred |
-| NM-DAT-02 | golden_hinglish_date_dd_mm_yyyy_default | Golden | Given hinglish "05/03/2026", when normalised, then it reads as 5 March | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-03 | golden_en_in_date_dd_mm_yyyy_default | Golden | Given en-IN "05/03/2026", when normalised, then it reads as "the fifth of March" | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-04 | golden_en_us_date_mm_dd_yyyy_default | Golden | Given en-US "05/03/2026", when normalised, then it reads as "May third" | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-05 | golden_en_us_date_iso_always_parses | Golden | Given "2026-03-05" in every language, when normalised, then it reads as 5 March 2026 in all | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-06 | unit_text_date_ambiguous_never_swaps_across_locales | Unit | Given "05/03/2026" tagged en-IN and en-US, when normalised, then each follows only its own locale rule and neither silently swaps | FR-008, ARCH date rule | S1 | ⚠️ Deferred |
-| NM-DAT-07 | golden_hi_date_unambiguous_day_over_12_parses | Golden | Given "25/03/2026" in en-US, when normalised, then the invalid month is not silently swapped and a defined fallback applies | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-08 | golden_hi_date_month_names_hindi | Golden | Given "5 मार्च 2026", when normalised, then the day number and year are read in Hindi | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-09 | golden_en_in_date_month_names_english | Golden | Given "5 March 2026", when normalised, then ordinal day, month, and year are read | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-10 | golden_hinglish_date_relative_words_untouched | Golden | Given "kal" or "tomorrow", when normalised, then relative words pass through unchanged | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-11 | golden_en_us_date_year_only_four_digit_reads_as_year | Golden | Given "in 2026", when normalised, then it reads "twenty twenty-six", not as a cardinal | FR-008, ARCH OTP rule | S1 | ⚠️ Deferred |
+| NM-DAT-01 | golden_hi_date_dd_mm_yyyy_default | Golden | Given hi "05/03/2026", when normalised, then it reads as 5 March (day first) | FR-008, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-02 | golden_hinglish_date_dd_mm_yyyy_default | Golden | Given hinglish "05/03/2026", when normalised, then it reads as 5 March | FR-008 | S1 | ✅ Automated |
+| NM-DAT-03 | golden_en_in_date_dd_mm_yyyy_default | Golden | Given en-IN "05/03/2026", when normalised, then it reads as "the fifth of March" | FR-008 | S1 | ✅ Automated |
+| NM-DAT-04 | golden_en_us_date_mm_dd_yyyy_default | Golden | Given en-US "05/03/2026", when normalised, then it reads as "May third" | FR-008 | S1 | ✅ Automated |
+| NM-DAT-05 | golden_en_us_date_iso_always_parses | Golden | Given "2026-03-05" in every language, when normalised, then it reads as 5 March 2026 in all | FR-008 | S1 | ✅ Automated |
+| NM-DAT-06 | unit_text_date_ambiguous_never_swaps_across_locales | Unit | Given "05/03/2026" tagged en-IN and en-US, when normalised, then each follows only its own locale rule and neither silently swaps | FR-008, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-07 | golden_hi_date_unambiguous_day_over_12_parses | Golden | Given "25/03/2026" in en-US, when normalised, then the invalid month is not silently swapped and the text is left as written | FR-008 | S1 | ✅ Automated |
+| NM-DAT-08 | golden_hi_date_month_names_hindi | Golden | Given "5 मार्च 2026", when normalised, then the day number and year are read in Hindi | FR-008 | S1 | ✅ Automated |
+| NM-DAT-09 | golden_en_in_date_month_names_english | Golden | Given "5 March 2026", when normalised, then ordinal day, month, and year are read | FR-008 | S1 | ✅ Automated |
+| NM-DAT-10 | golden_hinglish_date_relative_words_untouched | Golden | Given "kal" or "tomorrow", when normalised, then relative words pass through unchanged | FR-008 | S1 | ✅ Automated |
+| NM-DAT-11 | golden_en_us_date_year_only_four_digit_reads_as_year | Golden | Given "in 2026", when normalised, then it reads "twenty twenty-six", not as a cardinal | FR-008, ARCH OTP rule | S1 | ✅ Automated |
+| NM-DAT-12 | unit_text_dates_ambiguousnumeric_enin_readsdaymonth | Unit | Given "05/12/2026" in en-IN, hi, hinglish, and auto, when normalised, then it reads as 5 December 2026 (day first) | FR-008 AC-1, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-13 | unit_text_dates_ambiguousnumeric_enus_readsmonthday | Unit | Given "05/12/2026" in en-US, when normalised, then it reads as May 12, 2026 (month first) | FR-008 AC-2, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-14 | unit_text_dates_relativeformat_leftuntouched | Unit | Given "tomorrow", "kal", "कल", and "next week", when normalised, then they pass through unchanged and only a clock time or number beside them is read | FR-008 | S1 | ✅ Automated |
+| NM-DAT-15 | unit_text_dates_invalid_left_as_written | Unit | Given "31/02/2026" and "29/02/2025", when normalised, then they are not read as dates and pass through as written; "29/02/2028" is a valid leap day | FR-008 AC-3 | S1 | ✅ Automated |
 
 #### 6.2.3 TIME
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-TIM-01 | golden_en_in_time_12_hour_pm | Golden | Given "5:30 PM", when normalised, then "five thirty P M" | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-02 | golden_en_in_time_24_hour_hrs_suffix | Golden | Given "17:30 hrs", when normalised, then it reads as seventeen thirty hours | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-03 | golden_hi_time_12_hour_reads_in_hindi | Golden | Given hi "5:30 PM", when normalised, then it reads as साढ़े पाँच / पाँच बजकर तीस मिनट in the golden form | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-04 | golden_hi_time_on_the_hour | Golden | Given hi "9:00 AM", when normalised, then it reads as सुबह नौ बजे | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-05 | golden_en_us_time_noon_midnight_edge | Golden | Given "12:00 AM" and "12:00 PM", when normalised, then midnight and noon are read correctly | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-06 | golden_en_us_time_duration_reads_hours_minutes | Golden | Given "2h 15m", when normalised, then "two hours fifteen minutes" | FR-008 | S1 | ⚠️ Deferred |
+| NM-TIM-01 | golden_en_in_time_12_hour_pm | Golden | Given "5:30 PM", when normalised, then "five thirty P M" | FR-008 | S1 | ✅ Automated |
+| NM-TIM-02 | golden_en_in_time_24_hour_hrs_suffix | Golden | Given "17:30 hrs", when normalised, then it reads as seventeen thirty hours | FR-008 | S1 | ✅ Automated |
+| NM-TIM-03 | golden_hi_time_12_hour_reads_in_hindi | Golden | Given hi "5:30 PM", when normalised, then it reads as शाम के साढ़े पाँच बजे | FR-008 | S1 | ✅ Automated |
+| NM-TIM-04 | golden_hi_time_on_the_hour | Golden | Given hi "9:00 AM", when normalised, then it reads as सुबह के नौ बजे | FR-008 | S1 | ✅ Automated |
+| NM-TIM-05 | golden_en_us_time_noon_midnight_edge | Golden | Given "12:00 AM" and "12:00 PM", when normalised, then midnight and noon are read correctly | FR-008 | S1 | ✅ Automated |
+| NM-TIM-06 | golden_en_us_time_duration_reads_hours_minutes | Golden | Given "2h 15m", when normalised, then "two hours fifteen minutes" | FR-008 | S1 | ✅ Automated |
+| NM-TIM-07 | unit_text_times_24hourhrs_verbalised | Unit | Given "17:30 hrs", when normalised, then en reads "seventeen thirty hours" and hi reads "सत्रह बजकर तीस मिनट" | FR-008 | S1 | ✅ Automated |
+| NM-TIM-08 | unit_text_times_12hour_meridiem_verbalised | Unit | Given "5:30 PM", "3:30 pm", "9:00 AM", "12:00 AM", and "12:00 PM", when normalised, then en reads "five thirty P M" and so on with midnight and noon, and hi reads "शाम के साढ़े तीन बजे" | FR-008 AC-4 | S1 | ✅ Automated |
+| NM-TIM-09 | unit_text_times_duration_reads_hours_minutes | Unit | Given "2h 15m", when normalised, then en reads "two hours fifteen minutes" and hi reads "दो घंटे पंद्रह मिनट"; a lone "5m" or "30s" is not a duration | FR-008 | S1 | ✅ Automated |
 
 #### 6.2.4 PHONE
 
