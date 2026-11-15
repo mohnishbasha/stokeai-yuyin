@@ -1,0 +1,32 @@
+id	lang	class	input	expected	notes
+golden_hi_segment_leading_trailing_space	hi	segment	  नमस्ते।  	नमस्ते।	trimmed
+golden_hi_segment_decimal_kept	hi	segment	मान 3.14 है।	मान 3.14 है।	dot inside number is not a boundary
+golden_hi_segment_domain_kept	hi	segment	example.com पर जाइए।	example.com पर जाइए।	dot inside domain is not a boundary
+golden_hi_segment_three_sentences	hi	segment	एक। दो। तीन।	एक। दो। तीन।	
+golden_hi_segment_clause_colon	hi	segment	ध्यान दीजिए: कल छुट्टी है।	ध्यान दीजिए: कल छुट्टी है।	
+golden_hi_segment_clause_semicolon	hi	segment	रुकिए; हम आ रहे हैं।	रुकिए; हम आ रहे हैं।	
+golden_hi_segment_no_terminator	hi	segment	आपका स्वागत है	आपका स्वागत है	text without a terminator is one segment
+golden_hi_segment_mixed_terminators	hi	segment	क्या हुआ? कुछ नहीं। ठीक है!	क्या हुआ? कुछ नहीं। ठीक है!	
+golden_hinglish_segment_leading_trailing_space	hinglish	segment	  Shukriya.  	Shukriya.	
+golden_hinglish_segment_decimal_kept	hinglish	segment	Rate 3.5 hai.	Rate 3.5 hai.	
+golden_hinglish_segment_domain_kept	hinglish	segment	example.com par jaiye.	example.com par jaiye.	
+golden_hinglish_segment_three_sentences	hinglish	segment	Ek. Do. Teen.	Ek. Do. Teen.	
+golden_hinglish_segment_clause_comma	hinglish	segment	Haan, theek hai, chalte hain.	Haan, theek hai, chalte hain.	
+golden_hinglish_segment_no_terminator	hinglish	segment	Aapka swagat hai	Aapka swagat hai	
+golden_hinglish_segment_mixed_danda_period	hinglish	segment	Namaste। Aap kaise hain.	Namaste। Aap kaise hain.	
+golden_en_in_segment_leading_trailing_space	en-IN	segment	  Thank you.  	Thank you.	
+golden_en_in_segment_decimal_kept	en-IN	segment	Version 3.14 is live.	Version 3.14 is live.	
+golden_en_in_segment_domain_kept	en-IN	segment	Visit example.com today.	Visit example.com today.	
+golden_en_in_segment_three_sentences	en-IN	segment	One. Two. Three.	One. Two. Three.	
+golden_en_in_segment_clause_colon	en-IN	segment	Note: the office is closed.	Note: the office is closed.	
+golden_en_in_segment_no_terminator	en-IN	segment	Welcome to the service	Welcome to the service	
+golden_en_in_segment_mixed_terminators	en-IN	segment	Really? Yes. Great!	Really? Yes. Great!	
+golden_en_us_segment_leading_trailing_space	en-US	segment	  Thank you.  	Thank you.	
+golden_en_us_segment_decimal_kept	en-US	segment	Version 3.14 is live.	Version 3.14 is live.	
+golden_en_us_segment_domain_kept	en-US	segment	Visit example.com today.	Visit example.com today.	
+golden_en_us_segment_three_sentences	en-US	segment	One. Two. Three.	One. Two. Three.	
+golden_en_us_segment_clause_semicolon	en-US	segment	Please wait; we are connecting.	Please wait; we are connecting.	
+golden_en_us_segment_no_terminator	en-US	segment	Welcome to the service	Welcome to the service	
+golden_en_us_segment_mixed_terminators	en-US	segment	Really? Yes. Great!	Really? Yes. Great!	
+golden_en_us_segment_long_clause_chain	en-US	segment	First, we check your account, then we verify your details, and finally we confirm.	First, we check your account, then we verify your details, and finally we confirm.	over 60 characters, first segment cuts at a clause boundary, joined output unchanged
+golden_hi_segment_long_clause_chain	hi	segment	सबसे पहले हम आपका खाता जाँचेंगे, फिर आपका विवरण सत्यापित करेंगे, और अंत में पुष्टि करेंगे।	सबसे पहले हम आपका खाता जाँचेंगे, फिर आपका विवरण सत्यापित करेंगे, और अंत में पुष्टि करेंगे।	over 60 code points

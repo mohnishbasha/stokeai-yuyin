@@ -43,3 +43,25 @@ golden_en_us_plain_colon	en-US	plain	Note: this call may be recorded.	Note: this
 golden_en_us_plain_question_pair	en-US	plain	Did that help? Is there anything else?	Did that help? Is there anything else?
 golden_en_us_plain_dash	en-US	plain	Thanks for waiting - we're almost done.	Thanks for waiting - we're almost done.	spaced hyphen kept
 golden_en_us_plain_accented	en-US	plain	Meet me at the café.	Meet me at the café.	Latin-1 letter kept
+golden_hi_plain_apology	hi	plain	असुविधा के लिए खेद है।	असुविधा के लिए खेद है।	
+golden_hi_plain_request	hi	plain	कृपया अपना नाम बताइए।	कृपया अपना नाम बताइए।	
+golden_hi_plain_farewell	hi	plain	फिर मिलेंगे, नमस्ते।	फिर मिलेंगे, नमस्ते।	
+golden_hi_plain_nonumber_question	hi	plain	क्या आप मदद चाहते हैं?	क्या आप मदद चाहते हैं?	
+golden_hi_plain_visarga	hi	plain	दुःख की बात है।	दुःख की बात है।	visarga kept
+golden_hi_plain_halant	hi	plain	विद्वान व्यक्ति आए।	विद्वान व्यक्ति आए।	halant conjunct kept
+golden_hinglish_plain_apology	hinglish	plain	Asuvidha ke liye khed hai.	Asuvidha ke liye khed hai.	
+golden_hinglish_plain_request	hinglish	plain	Kripya apna naam bataiye.	Kripya apna naam bataiye.	
+golden_hinglish_plain_farewell	hinglish	plain	Phir milenge, namaste.	Phir milenge, namaste.	
+golden_hinglish_plain_english_phrase	hinglish	plain	Please hold, main check karta hoon.	Please hold, main check karta hoon.	
+golden_hinglish_plain_devanagari_word	hinglish	plain	Aapka स्वागत hai.	Aapka स्वागत hai.	
+golden_en_in_plain_apology	en-IN	plain	We apologise for the inconvenience.	We apologise for the inconvenience.	
+golden_en_in_plain_request	en-IN	plain	Please state your name.	Please state your name.	
+golden_en_in_plain_farewell	en-IN	plain	Goodbye, and thank you.	Goodbye, and thank you.	
+golden_en_in_plain_devanagari_word	en-IN	plain	Say नमस्ते to greet.	Say नमस्ते to greet.	
+golden_en_in_plain_contraction	en-IN	plain	It's ready, isn't it?	It's ready, isn't it?	
+golden_en_us_plain_apology	en-US	plain	We apologize for the inconvenience.	We apologize for the inconvenience.	
+golden_en_us_plain_request	en-US	plain	Please state your name.	Please state your name.	
+golden_en_us_plain_farewell	en-US	plain	Goodbye, and thank you.	Goodbye, and thank you.	
+golden_en_us_plain_contraction	en-US	plain	It's ready, isn't it?	It's ready, isn't it?	
+golden_en_us_plain_single_word	en-US	plain	Hello	Hello	
+golden_en_us_plain_apostrophe_possessive	en-US	plain	That is John's phone.	That is John's phone.	

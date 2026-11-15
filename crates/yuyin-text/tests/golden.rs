@@ -19,7 +19,7 @@ const HEADER: &str = "id\tlang\tclass\tinput\texpected\tnotes";
 
 /// Floor on the corpus size. Raised as class tasks add rows: 400 at the end of Sprint 1,
 /// 1,500 by v1.0.0 (NFR-011, `TEST_PLAN` section 5).
-const MIN_ROWS: usize = 40;
+const MIN_ROWS: usize = 170;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Row {

@@ -115,6 +115,15 @@ Scenario ID prefixes: SC (scaffold), NM (normalisation), LT (language tagging), 
 
 Golden-file rules: a golden row is never edited to make a failing test pass unless the expected reading was wrong, in which case the change is reviewed and noted in `notes`. Fixtures contain no real phone numbers, card numbers, or bank-like messages.
 
+Golden corpus growth plan (NFR-011). Rows are hand-written and added with `scripts/golden-add.sh <file> <lang> <class> <name> <input> <expected> [notes]`. Fields cannot hold tabs or newlines, so whitespace-collapse rows for tabs and line breaks live in unit tests, not the corpus. `make golden` prints per-class pass counts. The runner floor (`MIN_ROWS` in `crates/yuyin-text/tests/golden.rs`) is raised in the same PR that adds rows, so the corpus can never shrink silently.
+
+| Milestone | Rows (at least) | How it is reached |
+|---|---|---|
+| S1-T01 (runner, plain, acronym, segment) | 170 | Classes already on `develop`: plain, acronym, segment |
+| End of Sprint 1 | 400 | Each class task adds its own rows: numbers (S1-T04), tagging (S1-T03), money, dates and times, digit strings, units, other classes. Roughly 25 to 40 rows per class, spread across hi, hinglish, en-IN, and en-US |
+| End of Sprint 3 | 800 | Every row of NM-* scenarios in 6.2 becomes a golden row in all four languages where the rule applies |
+| v1.0.0 | 1,500 | Customer-reported wrong readings (rule 7), edge cases from property and fuzz failures, and a review pass that balances classes so no class has fewer than 40 rows and no language fewer than 20 percent of the total |
+
 ## 6. Scenario tables
 
 Columns: ID, test name, type, Given / When / Then summary, spec reference, sprint, status. Types: Unit, Golden, Property, Integration, Contract, Smoke, E2E, Perf, Regression.
