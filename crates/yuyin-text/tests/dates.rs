@@ -44,9 +44,16 @@ fn unit_text_dates_ambiguous_never_swaps_across_locales() {
         say("25/03/2026", LanguageHint::EnIn),
         "the twenty-fifth of March twenty twenty-six"
     );
-    assert_eq!(say("25/03/2026", LanguageHint::EnUs), "25/03/2026");
+    // Not a date, so the digits are read one by one (PRD FR-008 AC-3).
+    assert_eq!(
+        say("25/03/2026", LanguageHint::EnUs),
+        "two five/zero three/two zero two six"
+    );
     // And the other way round.
-    assert_eq!(say("03/25/2026", LanguageHint::EnIn), "03/25/2026");
+    assert_eq!(
+        say("03/25/2026", LanguageHint::EnIn),
+        "zero three/two five/two zero two six"
+    );
     assert_eq!(
         say("03/25/2026", LanguageHint::EnUs),
         "March twenty-fifth twenty twenty-six"
@@ -55,8 +62,15 @@ fn unit_text_dates_ambiguous_never_swaps_across_locales() {
 
 #[test]
 fn unit_text_dates_invalid_left_as_written() {
-    assert_eq!(say("31/02/2026", LanguageHint::EnIn), "31/02/2026");
-    assert_eq!(say("29/02/2025", LanguageHint::EnIn), "29/02/2025");
+    // Read as digits, not as a date (PRD FR-008 AC-3, leftover-digit safety net).
+    assert_eq!(
+        say("31/02/2026", LanguageHint::EnIn),
+        "three one/zero two/two zero two six"
+    );
+    assert_eq!(
+        say("29/02/2025", LanguageHint::EnIn),
+        "two nine/zero two/two zero two five"
+    );
     assert_eq!(
         say("29/02/2028", LanguageHint::EnIn),
         "the twenty-ninth of February twenty twenty-eight"
