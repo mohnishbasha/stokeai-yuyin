@@ -268,23 +268,28 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-CAR-01 | unit_text_cardinal_hindi_0_to_99_table_complete | Unit | Given 0..99 in hi, when normalised, then each matches the irregular-form table (not a rule) | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-02 | golden_hi_cardinal_lakh_crore_arab | Golden | Given 12,34,56,789 and larger, when normalised in hi, then lakh, crore, arab are used | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-03 | golden_hinglish_cardinal_indian_grouping | Golden | Given hinglish numbers with Indian grouping, when normalised, then lakh and crore are used | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-04 | golden_en_in_cardinal_lakh_crore | Golden | Given en-IN "2,50,000", when normalised, then "two lakh fifty thousand" | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-05 | golden_en_us_cardinal_million_billion | Golden | Given en-US "2,500,000", when normalised, then "two million five hundred thousand" | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-06 | unit_text_cardinal_upper_bound_10_pow_15_handled | Unit | Given 10^15, when normalised, then it reads without panic or truncation | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-07 | golden_en_us_cardinal_decimals_negatives_fractions | Golden | Given "-3.14" and "1/2", when normalised, then "minus three point one four" and "one half" | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-08 | golden_hi_cardinal_decimals_hindi_point | Golden | Given hi "3.5", when normalised, then it reads with दशमलव or साढ़े per the golden form | FR-006 | S1 | ⚠️ Deferred |
+| NM-CAR-01 | unit_text_cardinal_hindi_0_to_99_table_complete | Unit | Given 0..99 in hi, when normalised, then each matches the irregular-form table (not a rule) | FR-006 | S1 | ✅ Automated |
+| NM-CAR-02 | golden_hi_cardinal_lakh_crore_arab | Golden | Given 12,34,56,789 and larger, when normalised in hi, then lakh, crore, arab are used | FR-006 | S1 | ✅ Automated |
+| NM-CAR-03 | golden_hinglish_cardinal_indian_grouping | Golden | Given hinglish numbers with Indian grouping, when normalised, then lakh and crore are used | FR-006 | S1 | ✅ Automated |
+| NM-CAR-04 | golden_en_in_cardinal_lakh_crore | Golden | Given en-IN "2,50,000", when normalised, then "two lakh fifty thousand" | FR-006 | S1 | ✅ Automated |
+| NM-CAR-05 | golden_en_us_cardinal_million_billion | Golden | Given en-US "2,500,000", when normalised, then "two million five hundred thousand" | FR-006 | S1 | ✅ Automated |
+| NM-CAR-06 | unit_text_cardinal_upper_bound_10_pow_15_handled | Unit | Given 10^15, when normalised, then it reads without panic or truncation | FR-006 | S1 | ✅ Automated |
+| NM-CAR-07 | golden_en_us_cardinal_decimals_negatives_fractions | Golden | Given "-3.14" and "1/2", when normalised, then "minus three point one four" and "one half" | FR-006 | S1 | ✅ Automated |
+| NM-CAR-08 | golden_hi_cardinal_decimals_hindi_point | Golden | Given hi "3.5", when normalised, then it reads with दशमलव or साढ़े per the golden form | FR-006 | S1 | ✅ Automated |
+| NM-CAR-09 | unit_text_numbers_hindi0to99_tablelookup_matchesgolden | Unit | Given every integer 0 to 100 in hi, when verbalised, then each equals the table row in `data/hindi_numbers.tsv` and its golden row (`golden_hi_cardinal_n0` to `n100`) | FR-006 | S1 | ✅ Automated |
+| NM-CAR-10 | unit_text_numbers_indiangrouping_lakhcrore_verbalised | Unit | Given 1,50,000 and 12,45,00,000 in hi, hinglish, and en-IN, when normalised, then lakh and crore (लाख, करोड़) are used, and Hindi ignores a US locale | FR-006 | S1 | ✅ Automated |
+| NM-CAR-11 | unit_text_numbers_westerngrouping_enus_million | Unit | Given 2,500,000 in en-US, when normalised, then "two million five hundred thousand" and no lakh | FR-006 | S1 | ✅ Automated |
+| NM-CAR-12 | property_text_numbers_roundtrip_100values_parsebackequal | Property | Given 128 random integers, negatives, and decimals per language (hi, hinglish, en-IN, en-US), when normalised and parsed back by a test-only parser, then the parsed value equals the input; every `u64` also round-trips through the verbaliser API | FR-006 | S1 | ✅ Automated |
+| NM-CAR-13 | unit_text_numbers_eighteen_digit_limit_then_digit_by_digit_passthrough | Unit | Given a 19-digit string, when normalised, then it is not read as a number (left for digit-by-digit reading) | FR-006 | S1 | ✅ Automated |
 
 #### 6.2.7 ORDINAL
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-ORD-01 | golden_en_us_ordinal_1st_2nd_3rd_4th | Golden | Given "1st 2nd 3rd 4th", when normalised, then first, second, third, fourth | FR-006 | S1 | ⚠️ Deferred |
-| NM-ORD-02 | golden_en_in_ordinal_11th_12th_13th_exceptions | Golden | Given "11th 12th 13th", when normalised, then eleventh, twelfth, thirteenth | FR-006 | S1 | ⚠️ Deferred |
-| NM-ORD-03 | golden_hi_ordinal_pehla_doosra_form | Golden | Given hi ordinal markers, when normalised, then पहला, दूसरा, तीसरा and regular forms from 5 up | FR-006 | S1 | ⚠️ Deferred |
-| NM-ORD-04 | golden_hinglish_ordinal_in_mixed_sentence | Golden | Given a hinglish sentence with "3rd floor", when normalised, then the ordinal reads in the sentence's language | FR-006, FR-004 | S1 | ⚠️ Deferred |
+| NM-ORD-01 | golden_en_us_ordinal_1st_2nd_3rd_4th | Golden | Given "1st 2nd 3rd 4th", when normalised, then first, second, third, fourth | FR-006 | S1 | ✅ Automated |
+| NM-ORD-02 | golden_en_in_ordinal_11th_12th_13th_exceptions | Golden | Given "11th 12th 13th", when normalised, then eleventh, twelfth, thirteenth | FR-006 | S1 | ✅ Automated |
+| NM-ORD-03 | golden_hi_ordinal_pehla_doosra_form | Golden | Given hi ordinal markers, when normalised, then पहला, दूसरा, तीसरा and regular forms from 5 up | FR-006 | S1 | ✅ Automated |
+| NM-ORD-04 | golden_hinglish_ordinal_in_mixed_sentence | Golden | Given a hinglish sentence with "3rd floor", when normalised, then the ordinal reads in the sentence's language | FR-006, FR-004 | S1 | ✅ Automated |
 
 #### 6.2.8 PERCENT
 

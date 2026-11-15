@@ -126,7 +126,7 @@ pub(crate) fn is_sentence_end(token: &str) -> bool {
 /// let hi = normalise("पहला वाक्य। दूसरा वाक्य।", &NormaliseOptions::new(LanguageHint::Hi)).unwrap();
 /// assert_eq!(hi.iter().map(|s| s.text.as_str()).collect::<Vec<_>>(), ["पहला वाक्य।", "दूसरा वाक्य।"]);
 /// let en = normalise("Pi is 3.14. Done!", &NormaliseOptions::new(LanguageHint::EnIn)).unwrap();
-/// assert_eq!(en.iter().map(|s| s.text.as_str()).collect::<Vec<_>>(), ["Pi is 3.14.", "Done!"]);
+/// assert_eq!(en.iter().map(|s| s.text.as_str()).collect::<Vec<_>>(), ["Pi is three point one four.", "Done!"]);
 /// // The first segment ends at the earliest clause boundary.
 /// let first = normalise("Hello, how are you doing today?", &NormaliseOptions::new(LanguageHint::EnUs)).unwrap();
 /// assert_eq!(first[0].text, "Hello,");
