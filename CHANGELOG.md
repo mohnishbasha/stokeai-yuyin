@@ -7,6 +7,9 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 ## [Unreleased]
 
 ### Added
+- `yuyin-text` front end: Hindi and English number, currency, date and time, digit string, unit, percent, range, email, and URL verbalisation; acronym lexicon with tenant overrides; script and language tagging with a Roman Hindi lexicon; a segmenter with a short first segment; a 1,244-row golden corpus with `make golden` and `scripts/golden-add.sh`; property tests and a weekly fuzz job; and a purity check that keeps the crate free of I/O.
+- Engine bake-off (`bench/engine-bakeoff/`), licence evidence (`docs/licences/`), and ADR-015 (Proposed, waiting on owner decision #184).
+- `SynthesisEngine` trait with supporting types and a deterministic `FakeEngine` (sine sweep, configurable delay and chunk size, cancellation within 20 ms) in `yuyin-engine`.
 - Local dev stack: `deploy/compose/docker-compose.dev.yml` (Postgres 16, Valkey, stripe-mock), `scripts/dev.sh`, `.env.development.example`, and a placeholder gateway serving `/healthz`.
 - Monorepo scaffold: Rust workspace, Bun workspace, Python SDK placeholder.
 - Version source of truth (`VERSION`) with `scripts/check-versions.sh` and `scripts/extract-changelog.sh`.
@@ -18,3 +21,6 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 - Supply chain checks: Dependabot for five ecosystems, `scripts/audit.sh` (cargo audit, cargo deny, bun audit), a gitleaks config with a `yy_live_`/`yy_test_` rule, a pre-commit hook (`scripts/install-hooks.sh`), and the `security` workflow.
 - CI workflow (`.github/workflows/ci.yml`) with lint and type-check on amd64 and arm64, unit, coverage gate (`scripts/coverage.sh`, `.coverage-thresholds.toml`), integration, contract, and e2e jobs.
 - Container images: `deploy/docker/Dockerfile.gateway` (cargo-chef, `slim` and `full` targets, distroless, non-root, OCI labels), `Dockerfile.console`, `.dockerignore`, `yuyin-gateway healthcheck`, `make image` and `make image-multiarch`, and a native amd64 and arm64 `image-build` CI job.
+
+### Changed
+- The golden corpus floor (`MIN_ROWS`) is raised to 1,244 rows, and the `run-golden` skill prints the runner's own per-class table.

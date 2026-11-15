@@ -11,13 +11,13 @@ Before and after any change to the normaliser. Golden rows are added first, then
 
 ## What it runs
 
-`cargo test -p yuyin-text golden`. Tests are named `golden_{lang}_{class}_{id}`, for example `golden_hi_currency_0001` and `golden_en_currency_0002`. The script groups results by class.
+`cargo test -p yuyin-text --test golden -- --nocapture`. The corpus is the TSV files in `crates/yuyin-text/golden/`. Row ids follow `golden_{lang}_{class}_{slug}`, for example `golden_hi_acronym_kyc_pending`. The test fails if any row regresses or the corpus falls below the `MIN_ROWS` floor in `crates/yuyin-text/tests/golden.rs`.
 
 ## Output
 
-The full test output (failing rows show their diff), then a per-class table of `passed / total`.
+A per-class table of `passed / total` with a total line, printed by the golden test, and the diff of any failing row.
 
-While `crates/yuyin-text/golden/` holds no corpus, it prints `golden corpus empty: 0 rows (corpus arrives in Sprint 1, S1-T01)` and exits 0.
+If `crates/yuyin-text/golden/` holds no TSV files, it prints `golden corpus empty: 0 rows` and exits 0.
 
 ## Exit codes
 

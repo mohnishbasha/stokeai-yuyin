@@ -1,0 +1,156 @@
+id	lang	class	input	expected	notes
+golden_hi_percent_decimal	hi	percent	8.5%	आठ दशमलव पाँच प्रतिशत	FR-011 AC-1
+golden_hi_percent_integer	hi	percent	15%	पंद्रह प्रतिशत	
+golden_hi_percent_in_sentence	hi	percent	ब्याज दर 7.25% है	ब्याज दर सात दशमलव दो पाँच प्रतिशत है	
+golden_hi_percent_hundred	hi	percent	100%	एक सौ प्रतिशत	
+golden_hi_percent_devanagari_digits	hi	percent	२५%	पच्चीस प्रतिशत	
+golden_hi_percent_negative	hi	percent	-5%	माइनस पाँच प्रतिशत	
+golden_hi_percent_per_annum	hi	percent	12% p.a.	बारह प्रतिशत प्रति वर्ष.	text ends with a dot, so it stays the sentence end NM-PCT-04
+golden_hi_percent_below_one	hi	percent	0.5%	शून्य दशमलव पाँच प्रतिशत	
+golden_hi_percent_discount_sentence	hi	percent	छूट 50% तक है।	छूट पचास प्रतिशत तक है।	
+golden_hinglish_percent_per_annum	hinglish	percent	Aapka byaaj 9% p.a. hai.	Aapka byaaj नौ प्रतिशत प्रति वर्ष hai.	NM-PCT-04
+golden_hinglish_percent_decimal	hinglish	percent	Byaaj 8.5% hai.	Byaaj आठ दशमलव पाँच प्रतिशत hai.	
+golden_hinglish_percent_integer	hinglish	percent	Aapko 20% chhoot milegi.	Aapko बीस प्रतिशत chhoot milegi.	
+golden_en_in_percent_decimal	en-IN	percent	8.5%	eight point five percent	FR-011 AC-1, NM-PCT-02
+golden_en_in_percent_integer	en-IN	percent	15%	fifteen percent	
+golden_en_in_percent_per_annum	en-IN	percent	Interest is 9% p.a.	Interest is nine percent per annum.	NM-PCT-04
+golden_en_in_percent_negative_decimal	en-IN	percent	-2.5%	minus two point five percent	
+golden_en_in_percent_hundred	en-IN	percent	100%	one hundred percent	
+golden_en_in_percent_growth_sentence	en-IN	percent	Growth was 12.5% last year.	Growth was twelve point five percent last year.	
+golden_en_in_percent_grouped	en-IN	percent	1,250%	one thousand two hundred fifty percent	
+golden_en_us_percent_integer	en-US	percent	15%	fifteen percent	NM-PCT-01
+golden_en_us_percent_rate_sentence	en-US	percent	Rates are 4.75%.	Rates are four point seven five percent.	
+golden_en_us_percent_hundred	en-US	percent	100%	one hundred percent	
+golden_en_us_percent_off	en-US	percent	50% off	fifty percent off	
+golden_en_us_percent_below_one	en-US	percent	0.25%	zero point two five percent	
+golden_en_in_unit_km	en-IN	unit	5 km	five kilometres	FR-011 AC-2
+golden_en_in_unit_kg_singular	en-IN	unit	1 kg	one kilogram	singular for exactly 1
+golden_en_in_unit_kg_decimal	en-IN	unit	2.5 kg	two point five kilograms	
+golden_en_in_unit_gb	en-IN	unit	50 GB	fifty gigabytes	NM-UNT-02
+golden_en_in_unit_mbps	en-IN	unit	100 Mbps	one hundred megabits per second	NM-UNT-02
+golden_en_in_unit_ml	en-IN	unit	250 ml	two hundred fifty millilitres	
+golden_en_in_unit_celsius	en-IN	unit	30°C	thirty degrees Celsius	
+golden_en_in_unit_gb_singular	en-IN	unit	1 GB	one gigabyte	
+golden_en_in_unit_gb_glued	en-IN	unit	16GB storage	sixteen gigabytes storage	number and unit without a space
+golden_en_in_unit_kmh	en-IN	unit	60 km/h	sixty kilometres per hour	
+golden_en_in_unit_mah	en-IN	unit	5000 mAh battery	five thousand milliampere hours battery	
+golden_en_in_unit_tb	en-IN	unit	2 TB drive	two terabytes drive	
+golden_en_in_unit_cm	en-IN	unit	10 cm	ten centimetres	
+golden_en_in_unit_litre	en-IN	unit	3 L	three litres	
+golden_en_in_unit_gram	en-IN	unit	500 g	five hundred grams	
+golden_en_in_unit_mb_sentence	en-IN	unit	The file is 5 MB.	The file is five megabytes.	
+golden_en_in_unit_ghz	en-IN	unit	2.4 GHz	two point four gigahertz	
+golden_en_in_unit_feet	en-IN	unit	10 ft	ten feet	irregular plural
+golden_en_in_unit_foot	en-IN	unit	1 ft	one foot	
+golden_en_in_unit_speed_sentence	en-IN	unit	Speed is 100 Mbps.	Speed is one hundred megabits per second.	
+golden_en_in_unit_unknown_suffix	en-IN	unit	5 xyz	five xyz	NM-UNT-04: unknown unit passes through, the number still reads
+golden_en_us_unit_km	en-US	unit	5 km	five kilometers	NM-UNT-01
+golden_en_us_unit_kg_singular	en-US	unit	1 kg	one kilogram	NM-UNT-01
+golden_en_us_unit_mbps	en-US	unit	100 Mbps	one hundred megabits per second	
+golden_en_us_unit_litre	en-US	unit	3 L	three liters	US spelling
+golden_en_us_unit_ml	en-US	unit	250 ml	two hundred fifty milliliters	
+golden_en_us_unit_fahrenheit	en-US	unit	75°F	seventy-five degrees Fahrenheit	
+golden_en_us_unit_cm	en-US	unit	10 cm	ten centimeters	
+golden_en_us_unit_gb	en-US	unit	2 GB	two gigabytes	
+golden_en_us_unit_mph	en-US	unit	65 mph	sixty-five miles per hour	
+golden_en_us_unit_gb_decimal	en-US	unit	1.5 GB	one point five gigabytes	
+golden_en_us_unit_kwh	en-US	unit	300 kWh	three hundred kilowatt hours	
+golden_hi_unit_kg	hi	unit	2 kg	दो किलोग्राम	NM-UNT-03
+golden_hi_unit_km	hi	unit	5 km	पाँच किलोमीटर	
+golden_hi_unit_km_sentence	hi	unit	आज 5 km चलना है	आज पाँच किलोमीटर चलना है	NM-UNT-03
+golden_hi_unit_gb	hi	unit	50 GB	पचास गीगाबाइट	
+golden_hi_unit_mbps	hi	unit	100 Mbps	एक सौ मेगाबिट प्रति सेकंड	
+golden_hi_unit_ml	hi	unit	500 ml	पाँच सौ मिलीलीटर	
+golden_hi_unit_celsius	hi	unit	30°C	तीस डिग्री सेल्सियस	
+golden_hi_unit_litre	hi	unit	3 L	तीन लीटर	
+golden_hi_unit_cm	hi	unit	10 cm	दस सेंटीमीटर	
+golden_hi_unit_kg_sentence	hi	unit	चावल 25 kg का है	चावल पच्चीस किलोग्राम का है	
+golden_hi_unit_gb_decimal	hi	unit	डेटा 1.5 GB है	डेटा एक दशमलव पाँच गीगाबाइट है	
+golden_hi_unit_kmh	hi	unit	60 km/h	साठ किलोमीटर प्रति घंटा	
+golden_hi_unit_devanagari_digits	hi	unit	२ kg	दो किलोग्राम	
+golden_hi_unit_gram	hi	unit	250 g	दो सौ पचास ग्राम	
+golden_hinglish_unit_kg	hinglish	unit	Mujhe 2 kg chawal chahiye.	Mujhe दो किलोग्राम chawal chahiye.	
+golden_hinglish_unit_gb	hinglish	unit	Aapka data 2 GB hai.	Aapka data दो गीगाबाइट hai.	
+golden_hinglish_unit_mbps	hinglish	unit	Speed 100 Mbps hai.	Speed एक सौ मेगाबिट प्रति सेकंड hai.	
+golden_hinglish_unit_km	hinglish	unit	Ghar 5 km door hai.	Ghar पाँच किलोमीटर door hai.	
+golden_hinglish_unit_gb_daily	hinglish	unit	Plan mein 1.5 GB daily hai.	Plan mein एक दशमलव पाँच गीगाबाइट daily hai.	
+golden_hinglish_unit_unknown_suffix	hinglish	unit	Mujhe 5 abc chahiye.	Mujhe पाँच abc chahiye.	NM-UNT-04: unknown unit passes through, the number still reads
+golden_en_in_range_days	en-IN	range	10-15 days	ten to fifteen days	NM-RNG-01
+golden_en_in_range_delivery_sentence	en-IN	range	Delivery in 3-5 days.	Delivery in three to five days.	
+golden_en_in_range_kg	en-IN	range	5-10 kg	five to ten kilograms	unit belongs to the end
+golden_en_in_range_percent	en-IN	range	10-15%	ten to fifteen percent	
+golden_en_in_range_grouped	en-IN	range	1,000-2,000	one thousand to two thousand	
+golden_en_in_range_en_dash	en-IN	range	20–30	twenty to thirty	en dash
+golden_en_in_range_lakh	en-IN	range	1,00,000-2,00,000	one lakh to two lakh	
+golden_en_in_range_hyphenated_word_email	en-IN	range	Send an e-mail.	Send an e-mail.	NM-RNG-04
+golden_en_in_range_hyphenated_word_tshirt	en-IN	range	A red T-shirt.	A red T-shirt.	NM-RNG-04
+golden_en_us_range_days	en-US	range	10-15 days	ten to fifteen days	
+golden_en_us_range_ages	en-US	range	Ages 18-25	Ages eighteen to twenty-five	
+golden_en_us_range_gb	en-US	range	3-5 GB	three to five gigabytes	
+golden_en_us_range_mbps	en-US	range	100-200 Mbps	one hundred to two hundred megabits per second	
+golden_en_us_range_grouped	en-US	range	1,000-5,000	one thousand to five thousand	
+golden_en_us_range_million	en-US	range	1,000,000-2,000,000	one million to two million	
+golden_en_us_range_en_dash	en-US	range	20–30 people	twenty to thirty people	
+golden_hi_range_days	hi	range	10-15 दिन	दस से पंद्रह दिन	NM-RNG-02
+golden_hi_range_kg	hi	range	5-10 kg	पाँच से दस किलोग्राम	
+golden_hi_range_delivery_sentence	hi	range	3-5 दिन में डिलीवरी होगी	तीन से पाँच दिन में डिलीवरी होगी	
+golden_hi_range_percent	hi	range	10-15%	दस से पंद्रह प्रतिशत	
+golden_hi_range_lakh	hi	range	1,00,000-2,00,000	एक लाख से दो लाख	
+golden_hi_range_devanagari_digits	hi	range	२०-३० लोग	बीस से तीस लोग	
+golden_hi_range_mbps	hi	range	100-200 Mbps	एक सौ से दो सौ मेगाबिट प्रति सेकंड	
+golden_hi_range_hours	hi	range	6-8 घंटे	छह से आठ घंटे	
+golden_hi_range_en_dash	hi	range	50–60 साल	पचास से साठ साल	en dash
+golden_hinglish_range_days	hinglish	range	10-15 din mein aa jayega.	दस से पंद्रह din mein aa jayega.	
+golden_hinglish_range_kg	hinglish	range	Mujhe 2-3 kg chahiye.	Mujhe दो से तीन किलोग्राम chahiye.	
+golden_hinglish_range_percent	hinglish	range	Byaaj 8-10% hai.	Byaaj आठ से दस प्रतिशत hai.	
+golden_hinglish_range_hyphenated_word	hinglish	range	Mera e-mail bhejo.	Mera e-mail bhejo.	NM-RNG-04
+golden_en_us_email_at_dot	en-US	email	support@example.com	support at example dot com	FR-011 AC-3, NM-EML-01
+golden_en_us_email_in_sentence	en-US	email	Email help@example.org today.	Email help at example dot org today.	
+golden_en_us_email_dotted_local	en-US	email	john.doe@example.com	john dot doe at example dot com	
+golden_en_us_email_underscore_dash_digit	en-US	email	a_b-c1@example.in	a underscore b dash c one at example dot in	NM-EML-03
+golden_en_us_email_plus_tag	en-US	email	user+tag@mail.example.com	user plus tag at mail dot example dot com	
+golden_en_us_email_hyphen_domain	en-US	email	sales@my-shop.co.uk	sales at my dash shop dot co dot uk	
+golden_en_us_email_trailing_period	en-US	email	Write to info@example.net.	Write to info at example dot net.	sentence period is not part of the address
+golden_en_us_email_parenthesised	en-US	email	(help@example.com)	(help at example dot com)	
+golden_en_in_email_at_dot	en-IN	email	support@example.in	support at example dot in	
+golden_en_in_email_co_in	en-IN	email	care@bank.co.in	care at bank dot co dot in	
+golden_en_in_email_in_sentence	en-IN	email	Mail us at feedback@example.com for help.	Mail us at feedback at example dot com for help.	
+golden_en_in_email_digits	en-IN	email	contact2024@example.com	contact two zero two four at example dot com	digits one by one
+golden_en_in_email_first_last	en-IN	email	first.last@example.com	first dot last at example dot com	
+golden_hi_email_at_dot	hi	email	help@example.com	help एट example डॉट कॉम	NM-EML-02
+golden_hi_email_in_sentence	hi	email	ईमेल करें: help@example.com पर।	ईमेल करें: help एट example डॉट कॉम पर।	NM-EML-02
+golden_hi_email_underscore	hi	email	a_b@example.in	a अंडरस्कोर b एट example डॉट इन	
+golden_hi_email_org	hi	email	info@example.org	info एट example डॉट ऑर्ग	
+golden_hi_email_dotted_local	hi	email	आपका ईमेल rahul.k@example.com है।	आपका ईमेल rahul डॉट k एट example डॉट कॉम है।	
+golden_hi_email_dash	hi	email	sales-team@example.net	sales डैश team एट example डॉट नेट	
+golden_hi_email_digits	hi	email	user123@example.com	user एक दो तीन एट example डॉट कॉम	
+golden_hi_email_co_in	hi	email	care@bank.co.in	care एट bank डॉट सी ओ डॉट इन	
+golden_hinglish_email_at_dot	hinglish	email	Mail karein help@example.com par.	Mail karein help एट example डॉट कॉम par.	
+golden_hinglish_email_batao	hinglish	email	Apna email support@example.in batao.	Apna email support एट example डॉट इन batao.	
+golden_hinglish_email_plus	hinglish	email	Bhejiye user+tag@example.com par.	Bhejiye user प्लस tag एट example डॉट कॉम par.	
+golden_en_us_url_slash_dot	en-US	url	https://example.com/pay	example dot com slash pay	NM-URL-01; scheme is not spoken
+golden_en_us_url_in_sentence	en-US	url	Visit https://example.com today.	Visit example dot com today.	
+golden_en_us_url_two_segments	en-US	url	http://example.org/a/b	example dot org slash a slash b	
+golden_en_us_url_www	en-US	url	www.example.com	w w w dot example dot com	www is spelled
+golden_en_us_url_root_slash	en-US	url	https://example.com/	example dot com	trailing slash is not spoken
+golden_en_us_url_query_dropped	en-US	url	https://example.com/pay?id=42&x=1	example dot com slash pay	NM-URL-03: query string is dropped
+golden_en_us_url_dash_underscore_digit	en-US	url	https://example.com/my-page_2	example dot com slash my dash page underscore two	
+golden_en_us_url_port	en-US	url	https://example.com:8080/api	example dot com colon eight zero eight zero slash api	
+golden_en_us_url_file_extension	en-US	url	https://example.com/file.pdf	example dot com slash file dot pdf	
+golden_en_us_url_fragment_dropped	en-US	url	https://example.com/pay#top	example dot com slash pay	fragment is dropped
+golden_en_us_url_trailing_period	en-US	url	See https://example.com/help.	See example dot com slash help.	
+golden_en_in_url_www_in	en-IN	url	https://www.example.in/offers	w w w dot example dot in slash offers	
+golden_en_in_url_co_in	en-IN	url	https://bank.co.in/login	bank dot co dot in slash login	
+golden_en_in_url_long_query	en-IN	url	http://example.com/a?b=c&d=e&f=g&h=i	example dot com slash a	NM-URL-03
+golden_en_in_url_digits	en-IN	url	https://example.com/track/12345	example dot com slash track slash one two three four five	
+golden_en_in_url_in_sentence	en-IN	url	Track it at https://example.in/track now.	Track it at example dot in slash track now.	
+golden_hi_url_slash_dot	hi	url	https://example.com/pay	example डॉट कॉम स्लैश pay	NM-URL-02
+golden_hi_url_in_sentence	hi	url	भुगतान के लिए https://example.com/pay पर जाएं।	भुगतान के लिए example डॉट कॉम स्लैश pay पर जाएं।	NM-URL-02
+golden_hi_url_www	hi	url	www.example.in	डब्ल्यू डब्ल्यू डब्ल्यू डॉट example डॉट इन	
+golden_hi_url_two_segments	hi	url	https://example.com/a/b	example डॉट कॉम स्लैश a स्लैश b	
+golden_hi_url_port	hi	url	https://example.com:8080/x	example डॉट कॉम कोलन आठ शून्य आठ शून्य स्लैश x	
+golden_hi_url_dash	hi	url	https://example.com/my-page	example डॉट कॉम स्लैश my डैश page	
+golden_hi_url_query_dropped	hi	url	https://example.com/pay?id=1	example डॉट कॉम स्लैश pay	query string is dropped
+golden_hinglish_url_pay	hinglish	url	https://example.com/pay par jayein.	example डॉट कॉम स्लैश pay par jayein.	
+golden_hinglish_url_www	hinglish	url	www.example.in dekhein.	डब्ल्यू डब्ल्यू डब्ल्यू डॉट example डॉट इन dekhein.	
+golden_hinglish_url_org	hinglish	url	Link: https://example.org/help	Link: example डॉट ऑर्ग स्लैश help	

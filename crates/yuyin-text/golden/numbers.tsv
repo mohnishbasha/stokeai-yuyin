@@ -1,0 +1,248 @@
+id	lang	class	input	expected	notes
+golden_hi_cardinal_n0	hi	cardinal	0	शून्य	0 to 100 table
+golden_hi_cardinal_n1	hi	cardinal	1	एक	
+golden_hi_cardinal_n2	hi	cardinal	2	दो	
+golden_hi_cardinal_n3	hi	cardinal	3	तीन	
+golden_hi_cardinal_n4	hi	cardinal	4	चार	
+golden_hi_cardinal_n5	hi	cardinal	5	पाँच	
+golden_hi_cardinal_n6	hi	cardinal	6	छह	
+golden_hi_cardinal_n7	hi	cardinal	7	सात	
+golden_hi_cardinal_n8	hi	cardinal	8	आठ	
+golden_hi_cardinal_n9	hi	cardinal	9	नौ	
+golden_hi_cardinal_n10	hi	cardinal	10	दस	
+golden_hi_cardinal_n11	hi	cardinal	11	ग्यारह	
+golden_hi_cardinal_n12	hi	cardinal	12	बारह	
+golden_hi_cardinal_n13	hi	cardinal	13	तेरह	
+golden_hi_cardinal_n14	hi	cardinal	14	चौदह	
+golden_hi_cardinal_n15	hi	cardinal	15	पंद्रह	
+golden_hi_cardinal_n16	hi	cardinal	16	सोलह	
+golden_hi_cardinal_n17	hi	cardinal	17	सत्रह	
+golden_hi_cardinal_n18	hi	cardinal	18	अठारह	
+golden_hi_cardinal_n19	hi	cardinal	19	उन्नीस	
+golden_hi_cardinal_n20	hi	cardinal	20	बीस	
+golden_hi_cardinal_n21	hi	cardinal	21	इक्कीस	
+golden_hi_cardinal_n22	hi	cardinal	22	बाईस	
+golden_hi_cardinal_n23	hi	cardinal	23	तेईस	
+golden_hi_cardinal_n24	hi	cardinal	24	चौबीस	
+golden_hi_cardinal_n25	hi	cardinal	25	पच्चीस	
+golden_hi_cardinal_n26	hi	cardinal	26	छब्बीस	
+golden_hi_cardinal_n27	hi	cardinal	27	सत्ताईस	
+golden_hi_cardinal_n28	hi	cardinal	28	अट्ठाईस	
+golden_hi_cardinal_n29	hi	cardinal	29	उनतीस	
+golden_hi_cardinal_n30	hi	cardinal	30	तीस	
+golden_hi_cardinal_n31	hi	cardinal	31	इकतीस	
+golden_hi_cardinal_n32	hi	cardinal	32	बत्तीस	
+golden_hi_cardinal_n33	hi	cardinal	33	तैंतीस	
+golden_hi_cardinal_n34	hi	cardinal	34	चौंतीस	
+golden_hi_cardinal_n35	hi	cardinal	35	पैंतीस	
+golden_hi_cardinal_n36	hi	cardinal	36	छत्तीस	
+golden_hi_cardinal_n37	hi	cardinal	37	सैंतीस	
+golden_hi_cardinal_n38	hi	cardinal	38	अड़तीस	
+golden_hi_cardinal_n39	hi	cardinal	39	उनतालीस	
+golden_hi_cardinal_n40	hi	cardinal	40	चालीस	
+golden_hi_cardinal_n41	hi	cardinal	41	इकतालीस	
+golden_hi_cardinal_n42	hi	cardinal	42	बयालीस	
+golden_hi_cardinal_n43	hi	cardinal	43	तैंतालीस	
+golden_hi_cardinal_n44	hi	cardinal	44	चौवालीस	
+golden_hi_cardinal_n45	hi	cardinal	45	पैंतालीस	
+golden_hi_cardinal_n46	hi	cardinal	46	छियालीस	
+golden_hi_cardinal_n47	hi	cardinal	47	सैंतालीस	
+golden_hi_cardinal_n48	hi	cardinal	48	अड़तालीस	
+golden_hi_cardinal_n49	hi	cardinal	49	उनचास	
+golden_hi_cardinal_n50	hi	cardinal	50	पचास	
+golden_hi_cardinal_n51	hi	cardinal	51	इक्यावन	
+golden_hi_cardinal_n52	hi	cardinal	52	बावन	
+golden_hi_cardinal_n53	hi	cardinal	53	तिरपन	
+golden_hi_cardinal_n54	hi	cardinal	54	चौवन	
+golden_hi_cardinal_n55	hi	cardinal	55	पचपन	
+golden_hi_cardinal_n56	hi	cardinal	56	छप्पन	
+golden_hi_cardinal_n57	hi	cardinal	57	सत्तावन	
+golden_hi_cardinal_n58	hi	cardinal	58	अट्ठावन	
+golden_hi_cardinal_n59	hi	cardinal	59	उनसठ	
+golden_hi_cardinal_n60	hi	cardinal	60	साठ	
+golden_hi_cardinal_n61	hi	cardinal	61	इकसठ	
+golden_hi_cardinal_n62	hi	cardinal	62	बासठ	
+golden_hi_cardinal_n63	hi	cardinal	63	तिरसठ	
+golden_hi_cardinal_n64	hi	cardinal	64	चौंसठ	
+golden_hi_cardinal_n65	hi	cardinal	65	पैंसठ	
+golden_hi_cardinal_n66	hi	cardinal	66	छियासठ	
+golden_hi_cardinal_n67	hi	cardinal	67	सड़सठ	
+golden_hi_cardinal_n68	hi	cardinal	68	अड़सठ	
+golden_hi_cardinal_n69	hi	cardinal	69	उनहत्तर	
+golden_hi_cardinal_n70	hi	cardinal	70	सत्तर	
+golden_hi_cardinal_n71	hi	cardinal	71	इकहत्तर	
+golden_hi_cardinal_n72	hi	cardinal	72	बहत्तर	
+golden_hi_cardinal_n73	hi	cardinal	73	तिहत्तर	
+golden_hi_cardinal_n74	hi	cardinal	74	चौहत्तर	
+golden_hi_cardinal_n75	hi	cardinal	75	पचहत्तर	
+golden_hi_cardinal_n76	hi	cardinal	76	छिहत्तर	
+golden_hi_cardinal_n77	hi	cardinal	77	सतहत्तर	
+golden_hi_cardinal_n78	hi	cardinal	78	अठहत्तर	
+golden_hi_cardinal_n79	hi	cardinal	79	उनासी	
+golden_hi_cardinal_n80	hi	cardinal	80	अस्सी	
+golden_hi_cardinal_n81	hi	cardinal	81	इक्यासी	
+golden_hi_cardinal_n82	hi	cardinal	82	बयासी	
+golden_hi_cardinal_n83	hi	cardinal	83	तिरासी	
+golden_hi_cardinal_n84	hi	cardinal	84	चौरासी	
+golden_hi_cardinal_n85	hi	cardinal	85	पचासी	
+golden_hi_cardinal_n86	hi	cardinal	86	छियासी	
+golden_hi_cardinal_n87	hi	cardinal	87	सत्तासी	
+golden_hi_cardinal_n88	hi	cardinal	88	अट्ठासी	
+golden_hi_cardinal_n89	hi	cardinal	89	नवासी	
+golden_hi_cardinal_n90	hi	cardinal	90	नब्बे	
+golden_hi_cardinal_n91	hi	cardinal	91	इक्यानवे	
+golden_hi_cardinal_n92	hi	cardinal	92	बानवे	
+golden_hi_cardinal_n93	hi	cardinal	93	तिरानवे	
+golden_hi_cardinal_n94	hi	cardinal	94	चौरानवे	
+golden_hi_cardinal_n95	hi	cardinal	95	पंचानवे	
+golden_hi_cardinal_n96	hi	cardinal	96	छियानवे	
+golden_hi_cardinal_n97	hi	cardinal	97	सत्तानवे	
+golden_hi_cardinal_n98	hi	cardinal	98	अट्ठानवे	
+golden_hi_cardinal_n99	hi	cardinal	99	निन्यानवे	
+golden_hi_cardinal_n100	hi	cardinal	100	एक सौ	
+golden_hi_cardinal_boundary_0	hi	cardinal	0	शून्य	boundary 0
+golden_hi_cardinal_boundary_99	hi	cardinal	99	निन्यानवे	boundary 99
+golden_hi_cardinal_boundary_100	hi	cardinal	100	एक सौ	boundary 100
+golden_hi_cardinal_boundary_999	hi	cardinal	999	नौ सौ निन्यानवे	boundary 999
+golden_hi_cardinal_boundary_1000	hi	cardinal	1,000	एक हज़ार	boundary 1,000
+golden_hi_cardinal_boundary_99999	hi	cardinal	99,999	निन्यानवे हज़ार नौ सौ निन्यानवे	boundary 99,999
+golden_hi_cardinal_boundary_100000	hi	cardinal	1,00,000	एक लाख	boundary 1,00,000
+golden_hi_cardinal_boundary_10000000	hi	cardinal	1,00,00,000	एक करोड़	boundary 1,00,00,000
+golden_hi_cardinal_boundary_1000000000	hi	cardinal	1,00,00,00,000	एक अरब	boundary 1,00,00,00,000
+golden_hi_cardinal_boundary_100000000000	hi	cardinal	1,00,00,00,00,000	एक खरब	boundary 1,00,00,00,00,000
+golden_hi_cardinal_boundary_1000000000000000	hi	cardinal	1,00,00,00,00,00,00,000	दस हज़ार खरब	boundary 1,00,00,00,00,00,00,000
+golden_hinglish_cardinal_boundary_0	hinglish	cardinal	0	शून्य	boundary 0
+golden_hinglish_cardinal_boundary_99	hinglish	cardinal	99	निन्यानवे	boundary 99
+golden_hinglish_cardinal_boundary_100	hinglish	cardinal	100	एक सौ	boundary 100
+golden_hinglish_cardinal_boundary_999	hinglish	cardinal	999	नौ सौ निन्यानवे	boundary 999
+golden_hinglish_cardinal_boundary_1000	hinglish	cardinal	1,000	एक हज़ार	boundary 1,000
+golden_hinglish_cardinal_boundary_99999	hinglish	cardinal	99,999	निन्यानवे हज़ार नौ सौ निन्यानवे	boundary 99,999
+golden_hinglish_cardinal_boundary_100000	hinglish	cardinal	1,00,000	एक लाख	boundary 1,00,000
+golden_hinglish_cardinal_boundary_10000000	hinglish	cardinal	1,00,00,000	एक करोड़	boundary 1,00,00,000
+golden_hinglish_cardinal_boundary_1000000000	hinglish	cardinal	1,00,00,00,000	एक अरब	boundary 1,00,00,00,000
+golden_hinglish_cardinal_boundary_100000000000	hinglish	cardinal	1,00,00,00,00,000	एक खरब	boundary 1,00,00,00,00,000
+golden_hinglish_cardinal_boundary_1000000000000000	hinglish	cardinal	1,00,00,00,00,00,00,000	दस हज़ार खरब	boundary 1,00,00,00,00,00,00,000
+golden_en_in_cardinal_boundary_0	en-IN	cardinal	0	zero	boundary 0
+golden_en_in_cardinal_boundary_99	en-IN	cardinal	99	ninety-nine	boundary 99
+golden_en_in_cardinal_boundary_100	en-IN	cardinal	100	one hundred	boundary 100
+golden_en_in_cardinal_boundary_999	en-IN	cardinal	999	nine hundred ninety-nine	boundary 999
+golden_en_in_cardinal_boundary_1000	en-IN	cardinal	1,000	one thousand	boundary 1,000
+golden_en_in_cardinal_boundary_99999	en-IN	cardinal	99,999	ninety-nine thousand nine hundred ninety-nine	boundary 99,999
+golden_en_in_cardinal_boundary_100000	en-IN	cardinal	1,00,000	one lakh	boundary 1,00,000
+golden_en_in_cardinal_boundary_10000000	en-IN	cardinal	1,00,00,000	one crore	boundary 1,00,00,000
+golden_en_in_cardinal_boundary_1000000000	en-IN	cardinal	1,00,00,00,000	one arab	boundary 1,00,00,00,000
+golden_en_in_cardinal_boundary_100000000000	en-IN	cardinal	1,00,00,00,00,000	one kharab	boundary 1,00,00,00,00,000
+golden_en_in_cardinal_boundary_1000000000000000	en-IN	cardinal	1,00,00,00,00,00,00,000	ten thousand kharab	boundary 1,00,00,00,00,00,00,000
+golden_en_us_cardinal_boundary_0	en-US	cardinal	0	zero	boundary 0
+golden_en_us_cardinal_boundary_99	en-US	cardinal	99	ninety-nine	boundary 99
+golden_en_us_cardinal_boundary_100	en-US	cardinal	100	one hundred	boundary 100
+golden_en_us_cardinal_boundary_999	en-US	cardinal	999	nine hundred ninety-nine	boundary 999
+golden_en_us_cardinal_boundary_1000	en-US	cardinal	1,000	one thousand	boundary 1,000
+golden_en_us_cardinal_boundary_99999	en-US	cardinal	99,999	ninety-nine thousand nine hundred ninety-nine	boundary 99,999
+golden_en_us_cardinal_boundary_100000	en-US	cardinal	100,000	one hundred thousand	boundary 100,000
+golden_en_us_cardinal_boundary_10000000	en-US	cardinal	10,000,000	ten million	boundary 10,000,000
+golden_en_us_cardinal_boundary_1000000000	en-US	cardinal	1,000,000,000	one billion	boundary 1,000,000,000
+golden_en_us_cardinal_boundary_100000000000	en-US	cardinal	100,000,000,000	one hundred billion	boundary 100,000,000,000
+golden_en_us_cardinal_boundary_1000000000000000	en-US	cardinal	1,000,000,000,000,000	one quadrillion	boundary 1,000,000,000,000,000
+golden_hi_cardinal_western_commas_same_value	hi	cardinal	125,000	एक लाख पच्चीस हज़ार	Western grouping parses to the same value
+golden_hinglish_cardinal_western_commas_same_value	hinglish	cardinal	125,000	एक लाख पच्चीस हज़ार	Western grouping parses to the same value
+golden_en_in_cardinal_western_commas_same_value	en-IN	cardinal	125,000	one lakh twenty-five thousand	Western grouping parses to the same value
+golden_en_us_cardinal_indian_commas_same_value	en-US	cardinal	1,25,000	one hundred twenty-five thousand	Indian grouping parses to the same value
+golden_hi_cardinal_crore_arab_mixed	hi	cardinal	12,34,56,789	बारह करोड़ चौंतीस लाख छप्पन हज़ार सात सौ नवासी	NM-CAR-02
+golden_hi_cardinal_arab_larger	hi	cardinal	12,34,56,78,900	बारह अरब चौंतीस करोड़ छप्पन लाख अठहत्तर हज़ार नौ सौ	
+golden_en_in_cardinal_lakh_fifty_thousand	en-IN	cardinal	2,50,000	two lakh fifty thousand	NM-CAR-04
+golden_en_us_cardinal_million_five_hundred_thousand	en-US	cardinal	2,500,000	two million five hundred thousand	NM-CAR-05
+golden_en_in_cardinal_crore_amount	en-IN	cardinal	12,45,00,000	twelve crore forty-five lakh	PRD FR-006 crore example
+golden_hi_cardinal_lakh_fifty_thousand_prd	hi	cardinal	1,50,000	एक लाख पचास हज़ार	PRD FR-006 example
+golden_en_in_cardinal_lakh_fifty_thousand_prd	en-IN	cardinal	1,50,000	one lakh fifty thousand	PRD FR-006 example
+golden_hi_cardinal_sentence_balance	hi	cardinal	आपका बकाया 1,25,000 है।	आपका बकाया एक लाख पच्चीस हज़ार है।	number inside a Hindi sentence
+golden_hinglish_cardinal_sentence_balance	hinglish	cardinal	Aapka balance 1,25,000 hai	Aapka balance एक लाख पच्चीस हज़ार hai	number inside a hinglish sentence, reads in Hindi
+golden_en_in_cardinal_sentence_items	en-IN	cardinal	You have 45 items	You have forty-five items	
+golden_en_us_cardinal_sentence_items	en-US	cardinal	You have 45 items	You have forty-five items	
+golden_hi_cardinal_devanagari_digits	hi	cardinal	१२३	एक सौ तेईस	Devanagari digits parse
+golden_en_in_cardinal_leading_zero_untouched	en-IN	cardinal	007	zero zero seven	leading zero is an identifier, read digit by digit by the leftover-digit safety net (NM-DET-03)
+golden_hi_cardinal_decimal_pi	hi	cardinal	3.14	तीन दशमलव एक चार	
+golden_hi_cardinal_decimal_half	hi	cardinal	3.5	तीन दशमलव पाँच	NM-CAR-08
+golden_hi_cardinal_decimal_zero_lead	hi	cardinal	0.05	शून्य दशमलव शून्य पाँच	
+golden_hi_cardinal_decimal_grouped	hi	cardinal	1,250.75	एक हज़ार दो सौ पचास दशमलव सात पाँच	
+golden_hinglish_cardinal_decimal_pi	hinglish	cardinal	3.14	तीन दशमलव एक चार	
+golden_en_in_cardinal_decimal_pi	en-IN	cardinal	3.14	three point one four	
+golden_en_in_cardinal_decimal_trailing_zero	en-IN	cardinal	2.50	two point five zero	
+golden_en_us_cardinal_decimal_pi	en-US	cardinal	3.14	three point one four	
+golden_en_us_cardinal_decimal_grouped	en-US	cardinal	1,250.75	one thousand two hundred fifty point seven five	
+golden_hi_cardinal_negative_integer	hi	cardinal	-5	माइनस पाँच	
+golden_hi_cardinal_negative_in_sentence	hi	cardinal	तापमान -12 है	तापमान माइनस बारह है	
+golden_hi_cardinal_negative_decimal	hi	cardinal	-3.5	माइनस तीन दशमलव पाँच	
+golden_hinglish_cardinal_negative_integer	hinglish	cardinal	-40	माइनस चालीस	
+golden_en_in_cardinal_negative_integer	en-IN	cardinal	-5	minus five	
+golden_en_in_cardinal_negative_lakh	en-IN	cardinal	-1,25,000	minus one lakh twenty-five thousand	
+golden_en_us_cardinal_negative_decimal	en-US	cardinal	-3.14	minus three point one four	NM-CAR-07
+golden_en_us_cardinal_negative_big	en-US	cardinal	-2,500,000	minus two million five hundred thousand	
+golden_en_us_cardinal_unicode_minus	en-US	cardinal	−2	minus two	
+golden_en_us_cardinal_hyphen_range_not_negative	en-US	cardinal	10-15	ten to fifteen	range owned by S1-T08: read as a range, not a negative
+golden_hi_cardinal_fraction_half	hi	cardinal	1/2	आधा	
+golden_hi_cardinal_fraction_one_and_half	hi	cardinal	3/2	डेढ़	
+golden_hi_cardinal_fraction_two_and_half	hi	cardinal	5/2	ढाई	
+golden_hi_cardinal_fraction_three_quarters	hi	cardinal	3/4	तीन बटा चार	
+golden_hi_cardinal_fraction_negative	hi	cardinal	-1/2	माइनस आधा	
+golden_hinglish_cardinal_fraction_half	hinglish	cardinal	1/2	आधा	
+golden_hinglish_cardinal_fraction_two_thirds	hinglish	cardinal	2/3	दो बटा तीन	
+golden_en_in_cardinal_fraction_half	en-IN	cardinal	1/2	one half	
+golden_en_in_cardinal_fraction_three_quarters	en-IN	cardinal	3/4	three quarters	
+golden_en_us_cardinal_fraction_half	en-US	cardinal	1/2	one half	NM-CAR-07
+golden_en_us_cardinal_fraction_one_quarter	en-US	cardinal	1/4	one quarter	
+golden_en_us_cardinal_fraction_two_thirds	en-US	cardinal	2/3	two thirds	
+golden_en_us_cardinal_fraction_one_fifth	en-US	cardinal	1/5	one fifth	
+golden_en_us_cardinal_fraction_three_halves	en-US	cardinal	3/2	three halves	
+golden_en_us_cardinal_fraction_in_sentence	en-US	cardinal	Add 1/2 cup of water	Add one half cup of water	
+golden_en_us_cardinal_fraction_zero_denominator	en-US	cardinal	3/0	three/zero	zero denominator is not a fraction; digits read one by one by the safety net (NM-DET-03)
+golden_hi_ordinal_o1	hi	ordinal	1st	पहला	NM-ORD-03
+golden_hi_ordinal_o2	hi	ordinal	2nd	दूसरा	NM-ORD-03
+golden_hi_ordinal_o3	hi	ordinal	3rd	तीसरा	NM-ORD-03
+golden_hi_ordinal_o4	hi	ordinal	4th	चौथा	NM-ORD-03
+golden_hi_ordinal_o5	hi	ordinal	5th	पाँचवाँ	NM-ORD-03
+golden_hi_ordinal_o6	hi	ordinal	6th	छठा	NM-ORD-03
+golden_hi_ordinal_o7	hi	ordinal	7th	सातवाँ	NM-ORD-03
+golden_hi_ordinal_o10	hi	ordinal	10th	दसवाँ	NM-ORD-03
+golden_hi_ordinal_o11	hi	ordinal	11th	ग्यारहवाँ	NM-ORD-03
+golden_hi_ordinal_o21	hi	ordinal	21st	इक्कीसवाँ	NM-ORD-03
+golden_hi_ordinal_o25	hi	ordinal	25th	पच्चीसवाँ	NM-ORD-03
+golden_hi_ordinal_o100	hi	ordinal	100th	एक सौवाँ	NM-ORD-03
+golden_hi_ordinal_in_sentence	hi	ordinal	वह 1st आया	वह पहला आया	
+golden_hinglish_ordinal_third_floor	hinglish	ordinal	Mera ghar 3rd floor par hai	Mera ghar तीसरा floor par hai	NM-ORD-04, ordinal reads in the sentence language
+golden_hinglish_ordinal_sixth	hinglish	ordinal	Woh 6th number par hai	Woh छठा number par hai	
+golden_en_in_ordinal_o1	en-IN	ordinal	1st	first	NM-ORD-01/02
+golden_en_us_ordinal_o1	en-US	ordinal	1st	first	NM-ORD-01/02
+golden_en_in_ordinal_o2	en-IN	ordinal	2nd	second	NM-ORD-01/02
+golden_en_us_ordinal_o2	en-US	ordinal	2nd	second	NM-ORD-01/02
+golden_en_in_ordinal_o3	en-IN	ordinal	3rd	third	NM-ORD-01/02
+golden_en_us_ordinal_o3	en-US	ordinal	3rd	third	NM-ORD-01/02
+golden_en_in_ordinal_o4	en-IN	ordinal	4th	fourth	NM-ORD-01/02
+golden_en_us_ordinal_o4	en-US	ordinal	4th	fourth	NM-ORD-01/02
+golden_en_in_ordinal_o5	en-IN	ordinal	5th	fifth	NM-ORD-01/02
+golden_en_us_ordinal_o5	en-US	ordinal	5th	fifth	NM-ORD-01/02
+golden_en_in_ordinal_o8	en-IN	ordinal	8th	eighth	NM-ORD-01/02
+golden_en_us_ordinal_o8	en-US	ordinal	8th	eighth	NM-ORD-01/02
+golden_en_in_ordinal_o9	en-IN	ordinal	9th	ninth	NM-ORD-01/02
+golden_en_us_ordinal_o9	en-US	ordinal	9th	ninth	NM-ORD-01/02
+golden_en_in_ordinal_o11	en-IN	ordinal	11th	eleventh	NM-ORD-01/02
+golden_en_us_ordinal_o11	en-US	ordinal	11th	eleventh	NM-ORD-01/02
+golden_en_in_ordinal_o12	en-IN	ordinal	12th	twelfth	NM-ORD-01/02
+golden_en_us_ordinal_o12	en-US	ordinal	12th	twelfth	NM-ORD-01/02
+golden_en_in_ordinal_o13	en-IN	ordinal	13th	thirteenth	NM-ORD-01/02
+golden_en_us_ordinal_o13	en-US	ordinal	13th	thirteenth	NM-ORD-01/02
+golden_en_in_ordinal_o20	en-IN	ordinal	20th	twentieth	
+golden_en_us_ordinal_o20	en-US	ordinal	20th	twentieth	
+golden_en_in_ordinal_o21	en-IN	ordinal	21st	twenty-first	
+golden_en_us_ordinal_o21	en-US	ordinal	21st	twenty-first	
+golden_en_in_ordinal_o22	en-IN	ordinal	22nd	twenty-second	
+golden_en_us_ordinal_o22	en-US	ordinal	22nd	twenty-second	
+golden_en_in_ordinal_o33	en-IN	ordinal	33rd	thirty-third	
+golden_en_us_ordinal_o33	en-US	ordinal	33rd	thirty-third	
+golden_en_in_ordinal_o100	en-IN	ordinal	100th	one hundredth	
+golden_en_us_ordinal_o100	en-US	ordinal	100th	one hundredth	
+golden_en_in_ordinal_o101	en-IN	ordinal	101st	one hundred first	
+golden_en_us_ordinal_o101	en-US	ordinal	101st	one hundred first	
+golden_en_us_ordinal_sentence	en-US	ordinal	Take the 2nd exit	Take the second exit	
+golden_en_in_ordinal_sentence	en-IN	ordinal	He finished 21st	He finished twenty-first	
+golden_en_us_ordinal_uppercase_suffix	en-US	ordinal	3RD	third	

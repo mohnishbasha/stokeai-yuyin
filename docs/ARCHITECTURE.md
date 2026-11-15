@@ -182,7 +182,7 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 
 - Context: Training a foundation model is out of scope for v1.
 - Decision: Open-weights neural TTS run through ONNX Runtime on CPU, behind a `SynthesisEngine` trait, chosen by a measured bake-off in Sprint 1.
-- Consequences: Model and voice licences must be reviewed by hand. The trait allows our own model later. The specific model is ADR-015.
+- Consequences: Model and voice licences must be reviewed by hand. The trait allows our own model later. The specific model is not yet chosen: ADR-015 is Proposed and blocked on owner issue #184.
 - Status: Accepted.
 
 ### ADR-010 Primary region (D10)
@@ -223,9 +223,9 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 ### ADR-015 Speech engine selection
 
 - Context: D9 fixes the approach (open-weights, ONNX, CPU) but not the model or the binding (`ort` directly, or `sherpa-onnx` bindings). Quality in Hindi and Hinglish, real-time factor, memory, and licence differ between candidates.
-- Decision: Not yet taken. The choice is made by the Sprint 1 bake-off in `bench/engine-bakeoff/` using the published method in `bench/METHOD.md`: time to first audio, real-time factor per core, peak memory, listening-sheet scores, and licence review. The result, model sources, and checksums are recorded here and in `config/models.sha256`.
+- Decision: Not yet taken. The Sprint 1 bake-off (`bench/engine-bakeoff/`) found no Hindi voice that is both acceptable and licence-clean, so per the task rule no engine is chosen and the owner decision is raised in issue #184. The full record (candidates, licence register, measurements, owner options, fallback) is in `docs/adr/ADR-015-engine-selection.md`, with evidence in `docs/licences/`. Model sources and checksums are recorded in `config/models.sha256` once an engine is decided.
 - Consequences: Dependency lines for `ort` and `sherpa-onnx` stay conditional until this is decided. `scripts/fetch-models.sh` reads its sources from this ADR. Until decided, `FakeEngine` is used for all development.
-- Status: Proposed. Decided by the Sprint 1 bake-off.
+- Status: Proposed, blocked on owner decision #184. See `docs/adr/ADR-015-engine-selection.md`.
 
 ### ADR-016 Repository location
 
@@ -311,6 +311,20 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: Anyone with admin rights on the repository could change the environment, so the environment requires the owner as reviewer. Rotating the key means a new public key in a release and re-issued licences.
 - Status: Accepted.
 
+### ADR-028 No required approving review on `staging`
+
+- Context: `staging` required 1 approving review with admins not exempt. The agent works under the owner's account and GitHub does not let a PR author approve their own PR, so the Sprint End Protocol step "merge `develop` into `staging` via PR" could not complete (owner checklist B3).
+- Decision: On 2026-11-14 the owner set the `staging` rule to 0 required approving reviews. The other `staging` protections stay: changes arrive only by PR, required status checks must pass, and the rule is enforced for admins. Merges into `staging` are done by the owner unless a Claude Code permission rule allows the agent to do them.
+- Consequences: Promotion to `staging` is gated by CI rather than by a second person. Each sprint's `staging` merge commit is tagged `sprint-{n}-complete`. Production promotion (`main`) stays owner only (O14).
+- Status: Accepted.
+
+### ADR-029 Database engine: PostgreSQL kept, SQLite and DuckDB evaluated
+
+- Context: On 2026-11-14 the owner asked whether SQLite or DuckDB could replace PostgreSQL (ADR-024). The database holds API keys, the prepaid credit ledger, usage, organizations and users, voices, consent records, and the audit log. The gateway runs 2 to 20 replicas, each with a `yuyin-meter` ledger batcher writing reservations and settlements concurrently, and the console is a separate process using the same schema.
+- Decision: Keep PostgreSQL for the hosted service. SQLite allows one writer at a time on one machine, so it would pin the gateway to a single pod or need a replication layer (rqlite, LiteFS, libSQL), which adds the operations we wanted to avoid. DuckDB is an analytics engine with a single writer process and is not suited to a transactional credit ledger. Both would turn the Next phase move to NileDB or Neon (NP-01) from a configuration change into a rewrite. SQLite is a candidate backend for the single-node self-host edition only (NP-08). DuckDB is a candidate for offline analytics over usage exports, alongside PostgreSQL (NP-09).
+- Consequences: No change to the current sprints. Migrations stay plain, portable SQL (ADR-024), which keeps an optional SQLite backend possible later.
+- Status: Accepted.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket
@@ -392,12 +406,12 @@ Rust signatures (names are normative, field details may be refined in implementa
 | 1. Clean | `lib.rs` | `&str`, `&NormaliseOptions` | `Result<CleanText, TextError>` where `CleanText(String)` is NFC, control-free, length-validated (`TextError::TooLong`, `TextError::Empty`) |
 | 2. Tokenise | `lib.rs` | `&CleanText` | `Vec<Span>` where `Span { range: Range<usize>, kind: SpanKind }` and `SpanKind` is word, number, punctuation, space (uses `unicode-segmentation`) |
 | 3. Tag | `tag.rs` | `&[Span]`, `&CleanText`, `&Lexicons`, `LanguageHint` | `Vec<TaggedSpan>` where `TaggedSpan { span: Span, script: Script, lang: Lang }`, `Script` is `Deva \| Latn \| Digit \| Symbol`, `Lang` is `Hi \| En` |
-| 4. Classify | `classify.rs` | `&[TaggedSpan]`, `&Lexicons`, `Locale` | `Vec<ClassifiedSpan>` where `ClassifiedSpan { tagged: TaggedSpan, semiotic: Option<Semiotic> }`; `Semiotic` has variants `Money, Date, Time, Phone, Otp, Cardinal, Ordinal, Percent, Unit, Acronym, Email, Url, Range`, each carrying its parsed value |
-| 5. Verbalise | `verbalise/` | `&ClassifiedSpan`, `Lang` (context language), `Locale` | `Verbalised { text: String, lang: Lang, pace_hint: Option<f32> }` (one submodule per semiotic class; number words from `data/hindi_numbers.tsv`) |
-| 6. Transliterate | `translit.rs` | `&[Verbalised]`, `EngineNeeds` | `Vec<Verbalised>` with Roman Hindi converted to Devanagari where `EngineNeeds::devanagari` is set |
-| 7. Segment | `segment.rs` | `&[Verbalised]`, `SegmentOptions` | `Vec<Segment>` where `Segment { text: String, lang: Lang, pace_hint: f32, char_span: Range<usize> }` |
+| 4. Classify | `classify/` (`mod.rs` plus `number.rs`, `money.rs`, `datetime.rs`, `digits.rs`, `other.rs`, `acronym.rs`) | `&ClassifyCtx` (tagged tokens, per-token context language, `Locale`, `LanguageHint`, `&Lexicons`, optional tenant lexicon) | `Vec<ClassifiedSpan>` where `ClassifiedSpan { tagged: TaggedSpan, semiotic: Option<Semiotic> }`; `Semiotic` has variants `Money, Date, Time, Phone, Otp, Cardinal, Ordinal, Percent, Unit, Acronym, Email, Url, Range`, each carrying its parsed value |
+| 5. Verbalise | `verbalise/` | `&ClassifiedSpan`, `&VerbaliseCtx` (context language, `Locale`) | `Verbalised { text: String, lang: Lang, pace_hint: Option<f32> }` (one submodule per semiotic class; number words from `data/hindi_numbers.tsv`) |
+| 6. Transliterate | `translit.rs` | `Vec<Verbalised>`, `EngineNeeds` | `Vec<Verbalised>`. Stub at the end of Sprint 1: identity, and `normalise` does not call it yet. Roman Hindi to Devanagari conversion lands once the lexicon carries readings |
+| 7. Segment | `segment.rs` | `&CleanText`, `&[Piece]` (one per token or semiotic span, after verbalisation), `SegmentOptions { first_max_chars, max_chars }` | `Vec<Segment>` where `Segment { text: String, lang: Lang, pace_hint: f32, char_span: Range<usize> }` |
 
-Top-level entry points: `pub fn normalise(text: &str, opts: &NormaliseOptions) -> Result<Vec<Segment>, TextError>`. Character counting is not done here: the single counter lives in `yuyin-meter/count.rs`. `NormaliseOptions` holds `language: LanguageHint` (`Auto, Hi, Hinglish, EnIn, EnUs`), `locale: Locale`, `tenant_lexicon: Option<&TenantLexicon>`, and `max_chars`. `char_span` always refers to code point offsets in the original NFC text, so the meter can sum delivered characters even when verbalisation changes the length. Every public function has a doctest with a Hindi and an English example. The pipeline when `normalize=false`: stages 1, 2, 3, and 7 run; stages 4 to 6 are skipped.
+Top-level entry points: `pub fn normalise(text: &str, opts: &NormaliseOptions) -> Result<Vec<Segment>, TextError>`. Character counting is not done here: the single counter lives in `yuyin-meter/count.rs`. `normalise_to_string` returns the segments joined as one string (used by the golden runner and doctests). `NormaliseOptions` holds `language: LanguageHint` (`Auto, Hi, Hinglish, EnIn, EnUs`), `locale: Locale`, `tenant_lexicon: Option<&TenantLexicon>`, `max_chars`, and `normalize: bool`. `TextError` has `Empty`, `TooLong`, `UnsupportedLanguage`, `TenantLexiconFull`, and an invalid-tenant-entry variant. `char_span` always refers to code point offsets in the original NFC text, so the meter can sum delivered characters even when verbalisation changes the length. Every public function has a doctest with a Hindi and an English example. The pipeline when `normalize=false`: stages 1, 2, 3, and 7 run; stages 4 to 6 are skipped.
 
 ### 5.2 Normalisation rules
 
@@ -429,6 +443,15 @@ Acronyms:
 - A lexicon (`data/acronyms.tsv`) decides letter-by-letter ("KYC", "EMI") versus word ("PAN" as a word in Indian usage).
 - Tenants can override through a per-organization lexicon (`lexicon_entries`), capped at 500 entries.
 
+Normalisation: other classes (percent, units, ranges, email, URL; S1-T08, FR-011):
+
+- Percent: a number directly followed by `%` ("8.5%") reads the number, then "percent" (hi: "प्रतिशत"). A trailing "p.a." adds "per annum" (hi: "प्रति वर्ष"). A leading `-` is "minus".
+- Units: a number followed by a unit symbol, glued or after one space ("5 km", "50GB"), reads the number and then the unit name. A built-in table maps each symbol and its common spellings to a name: length, mass, volume, data size, data rate (Mbps), frequency, power, energy, and temperature. English uses the singular for exactly 1 and the plural otherwise, with "metre" and "litre" in the India locale and "meter" and "liter" in the US locale. Hindi does not inflect. Time units (min, hr, s) belong to the time class, and ambiguous single letters (`m`, `l`) are not units. An unknown suffix is left alone and the number still reads as a cardinal.
+- Ranges: two non-negative numbers joined by a tight `-` or an en dash ("10-15") with the start below the end read "ten to fifteen" (hi: "दस से पंद्रह"). A percent or unit after the range belongs to the end ("5-10 kg": "five to ten kilograms"). Hyphenated words ("T-shirt", "COVID-19"), descending pairs ("2024-12"), and chains ("1-2-3") are not ranges. Money ranges ("$5-$10") follow with the currency class.
+- Email: `local@domain.tld` is spoken "local at domain dot tld" (hi: "एट", "डॉट"). Words in the address are read as written, digits one by one, and the separators `.`, `_`, `-`, `+` are spoken as "dot", "underscore", "dash", "plus" (hi: "डॉट", "अंडरस्कोर", "डैश", "प्लस"). Nothing is spelled letter by letter. Trailing sentence punctuation is not part of the address.
+- URL: only text starting with `http://`, `https://`, or `www.` is a URL. The scheme is not spoken and `www` is spoken letter by letter. Host labels are joined with "dot", path segments with "slash", and a port is "colon" and its digits. A trailing slash is not spoken. The query string and the fragment are dropped (unspeakable and unneeded to find the page). Common top-level domains have Hindi readings ("कॉम", "ऑर्ग", "नेट", "इन").
+- Hindi and Hinglish output speaks structural words in Devanagari and leaves Latin words in the address as written. Anything outside these shapes passes through unchanged.
+
 Determinism:
 
 - The normaliser is deterministic. Same input and same options give the same output. No clock, randomness, locale of the host, or network is consulted.
@@ -439,7 +462,7 @@ Quality gate: a golden corpus under `crates/yuyin-text/golden/*.tsv` holds input
 
 ## 6. Engine abstraction
 
-Crate: `yuyin-engine`. Nothing above it knows which model is running. A second engine can be added without touching the gateway. Implementations: `FakeEngine` (`fake.rs`, deterministic tones, used in dev and CI) and the ONNX engine (`onnx.rs`, chosen by ADR-015).
+Crate: `yuyin-engine`. Nothing above it knows which model is running. A second engine can be added without touching the gateway. Implementations: `FakeEngine` (`fake.rs`, deterministic tones, used in dev and CI) and the ONNX engine (`onnx.rs`, a stub). No ONNX engine has been chosen: ADR-015 is Proposed and blocked on owner issue #184.
 
 ```rust
 pub trait SynthesisEngine: Send + Sync {
@@ -450,7 +473,7 @@ pub trait SynthesisEngine: Send + Sync {
     /// as soon as they are available. Must be cancellable through `cancel`.
     fn synthesise(
         &self,
-        segment: &Segment,
+        segment: &SegmentInput,
         voice: &VoiceId,
         opts: &SynthOptions,
         cancel: &CancellationToken,
@@ -459,6 +482,8 @@ pub trait SynthesisEngine: Send + Sync {
     fn warmup(&self) -> Result<Duration, EngineError>;
 }
 ```
+
+`SegmentInput { text: String, lang: SegmentLang (Hi | En), pace_hint: f32 }` is the engine-side input type. `yuyin-engine` does not depend on `yuyin-text`; the gateway maps each `yuyin_text::Segment` onto a `SegmentInput`. Supporting types in `traits.rs`: `VoiceId(String)`, `VoiceInfo { id, name, language }`, `SynthOptions { speed }`, `SegmentStats { samples, chunks, audio_duration }`, `SinkClosed`, `EngineError { Cancelled, SinkClosed, UnknownVoice, Internal }`, and `CancellationToken`, a clonable `Arc<AtomicBool>` with no async runtime dependency. A cancelled token makes `synthesise` return `EngineError::Cancelled`; a closed sink returns `EngineError::SinkClosed`. `FakeEngine` is configured by `FakeConfig { chunk_samples, chunk_delay, samples_per_char }` and checks the token at least every 2 ms, so cancellation returns within 20 ms.
 
 Threading model:
 
@@ -476,8 +501,8 @@ Voice registry (`registry.rs`): loads `config/voices.toml` plus private voices f
 
 Goal: time to first audio (TTFA) as low as possible, then keep audio flowing ahead of playback.
 
-- Segmentation (`segment.rs`) splits at clause boundaries (sentence terminators, commas, semicolons, danda `।`, and line breaks). The first segment is deliberately short (target a small number of words, set in `config/limits.toml`) so the first synthesis call finishes quickly. Later segments are longer for prosody.
-- A language switch inside a sentence starts a new segment, tagged with its own `lang`, so the engine receives single-language segments.
+- Segmentation (`segment.rs`) splits at clause boundaries (sentence terminators, commas, semicolons, danda `।`, and line breaks). The first segment is deliberately short (at most 60 code points, `FIRST_SEGMENT_MAX_CP` in `segment.rs`) so the first synthesis call finishes quickly. Later segments are longer for prosody (at most 200 code points, `LATER_SEGMENT_MAX_CP`). Both are `SegmentOptions` defaults, not read from `config/limits.toml`.
+- Each segment carries the context language of its sentence. A code-switched span inside a sentence does not start a new segment, so a Hinglish sentence reaches the engine as one segment in the sentence's matrix language.
 - Pace: `pace_hint` from the normaliser (for example 0.85 for OTP digits) multiplies the request `pace`. The engine receives the combined value; where the model cannot change speed natively, `yuyin-audio/stretch.rs` time-stretches PCM.
 - Pipeline: segment N+1 is queued while segment N is being encoded and written. The per-stream bounded channel holds a small number of PCM chunks; when full, the worker blocks on that stream only.
 - Opus: 24 kHz mono encoded in fixed frames (frame size is set in `yuyin-audio`; Ogg pages are flushed per frame group so the client can decode incrementally). PCM is signed 16-bit little-endian at 24 kHz. WAV carries a streaming header with an unknown length (maximum-size data field) because the length is not known up front.
@@ -1287,8 +1312,8 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── api/openapi.yaml
 ├── config/{pricing.toml,voices.toml,capacity.toml,limits.toml,policy-patterns.toml}
 ├── crates/
-│   ├── yuyin-text/    src/{lib.rs,tag.rs,classify.rs,verbalise/,translit.rs,segment.rs,lexicon.rs}
-│   │                  data/{acronyms.tsv,roman_hindi_lexicon.tsv,hindi_numbers.tsv}  golden/*.tsv  tests/
+│   ├── yuyin-text/    src/{lib.rs,tag.rs,classify/,verbalise/,translit.rs,segment.rs,lexicon/}
+│   │                  data/{acronyms.tsv,english_lexicon.txt,hindi_numbers.tsv,roman_hindi_lexicon.tsv,tagger_ngram.tsv}  golden/*.tsv  tests/
 │   ├── yuyin-engine/  src/{lib.rs,traits.rs,fake.rs,onnx.rs,registry.rs,pool.rs}
 │   ├── yuyin-audio/   src/{lib.rs,opus.rs,ogg.rs,wav.rs,pcm.rs,stretch.rs}
 │   ├── yuyin-meter/   src/{lib.rs,count.rs,price.rs,reserve.rs,batcher.rs,lua/}

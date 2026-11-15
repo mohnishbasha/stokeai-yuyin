@@ -1,0 +1,177 @@
+id	lang	class	input	expected	notes
+golden_hi_date_ambiguous_numeric	hi	date	05/12/2026	पाँच दिसंबर दो हज़ार छब्बीस	day first
+golden_hi_date_day_over_12	hi	date	25/03/2026	पच्चीस मार्च दो हज़ार छब्बीस	
+golden_hi_date_us_style_not_swapped	hi	date	03/25/2026	शून्य तीन/दो पाँच/दो शून्य दो छह	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_hi_date_dash_separator	hi	date	15-08-2026	पंद्रह अगस्त दो हज़ार छब्बीस	
+golden_hi_date_dot_separator	hi	date	01.02.2027	एक फरवरी दो हज़ार सत्ताईस	1 Feb in day first locales
+golden_hi_date_invalid_feb_31	hi	date	31/02/2026	तीन एक/शून्य दो/दो शून्य दो छह	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_hi_date_leap_day_valid	hi	date	29/02/2028	उनतीस फरवरी दो हज़ार अट्ठाईस	
+golden_hi_date_not_leap_invalid	hi	date	29/02/2027	दो नौ/शून्य दो/दो शून्य दो सात	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_hi_date_day_month_year_name	hi	date	5 मार्च 2026	पाँच मार्च दो हज़ार छब्बीस	
+golden_hi_date_month_name_abbrev	hi	date	26 Jan 2026	छब्बीस जनवरी दो हज़ार छब्बीस	
+golden_hi_date_month_name_ordinal	hi	date	5th December 2026	पाँच दिसंबर दो हज़ार छब्बीस	
+golden_hi_date_day_month_only	hi	date	15 अगस्त	पंद्रह अगस्त	
+golden_hi_date_month_name_first	hi	date	March 5, 2026	पाँच मार्च दो हज़ार छब्बीस	month name first form
+golden_hi_date_iso	hi	date	2026-03-05	पाँच मार्च दो हज़ार छब्बीस	ISO always parses
+golden_hi_date_iso_slash	hi	date	2027-12-25	पच्चीस दिसंबर दो हज़ार सत्ताईस	ISO always parses
+golden_hi_date_month_year	hi	date	मार्च 2026	मार्च दो हज़ार छब्बीस	
+golden_hi_date_month_name_hindi_digits	hi	date	५ मार्च २०२६	पाँच मार्च दो हज़ार छब्बीस	Devanagari digits
+golden_hi_date_sentence	hi	date	बैठक 05/12/2026 को है।	बैठक पाँच दिसंबर दो हज़ार छब्बीस को है।	
+golden_hi_date_year_only	hi	date	2026 में	दो हज़ार छब्बीस में	
+golden_hi_date_relative_word	hi	date	कल	कल	relative words pass through
+golden_hi_date_relative_with_number	hi	date	कल 10 बजे	कल दस बजे	relative word untouched, number read
+golden_hi_time_pm_12_hour	hi	time	5:30 PM	शाम के साढ़े पाँच बजे	
+golden_hi_time_am_on_the_hour	hi	time	9:00 AM	सुबह के नौ बजे	
+golden_hi_time_midnight	hi	time	12:00 AM	आधी रात	
+golden_hi_time_noon	hi	time	12:00 PM	दोपहर के बारह बजे	
+golden_hi_time_hrs_suffix	hi	time	17:30 hrs	सत्रह बजकर तीस मिनट	
+golden_hi_time_hrs_on_the_hour	hi	time	09:00 hrs	नौ बजे	
+golden_hi_time_lowercase_pm	hi	time	3:30 pm	शाम के साढ़े तीन बजे	PRD FR-008 AC-4
+golden_hi_time_quarter_past	hi	time	7:15 AM	सुबह के सवा सात बजे	
+golden_hi_time_quarter_to	hi	time	10:45 PM	रात के पौने ग्यारह बजे	
+golden_hi_time_minutes_past_five	hi	time	8:05 AM	सुबह के आठ बजकर पाँच मिनट	
+golden_hi_time_hour_only_pm	hi	time	5 pm	शाम के पाँच बजे	
+golden_hi_time_hour_only_am	hi	time	11 AM	सुबह के ग्यारह बजे	
+golden_hi_time_dotted_meridiem	hi	time	5:30 p.m.	शाम के साढ़े पाँच बजे	
+golden_hi_time_twenty_four_hour_bare	hi	time	17:30	शाम के साढ़े पाँच बजे	
+golden_hi_time_seconds	hi	time	5:30:15 PM	शाम के पाँच बजकर तीस मिनट पंद्रह सेकंड	
+golden_hi_time_duration_hours_minutes	hi	time	2h 15m	दो घंटे पंद्रह मिनट	
+golden_hi_time_duration_minutes	hi	time	45 min	पैंतालीस मिनट	
+golden_hi_time_duration_three_parts	hi	time	1h 30m 10s	एक घंटा तीस मिनट दस सेकंड	
+golden_hi_time_duration_hours_word	hi	time	3 hrs	तीन घंटे	
+golden_hi_time_duration_seconds_word	hi	time	30 sec	तीस सेकंड	
+golden_hi_time_sentence	hi	time	ट्रेन 5:30 PM की है।	ट्रेन शाम के साढ़े पाँच बजे की है।	
+golden_hi_time_baje_absorbed	hi	time	5:30 बजे	साढ़े पाँच बजे	बजे is not repeated
+golden_hi_time_date_and_time	hi	time	05/12/2026 को 5:30 PM	पाँच दिसंबर दो हज़ार छब्बीस को शाम के साढ़े पाँच बजे	
+golden_hinglish_date_ambiguous_numeric	hinglish	date	05/12/2026	पाँच दिसंबर दो हज़ार छब्बीस	day first
+golden_hinglish_date_day_over_12	hinglish	date	25/03/2026	पच्चीस मार्च दो हज़ार छब्बीस	
+golden_hinglish_date_us_style_not_swapped	hinglish	date	03/25/2026	शून्य तीन/दो पाँच/दो शून्य दो छह	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_hinglish_date_dash_separator	hinglish	date	15-08-2026	पंद्रह अगस्त दो हज़ार छब्बीस	
+golden_hinglish_date_dot_separator	hinglish	date	01.02.2027	एक फरवरी दो हज़ार सत्ताईस	1 Feb in day first locales
+golden_hinglish_date_invalid_feb_31	hinglish	date	31/02/2026	तीन एक/शून्य दो/दो शून्य दो छह	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_hinglish_date_leap_day_valid	hinglish	date	29/02/2028	उनतीस फरवरी दो हज़ार अट्ठाईस	
+golden_hinglish_date_not_leap_invalid	hinglish	date	29/02/2027	दो नौ/शून्य दो/दो शून्य दो सात	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_hinglish_date_day_month_year_name	hinglish	date	5 March 2026	पाँच मार्च दो हज़ार छब्बीस	
+golden_hinglish_date_month_name_abbrev	hinglish	date	26 Jan 2026	छब्बीस जनवरी दो हज़ार छब्बीस	
+golden_hinglish_date_month_name_ordinal	hinglish	date	5th December 2026	पाँच दिसंबर दो हज़ार छब्बीस	
+golden_hinglish_date_day_month_only	hinglish	date	15 August	पंद्रह अगस्त	
+golden_hinglish_date_month_name_first	hinglish	date	March 5, 2026	पाँच मार्च दो हज़ार छब्बीस	month name first form
+golden_hinglish_date_iso	hinglish	date	2026-03-05	पाँच मार्च दो हज़ार छब्बीस	ISO always parses
+golden_hinglish_date_iso_slash	hinglish	date	2027-12-25	पच्चीस दिसंबर दो हज़ार सत्ताईस	ISO always parses
+golden_hinglish_date_month_year	hinglish	date	March 2026	मार्च दो हज़ार छब्बीस	
+golden_hinglish_date_month_name_hindi_digits	hinglish	date	५ मार्च २०२६	पाँच मार्च दो हज़ार छब्बीस	Devanagari digits
+golden_hinglish_date_sentence	hinglish	date	Meeting 05/12/2026 ko hai.	Meeting पाँच दिसंबर दो हज़ार छब्बीस ko hai.	
+golden_hinglish_date_year_only	hinglish	date	2026 में	दो हज़ार छब्बीस में	
+golden_hinglish_date_relative_word	hinglish	date	kal milte hain	kal milte hain	relative words pass through
+golden_hinglish_date_relative_with_number	hinglish	date	kal 10 baje	kal दस baje	relative word untouched, number read
+golden_hinglish_time_pm_12_hour	hinglish	time	5:30 PM	शाम के साढ़े पाँच बजे	
+golden_hinglish_time_am_on_the_hour	hinglish	time	9:00 AM	सुबह के नौ बजे	
+golden_hinglish_time_midnight	hinglish	time	12:00 AM	आधी रात	
+golden_hinglish_time_noon	hinglish	time	12:00 PM	दोपहर के बारह बजे	
+golden_hinglish_time_hrs_suffix	hinglish	time	17:30 hrs	सत्रह बजकर तीस मिनट	
+golden_hinglish_time_hrs_on_the_hour	hinglish	time	09:00 hrs	नौ बजे	
+golden_hinglish_time_lowercase_pm	hinglish	time	3:30 pm	शाम के साढ़े तीन बजे	PRD FR-008 AC-4
+golden_hinglish_time_quarter_past	hinglish	time	7:15 AM	सुबह के सवा सात बजे	
+golden_hinglish_time_quarter_to	hinglish	time	10:45 PM	रात के पौने ग्यारह बजे	
+golden_hinglish_time_minutes_past_five	hinglish	time	8:05 AM	सुबह के आठ बजकर पाँच मिनट	
+golden_hinglish_time_hour_only_pm	hinglish	time	5 pm	शाम के पाँच बजे	
+golden_hinglish_time_hour_only_am	hinglish	time	11 AM	सुबह के ग्यारह बजे	
+golden_hinglish_time_dotted_meridiem	hinglish	time	5:30 p.m.	शाम के साढ़े पाँच बजे	
+golden_hinglish_time_twenty_four_hour_bare	hinglish	time	17:30	शाम के साढ़े पाँच बजे	
+golden_hinglish_time_seconds	hinglish	time	5:30:15 PM	शाम के पाँच बजकर तीस मिनट पंद्रह सेकंड	
+golden_hinglish_time_duration_hours_minutes	hinglish	time	2h 15m	दो घंटे पंद्रह मिनट	
+golden_hinglish_time_duration_minutes	hinglish	time	45 min	पैंतालीस मिनट	
+golden_hinglish_time_duration_three_parts	hinglish	time	1h 30m 10s	एक घंटा तीस मिनट दस सेकंड	
+golden_hinglish_time_duration_hours_word	hinglish	time	3 hrs	तीन घंटे	
+golden_hinglish_time_duration_seconds_word	hinglish	time	30 sec	तीस सेकंड	
+golden_hinglish_time_sentence	hinglish	time	ट्रेन 5:30 PM की है।	ट्रेन शाम के साढ़े पाँच बजे की है।	
+golden_hinglish_time_baje_absorbed	hinglish	time	5:30 बजे	साढ़े पाँच बजे	बजे is not repeated
+golden_hinglish_time_date_and_time	hinglish	time	05/12/2026 को 5:30 PM	पाँच दिसंबर दो हज़ार छब्बीस को शाम के साढ़े पाँच बजे	
+golden_en_in_date_ambiguous_numeric	en-IN	date	05/12/2026	the fifth of December twenty twenty-six	day first
+golden_en_in_date_day_over_12	en-IN	date	25/03/2026	the twenty-fifth of March twenty twenty-six	
+golden_en_in_date_us_style_not_swapped	en-IN	date	03/25/2026	zero three/two five/two zero two six	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_en_in_date_dash_separator	en-IN	date	15-08-2026	the fifteenth of August twenty twenty-six	
+golden_en_in_date_dot_separator	en-IN	date	01.02.2027	the first of February twenty twenty-seven	1 Feb in day first locales
+golden_en_in_date_invalid_feb_31	en-IN	date	31/02/2026	three one/zero two/two zero two six	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_en_in_date_leap_day_valid	en-IN	date	29/02/2028	the twenty-ninth of February twenty twenty-eight	
+golden_en_in_date_not_leap_invalid	en-IN	date	29/02/2027	two nine/zero two/two zero two seven	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_en_in_date_day_month_year_name	en-IN	date	5 March 2026	the fifth of March twenty twenty-six	
+golden_en_in_date_month_name_abbrev	en-IN	date	26 Jan 2026	the twenty-sixth of January twenty twenty-six	
+golden_en_in_date_month_name_ordinal	en-IN	date	5th December 2026	the fifth of December twenty twenty-six	
+golden_en_in_date_day_month_only	en-IN	date	15 August	the fifteenth of August	
+golden_en_in_date_month_name_first	en-IN	date	March 5, 2026	the fifth of March twenty twenty-six	month name first form
+golden_en_in_date_iso	en-IN	date	2026-03-05	the fifth of March twenty twenty-six	ISO always parses
+golden_en_in_date_iso_slash	en-IN	date	2027-12-25	the twenty-fifth of December twenty twenty-seven	ISO always parses
+golden_en_in_date_month_year	en-IN	date	March 2026	March twenty twenty-six	
+golden_en_in_date_month_name_hindi_digits	en-IN	date	५ मार्च २०२६	the fifth of March twenty twenty-six	Devanagari digits
+golden_en_in_date_sentence	en-IN	date	Due 05/12/2026.	Due the fifth of December twenty twenty-six.	
+golden_en_in_date_year_only	en-IN	date	in 2026	in twenty twenty-six	
+golden_en_in_date_relative_word	en-IN	date	tomorrow	tomorrow	relative words pass through
+golden_en_in_date_relative_phrase	en-IN	date	See you next week	See you next week	relative phrase untouched
+golden_en_in_time_pm_12_hour	en-IN	time	5:30 PM	five thirty P M	
+golden_en_in_time_am_on_the_hour	en-IN	time	9:00 AM	nine A M	
+golden_en_in_time_midnight	en-IN	time	12:00 AM	midnight	
+golden_en_in_time_noon	en-IN	time	12:00 PM	noon	
+golden_en_in_time_hrs_suffix	en-IN	time	17:30 hrs	seventeen thirty hours	
+golden_en_in_time_hrs_on_the_hour	en-IN	time	09:00 hrs	oh nine hundred hours	
+golden_en_in_time_lowercase_pm	en-IN	time	3:30 pm	three thirty P M	PRD FR-008 AC-4
+golden_en_in_time_quarter_past	en-IN	time	7:15 AM	seven fifteen A M	
+golden_en_in_time_quarter_to	en-IN	time	10:45 PM	ten forty-five P M	
+golden_en_in_time_minutes_past_five	en-IN	time	8:05 AM	eight oh five A M	
+golden_en_in_time_hour_only_pm	en-IN	time	5 pm	five P M	
+golden_en_in_time_hour_only_am	en-IN	time	11 AM	eleven A M	
+golden_en_in_time_dotted_meridiem	en-IN	time	5:30 p.m.	five thirty P M	
+golden_en_in_time_twenty_four_hour_bare	en-IN	time	17:30	seventeen thirty	
+golden_en_in_time_seconds	en-IN	time	5:30:15 PM	five thirty and fifteen seconds P M	
+golden_en_in_time_duration_hours_minutes	en-IN	time	2h 15m	two hours fifteen minutes	
+golden_en_in_time_duration_minutes	en-IN	time	45 min	forty-five minutes	
+golden_en_in_time_duration_three_parts	en-IN	time	1h 30m 10s	one hour thirty minutes ten seconds	
+golden_en_in_time_duration_hours_word	en-IN	time	3 hrs	three hours	
+golden_en_in_time_duration_seconds_word	en-IN	time	30 sec	thirty seconds	
+golden_en_in_time_sentence	en-IN	time	Meeting at 5:30 PM.	Meeting at five thirty P M.	
+golden_en_in_time_date_and_time	en-IN	time	05/12/2026 at 5:30 PM	the fifth of December twenty twenty-six at five thirty P M	
+golden_en_in_time_relative_with_time	en-IN	time	tomorrow at 5:30 PM	tomorrow at five thirty P M	relative word untouched
+golden_en_us_date_ambiguous_numeric	en-US	date	05/12/2026	May twelfth twenty twenty-six	month first for en-US
+golden_en_us_date_day_over_12_not_swapped	en-US	date	25/03/2026	two five/zero three/two zero two six	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_en_us_date_month_first_numeric	en-US	date	03/25/2026	March twenty-fifth twenty twenty-six	
+golden_en_us_date_dash_separator	en-US	date	08-15-2026	August fifteenth twenty twenty-six	
+golden_en_us_date_dot_separator	en-US	date	01.02.2027	January second twenty twenty-seven	Jan 2 in en-US
+golden_en_us_date_invalid_feb_31	en-US	date	02/31/2026	zero two/three one/two zero two six	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_en_us_date_leap_day_valid	en-US	date	02/29/2028	February twenty-ninth twenty twenty-eight	
+golden_en_us_date_not_leap_invalid	en-US	date	02/29/2027	zero two/two nine/two zero two seven	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
+golden_en_us_date_month_name_first	en-US	date	March 5, 2026	March fifth twenty twenty-six	
+golden_en_us_date_month_name_abbrev	en-US	date	Jan 26, 2026	January twenty-sixth twenty twenty-six	
+golden_en_us_date_month_name_ordinal	en-US	date	December 5th, 2026	December fifth twenty twenty-six	
+golden_en_us_date_month_day_only	en-US	date	August 15	August fifteenth	
+golden_en_us_date_day_first_name_form	en-US	date	5 March 2026	March fifth twenty twenty-six	written month name is unambiguous
+golden_en_us_date_sentence	en-US	date	Due 05/12/2026.	Due May twelfth twenty twenty-six.	
+golden_en_us_date_iso	en-US	date	2026-03-05	March fifth twenty twenty-six	ISO always parses
+golden_en_us_date_iso_slash	en-US	date	2027-12-25	December twenty-fifth twenty twenty-seven	ISO always parses
+golden_en_us_date_month_year	en-US	date	March 2026	March twenty twenty-six	
+golden_en_us_date_month_name_hindi_digits	en-US	date	५ मार्च २०२६	March fifth twenty twenty-six	Devanagari digits
+golden_en_us_date_year_only	en-US	date	in 2026	in twenty twenty-six	
+golden_en_us_date_relative_word	en-US	date	yesterday	yesterday	relative words pass through
+golden_en_us_date_relative_phrase	en-US	date	See you next week	See you next week	relative phrase untouched
+golden_en_us_time_pm_12_hour	en-US	time	5:30 PM	five thirty P M	
+golden_en_us_time_am_on_the_hour	en-US	time	9:00 AM	nine A M	
+golden_en_us_time_midnight	en-US	time	12:00 AM	midnight	
+golden_en_us_time_noon	en-US	time	12:00 PM	noon	
+golden_en_us_time_hrs_suffix	en-US	time	17:30 hrs	seventeen thirty hours	
+golden_en_us_time_hrs_on_the_hour	en-US	time	09:00 hrs	oh nine hundred hours	
+golden_en_us_time_lowercase_pm	en-US	time	3:30 pm	three thirty P M	PRD FR-008 AC-4
+golden_en_us_time_quarter_past	en-US	time	7:15 AM	seven fifteen A M	
+golden_en_us_time_quarter_to	en-US	time	10:45 PM	ten forty-five P M	
+golden_en_us_time_minutes_past_five	en-US	time	8:05 AM	eight oh five A M	
+golden_en_us_time_hour_only_pm	en-US	time	5 pm	five P M	
+golden_en_us_time_hour_only_am	en-US	time	11 AM	eleven A M	
+golden_en_us_time_dotted_meridiem	en-US	time	5:30 p.m.	five thirty P M	
+golden_en_us_time_twenty_four_hour_bare	en-US	time	17:30	seventeen thirty	
+golden_en_us_time_seconds	en-US	time	5:30:15 PM	five thirty and fifteen seconds P M	
+golden_en_us_time_duration_hours_minutes	en-US	time	2h 15m	two hours fifteen minutes	
+golden_en_us_time_duration_minutes	en-US	time	45 min	forty-five minutes	
+golden_en_us_time_duration_three_parts	en-US	time	1h 30m 10s	one hour thirty minutes ten seconds	
+golden_en_us_time_duration_hours_word	en-US	time	3 hrs	three hours	
+golden_en_us_time_duration_seconds_word	en-US	time	30 sec	thirty seconds	
+golden_en_us_time_sentence	en-US	time	Meeting at 5:30 PM.	Meeting at five thirty P M.	
+golden_en_us_time_date_and_time	en-US	time	05/12/2026 at 5:30 PM	May twelfth twenty twenty-six at five thirty P M	
+golden_en_us_time_relative_with_time	en-US	time	tomorrow at 5:30 PM	tomorrow at five thirty P M	relative word untouched

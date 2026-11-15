@@ -115,6 +115,15 @@ Scenario ID prefixes: SC (scaffold), NM (normalisation), LT (language tagging), 
 
 Golden-file rules: a golden row is never edited to make a failing test pass unless the expected reading was wrong, in which case the change is reviewed and noted in `notes`. Fixtures contain no real phone numbers, card numbers, or bank-like messages.
 
+Golden corpus growth plan (NFR-011). Rows are hand-written and added with `scripts/golden-add.sh <file> <lang> <class> <name> <input> <expected> [notes]`. Fields cannot hold tabs or newlines, so whitespace-collapse rows for tabs and line breaks live in unit tests, not the corpus. `make golden` prints per-class pass counts. The runner floor (`MIN_ROWS` in `crates/yuyin-text/tests/golden.rs`) is raised in the same PR that adds rows, so the corpus can never shrink silently.
+
+| Milestone | Rows (at least) | How it is reached |
+|---|---|---|
+| S1-T01 (runner, plain, acronym, segment) | 170 | Classes already on `develop`: plain, acronym, segment |
+| End of Sprint 1 | 400 (1,244 reached) | Each class task adds its own rows: numbers (S1-T03), tagging (S1-T02), money (S1-T04), dates and times, digit strings, units, other classes. Roughly 25 to 40 rows per class, spread across hi, hinglish, en-IN, and en-US |
+| End of Sprint 3 | 800 | Every row of NM-* scenarios in 6.2 becomes a golden row in all four languages where the rule applies |
+| v1.0.0 | 1,500 | Customer-reported wrong readings (rule 7), edge cases from property and fuzz failures, and a review pass that balances classes so no class has fewer than 40 rows and no language fewer than 20 percent of the total |
+
 ## 6. Scenario tables
 
 Columns: ID, test name, type, Given / When / Then summary, spec reference, sprint, status. Types: Unit, Golden, Property, Integration, Contract, Smoke, E2E, Perf, Regression.
@@ -169,214 +178,276 @@ Columns: ID, test name, type, Given / When / Then summary, spec reference, sprin
 
 Normalisation is deterministic: the same input and options give the same output (determinism scenarios in 6.2.14). Language columns in the Given clause use hi, hinglish, en-IN, en-US. Expected readings below are summaries; the exact strings live in the golden corpus.
 
+#### 6.2.0 Golden runner and crate purity
+
+| ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
+|---|---|---|---|---|---|---|
+| NM-RUN-01 | unit_text_goldenrunner_allrows_passes | Unit | Given every `golden/*.tsv` file, when each row is normalised with its language, then every row matches `expected`, ids are unique and well formed, and the corpus is at least the current floor (1,244 rows at the end of Sprint 1) | SPRINT_PLAN S1-T01; NFR-011 | S1 | ✅ Automated |
+| NM-RUN-02 | unit_text_goldenrunner_regressionrow_failsci | Unit | Given a row whose expected reading differs from the output, when the runner runs, then it reports that row as a failure, so CI fails | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-03 | unit_text_goldenrunner_perclassreport_countsprinted | Unit | Given rows in two classes, when the runner runs, then the summary prints passed and total per class and in total | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-04 | unit_text_goldenrunner_badrows_rejected | Unit | Given a wrong header, a short row, a duplicate id, an id with the wrong prefix, or an unsupported language, when the corpus is parsed and validated, then it is rejected | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-05 | unit_scripts_goldenadd_validrow_appended | Unit | Given a golden file, when `scripts/golden-add.sh` adds a valid row, then the row is appended with id `golden_{lang}_{class}_{name}`; a duplicate id, an unsupported language, a tab in a field, or a missing file is rejected and the file is unchanged | SPRINT_PLAN S1-T01 | S1 | ✅ Automated |
+| NM-RUN-06 | unit_text_purity_dependencies_allowlisted | Unit | Given `crates/yuyin-text/Cargo.toml`, when its `[dependencies]` are read, then every one is on the allowlist (`thiserror`, `unicode-normalization`, `unicode-segmentation`) | Sprint 1 gate; ARCH 5 | S1 | ✅ Automated |
+| NM-RUN-07 | unit_text_purity_source_noio | Unit | Given the `yuyin-text` source tree, when it is scanned, then no file uses file, network, process, environment, clock, thread, async, or random APIs | Sprint 1 gate; ARCH 5 | S1 | ✅ Automated |
+| NM-RUN-08 | unit_text_purity_checker_detects_violations | Unit | Given a manifest with an extra dependency and sources using `std::fs` and `std::net`, when the purity checks run on them, then each is reported, and comments and `include_str!` are not | Sprint 1 gate | S1 | ✅ Automated |
+
+Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to S1-T08), taking the corpus past 400 rows at the Sprint 1 gate. Each later sprint that touches the text front-end adds rows, and every wrong reading reported after launch becomes a row, so the corpus reaches 1,500 rows by v1.0.0. The runner's `MIN_ROWS` floor is raised as the corpus grows, so it never shrinks.
+
 #### 6.2.1 MONEY
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-MON-01 | golden_hi_money_indian_grouping_lakh_reads_in_hindi | Golden | Given hi text "₹1,25,000", when normalised, then "एक लाख पच्चीस हज़ार रुपये" | FR-007, ARCH pipeline | S1 | ⚠️ Deferred |
-| NM-MON-02 | golden_hi_money_western_grouping_parses_same_value | Golden | Given hi text "₹125,000", when normalised, then the reading equals NM-MON-01 | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-03 | golden_hi_money_paise_reads_rupees_and_paise | Golden | Given hi text "₹250.50", when normalised, then rupees and पैसे are both read | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-04 | golden_hi_money_lakh_crore_suffix_expands | Golden | Given "₹1.5 lakh" and "₹2 Cr", when normalised, then they read as डेढ़ लाख and दो करोड़ रुपये | FR-006, FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-05 | golden_hi_money_rs_trailing_slash_dash_form | Golden | Given "Rs 12,450/-", when normalised, then the trailing "/-" is dropped and the amount read in rupees | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-06 | golden_hi_money_prefix_variants_all_read_rupees | Golden | Given "Rs.", "INR", "रु" prefixes with the same amount, when normalised, then all read identically | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-07 | golden_hinglish_money_amount_in_roman_sentence_reads_hindi_digits | Golden | Given hinglish "Aapka EMI ₹4,500 hai", when normalised, then the amount is read in Hindi in the sentence language | FR-007, FR-004 | S1 | ⚠️ Deferred |
-| NM-MON-08 | golden_en_in_money_indian_grouping_reads_lakh_in_english | Golden | Given en-IN "₹1,25,000", when normalised, then "one lakh twenty-five thousand rupees" | FR-007, FR-006 | S1 | ⚠️ Deferred |
-| NM-MON-09 | golden_en_us_money_usd_with_cents | Golden | Given en-US "$1,234.56", when normalised, then "one thousand two hundred thirty-four dollars and fifty-six cents" | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-10 | golden_en_us_money_singular_one_dollar_one_cent | Golden | Given "$1.01", when normalised, then singular "dollar" and "cent" are used | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-11 | golden_en_us_money_usd_code_suffix | Golden | Given "250 USD", when normalised, then it reads as two hundred fifty US dollars | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-12 | golden_hi_money_usd_in_hindi_sentence_reads_dollar_in_hindi | Golden | Given hi sentence containing "$20", when normalised, then the amount is read in Hindi with डॉलर | FR-007 | S1 | ⚠️ Deferred |
-| NM-MON-13 | golden_en_in_money_negative_amount_reads_minus | Golden | Given "-₹500", when normalised, then a spoken "minus" precedes the amount | FR-007 | S1 | ⚠️ Deferred |
+| NM-MON-01 | golden_hi_money_indian_grouping_lakh_reads_in_hindi | Golden | Given hi text "₹1,25,000", when normalised, then "एक लाख पच्चीस हज़ार रुपये" | FR-007, ARCH pipeline | S1 | ✅ Automated |
+| NM-MON-02 | golden_hi_money_western_grouping_parses_same_value | Golden | Given hi text "₹125,000", when normalised, then the reading equals NM-MON-01 | FR-007 | S1 | ✅ Automated |
+| NM-MON-03 | golden_hi_money_paise_reads_rupees_and_paise | Golden | Given hi text "₹250.50", when normalised, then rupees and पैसे are both read | FR-007 | S1 | ✅ Automated |
+| NM-MON-04 | golden_hi_money_lakh_crore_suffix_expands | Golden | Given "₹1.5 lakh" and "₹2 Cr", when normalised, then they read as डेढ़ लाख and दो करोड़ रुपये | FR-006, FR-007 | S1 | ✅ Automated |
+| NM-MON-05 | golden_hi_money_rs_trailing_slash_dash_form | Golden | Given "Rs 12,450/-", when normalised, then the trailing "/-" is dropped and the amount read in rupees | FR-007 | S1 | ✅ Automated |
+| NM-MON-06 | golden_hi_money_prefix_variants_all_read_rupees | Golden | Given "Rs.", "INR", "रु" prefixes with the same amount, when normalised, then all read identically | FR-007 | S1 | ✅ Automated |
+| NM-MON-07 | golden_hinglish_money_amount_in_roman_sentence_reads_hindi_digits | Golden | Given hinglish "Aapka bill ₹4,500 hai", when normalised, then the amount is read in Hindi in the sentence language | FR-007, FR-004 | S1 | ✅ Automated |
+| NM-MON-08 | golden_en_in_money_indian_grouping_reads_lakh_in_english | Golden | Given en-IN "₹1,25,000", when normalised, then "one lakh twenty-five thousand rupees" | FR-007, FR-006 | S1 | ✅ Automated |
+| NM-MON-09 | golden_en_us_money_usd_with_cents | Golden | Given en-US "$1,234.56", when normalised, then "one thousand two hundred thirty-four dollars and fifty-six cents" | FR-007 | S1 | ✅ Automated |
+| NM-MON-10 | golden_en_us_money_singular_one_dollar_one_cent | Golden | Given "$1.01", when normalised, then singular "dollar" and "cent" are used | FR-007 | S1 | ✅ Automated |
+| NM-MON-11 | golden_en_us_money_usd_code_suffix | Golden | Given "250 USD", when normalised, then it reads as two hundred fifty dollars | FR-007 | S1 | ✅ Automated |
+| NM-MON-12 | golden_hi_money_usd_in_hindi_sentence_reads_dollar_in_hindi | Golden | Given hi sentence containing "$20", when normalised, then the amount is read in Hindi with डॉलर | FR-007 | S1 | ✅ Automated |
+| NM-MON-13 | golden_en_in_money_negative_amount_reads_minus | Golden | Given "-₹500", when normalised, then a spoken "minus" precedes the amount | FR-007 | S1 | ✅ Automated |
+| NM-MON-14 | unit_text_currency_rupeesymbol_spoken_matchesgolden | Unit | Given ₹, Rs, Rs., INR, रु before or after "12,450" and $, USD for dollars, when normalised in all four languages, then every marker reads the same spoken amount as its golden rows | FR-007 | S1 | ✅ Automated |
+| NM-MON-15 | unit_text_currency_paise_fractionalamount_verbalised | Unit | Given "₹250.50", "$1,234.56", "₹10.5", "$1.01", "₹0.75", "Rs 5.00", when normalised, then paise and cents are read, one digit means tenths, singular forms are used, and an empty minor part is dropped | FR-007 | S1 | ✅ Automated |
+| NM-MON-16 | unit_text_currency_lakhcroreshorthand_expanded | Unit | Given "₹1.5 lakh", "₹2 Cr", "₹2.5 crore", "$3 million", when normalised, then Hindi reads डेढ़ लाख, दो करोड़, ढाई करोड़ and English keeps the writer's scale word | FR-006, FR-007 | S1 | ✅ Automated |
+| NM-MON-17 | unit_text_currency_trailingslashdash_ignored | Unit | Given "Rs 12,450/-" and "Rs. 1,000.25/-", when normalised, then the trailing "/-" is part of the span and is not spoken | FR-007 | S1 | ✅ Automated |
+| NM-MON-18 | unit_text_currency_markerwithoutamount_passesthrough | Unit | Given "$" or "Rs" with no amount, when normalised, then the text passes through unchanged | FR-007 | S1 | ✅ Automated |
 
 #### 6.2.2 DATE
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-DAT-01 | golden_hi_date_dd_mm_yyyy_default | Golden | Given hi "05/03/2026", when normalised, then it reads as 5 March (day first) | FR-008, ARCH date rule | S1 | ⚠️ Deferred |
-| NM-DAT-02 | golden_hinglish_date_dd_mm_yyyy_default | Golden | Given hinglish "05/03/2026", when normalised, then it reads as 5 March | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-03 | golden_en_in_date_dd_mm_yyyy_default | Golden | Given en-IN "05/03/2026", when normalised, then it reads as "the fifth of March" | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-04 | golden_en_us_date_mm_dd_yyyy_default | Golden | Given en-US "05/03/2026", when normalised, then it reads as "May third" | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-05 | golden_en_us_date_iso_always_parses | Golden | Given "2026-03-05" in every language, when normalised, then it reads as 5 March 2026 in all | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-06 | unit_text_date_ambiguous_never_swaps_across_locales | Unit | Given "05/03/2026" tagged en-IN and en-US, when normalised, then each follows only its own locale rule and neither silently swaps | FR-008, ARCH date rule | S1 | ⚠️ Deferred |
-| NM-DAT-07 | golden_hi_date_unambiguous_day_over_12_parses | Golden | Given "25/03/2026" in en-US, when normalised, then the invalid month is not silently swapped and a defined fallback applies | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-08 | golden_hi_date_month_names_hindi | Golden | Given "5 मार्च 2026", when normalised, then the day number and year are read in Hindi | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-09 | golden_en_in_date_month_names_english | Golden | Given "5 March 2026", when normalised, then ordinal day, month, and year are read | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-10 | golden_hinglish_date_relative_words_untouched | Golden | Given "kal" or "tomorrow", when normalised, then relative words pass through unchanged | FR-008 | S1 | ⚠️ Deferred |
-| NM-DAT-11 | golden_en_us_date_year_only_four_digit_reads_as_year | Golden | Given "in 2026", when normalised, then it reads "twenty twenty-six", not as a cardinal | FR-008, ARCH OTP rule | S1 | ⚠️ Deferred |
+| NM-DAT-01 | golden_hi_date_dd_mm_yyyy_default | Golden | Given hi "05/03/2026", when normalised, then it reads as 5 March (day first) | FR-008, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-02 | golden_hinglish_date_dd_mm_yyyy_default | Golden | Given hinglish "05/03/2026", when normalised, then it reads as 5 March | FR-008 | S1 | ✅ Automated |
+| NM-DAT-03 | golden_en_in_date_dd_mm_yyyy_default | Golden | Given en-IN "05/03/2026", when normalised, then it reads as "the fifth of March" | FR-008 | S1 | ✅ Automated |
+| NM-DAT-04 | golden_en_us_date_mm_dd_yyyy_default | Golden | Given en-US "05/03/2026", when normalised, then it reads as "May third" | FR-008 | S1 | ✅ Automated |
+| NM-DAT-05 | golden_en_us_date_iso_always_parses | Golden | Given "2026-03-05" in every language, when normalised, then it reads as 5 March 2026 in all | FR-008 | S1 | ✅ Automated |
+| NM-DAT-06 | golden_en_in_date_ambiguous_numeric | Unit | Given "05/12/2026" tagged en-IN and en-US, when normalised, then en-IN reads the fifth of December and en-US reads May twelfth, and neither silently swaps | FR-008, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-07 | golden_hi_date_unambiguous_day_over_12_parses | Golden | Given "25/03/2026" in en-US, when normalised, then the invalid month is not silently swapped and the text is left as written | FR-008 | S1 | ✅ Automated |
+| NM-DAT-08 | golden_hi_date_month_names_hindi | Golden | Given "5 मार्च 2026", when normalised, then the day number and year are read in Hindi | FR-008 | S1 | ✅ Automated |
+| NM-DAT-09 | golden_en_in_date_month_names_english | Golden | Given "5 March 2026", when normalised, then ordinal day, month, and year are read | FR-008 | S1 | ✅ Automated |
+| NM-DAT-10 | golden_hinglish_date_relative_words_untouched | Golden | Given "kal" or "tomorrow", when normalised, then relative words pass through unchanged | FR-008 | S1 | ✅ Automated |
+| NM-DAT-11 | golden_en_us_date_year_only_four_digit_reads_as_year | Golden | Given "in 2026", when normalised, then it reads "twenty twenty-six", not as a cardinal | FR-008, ARCH OTP rule | S1 | ✅ Automated |
+| NM-DAT-12 | unit_text_dates_ambiguousnumeric_enin_readsdaymonth | Unit | Given "05/12/2026" in en-IN, hi, hinglish, and auto, when normalised, then it reads as 5 December 2026 (day first) | FR-008 AC-1, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-13 | unit_text_dates_ambiguousnumeric_enus_readsmonthday | Unit | Given "05/12/2026" in en-US, when normalised, then it reads as May 12, 2026 (month first) | FR-008 AC-2, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-14 | unit_text_dates_relativeformat_leftuntouched | Unit | Given "tomorrow", "kal", "कल", and "next week", when normalised, then they pass through unchanged and only a clock time or number beside them is read | FR-008 | S1 | ✅ Automated |
+| NM-DAT-15 | unit_text_dates_invalid_left_as_written | Unit | Given "31/02/2026" and "29/02/2025", when normalised, then they are not read as dates and pass through as written; "29/02/2028" is a valid leap day | FR-008 AC-3 | S1 | ✅ Automated |
 
 #### 6.2.3 TIME
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-TIM-01 | golden_en_in_time_12_hour_pm | Golden | Given "5:30 PM", when normalised, then "five thirty P M" | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-02 | golden_en_in_time_24_hour_hrs_suffix | Golden | Given "17:30 hrs", when normalised, then it reads as seventeen thirty hours | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-03 | golden_hi_time_12_hour_reads_in_hindi | Golden | Given hi "5:30 PM", when normalised, then it reads as साढ़े पाँच / पाँच बजकर तीस मिनट in the golden form | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-04 | golden_hi_time_on_the_hour | Golden | Given hi "9:00 AM", when normalised, then it reads as सुबह नौ बजे | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-05 | golden_en_us_time_noon_midnight_edge | Golden | Given "12:00 AM" and "12:00 PM", when normalised, then midnight and noon are read correctly | FR-008 | S1 | ⚠️ Deferred |
-| NM-TIM-06 | golden_en_us_time_duration_reads_hours_minutes | Golden | Given "2h 15m", when normalised, then "two hours fifteen minutes" | FR-008 | S1 | ⚠️ Deferred |
+| NM-TIM-01 | golden_en_in_time_12_hour_pm | Golden | Given "5:30 PM", when normalised, then "five thirty P M" | FR-008 | S1 | ✅ Automated |
+| NM-TIM-02 | golden_en_in_time_24_hour_hrs_suffix | Golden | Given "17:30 hrs", when normalised, then it reads as seventeen thirty hours | FR-008 | S1 | ✅ Automated |
+| NM-TIM-03 | golden_hi_time_12_hour_reads_in_hindi | Golden | Given hi "5:30 PM", when normalised, then it reads as शाम के साढ़े पाँच बजे | FR-008 | S1 | ✅ Automated |
+| NM-TIM-04 | golden_hi_time_on_the_hour | Golden | Given hi "9:00 AM", when normalised, then it reads as सुबह के नौ बजे | FR-008 | S1 | ✅ Automated |
+| NM-TIM-05 | golden_en_us_time_noon_midnight_edge | Golden | Given "12:00 AM" and "12:00 PM", when normalised, then midnight and noon are read correctly | FR-008 | S1 | ✅ Automated |
+| NM-TIM-06 | golden_en_us_time_duration_reads_hours_minutes | Golden | Given "2h 15m", when normalised, then "two hours fifteen minutes" | FR-008 | S1 | ✅ Automated |
+| NM-TIM-07 | unit_text_times_24hourhrs_verbalised | Unit | Given "17:30 hrs", when normalised, then en reads "seventeen thirty hours" and hi reads "सत्रह बजकर तीस मिनट" | FR-008 | S1 | ✅ Automated |
+| NM-TIM-08 | unit_text_times_12hour_meridiem_verbalised | Unit | Given "5:30 PM", "3:30 pm", "9:00 AM", "12:00 AM", and "12:00 PM", when normalised, then en reads "five thirty P M" and so on with midnight and noon, and hi reads "शाम के साढ़े तीन बजे" | FR-008 AC-4 | S1 | ✅ Automated |
+| NM-TIM-09 | unit_text_times_duration_reads_hours_minutes | Unit | Given "2h 15m", when normalised, then en reads "two hours fifteen minutes" and hi reads "दो घंटे पंद्रह मिनट"; a lone "5m" or "30s" is not a duration | FR-008 | S1 | ✅ Automated |
 
 #### 6.2.4 PHONE
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-PHN-01 | golden_hi_phone_indian_mobile_groups_5_5 | Golden | Given a 10-digit Indian mobile, when normalised, then digits are read one by one in groups of 5 and 5 | FR-009, ARCH phone rule | S1 | ⚠️ Deferred |
-| NM-PHN-02 | golden_en_in_phone_plus_91_form_groups | Golden | Given "+91 98765 43210" (fictitious), when normalised, then "plus nine one" then groups 5 and 5 | FR-009 | S1 | ⚠️ Deferred |
-| NM-PHN-03 | golden_en_us_phone_groups_3_3_4 | Golden | Given a US number "(555) 010-1234" style, when normalised, then digits read in groups 3, 3, 4 | FR-009 | S1 | ⚠️ Deferred |
-| NM-PHN-04 | golden_hi_phone_digits_use_hindi_digit_words | Golden | Given hi sentence with a mobile number, when normalised, then digits use Hindi words including शून्य | FR-009 | S1 | ⚠️ Deferred |
-| NM-PHN-05 | golden_hinglish_phone_with_separators_stripped | Golden | Given a number with spaces or hyphens, when normalised, then grouping is by the rule, not by the input separators | FR-009 | S1 | ⚠️ Deferred |
+| NM-PHN-01 | golden_hi_phone_indian_mobile_groups_5_5 | Golden | Given a 10-digit Indian mobile, when normalised, then digits are read one by one in groups of 5 and 5 | FR-009, ARCH phone rule | S1 | ✅ Automated |
+| NM-PHN-02 | golden_en_in_phone_plus_91_form_groups | Golden | Given "+91 98765 43210" (fictitious), when normalised, then "plus nine one" then groups 5 and 5 | FR-009 | S1 | ✅ Automated |
+| NM-PHN-03 | golden_en_us_phone_groups_3_3_4 | Golden | Given a US number "(555) 010-1234" style, when normalised, then digits read in groups 3, 3, 4 | FR-009 | S1 | ✅ Automated |
+| NM-PHN-04 | golden_hi_phone_digits_use_hindi_digit_words | Golden | Given hi sentence with a mobile number, when normalised, then digits use Hindi words including शून्य | FR-009 | S1 | ✅ Automated |
+| NM-PHN-05 | golden_hinglish_phone_with_separators_stripped | Golden | Given a number with spaces or hyphens, when normalised, then grouping is by the rule, not by the input separators | FR-009 | S1 | ✅ Automated |
 
 #### 6.2.5 OTP
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-OTP-01 | golden_en_in_otp_trigger_word_reads_digit_by_digit | Golden | Given "Your OTP is 482916", when normalised, then six digits read individually and pace_hint is 0.85 | FR-009, ARCH OTP rule | S1 | ⚠️ Deferred |
-| NM-OTP-02 | golden_hi_otp_devanagari_trigger_kod | Golden | Given "आपका कोड 4829 है", when normalised, then digits read individually with pace_hint 0.85 | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-03 | golden_hinglish_otp_pin_trigger_word | Golden | Given "PIN 1234 daalein", when normalised, then digits read individually | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-04 | golden_en_us_otp_verification_trigger_8_digits | Golden | Given "verification 12345678", when normalised, then eight digits read individually | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-05 | unit_text_otp_four_digits_no_trigger_reads_cardinal | Unit | Given "1234 items" without trigger, when normalised, then it reads as a cardinal | FR-009, ARCH OTP rule | S1 | ⚠️ Deferred |
-| NM-OTP-06 | unit_text_otp_four_digits_year_no_trigger_reads_year | Unit | Given "in 1999" without trigger, when normalised, then it reads as a year | FR-009, FR-008 | S1 | ⚠️ Deferred |
-| NM-OTP-07 | unit_text_otp_three_and_nine_digits_not_otp | Unit | Given "OTP 123" and "OTP 123456789", when normalised, then neither is treated as an OTP (outside 4 to 8) | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-08 | unit_text_otp_pace_hint_is_0_85_on_segment | Unit | Given an OTP span, when segmented, then the segment carries pace_hint 0.85 | FR-009, FR-013 | S1 | ⚠️ Deferred |
-| NM-OTP-09 | golden_hi_otp_postal_pin_code_after_pin_kod | Golden | Given "पिन कोड 560001", when normalised, then six digits read individually | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-10 | golden_en_in_otp_card_tail_ending_4417 | Golden | Given "card ending 4417" and "XXXX1234", when normalised, then tails read digit by digit | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-11 | golden_en_in_otp_pan_like_pattern_char_by_char | Golden | Given a PAN-like and an Aadhaar-like pattern, when normalised, then they read character by character | FR-009 | S1 | ⚠️ Deferred |
+| NM-OTP-01 | golden_en_in_otp_trigger_word_reads_digit_by_digit | Golden | Given "Your OTP is 482916", when normalised, then six digits read individually and pace_hint is 0.85 | FR-009, ARCH OTP rule | S1 | ✅ Automated |
+| NM-OTP-02 | golden_hi_otp_devanagari_trigger_kod | Golden | Given "आपका कोड 4829 है", when normalised, then digits read individually with pace_hint 0.85 | FR-009 | S1 | ✅ Automated |
+| NM-OTP-03 | golden_hinglish_otp_pin_trigger_word | Golden | Given "PIN 1234 daalein", when normalised, then digits read individually | FR-009 | S1 | ✅ Automated |
+| NM-OTP-04 | golden_en_us_otp_verification_trigger_8_digits | Golden | Given "verification 12345678", when normalised, then eight digits read individually | FR-009 | S1 | ✅ Automated |
+| NM-OTP-05 | unit_text_otp_four_digits_no_trigger_reads_cardinal | Unit | Given "1234 items" without trigger, when normalised, then it reads as a cardinal | FR-009, ARCH OTP rule | S1 | ✅ Automated |
+| NM-OTP-06 | golden_en_in_date_year_only | Unit | Given "in 2026" without trigger, when normalised, then it reads as a year | FR-009, FR-008 | S1 | ✅ Automated |
+| NM-OTP-07 | golden_en_in_neg_three_digits_with_otp | Unit | Given "OTP 123", when normalised, then it is not treated as an OTP (outside 4 to 8) and reads as a cardinal | FR-009 | S1 | ✅ Automated |
+| NM-OTP-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP span, when segmented, then the segment carries pace_hint 0.85 | FR-009, FR-013 | S1 | ✅ Automated |
+| NM-OTP-09 | golden_hi_otp_postal_pin_code_after_pin_kod | Golden | Given "पिन कोड 560001", when normalised, then six digits read individually | FR-009 | S1 | ✅ Automated |
+| NM-OTP-10 | golden_en_in_otp_card_tail_ending_4417 | Golden | Given "card ending 4417" and "XXXX1234", when normalised, then tails read digit by digit | FR-009 | S1 | ✅ Automated |
+| NM-OTP-11 | golden_en_in_otp_pan_like_pattern_char_by_char | Golden | Given a PAN-like and an Aadhaar-like pattern, when normalised, then they read character by character | FR-009 | S1 | ✅ Automated |
+
+#### 6.2.5a DIGIT STRINGS (S1-T06)
+
+| ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
+|---|---|---|---|---|---|---|
+| NM-DGT-01 | unit_text_digits_otp_readdigitbydigit | Unit | Given "Your OTP is 482916" and "आपका ओटीपी 1357 है", when normalised, then each digit is read alone in the sentence language and the OTP segment carries pace_hint 0.85 | FR-009 AC-1, AC-2 | S1 | ✅ Automated |
+| NM-DGT-02 | unit_text_digits_cardtail_xxxxprefix_readcorrectly | Unit | Given "card ending 4417", "XXXX1234", and "XXXX XXXX XXXX 4321", when normalised, then only the visible tail digits are read, one by one | FR-009 AC-4 | S1 | ✅ Automated |
+| NM-DGT-03 | unit_text_digits_year_negativecase_readasnumber | Unit | Given "1999", "the year 2026", and "I have 1234 items" without a trigger word, when classified, then no digit string is detected and the quantity reads as a cardinal | FR-009 | S1 | ✅ Automated |
+| NM-DGT-04 | unit_text_digits_pincode_withprefix_readbydigit | Unit | Given "PIN 560001" and "पिन कोड 560001", when normalised, then six digits are read one by one; given "560001" alone, then it reads as a cardinal | FR-009 | S1 | ✅ Automated |
+| NM-DGT-05 | unit_text_digits_panlike_readcharbychar | Unit | Given "PAN ABCDE1234F" and an Aadhaar-like "2345 6789 0123", when normalised, then letters are spelled and digits read one by one (Aadhaar in groups of 4) | FR-009 | S1 | ✅ Automated |
+| NM-DGT-06 | unit_text_digits_otp_outsidefourtoeight_notdigitbydigit | Unit | Given "OTP 123" and "OTP 123456789", when normalised, then both read as cardinals | FR-009 | S1 | ✅ Automated |
+| NM-DGT-07 | unit_text_digits_phone_groupsfiveandfive | Unit | Given "+91 98765 43210" and "(555) 010-1234", when normalised, then groups are 5 and 5 with "plus nine one", and 3, 3, 4 | FR-009 AC-3 | S1 | ✅ Automated |
+
 
 #### 6.2.6 CARDINAL
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-CAR-01 | unit_text_cardinal_hindi_0_to_99_table_complete | Unit | Given 0..99 in hi, when normalised, then each matches the irregular-form table (not a rule) | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-02 | golden_hi_cardinal_lakh_crore_arab | Golden | Given 12,34,56,789 and larger, when normalised in hi, then lakh, crore, arab are used | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-03 | golden_hinglish_cardinal_indian_grouping | Golden | Given hinglish numbers with Indian grouping, when normalised, then lakh and crore are used | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-04 | golden_en_in_cardinal_lakh_crore | Golden | Given en-IN "2,50,000", when normalised, then "two lakh fifty thousand" | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-05 | golden_en_us_cardinal_million_billion | Golden | Given en-US "2,500,000", when normalised, then "two million five hundred thousand" | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-06 | unit_text_cardinal_upper_bound_10_pow_15_handled | Unit | Given 10^15, when normalised, then it reads without panic or truncation | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-07 | golden_en_us_cardinal_decimals_negatives_fractions | Golden | Given "-3.14" and "1/2", when normalised, then "minus three point one four" and "one half" | FR-006 | S1 | ⚠️ Deferred |
-| NM-CAR-08 | golden_hi_cardinal_decimals_hindi_point | Golden | Given hi "3.5", when normalised, then it reads with दशमलव or साढ़े per the golden form | FR-006 | S1 | ⚠️ Deferred |
+| NM-CAR-01 | unit_text_cardinal_hindi_0_to_99_table_complete | Unit | Given 0..99 in hi, when normalised, then each matches the irregular-form table (not a rule) | FR-006 | S1 | ✅ Automated |
+| NM-CAR-02 | golden_hi_cardinal_lakh_crore_arab | Golden | Given 12,34,56,789 and larger, when normalised in hi, then lakh, crore, arab are used | FR-006 | S1 | ✅ Automated |
+| NM-CAR-03 | golden_hinglish_cardinal_indian_grouping | Golden | Given hinglish numbers with Indian grouping, when normalised, then lakh and crore are used | FR-006 | S1 | ✅ Automated |
+| NM-CAR-04 | golden_en_in_cardinal_lakh_crore | Golden | Given en-IN "2,50,000", when normalised, then "two lakh fifty thousand" | FR-006 | S1 | ✅ Automated |
+| NM-CAR-05 | golden_en_us_cardinal_million_billion | Golden | Given en-US "2,500,000", when normalised, then "two million five hundred thousand" | FR-006 | S1 | ✅ Automated |
+| NM-CAR-06 | unit_text_cardinal_upper_bound_10_pow_15_handled | Unit | Given 10^15, when normalised, then it reads without panic or truncation | FR-006 | S1 | ✅ Automated |
+| NM-CAR-07 | golden_en_us_cardinal_decimals_negatives_fractions | Golden | Given "-3.14" and "1/2", when normalised, then "minus three point one four" and "one half" | FR-006 | S1 | ✅ Automated |
+| NM-CAR-08 | golden_hi_cardinal_decimals_hindi_point | Golden | Given hi "3.5", when normalised, then it reads with दशमलव or साढ़े per the golden form | FR-006 | S1 | ✅ Automated |
+| NM-CAR-09 | unit_text_numbers_hindi0to99_tablelookup_matchesgolden | Unit | Given every integer 0 to 100 in hi, when verbalised, then each equals the table row in `data/hindi_numbers.tsv` and its golden row (`golden_hi_cardinal_n0` to `n100`) | FR-006 | S1 | ✅ Automated |
+| NM-CAR-10 | unit_text_numbers_indiangrouping_lakhcrore_verbalised | Unit | Given 1,50,000 and 12,45,00,000 in hi, hinglish, and en-IN, when normalised, then lakh and crore (लाख, करोड़) are used, and Hindi ignores a US locale | FR-006 | S1 | ✅ Automated |
+| NM-CAR-11 | unit_text_numbers_westerngrouping_enus_million | Unit | Given 2,500,000 in en-US, when normalised, then "two million five hundred thousand" and no lakh | FR-006 | S1 | ✅ Automated |
+| NM-CAR-12 | property_text_numbers_roundtrip_100values_parsebackequal | Property | Given 128 random integers, negatives, and decimals per language (hi, hinglish, en-IN, en-US), when normalised and parsed back by a test-only parser, then the parsed value equals the input; every `u64` also round-trips through the verbaliser API | FR-006 | S1 | ✅ Automated |
+| NM-CAR-13 | unit_text_numbers_eighteen_digit_limit_then_digit_by_digit_passthrough | Unit | Given a 19-digit string, when normalised, then it is not read as a number (left for digit-by-digit reading) | FR-006 | S1 | ✅ Automated |
 
 #### 6.2.7 ORDINAL
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-ORD-01 | golden_en_us_ordinal_1st_2nd_3rd_4th | Golden | Given "1st 2nd 3rd 4th", when normalised, then first, second, third, fourth | FR-006 | S1 | ⚠️ Deferred |
-| NM-ORD-02 | golden_en_in_ordinal_11th_12th_13th_exceptions | Golden | Given "11th 12th 13th", when normalised, then eleventh, twelfth, thirteenth | FR-006 | S1 | ⚠️ Deferred |
-| NM-ORD-03 | golden_hi_ordinal_pehla_doosra_form | Golden | Given hi ordinal markers, when normalised, then पहला, दूसरा, तीसरा and regular forms from 5 up | FR-006 | S1 | ⚠️ Deferred |
-| NM-ORD-04 | golden_hinglish_ordinal_in_mixed_sentence | Golden | Given a hinglish sentence with "3rd floor", when normalised, then the ordinal reads in the sentence's language | FR-006, FR-004 | S1 | ⚠️ Deferred |
+| NM-ORD-01 | golden_en_us_ordinal_1st_2nd_3rd_4th | Golden | Given "1st 2nd 3rd 4th", when normalised, then first, second, third, fourth | FR-006 | S1 | ✅ Automated |
+| NM-ORD-02 | golden_en_in_ordinal_11th_12th_13th_exceptions | Golden | Given "11th 12th 13th", when normalised, then eleventh, twelfth, thirteenth | FR-006 | S1 | ✅ Automated |
+| NM-ORD-03 | golden_hi_ordinal_pehla_doosra_form | Golden | Given hi ordinal markers, when normalised, then पहला, दूसरा, तीसरा and regular forms from 5 up | FR-006 | S1 | ✅ Automated |
+| NM-ORD-04 | golden_hinglish_ordinal_in_mixed_sentence | Golden | Given a hinglish sentence with "3rd floor", when normalised, then the ordinal reads in the sentence's language | FR-006, FR-004 | S1 | ✅ Automated |
 
 #### 6.2.8 PERCENT
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-PCT-01 | golden_en_us_percent_integer | Golden | Given "15%", when normalised, then "fifteen percent" | FR-011 | S1 | ⚠️ Deferred |
-| NM-PCT-02 | golden_en_in_percent_decimal | Golden | Given "8.5%", when normalised, then "eight point five percent" | FR-011 | S1 | ⚠️ Deferred |
-| NM-PCT-03 | golden_hi_percent_hindi_word | Golden | Given hi "15%", when normalised, then "पंद्रह प्रतिशत" | FR-011 | S1 | ⚠️ Deferred |
-| NM-PCT-04 | golden_hinglish_percent_p_a_suffix | Golden | Given "9% p.a.", when normalised, then percent and per annum are read | FR-011 | S1 | ⚠️ Deferred |
+| NM-PCT-01 | golden_en_us_percent_integer | Golden | Given "15%", when normalised, then "fifteen percent" | FR-011 | S1 | ✅ Automated |
+| NM-PCT-02 | golden_en_in_percent_decimal | Golden | Given "8.5%", when normalised, then "eight point five percent" | FR-011 | S1 | ✅ Automated |
+| NM-PCT-03 | golden_hi_percent_hindi_word | Golden | Given hi "15%", when normalised, then "पंद्रह प्रतिशत" | FR-011 | S1 | ✅ Automated |
+| NM-PCT-04 | golden_hinglish_percent_p_a_suffix | Golden | Given "9% p.a.", when normalised, then percent and per annum are read | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.9 UNIT
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-UNT-01 | golden_en_us_unit_kg_km_plural_agreement | Golden | Given "1 kg" and "5 km", when normalised, then "one kilogram" and "five kilometers" | FR-011 | S1 | ⚠️ Deferred |
-| NM-UNT-02 | golden_en_in_unit_gb_mbps | Golden | Given "50 GB" and "100 Mbps", when normalised, then gigabytes and megabits per second | FR-011 | S1 | ⚠️ Deferred |
-| NM-UNT-03 | golden_hi_unit_kg_in_hindi_sentence | Golden | Given hi sentence with "2 kg", when normalised, then "दो किलोग्राम" | FR-011 | S1 | ⚠️ Deferred |
-| NM-UNT-04 | golden_hinglish_unit_unknown_unit_passes_through | Golden | Given an unrecognised suffix, when normalised, then it is left unchanged and the number still reads | FR-011 | S1 | ⚠️ Deferred |
+| NM-UNT-01 | golden_en_us_unit_kg_km_plural_agreement | Golden | Given "1 kg" and "5 km", when normalised, then "one kilogram" and "five kilometers" | FR-011 | S1 | ✅ Automated |
+| NM-UNT-02 | golden_en_in_unit_gb_mbps | Golden | Given "50 GB" and "100 Mbps", when normalised, then gigabytes and megabits per second | FR-011 | S1 | ✅ Automated |
+| NM-UNT-03 | golden_hi_unit_kg_in_hindi_sentence | Golden | Given hi sentence with "2 kg", when normalised, then "दो किलोग्राम" | FR-011 | S1 | ✅ Automated |
+| NM-UNT-04 | golden_hinglish_unit_unknown_unit_passes_through | Golden | Given an unrecognised suffix, when normalised, then it is left unchanged and the number still reads | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.10 ACRONYM
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-ACR-01 | golden_en_in_acronym_kyc_emi_letter_by_letter | Golden | Given "KYC" and "EMI", when normalised, then each reads letter by letter | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-02 | golden_hi_acronym_pan_as_word | Golden | Given "PAN" in Indian usage, when normalised, then it reads as a word per the lexicon | FR-010, ARCH acronym rule | S1 | ⚠️ Deferred |
-| NM-ACR-03 | unit_text_acronym_lexicon_has_at_least_300_entries | Unit | Given the built-in lexicon, when counted, then it has at least 300 entries covering banking, insurance, telecom, government | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-04 | unit_text_acronym_listed_set_all_present | Unit | Given EMI, KYC, UPI, PAN, IFSC, NEFT, GST, ATM, OTP, when looked up, then every one has an entry | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-05 | unit_text_acronym_tenant_override_wins | Unit | Given a tenant lexicon mapping a term to a spoken form, when normalised, then the override beats the built-in | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-06 | unit_text_acronym_tenant_override_cap_500 | Unit | Given 501 override entries, when loaded, then the 501st is rejected with a clear error | FR-010, ARCH acronym rule | S1 | ⚠️ Deferred |
-| NM-ACR-07 | unit_text_acronym_crate_does_no_io | Unit | Given the crate, when overrides are needed, then they are passed in as a parameter and no file or network access occurs | FR-010 | S1 | ⚠️ Deferred |
-| NM-ACR-08 | golden_en_us_acronym_unknown_uppercase_token_spelled | Golden | Given an unknown all-caps token, when normalised, then it is spelled letter by letter | FR-010 | S1 | ⚠️ Deferred |
+| NM-ACR-01 | golden_en_in_acronym_kyc_emi_letter_by_letter | Golden | Given "KYC" and "EMI", when normalised, then each reads letter by letter | FR-010 | S1 | ✅ Automated |
+| NM-ACR-02 | golden_hi_acronym_pan_as_word | Golden | Given "PAN" in Indian usage, when normalised, then it reads as a word per the lexicon | FR-010, ARCH acronym rule | S1 | ✅ Automated |
+| NM-ACR-03 | unit_text_acronym_lexicon_has_at_least_300_entries | Unit | Given the built-in lexicon, when counted, then it has at least 300 entries covering banking, insurance, telecom, government | FR-010 | S1 | ✅ Automated |
+| NM-ACR-04 | unit_text_acronym_listed_set_all_present | Unit | Given EMI, KYC, UPI, PAN, IFSC, NEFT, GST, ATM, OTP, when looked up, then every one has an entry | FR-010 | S1 | ✅ Automated |
+| NM-ACR-05 | unit_text_acronym_tenant_override_wins | Unit | Given a tenant lexicon mapping a term to a spoken form, when normalised, then the override beats the built-in | FR-010 | S1 | ✅ Automated |
+| NM-ACR-06 | unit_text_acronym_tenant_override_cap_500 | Unit | Given 501 override entries, when loaded, then the 501st is rejected with a clear error | FR-010, ARCH acronym rule | S1 | ✅ Automated |
+| NM-ACR-07 | unit_text_acronym_crate_does_no_io | Unit | Given the crate, when overrides are needed, then they are passed in as a parameter and no file or network access occurs | FR-010 | S1 | ✅ Automated |
+| NM-ACR-08 | golden_en_us_acronym_unknown_uppercase_token_spelled | Golden | Given an unknown all-caps token, when normalised, then it is spelled letter by letter | FR-010 | S1 | ✅ Automated |
+| NM-ACR-09 | unit_text_acronyms_override_tenantprecedence_beatsbuiltin | Unit | Given a tenant lexicon that maps "EMI" to "ee em aai" and one that does not, when "EMI" is normalised with each, then the first reads the override and the second the built-in; a language-specific override beats an all-language one and applies only in its language | FR-010 AC-2; SPRINT_PLAN S1-T07 | S1 | ✅ Automated |
+| NM-ACR-10 | unit_text_acronyms_unknowncaps_2to5letters_letterbyletter | Unit | Given all-caps ASCII tokens of 2 to 5 letters that are not in the lexicon, when normalised, then each is spelled letter by letter in the context language; 1 letter, 6 letters, mixed case, and lower case are left alone | FR-010; SPRINT_PLAN S1-T07 | S1 | ✅ Automated |
+| NM-ACR-11 | unit_text_acronyms_builtin_emikycupi_readcorrectly | Unit | Given EMI, KYC, and UPI, when normalised in English and Hindi, then they read "E M I", "K Y C", "U P I" and "ई एम आई", "के वाई सी", "यू पी आई"; word entries such as PAN and NASA read as words | FR-010 AC-1; SPRINT_PLAN S1-T07 | S1 | ✅ Automated |
+| NM-ACR-12 | unit_text_acronyms_currencyunit_codes_notlexicon | Unit | Given currency codes and units owned by other classes (INR, USD, GB, KM), when the lexicon is queried, then it has no entry for them, so money and unit detectors keep ownership | ARCH 5 detector order | S1 | ✅ Automated |
 
 #### 6.2.11 EMAIL
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-EML-01 | golden_en_us_email_at_dot_spoken | Golden | Given "support@example.com", when normalised, then "support at example dot com" | FR-011 | S1 | ⚠️ Deferred |
-| NM-EML-02 | golden_hi_email_in_hindi_sentence_reads_at_dot | Golden | Given an email inside hi text, when normalised, then "एट" and "डॉट" are used | FR-011 | S1 | ⚠️ Deferred |
-| NM-EML-03 | golden_en_in_email_underscore_hyphen_digits | Golden | Given "a_b-c1@example.in", when normalised, then underscore, dash, and digits are spoken | FR-011 | S1 | ⚠️ Deferred |
+| NM-EML-01 | golden_en_us_email_at_dot_spoken | Golden | Given "support@example.com", when normalised, then "support at example dot com" | FR-011 | S1 | ✅ Automated |
+| NM-EML-02 | golden_hi_email_in_hindi_sentence_reads_at_dot | Golden | Given an email inside hi text, when normalised, then "एट" and "डॉट" are used | FR-011 | S1 | ✅ Automated |
+| NM-EML-03 | golden_en_in_email_underscore_hyphen_digits | Golden | Given "a_b-c1@example.in", when normalised, then underscore, dash, and digits are spoken | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.12 URL
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-URL-01 | golden_en_us_url_dot_slash_spoken | Golden | Given "https://example.com/pay", when normalised, then "example dot com slash pay" with scheme handled per rule | FR-011 | S1 | ⚠️ Deferred |
-| NM-URL-02 | golden_hi_url_in_hindi_sentence | Golden | Given a URL in hi text, when normalised, then "डॉट" and "स्लैश" are used | FR-011 | S1 | ⚠️ Deferred |
-| NM-URL-03 | golden_en_in_url_query_string_trimmed_by_rule | Golden | Given a URL with a long query string, when normalised, then the documented reading rule applies | FR-011 | S1 | ⚠️ Deferred |
+| NM-URL-01 | golden_en_us_url_dot_slash_spoken | Golden | Given "https://example.com/pay", when normalised, then "example dot com slash pay" with scheme handled per rule | FR-011 | S1 | ✅ Automated |
+| NM-URL-02 | golden_hi_url_in_hindi_sentence | Golden | Given a URL in hi text, when normalised, then "डॉट" and "स्लैश" are used | FR-011 | S1 | ✅ Automated |
+| NM-URL-03 | golden_en_in_url_query_string_trimmed_by_rule | Golden | Given a URL with a long query string, when normalised, then the documented reading rule applies | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.13 RANGE
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-RNG-01 | golden_en_in_range_10_15_days | Golden | Given "10-15 days", when normalised, then "ten to fifteen days" | FR-011 | S1 | ⚠️ Deferred |
-| NM-RNG-02 | golden_hi_range_hindi_se | Golden | Given hi "10-15 दिन", when normalised, then "दस से पंद्रह दिन" | FR-011 | S1 | ⚠️ Deferred |
-| NM-RNG-03 | golden_en_us_range_money_range | Golden | Given "$5-$10", when normalised, then "five to ten dollars" | FR-011, FR-007 | S1 | ⚠️ Deferred |
-| NM-RNG-04 | golden_hinglish_range_hyphenated_word_not_range | Golden | Given "e-mail" or "T-shirt", when normalised, then it is not treated as a range | FR-011 | S1 | ⚠️ Deferred |
+| NM-RNG-01 | golden_en_in_range_10_15_days | Golden | Given "10-15 days", when normalised, then "ten to fifteen days" | FR-011 | S1 | ✅ Automated |
+| NM-RNG-02 | golden_hi_range_hindi_se | Golden | Given hi "10-15 दिन", when normalised, then "दस से पंद्रह दिन" | FR-011 | S1 | ✅ Automated |
+| NM-RNG-03 | golden_en_us_range_money_range | Golden | Given "$5-$10", when normalised, then "five to ten dollars" | FR-011, FR-007 | S1 | ⚠️ Deferred, carried to #199 |
+| NM-RNG-04 | golden_hinglish_range_hyphenated_word_not_range | Golden | Given "e-mail" or "T-shirt", when normalised, then it is not treated as a range | FR-011 | S1 | ✅ Automated |
+| NM-OTH-01 | unit_text_units_mbps_expandedcorrectly | Unit | Given "100 Mbps" and "5 km", when normalised, then megabits per second and kilometres (kilometers in en-US) | FR-011 | S1 | ✅ Automated |
+| NM-OTH-02 | unit_text_ranges_daysrange_readasrange | Unit | Given "10-15 days" and "e-mail", when normalised, then the range reads "ten to fifteen days" and the hyphenated word is untouched | FR-011 | S1 | ✅ Automated |
+| NM-OTH-03 | unit_text_email_atdot_spokenform | Unit | Given "support@example.com", when normalised, then "support at example dot com" | FR-011 | S1 | ✅ Automated |
+| NM-OTH-04 | unit_text_url_slashdot_spokenform | Unit | Given "https://example.com/pay", when normalised, then "example dot com slash pay" | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.14 Cross-cutting: language, determinism, options
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-LNG-01 | golden_hi_mixed_all_classes_in_hindi_sentence | Golden | Given a hi sentence with money, date, time, and OTP, when normalised, then every span is verbalised in Hindi | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred |
-| NM-LNG-02 | golden_en_mixed_all_classes_in_english_sentence | Golden | Given an en-IN and an en-US sentence with the same classes, when normalised, then each is verbalised in English under its locale | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred |
-| NM-LNG-03 | golden_hinglish_roman_hindi_transliterated_where_engine_needs | Golden | Given Roman Hindi, when the engine requires Devanagari, then the span is transliterated | FR-005, ARCH pipeline | S1 | ⚠️ Deferred |
-| NM-DET-01 | prop_text_normalise_same_input_same_output | Property | Given arbitrary Unicode and fixed options, when normalised twice, then outputs are identical | NFR-011, ARCH determinism | S1 | ⚠️ Deferred |
-| NM-DET-02 | prop_text_normalise_never_panics_on_arbitrary_unicode | Property | Given arbitrary Unicode including control characters, when normalised, then no panic occurs | FR-001, NFR-011 | S1 | ⚠️ Deferred |
-| NM-DET-03 | prop_text_normalise_no_ascii_digits_when_normalize_true | Property | Given `normalize = true`, when normalised, then the output contains no ASCII digits | FR-006 | S1 | ⚠️ Deferred |
-| NM-DET-04 | unit_text_normalise_nfc_and_control_char_strip | Unit | Given decomposed Devanagari and control characters, when normalised, then NFC applies and control characters are removed | ARCH pipeline | S1 | ⚠️ Deferred |
-| NM-DET-05 | unit_text_normalise_normalize_false_passes_text_through | Unit | Given `normalize = false`, when processed, then semiotic verbalisation is skipped | FR-001, ARCH API contract | S1 | ⚠️ Deferred |
-| NM-GLD-01 | golden_all_corpus_rows_pass_100_percent | Golden | Given the full corpus, when the harness runs, then every row passes | NFR-011 | S1 | ⚠️ Deferred |
-| NM-GLD-02 | golden_corpus_size_gate_400_rows_at_s1_1500_at_v1 | Golden | Given the corpus, when counted, then at least 400 rows at Sprint 1 and at least 1,500 by v1.0.0 | NFR-011 | S1 | ⚠️ Deferred |
-| NM-GLD-03 | fuzz_text_normalise_weekly_10_minute_budget_no_crash | Property | Given the cargo fuzz target, when run weekly for 10 minutes, then no crash is found | NFR-011 | S1 | ⚠️ Deferred |
+| NM-LNG-01 | golden_hi_mixed_all_classes_in_hindi_sentence | Golden | Given a hi sentence with money, date, time, and OTP, when normalised, then every span is verbalised in Hindi | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred, carried to #199 |
+| NM-LNG-02 | golden_en_mixed_all_classes_in_english_sentence | Golden | Given an en-IN and an en-US sentence with the same classes, when normalised, then each is verbalised in English under its locale | FR-004, FR-006..FR-011 | S1 | ⚠️ Deferred, carried to #199 |
+| NM-LNG-03 | golden_hinglish_roman_hindi_transliterated_where_engine_needs | Golden | Given Roman Hindi, when the engine requires Devanagari, then the span is transliterated | FR-005, ARCH pipeline | S1 | ⚠️ Deferred, carried to #199 |
+| NM-DET-01 | property_text_normalise_sameinput_deterministicoutput | Property | Given arbitrary Unicode and fixed options, when normalised twice, then outputs are identical. 10,000 cases in `crates/yuyin-text/tests/property.rs` | NFR-011, ARCH determinism | S1 | ✅ Automated |
+| NM-DET-02 | property_text_normalise_arbitraryunicode_neverpanics | Property | Given arbitrary Unicode including control characters, when normalised, then no panic occurs and only `Empty` or `TooLong` errors appear. 10,000 cases | FR-001, NFR-011 | S1 | ✅ Automated |
+| NM-DET-03 | property_text_normalise_normalizetrue_noasciidigits | Property | Given `normalize = true`, when normalised, then the output contains no ASCII digits. No exceptions: digits no class claims (`a0`, `007`, `3/0`, runs over 18 digits) are read one by one by the leftover-digit safety net in `verbalise::to_piece`. 10,000 cases | FR-006 | S1 | ✅ Automated |
+| NM-DET-04 | unit_text_normalise_nfc_and_control_char_strip | Unit | Given decomposed Devanagari and control characters, when normalised, then NFC applies and control characters are removed | ARCH pipeline | S1 | ✅ Automated |
+| NM-DET-05 | unit_text_normalise_normalize_false_passes_text_through | Unit | Given `normalize = false`, when processed, then semiotic verbalisation is skipped | FR-001, ARCH API contract | S1 | ✅ Automated |
+| NM-GLD-01 | unit_text_goldenrunner_allrows_passes | Golden | Given the full corpus, when the harness runs, then every row passes | NFR-011 | S1 | ✅ Automated |
+| NM-GLD-02 | unit_text_goldenrunner_perclassreport_countsprinted | Golden | Given the corpus, when counted, then the per-class report prints counts; the corpus held 1,244 rows at the end of Sprint 1 and grows to at least 1,500 by v1.0.0 | NFR-011 | S1 | ✅ Automated |
+| NM-GLD-03 | fuzz_text_normalise_weekly_10_minute_budget_no_crash | Property | Given the cargo fuzz target `crates/yuyin-text/fuzz` (`normalise`), when `weekly-fuzz.yml` runs it weekly or on demand for 10 minutes on nightly, then no crash is found | NFR-011 | S1 | ✅ Automated |
+| NM-DET-06 | property_text_segmenter_anyinput_spancoverageexact | Property | Given arbitrary Unicode and any language and `normalize` value, when normalised, then segment `char_span` values start at 0, are contiguous, never overlap, and end at the clean code point count; also holds for the bare segmenter with arbitrary budgets. 10,000 cases | FR-001, FR-018 | S1 | ✅ Automated |
 
 ### 6.3 Language tagging
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| LT-01 | unit_text_tag_devanagari_span_script_deva | Unit | Given Devanagari text, when tagged, then script is Deva and lang is hi | FR-005 | S1 | ⚠️ Deferred |
-| LT-02 | unit_text_tag_latin_span_script_latn | Unit | Given English text, when tagged, then script is Latn and lang is en | FR-005 | S1 | ⚠️ Deferred |
-| LT-03 | unit_text_tag_digits_and_symbols_script_classes | Unit | Given digits and symbols, when tagged, then they are tagged Digit and Symbol | FR-005 | S1 | ⚠️ Deferred |
-| LT-04 | unit_text_tag_roman_hindi_lexicon_word_detected | Unit | Given "kya haal hai", when tagged, then the words are lang hi in Latn script via the lexicon | FR-005, FR-004 | S1 | ⚠️ Deferred |
-| LT-05 | unit_text_tag_roman_hindi_unknown_word_ngram_scorer | Unit | Given an out-of-lexicon romanised Hindi word, when tagged, then the n-gram scorer decides | FR-005 | S1 | ⚠️ Deferred |
-| LT-06 | unit_text_tag_lexicon_size_at_least_20000_forms | Unit | Given the bundled lexicon, when counted, then it has at least 20,000 forms and a recorded licence | FR-005, NFR-017 | S1 | ⚠️ Deferred |
-| LT-07 | unit_text_tag_auto_infers_matrix_language_hindi | Unit | Given `auto` and a mostly Hindi sentence, when tagged, then sentence-level language is hi or hinglish per the rule | FR-004 | S1 | ⚠️ Deferred |
-| LT-08 | unit_text_tag_auto_infers_matrix_language_english | Unit | Given `auto` and an English sentence, when tagged, then it resolves to en | FR-004 | S1 | ⚠️ Deferred |
-| LT-09 | unit_text_tag_explicit_language_constrains_tagger | Unit | Given `language: "en-US"` and ambiguous text, when tagged, then the explicit value wins | FR-004 | S1 | ⚠️ Deferred |
-| LT-10 | unit_text_tag_code_switch_hinglish_per_span_langs | Unit | Given "Aapka account KYC pending hai", when tagged, then Hindi and English spans carry their own langs | FR-004, FR-005 | S1 | ⚠️ Deferred |
-| LT-11 | unit_text_tag_mixed_script_in_one_sentence | Unit | Given Devanagari and Latin in one sentence, when tagged, then spans split on script boundaries | FR-005 | S1 | ⚠️ Deferred |
-| LT-12 | unit_text_tag_unsupported_language_value_rejected | Unit | Given `language: "fr"`, when validated, then `unsupported_language` is returned | FR-004, ARCH error codes | S1 | ⚠️ Deferred |
-| LT-13 | prop_text_tag_spans_cover_input_exactly | Property | Given arbitrary text, when tagged, then spans are contiguous and cover the whole input | FR-005 | S1 | ⚠️ Deferred |
+| LT-01 | test_tag_scripts_for_each_token_kind | Unit | Given Devanagari text, when tagged, then script is Deva and lang is hi | FR-005 | S1 | ✅ Automated |
+| LT-02 | test_tag_scripts_for_each_token_kind | Unit | Given English text, when tagged, then script is Latn and lang is en | FR-005 | S1 | ✅ Automated |
+| LT-03 | test_tag_scripts_for_each_token_kind | Unit | Given digits and symbols, when tagged, then they are tagged Digit and Symbol | FR-005 | S1 | ✅ Automated |
+| LT-06 | unit_text_tag_lexicon_size_at_least_20000_forms | Unit | Given the bundled lexicon, when counted, then it has at least 20,000 forms and a recorded licence | FR-005, NFR-017 | S1 | ✅ Automated |
+| LT-07 | test_tag_digits_take_matrix_language | Unit | Given `auto` and a mostly Hindi sentence, when tagged, then sentence-level language is hi or hinglish per the rule | FR-004 | S1 | ✅ Automated |
+| LT-08 | test_tag_digits_take_matrix_language | Unit | Given `auto` and an English sentence, when tagged, then it resolves to en | FR-004 | S1 | ✅ Automated |
+| LT-10 | test_tag_acronyms_and_names_are_english | Unit | Given "Aapka account KYC pending hai", when tagged, then Hindi and English spans carry their own langs | FR-004, FR-005 | S1 | ✅ Automated |
+| LT-11 | test_tag_scripts_for_each_token_kind | Unit | Given Devanagari and Latin in one sentence, when tagged, then spans split on script boundaries | FR-005 | S1 | ✅ Automated |
+| LT-12 | unit_text_tag_unsupported_language_value_rejected | Unit | Given `language: "fr"`, when validated, then `unsupported_language` is returned | FR-004, ARCH error codes | S1 | ⚠️ Deferred, carried to #199 |
+| LT-13 | prop_text_tag_spans_cover_input_exactly | Property | Given arbitrary text, when tagged, then spans are contiguous and cover the whole input | FR-005 | S1 | ⚠️ Deferred, carried to #199 |
+| LT-14 | unit_text_tagger_devanagari_tokenstaggedhindi | Unit | Given Devanagari words, when tagged under any hint, then every word is script Deva and lang hi | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-15 | unit_text_tagger_romanhindi_lexiconhit_taggedhindi | Unit | Given "kya haal hai", when tagged, then each word is script Latn and lang hi through the bundled lexicon of at least 20,000 forms | FR-005, FR-004; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-16 | unit_text_tagger_unknownword_ngramscorer_classified | Unit | Given words in neither lexicon, when tagged, then the n-gram scorer classifies a Hindi-shaped word as hi and an English-shaped word as en | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-17 | unit_text_tagger_heldoutset_accuracyatleast95pct | Unit | Given the 2,000 or more hand-labelled Hinglish tokens in `tests/data/tagging/hinglish_heldout.tsv`, when tagged with `auto`, then token accuracy is at least 95% | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-18 | unit_text_tagger_explicitlanguage_constrainsoutput | Unit | Given "kya haal hai", when tagged with `en-IN` or `en-US`, then every word is en; with `hi`, `hinglish`, or `auto` they are hi; `auto` infers each sentence's matrix language | FR-004; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
 
 ### 6.4 Segmentation
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| SG-01 | unit_text_segment_first_segment_capped_about_60_cp | Unit | Given a long sentence, when segmented, then the first segment is about 60 code points or fewer | ARCH pipeline, NFR-001 | S1 | ⚠️ Deferred |
-| SG-02 | unit_text_segment_later_segments_capped_about_200_cp | Unit | Given long text, when segmented, then later segments are about 200 code points or fewer | ARCH pipeline | S1 | ⚠️ Deferred |
-| SG-03 | unit_text_segment_split_on_danda | Unit | Given Hindi text with `।`, when segmented, then splits occur at the danda | FR-005 | S1 | ⚠️ Deferred |
-| SG-04 | unit_text_segment_split_on_latin_punctuation | Unit | Given English with period, comma, semicolon, when segmented, then clause boundaries are used | ARCH pipeline | S1 | ⚠️ Deferred |
-| SG-05 | unit_text_segment_first_split_at_earliest_safe_boundary | Unit | Given text with no punctuation before 60 cp, when segmented, then the earliest safe boundary is chosen and no word is cut | ARCH pipeline | S1 | ⚠️ Deferred |
-| SG-06 | prop_text_segment_char_spans_exact_cover_of_original | Property | Given arbitrary text, when segmented, then `char_span` values tile the original text with no gap or overlap | FR-018, ARCH metering | S1 | ⚠️ Deferred |
-| SG-07 | unit_text_segment_char_span_sum_equals_billed_chars | Unit | Given text, when segmented, then the sum of `char_span` lengths equals the code point count after NFC | FR-018 | S1 | ⚠️ Deferred |
-| SG-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP, when segmented, then `pace_hint` is 0.85 on that segment only | FR-009 | S1 | ⚠️ Deferred |
-| SG-09 | unit_text_segment_lang_preserved_per_segment | Unit | Given a code-switched sentence, when segmented, then each segment carries a lang | FR-004 | S1 | ⚠️ Deferred |
-| SG-10 | unit_text_segment_semiotic_span_never_split_midway | Unit | Given a long number or email near a boundary, when segmented, then the span stays in one segment | FR-006..FR-011 | S1 | ⚠️ Deferred |
-| SG-11 | unit_text_segment_empty_and_whitespace_only_yields_none | Unit | Given empty or whitespace-only text, when segmented, then no segments or a defined error | FR-001 | S1 | ⚠️ Deferred |
+| SG-01 | unit_text_segment_first_segment_capped_about_60_cp | Unit | Given a long sentence, when segmented, then the first segment is about 60 code points or fewer | ARCH pipeline, NFR-001 | S1 | ✅ Automated |
+| SG-02 | unit_text_segment_later_segments_capped_about_200_cp | Unit | Given long text, when segmented, then later segments are about 200 code points or fewer | ARCH pipeline | S1 | ✅ Automated |
+| SG-03 | unit_text_segment_split_on_danda | Unit | Given Hindi text with `।`, when segmented, then splits occur at the danda | FR-005 | S1 | ✅ Automated |
+| SG-04 | unit_text_segment_split_on_latin_punctuation | Unit | Given English with period, comma, semicolon, when segmented, then clause boundaries are used | ARCH pipeline | S1 | ✅ Automated |
+| SG-05 | unit_text_segment_first_split_at_earliest_safe_boundary | Unit | Given text with no punctuation before 60 cp, when segmented, then the earliest safe boundary is chosen and no word is cut | ARCH pipeline | S1 | ✅ Automated |
+| SG-06 | property_text_segmenter_anyinput_spancoverageexact | Property | Given arbitrary text, when segmented, then `char_span` values tile the original text with no gap or overlap | FR-018, ARCH metering | S1 | ✅ Automated |
+| SG-07 | unit_text_segment_char_span_sum_equals_billed_chars | Unit | Given text, when segmented, then the sum of `char_span` lengths equals the code point count after NFC | FR-018 | S1 | ✅ Automated |
+| SG-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP, when segmented, then `pace_hint` is 0.85 on that segment only | FR-009 | S1 | ✅ Automated |
+| SG-09 | unit_text_segment_lang_preserved_per_segment | Unit | Given a code-switched sentence, when segmented, then each segment carries a lang | FR-004 | S1 | ✅ Automated |
+| SG-10 | unit_text_segment_semiotic_span_never_split_midway | Unit | Given a long number or email near a boundary, when segmented, then the span stays in one segment | FR-006..FR-011 | S1 | ✅ Automated |
+| SG-11 | unit_text_segment_empty_and_whitespace_only_yields_none | Unit | Given empty or whitespace-only text, when segmented, then no segments or a defined error | FR-001 | S1 | ✅ Automated |
+| SG-12 | property_text_segmenter_spans_coverinputexactly_nooverlap | Property | Given arbitrary Unicode including Devanagari and long inputs, when segmented, then spans are contiguous, start at 0, end at the code point count, and never overlap | FR-001, FR-018 | S1 | ✅ Automated |
+| SG-13 | unit_text_segmenter_firstsegment_capped60_earliestboundary | Unit | Given text with clause punctuation before 60 cp, when segmented, then the first segment ends at the earliest clause or sentence boundary and is at most 60 cp | FR-001 | S1 | ✅ Automated |
+| SG-14 | unit_text_segmenter_danda_splitsatsentence | Unit | Given Hindi text with `।` and `॥`, when segmented, then each danda ends a segment | FR-001, FR-005 | S1 | ✅ Automated |
+| SG-15 | unit_text_segmenter_semioticspan_neversplit | Unit | Given an atomic span that straddles the cap or contains a terminator, when segmented, then it stays whole in one segment | FR-001, FR-006..FR-011 | S1 | ✅ Automated |
+| SG-16 | unit_text_segmenter_fallback_clause_then_whitespace_then_grapheme | Unit | Given an over-cap run with no punctuation or whitespace, when segmented, then it is cut only at a grapheme cluster boundary | FR-001 | S1 | ✅ Automated |
+| SG-17 | unit_text_segmenter_laterfallback_prefers_clause_over_whitespace | Unit | Given a later sentence over 200 cp with a comma and spaces, when segmented, then the cut is at the last clause boundary within the cap | FR-001 | S1 | ✅ Automated |
 
 ### 6.5 Engine
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| EN-01 | unit_engine_fake_synthesise_deterministic_output | Unit | Given `FakeEngine` and the same segment, when run twice, then samples are identical | ARCH engine | S1 | ⚠️ Deferred |
-| EN-02 | unit_engine_fake_length_proportional_to_text | Unit | Given longer text, when synthesised, then duration grows proportionally | ARCH engine | S1 | ⚠️ Deferred |
-| EN-03 | unit_engine_fake_configurable_delay_applied | Unit | Given a configured delay, when synthesised, then the first chunk is delayed by that amount | ARCH engine | S1 | ⚠️ Deferred |
-| EN-04 | unit_engine_synthesise_cancel_token_stops_promptly | Unit | Given a cancelled token mid-segment, when synthesising, then it returns promptly and calls the sink no further | ARCH engine, FR-001 | S3 | ⚠️ Deferred |
-| EN-05 | unit_engine_synthesise_sink_closed_returns_error | Unit | Given a sink that returns `SinkClosed`, when synthesising, then the engine stops and surfaces it | ARCH engine | S3 | ⚠️ Deferred |
+| EN-01 | unit_engine_fakeengine_synthesise_deterministicoutput | Unit | Given `FakeEngine` and the same segment, when run twice, then samples are identical | ARCH engine | S1 | ✅ Automated |
+| EN-02 | unit_engine_fakeengine_textlength_proportionalduration | Unit | Given longer text, when synthesised, then duration grows proportionally | ARCH engine | S1 | ✅ Automated |
+| EN-03 | unit_engine_fakeengine_configurable_delay_applied | Unit | Given a configured delay, when synthesised, then the first chunk is delayed by that amount | ARCH engine | S1 | ✅ Automated |
+| EN-04 | unit_engine_fakeengine_cancel_midsegment_stops_sink_calls | Unit | Given a token cancelled mid-segment, when synthesising, then it returns `Cancelled` and calls the sink no further | ARCH engine, FR-001 | S1 | ✅ Automated |
+| EN-05 | unit_engine_fakeengine_sinkclosed_propagates | Unit | Given a sink that returns `SinkClosed`, when synthesising, then the engine stops and surfaces it | ARCH engine | S1 | ✅ Automated |
 | EN-06 | it_engine_onnx_real_voice_decodable_correct_sample_rate | Integration | Given a real model, when a segment is synthesised, then audio is 24 kHz and decodable, checked by duration not bytes | NFR-017, ARCH engine | S3 | ⚠️ Deferred |
 | EN-07 | it_engine_onnx_emits_chunks_before_segment_complete | Integration | Given a streaming-capable model, when synthesising, then the first sink call occurs before the segment finishes | FR-001, NFR-001 | S3 | ⚠️ Deferred |
 | EN-08 | it_engine_onnx_intra_op_threads_one | Integration | Given the engine config, when a session is created, then intra-op and inter-op threads are 1 | NFR-002 | S3 | ⚠️ Deferred |
@@ -390,10 +461,21 @@ Normalisation is deterministic: the same input and options give the same output 
 | EN-16 | it_voices_registry_covers_four_languages | Integration | Given the registry, when queried, then at least 6 public voices cover hi, hinglish, en-IN, en-US | FR-003 | S3 | ⚠️ Deferred |
 | EN-17 | it_engine_memory_with_all_voices_under_2_gib | Integration | Given all v1 voices loaded, when memory is measured, then it is at most 2 GiB | NFR-013 | S3 | ⚠️ Deferred |
 | EN-18 | it_engine_cold_start_ready_within_20s | Integration | Given a cold gateway start, when timed to ready, then it is at most 20 s | NFR-012 | S3 | ⚠️ Deferred |
+| EN-19 | unit_engine_fakeengine_cancel_stopswithin20ms | Unit | Given a per-chunk delay of 1 s, when the token is cancelled mid-delay, then `synthesise` returns `Cancelled` within 20 ms and the sink is never called | ARCH engine, FR-001 | S1 | ✅ Automated |
+| EN-20 | unit_engine_fakeengine_warmup_returns_duration | Unit | Given a large chunk delay, when `warmup` runs, then it returns a duration well under 1 s | ARCH engine, NFR-012 | S1 | ✅ Automated |
+| EN-21 | unit_engine_fakeengine_voices_and_samplerate_reported | Unit | Given `FakeEngine`, when queried, then `id` is `fake`, sample rate is 24000, and two voices are listed | ARCH engine | S1 | ✅ Automated |
+| EN-22 | unit_engine_fakeengine_unknown_voice_rejected | Unit | Given an unknown voice id, when synthesising, then `UnknownVoice` is returned | ARCH engine | S1 | ✅ Automated |
+| EN-23 | unit_engine_fakeengine_precancelled_token_returns_cancelled | Unit | Given an already cancelled token, when synthesising, then `Cancelled` is returned before any sink call | ARCH engine | S1 | ✅ Automated |
+| EN-24 | unit_engine_fakeengine_empty_text_emits_nothing | Unit | Given empty text, when synthesised, then no chunks and zero duration | ARCH engine | S1 | ✅ Automated |
+| EN-25 | unit_engine_fakeengine_chunks_respect_chunk_size | Unit | Given a configured chunk size, when synthesised, then every sink call has that size except possibly the last | ARCH engine | S1 | ✅ Automated |
+| EN-26 | unit_engine_traits_error_display_and_conversion | Unit | Given each `EngineError` variant and `SinkClosed`, when displayed or converted, then messages and mapping are as specified | ARCH engine | S1 | ✅ Automated |
+| EN-27 | unit_engine_traits_cancellation_token_clones_share_state | Unit | Given a cloned `CancellationToken`, when one clone cancels, then every clone reports cancelled | ARCH engine | S1 | ✅ Automated |
+| EN-28 | unit_bench_bakeoff_script_runsonfakeinput_producesreport | Unit | Given the bake-off harness in `bench/engine-bakeoff/` and its fake engine (no model files), when `bakeoff.py bench --fake` and `listen.py --fake` run, then `results.json` and `report.md` cover every candidate voice and language with load time, TTFA, RTF, and peak memory, each listening list has 20 utterances, and 20 WAV files per language plus a score sheet are written (`tests/scaffold/`) | ADR-015, NFR-001, NFR-002 | S1 | ✅ Automated |
+| EN-29 | unit_docs_licences_voiceentries_evidencefilepresent | Unit | Given the voice licence register in `docs/adr/ADR-015-engine-selection.md`, when it is checked, then every voice links a `docs/licences/*.md` file that exists, names the voice, and has a `Retrieved:` date, and every voice in `bench/engine-bakeoff/candidates.json` is in the register (`tests/scaffold/`) | ADR-015, NFR-017 | S1 | ✅ Automated |
 | EN-19 | unit_audio_pace_clamped_0_5_to_2_0 | Unit | Given pace values outside the range, when applied, then they are rejected at validation or clamped as specified | FR-013 | S3 | ⚠️ Deferred |
 | EN-20 | unit_audio_wsola_pace_preserves_pitch_changes_duration | Unit | Given a model without native duration control, when pace is 2.0, then duration halves within tolerance and pitch is preserved | FR-013 | S3 | ⚠️ Deferred |
 | EN-21 | it_engine_pace_0_5_and_2_0_duration_ratio | Integration | Given pace 0.5 and 2.0, when synthesising, then duration ratios are near 2x and 0.5x | FR-013 | S3 | ⚠️ Deferred |
-| EN-22 | it_engine_bakeoff_adr_015_licence_recorded | Integration | Given the chosen engine, when ADR-015 is read, then it records at least three candidates, measurements, and the licence of the model and the phonemiser | NFR-017 | S1 | ⚠️ Deferred |
+| EN-30 | it_engine_bakeoff_adr_015_licence_recorded | Integration | Given an engine chosen by the owner (blocked on issue #184), when ADR-015 is read, then it records at least three candidates, measurements, and the licence of the model and the phonemiser | NFR-017 | S1 | ⚠️ Deferred, blocked on #184 |
 
 ### 6.6 Audio encoders
 

@@ -51,8 +51,8 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── api/openapi.yaml
 ├── config/{pricing.toml,voices.toml,capacity.toml,limits.toml,policy-patterns.toml}
 ├── crates/
-│   ├── yuyin-text/    src/{lib.rs,tag.rs,classify.rs,verbalise/,translit.rs,segment.rs,lexicon.rs}
-│   │                  data/{acronyms.tsv,roman_hindi_lexicon.tsv,hindi_numbers.tsv}  golden/*.tsv  tests/
+│   ├── yuyin-text/    src/{lib.rs,tag.rs,classify/,verbalise/,translit.rs,segment.rs,lexicon/}
+│   │                  data/{acronyms.tsv,english_lexicon.txt,hindi_numbers.tsv,roman_hindi_lexicon.tsv,tagger_ngram.tsv}  golden/*.tsv  tests/
 │   ├── yuyin-engine/  src/{lib.rs,traits.rs,fake.rs,onnx.rs,registry.rs,pool.rs}
 │   ├── yuyin-audio/   src/{lib.rs,opus.rs,ogg.rs,wav.rs,pcm.rs,stretch.rs}
 │   ├── yuyin-meter/   src/{lib.rs,count.rs,price.rs,reserve.rs,batcher.rs,lua/}

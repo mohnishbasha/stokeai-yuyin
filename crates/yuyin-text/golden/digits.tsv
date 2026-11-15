@@ -1,0 +1,219 @@
+id	lang	class	input	expected	notes
+golden_hi_otp_six_trigger_before	hi	otp	आपका OTP 482916 है	आपका ओ टी पी चार आठ दो नौ एक छह है	AC-1 reads six digits
+golden_hinglish_otp_six_trigger_before	hinglish	otp	Aapka OTP 482916 hai	Aapka ओ टी पी चार आठ दो नौ एक छह hai	AC-1 reads six digits
+golden_en_in_otp_six_trigger_before	en-IN	otp	Your OTP is 482916	Your O T P is four eight two nine one six	AC-1 reads six digits
+golden_en_us_otp_six_trigger_before	en-US	otp	Your OTP is 482916	Your O T P is four eight two nine one six	AC-1 reads six digits
+golden_hi_otp_four_hindi_word	hi	otp	आपका ओटीपी 1357 है	आपका ओटीपी एक तीन पाँच सात है	FR-009 AC-2 four digits
+golden_hinglish_otp_four_hindi_word	hinglish	otp	Aapka ओटीपी 1357 hai	Aapka ओटीपी एक तीन पाँच सात hai	FR-009 AC-2 four digits
+golden_en_in_otp_four_hindi_word	en-IN	otp	Your code is 1357	Your code is one three five seven	FR-009 AC-2 four digits
+golden_en_us_otp_four_hindi_word	en-US	otp	Your code is 1357	Your code is one three five seven	FR-009 AC-2 four digits
+golden_hi_otp_eight_digits	hi	otp	सत्यापन कोड 12345678	सत्यापन कोड एक दो तीन चार पाँच छह सात आठ	eight is the maximum
+golden_hinglish_otp_eight_digits	hinglish	otp	verification code 12345678 bhejiye	verification code एक दो तीन चार पाँच छह सात आठ bhejiye	eight is the maximum
+golden_en_in_otp_eight_digits	en-IN	otp	Your verification code is 12345678	Your verification code is one two three four five six seven eight	eight is the maximum
+golden_en_us_otp_eight_digits	en-US	otp	Your verification code is 12345678	Your verification code is one two three four five six seven eight	eight is the maximum
+golden_hi_otp_five_digits	hi	otp	कोड 90417 दर्ज करें	कोड नौ शून्य चार एक सात दर्ज करें	five digits
+golden_hinglish_otp_five_digits	hinglish	otp	Code 90417 daalein	Code नौ शून्य चार एक सात daalein	five digits
+golden_en_in_otp_five_digits	en-IN	otp	Enter code 90417 to continue	Enter code nine zero four one seven to continue	five digits
+golden_en_us_otp_five_digits	en-US	otp	Enter code 90417 to continue	Enter code nine zero four one seven to continue	five digits
+golden_hi_otp_leading_zeros	hi	otp	आपका OTP 007421 है	आपका ओ टी पी शून्य शून्य सात चार दो एक है	leading zeros kept
+golden_hinglish_otp_leading_zeros	hinglish	otp	Aapka OTP 007421 hai	Aapka ओ टी पी शून्य शून्य सात चार दो एक hai	leading zeros kept
+golden_en_in_otp_leading_zeros	en-IN	otp	Your OTP is 007421	Your O T P is zero zero seven four two one	leading zeros kept
+golden_en_us_otp_leading_zeros	en-US	otp	Your OTP is 007421	Your O T P is zero zero seven four two one	leading zeros kept
+golden_hi_otp_trigger_after	hi	otp	4829 आपका OTP है	चार आठ दो नौ आपका ओ टी पी है	trigger after the digits
+golden_hinglish_otp_trigger_after	hinglish	otp	4829 aapka OTP hai	चार आठ दो नौ aapka ओ टी पी hai	trigger after the digits
+golden_en_in_otp_trigger_after	en-IN	otp	4829 is your OTP	four eight two nine is your O T P	trigger after the digits
+golden_en_us_otp_trigger_after	en-US	otp	4829 is your OTP	four eight two nine is your O T P	trigger after the digits
+golden_hi_otp_colon_form	hi	otp	OTP: 731905	ओ टी पी: सात तीन एक नौ शून्य पाँच	colon after trigger
+golden_hinglish_otp_colon_form	hinglish	otp	OTP: 731905 daalein	ओ टी पी: सात तीन एक नौ शून्य पाँच daalein	colon after trigger
+golden_en_in_otp_colon_form	en-IN	otp	OTP: 731905	O T P: seven three one nine zero five	colon after trigger
+golden_en_us_otp_colon_form	en-US	otp	OTP: 731905	O T P: seven three one nine zero five	colon after trigger
+golden_hi_otp_passcode_word	hi	otp	पासकोड 2468 है	पासकोड दो चार छह आठ है	passcode trigger
+golden_hinglish_otp_passcode_word	hinglish	otp	Passcode 2468 hai	Passcode दो चार छह आठ hai	passcode trigger
+golden_en_in_otp_passcode_word	en-IN	otp	Your passcode is 2468	Your passcode is two four six eight	passcode trigger
+golden_en_us_otp_passcode_word	en-US	otp	Your passcode is 2468	Your passcode is two four six eight	passcode trigger
+golden_hi_otp_pin_four_digits	hi	otp	अपना PIN 1234 डालें	अपना पिन एक दो तीन चार डालें	PIN of four digits
+golden_hinglish_otp_pin_four_digits	hinglish	otp	Apna PIN 1234 daalein	Apna पिन एक दो तीन चार daalein	PIN of four digits
+golden_en_in_otp_pin_four_digits	en-IN	otp	Enter your PIN 1234	Enter your pin one two three four	PIN of four digits
+golden_en_us_otp_pin_four_digits	en-US	otp	Enter your PIN 1234	Enter your pin one two three four	PIN of four digits
+golden_hi_otp_sentence_end	hi	otp	आपका OTP 555019।	आपका ओ टी पी पाँच पाँच पाँच शून्य एक नौ।	number at sentence end
+golden_hinglish_otp_sentence_end	hinglish	otp	Aapka OTP 555019.	Aapka ओ टी पी पाँच पाँच पाँच शून्य एक नौ.	number at sentence end
+golden_en_in_otp_sentence_end	en-IN	otp	Your OTP is 555019.	Your O T P is five five five zero one nine.	number at sentence end
+golden_en_us_otp_sentence_end	en-US	otp	Your OTP is 555019.	Your O T P is five five five zero one nine.	number at sentence end
+golden_hi_otp_sentence_trailing_word	hi	otp	OTP 360912 किसी को न बताएं	ओ टी पी तीन छह शून्य नौ एक दो किसी को न बताएं	digits then a plain clause
+golden_hinglish_otp_sentence_trailing_word	hinglish	otp	OTP 360912 kisi ko na batayein	ओ टी पी तीन छह शून्य नौ एक दो kisi ko na batayein	digits then a plain clause
+golden_en_in_otp_sentence_trailing_word	en-IN	otp	OTP 360912 do not share it	O T P three six zero nine one two do not share it	digits then a plain clause
+golden_en_us_otp_sentence_trailing_word	en-US	otp	OTP 360912 do not share it	O T P three six zero nine one two do not share it	digits then a plain clause
+golden_hi_otp_devanagari_digits	hi	otp	कोड ४८२९	कोड चार आठ दो नौ	Devanagari digits
+golden_hinglish_otp_devanagari_digits	hinglish	otp	Code ४८२९	Code चार आठ दो नौ	Devanagari digits
+golden_hi_phone_indian_plain	hi	phone	इस नंबर पर कॉल करें 9876543210	इस नंबर पर कॉल करें नौ आठ सात छह पाँच, चार तीन दो एक शून्य	10 digits, groups 5 and 5
+golden_hinglish_phone_indian_plain	hinglish	phone	Is number par call karein 9876543210	Is number par call karein नौ आठ सात छह पाँच, चार तीन दो एक शून्य	10 digits, groups 5 and 5
+golden_en_in_phone_indian_plain	en-IN	phone	Call us on 9876543210	Call us on nine eight seven six five, four three two one zero	10 digits, groups 5 and 5
+golden_en_us_phone_indian_plain	en-US	phone	Call us on 9876543210	Call us on nine eight seven six five, four three two one zero	10 digits, groups 5 and 5
+golden_hi_phone_indian_spaced	hi	phone	इस नंबर पर कॉल करें 98765 43210	इस नंबर पर कॉल करें नौ आठ सात छह पाँच, चार तीन दो एक शून्य	spaces ignored, grouping by rule
+golden_hinglish_phone_indian_spaced	hinglish	phone	Is number par call karein 98765 43210	Is number par call karein नौ आठ सात छह पाँच, चार तीन दो एक शून्य	spaces ignored, grouping by rule
+golden_en_in_phone_indian_spaced	en-IN	phone	Call us on 98765 43210	Call us on nine eight seven six five, four three two one zero	spaces ignored, grouping by rule
+golden_en_us_phone_indian_spaced	en-US	phone	Call us on 98765 43210	Call us on nine eight seven six five, four three two one zero	spaces ignored, grouping by rule
+golden_hi_phone_indian_hyphen	hi	phone	इस नंबर पर कॉल करें 91234-56780	इस नंबर पर कॉल करें नौ एक दो तीन चार, पाँच छह सात आठ शून्य	hyphen separated
+golden_hinglish_phone_indian_hyphen	hinglish	phone	Is number par call karein 91234-56780	Is number par call karein नौ एक दो तीन चार, पाँच छह सात आठ शून्य	hyphen separated
+golden_en_in_phone_indian_hyphen	en-IN	phone	Call us on 91234-56780	Call us on nine one two three four, five six seven eight zero	hyphen separated
+golden_en_us_phone_indian_hyphen	en-US	phone	Call us on 91234-56780	Call us on nine one two three four, five six seven eight zero	hyphen separated
+golden_hi_phone_plus91_groups	hi	phone	इस नंबर पर कॉल करें +91 98765 43210	इस नंबर पर कॉल करें प्लस नौ एक, नौ आठ सात छह पाँच, चार तीन दो एक शून्य	FR-009 AC-3
+golden_hinglish_phone_plus91_groups	hinglish	phone	Is number par call karein +91 98765 43210	Is number par call karein प्लस नौ एक, नौ आठ सात छह पाँच, चार तीन दो एक शून्य	FR-009 AC-3
+golden_en_in_phone_plus91_groups	en-IN	phone	Call us on +91 98765 43210	Call us on plus nine one, nine eight seven six five, four three two one zero	FR-009 AC-3
+golden_en_us_phone_plus91_groups	en-US	phone	Call us on +91 98765 43210	Call us on plus nine one, nine eight seven six five, four three two one zero	FR-009 AC-3
+golden_hi_phone_plus91_joined	hi	phone	इस नंबर पर कॉल करें +919876543210	इस नंबर पर कॉल करें प्लस नौ एक, नौ आठ सात छह पाँच, चार तीन दो एक शून्य	country code joined
+golden_hinglish_phone_plus91_joined	hinglish	phone	Is number par call karein +919876543210	Is number par call karein प्लस नौ एक, नौ आठ सात छह पाँच, चार तीन दो एक शून्य	country code joined
+golden_en_in_phone_plus91_joined	en-IN	phone	Call us on +919876543210	Call us on plus nine one, nine eight seven six five, four three two one zero	country code joined
+golden_en_us_phone_plus91_joined	en-US	phone	Call us on +919876543210	Call us on plus nine one, nine eight seven six five, four three two one zero	country code joined
+golden_hi_phone_plus91_hyphen	hi	phone	इस नंबर पर कॉल करें +91-91234-56780	इस नंबर पर कॉल करें प्लस नौ एक, नौ एक दो तीन चार, पाँच छह सात आठ शून्य	hyphens
+golden_hinglish_phone_plus91_hyphen	hinglish	phone	Is number par call karein +91-91234-56780	Is number par call karein प्लस नौ एक, नौ एक दो तीन चार, पाँच छह सात आठ शून्य	hyphens
+golden_en_in_phone_plus91_hyphen	en-IN	phone	Call us on +91-91234-56780	Call us on plus nine one, nine one two three four, five six seven eight zero	hyphens
+golden_en_us_phone_plus91_hyphen	en-US	phone	Call us on +91-91234-56780	Call us on plus nine one, nine one two three four, five six seven eight zero	hyphens
+golden_hi_phone_trunk_zero	hi	phone	इस नंबर पर कॉल करें 098765 43210	इस नंबर पर कॉल करें शून्य, नौ आठ सात छह पाँच, चार तीन दो एक शून्य	trunk zero read first
+golden_hinglish_phone_trunk_zero	hinglish	phone	Is number par call karein 098765 43210	Is number par call karein शून्य, नौ आठ सात छह पाँच, चार तीन दो एक शून्य	trunk zero read first
+golden_en_in_phone_trunk_zero	en-IN	phone	Call us on 098765 43210	Call us on zero, nine eight seven six five, four three two one zero	trunk zero read first
+golden_en_us_phone_trunk_zero	en-US	phone	Call us on 098765 43210	Call us on zero, nine eight seven six five, four three two one zero	trunk zero read first
+golden_hi_phone_us_paren	hi	phone	इस नंबर पर कॉल करें (555) 010-1234	इस नंबर पर कॉल करें पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	groups 3, 3, 4
+golden_hinglish_phone_us_paren	hinglish	phone	Is number par call karein (555) 010-1234	Is number par call karein पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	groups 3, 3, 4
+golden_en_in_phone_us_paren	en-IN	phone	Call us on (555) 010-1234	Call us on five five five, zero one zero, one two three four	groups 3, 3, 4
+golden_en_us_phone_us_paren	en-US	phone	Call us on (555) 010-1234	Call us on five five five, zero one zero, one two three four	groups 3, 3, 4
+golden_hi_phone_us_hyphen	hi	phone	इस नंबर पर कॉल करें 555-010-1234	इस नंबर पर कॉल करें पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	hyphens
+golden_hinglish_phone_us_hyphen	hinglish	phone	Is number par call karein 555-010-1234	Is number par call karein पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	hyphens
+golden_en_in_phone_us_hyphen	en-IN	phone	Call us on 555-010-1234	Call us on five five five, zero one zero, one two three four	hyphens
+golden_en_us_phone_us_hyphen	en-US	phone	Call us on 555-010-1234	Call us on five five five, zero one zero, one two three four	hyphens
+golden_hi_phone_us_plus1	hi	phone	इस नंबर पर कॉल करें +1 555 010 1234	इस नंबर पर कॉल करें प्लस एक, पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	plus one
+golden_hinglish_phone_us_plus1	hinglish	phone	Is number par call karein +1 555 010 1234	Is number par call karein प्लस एक, पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	plus one
+golden_en_in_phone_us_plus1	en-IN	phone	Call us on +1 555 010 1234	Call us on plus one, five five five, zero one zero, one two three four	plus one
+golden_en_us_phone_us_plus1	en-US	phone	Call us on +1 555 010 1234	Call us on plus one, five five five, zero one zero, one two three four	plus one
+golden_hi_phone_us_dots	hi	phone	इस नंबर पर कॉल करें 555.010.1234	इस नंबर पर कॉल करें पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	dots
+golden_hinglish_phone_us_dots	hinglish	phone	Is number par call karein 555.010.1234	Is number par call karein पाँच पाँच पाँच, शून्य एक शून्य, एक दो तीन चार	dots
+golden_en_in_phone_us_dots	en-IN	phone	Call us on 555.010.1234	Call us on five five five, zero one zero, one two three four	dots
+golden_en_us_phone_us_dots	en-US	phone	Call us on 555.010.1234	Call us on five five five, zero one zero, one two three four	dots
+golden_hi_phone_mid_sentence	hi	phone	मेरा नंबर 9812345670 है, कॉल करना	मेरा नंबर नौ आठ एक दो तीन, चार पाँच छह सात शून्य है, कॉल करना	comma after number
+golden_hinglish_phone_mid_sentence	hinglish	phone	Mera number 9812345670 hai, call karna	Mera number नौ आठ एक दो तीन, चार पाँच छह सात शून्य hai, call karna	comma after number
+golden_en_in_phone_mid_sentence	en-IN	phone	My number is 9812345670, please call	My number is nine eight one two three, four five six seven zero, please call	comma after number
+golden_en_us_phone_mid_sentence	en-US	phone	My number is 9812345670, please call	My number is nine eight one two three, four five six seven zero, please call	comma after number
+golden_hi_phone_sentence_end	hi	phone	हमें +91 98123 45670।	हमें प्लस नौ एक, नौ आठ एक दो तीन, चार पाँच छह सात शून्य।	number at sentence end
+golden_hinglish_phone_sentence_end	hinglish	phone	Humein +91 98123 45670.	Humein प्लस नौ एक, नौ आठ एक दो तीन, चार पाँच छह सात शून्य.	number at sentence end
+golden_en_in_phone_sentence_end	en-IN	phone	Reach us at +91 98123 45670.	Reach us at plus nine one, nine eight one two three, four five six seven zero.	number at sentence end
+golden_en_us_phone_sentence_end	en-US	phone	Reach us at +91 98123 45670.	Reach us at plus nine one, nine eight one two three, four five six seven zero.	number at sentence end
+golden_hi_tail_ending_four	hi	tail	कार्ड अंत 4417 से भुगतान हुआ	कार्ड अंत चार चार एक सात से भुगतान हुआ	NM-OTP-10
+golden_hinglish_tail_ending_four	hinglish	tail	Card ending 4417 se payment hua	Card ending चार चार एक सात se payment hua	NM-OTP-10
+golden_en_in_tail_ending_four	en-IN	tail	Paid with card ending 4417	Paid with card ending four four one seven	NM-OTP-10
+golden_en_us_tail_ending_four	en-US	tail	Paid with card ending 4417	Paid with card ending four four one seven	NM-OTP-10
+golden_hi_tail_ending_in	hi	tail	खाता अंत में 4417	खाता अंत में चार चार एक सात	account tail
+golden_hinglish_tail_ending_in	hinglish	tail	Account ending in 4417 mein credit	Account ending in चार चार एक सात mein credit	account tail
+golden_en_in_tail_ending_in	en-IN	tail	Credited to account ending in 4417	Credited to account ending in four four one seven	account tail
+golden_en_us_tail_ending_in	en-US	tail	Credited to account ending in 4417	Credited to account ending in four four one seven	account tail
+golden_hi_tail_ending_three	hi	tail	कार्ड अंत 441	कार्ड अंत चार चार एक	three digits
+golden_hinglish_tail_ending_three	hinglish	tail	Card ending 441 par	Card ending चार चार एक par	three digits
+golden_en_in_tail_ending_three	en-IN	tail	Card ending 441	Card ending four four one	three digits
+golden_en_us_tail_ending_three	en-US	tail	Card ending 441	Card ending four four one	three digits
+golden_hi_tail_ending_six	hi	tail	कार्ड अंत 204417	कार्ड अंत दो शून्य चार चार एक सात	six digits
+golden_hinglish_tail_ending_six	hinglish	tail	Card ending 204417 par	Card ending दो शून्य चार चार एक सात par	six digits
+golden_en_in_tail_ending_six	en-IN	tail	Card ending 204417	Card ending two zero four four one seven	six digits
+golden_en_us_tail_ending_six	en-US	tail	Card ending 204417	Card ending two zero four four one seven	six digits
+golden_hi_tail_xxxx_glued	hi	tail	कार्ड XXXX1234 से भुगतान	कार्ड एक दो तीन चार से भुगतान	masked tail
+golden_hinglish_tail_xxxx_glued	hinglish	tail	Card XXXX1234 se payment	Card एक दो तीन चार se payment	masked tail
+golden_en_in_tail_xxxx_glued	en-IN	tail	Card XXXX1234 was charged	Card one two three four was charged	masked tail
+golden_en_us_tail_xxxx_glued	en-US	tail	Card XXXX1234 was charged	Card one two three four was charged	masked tail
+golden_hi_tail_xxxx_lowercase	hi	tail	कार्ड xxxx4321 से	कार्ड चार तीन दो एक से	FR-009 lowercase mask
+golden_hinglish_tail_xxxx_lowercase	hinglish	tail	Card xxxx4321 se	Card चार तीन दो एक se	FR-009 lowercase mask
+golden_en_in_tail_xxxx_lowercase	en-IN	tail	Card xxxx4321 was used	Card four three two one was used	FR-009 lowercase mask
+golden_en_us_tail_xxxx_lowercase	en-US	tail	Card xxxx4321 was used	Card four three two one was used	FR-009 lowercase mask
+golden_hi_tail_xx_short_mask	hi	tail	खाता XX4417 में	खाता चार चार एक सात में	two mask characters
+golden_hinglish_tail_xx_short_mask	hinglish	tail	Account XX4417 mein	Account चार चार एक सात mein	two mask characters
+golden_en_in_tail_xx_short_mask	en-IN	tail	Account XX4417 credited	Account four four one seven credited	two mask characters
+golden_en_us_tail_xx_short_mask	en-US	tail	Account XX4417 credited	Account four four one seven credited	two mask characters
+golden_hi_tail_stars	hi	tail	कार्ड ****1234 से	कार्ड एक दो तीन चार से	asterisk mask
+golden_hinglish_tail_stars	hinglish	tail	Card ****1234 se	Card एक दो तीन चार se	asterisk mask
+golden_en_in_tail_stars	en-IN	tail	Card ****1234 was used	Card one two three four was used	asterisk mask
+golden_en_us_tail_stars	en-US	tail	Card ****1234 was used	Card one two three four was used	asterisk mask
+golden_hi_tail_xxxx_spaced_groups	hi	tail	कार्ड XXXX XXXX XXXX 4321 से	कार्ड चार तीन दो एक से	three masked groups
+golden_hinglish_tail_xxxx_spaced_groups	hinglish	tail	Card XXXX XXXX XXXX 4321 se	Card चार तीन दो एक se	three masked groups
+golden_en_in_tail_xxxx_spaced_groups	en-IN	tail	Card XXXX XXXX XXXX 4321 was used	Card four three two one was used	three masked groups
+golden_en_us_tail_xxxx_spaced_groups	en-US	tail	Card XXXX XXXX XXXX 4321 was used	Card four three two one was used	three masked groups
+golden_hi_tail_xxxx_hyphen_groups	hi	tail	खाता XXXX-XXXX-1234 में	खाता एक दो तीन चार में	hyphenated mask
+golden_hinglish_tail_xxxx_hyphen_groups	hinglish	tail	Account XXXX-XXXX-1234 mein	Account एक दो तीन चार mein	hyphenated mask
+golden_en_in_tail_xxxx_hyphen_groups	en-IN	tail	Account XXXX-XXXX-1234 credited	Account one two three four credited	hyphenated mask
+golden_en_us_tail_xxxx_hyphen_groups	en-US	tail	Account XXXX-XXXX-1234 credited	Account one two three four credited	hyphenated mask
+golden_hi_tail_stars_spaced	hi	tail	कार्ड **** 7788 से	कार्ड सात सात आठ आठ से	space after stars
+golden_hinglish_tail_stars_spaced	hinglish	tail	Card **** 7788 se	Card सात सात आठ आठ se	space after stars
+golden_en_in_tail_stars_spaced	en-IN	tail	Card **** 7788 was used	Card seven seven eight eight was used	space after stars
+golden_en_us_tail_stars_spaced	en-US	tail	Card **** 7788 was used	Card seven seven eight eight was used	space after stars
+golden_hi_pin_postal_after_pin_kod	hi	pin	पिन कोड 560001	पिन कोड पाँच छह शून्य शून्य शून्य एक	NM-OTP-09
+golden_hinglish_pin_postal_after_pin_kod	hinglish	pin	PIN code 560001 hai	पिन code पाँच छह शून्य शून्य शून्य एक hai	NM-OTP-09
+golden_en_in_pin_postal_after_pin_kod	en-IN	pin	PIN code 560001	pin code five six zero zero zero one	NM-OTP-09
+golden_en_us_pin_postal_after_pin_kod	en-US	pin	PIN code 560001	pin code five six zero zero zero one	NM-OTP-09
+golden_hi_pin_postal_after_pin	hi	pin	PIN 110001 पर भेजें	पिन एक एक शून्य शून्य शून्य एक पर भेजें	PIN prefix
+golden_hinglish_pin_postal_after_pin	hinglish	pin	PIN 110001 par bhejein	पिन एक एक शून्य शून्य शून्य एक par bhejein	PIN prefix
+golden_en_in_pin_postal_after_pin	en-IN	pin	Deliver to PIN 110001	Deliver to pin one one zero zero zero one	PIN prefix
+golden_en_us_pin_postal_after_pin	en-US	pin	Deliver to PIN 110001	Deliver to pin one one zero zero zero one	PIN prefix
+golden_hi_pin_postal_pincode_word	hi	pin	पिनकोड 400001	पिनकोड चार शून्य शून्य शून्य शून्य एक	one-word prefix
+golden_hinglish_pin_postal_pincode_word	hinglish	pin	Pincode 400001 par	Pincode चार शून्य शून्य शून्य शून्य एक par	one-word prefix
+golden_en_in_pin_postal_pincode_word	en-IN	pin	Pincode 400001	Pincode four zero zero zero zero one	one-word prefix
+golden_en_us_pin_postal_pincode_word	en-US	pin	Pincode 400001	Pincode four zero zero zero zero one	one-word prefix
+golden_hi_pin_postal_after_pin_colon	hi	pin	PIN: 600001	पिन: छह शून्य शून्य शून्य शून्य एक	colon form
+golden_hinglish_pin_postal_after_pin_colon	hinglish	pin	PIN: 600001	पिन: छह शून्य शून्य शून्य शून्य एक	colon form
+golden_en_in_pin_postal_after_pin_colon	en-IN	pin	PIN: 600001	pin: six zero zero zero zero one	colon form
+golden_en_us_pin_postal_after_pin_colon	en-US	pin	PIN: 600001	pin: six zero zero zero zero one	colon form
+golden_hi_pin_postal_sentence_end	hi	pin	पिन कोड 700001।	पिन कोड सात शून्य शून्य शून्य शून्य एक।	end of sentence
+golden_hinglish_pin_postal_sentence_end	hinglish	pin	PIN code 700001.	पिन code सात शून्य शून्य शून्य शून्य एक.	end of sentence
+golden_en_in_pin_postal_sentence_end	en-IN	pin	Deliver to PIN code 700001.	Deliver to pin code seven zero zero zero zero one.	end of sentence
+golden_en_us_pin_postal_sentence_end	en-US	pin	Deliver to PIN code 700001.	Deliver to pin code seven zero zero zero zero one.	end of sentence
+golden_hi_id_pan_like	hi	id	पैन ABCDE1234F	पैन ए बी सी डी ई एक दो तीन चार एफ	PAN-like, NM-OTP-11
+golden_hinglish_id_pan_like	hinglish	id	PAN ABCDE1234F hai	पैन ए बी सी डी ई एक दो तीन चार एफ hai	PAN-like, NM-OTP-11
+golden_en_in_id_pan_like	en-IN	id	PAN ABCDE1234F	pan A B C D E one two three four F	PAN-like, NM-OTP-11
+golden_en_us_id_pan_like	en-US	id	PAN ABCDE1234F	pan A B C D E one two three four F	PAN-like, NM-OTP-11
+golden_hi_id_pan_like_bare	hi	id	आपका PQRST6789Z	आपका पी क्यू आर एस टी छह सात आठ नौ ज़ेड	PAN-like with no trigger
+golden_hinglish_id_pan_like_bare	hinglish	id	Aapka PQRST6789Z	Aapka पी क्यू आर एस टी छह सात आठ नौ ज़ेड	PAN-like with no trigger
+golden_en_in_id_pan_like_bare	en-IN	id	Your record PQRST6789Z	Your record P Q R S T six seven eight nine Z	PAN-like with no trigger
+golden_en_us_id_pan_like_bare	en-US	id	Your record PQRST6789Z	Your record P Q R S T six seven eight nine Z	PAN-like with no trigger
+golden_hi_id_aadhaar_spaced	hi	id	आधार 2345 6789 0123	आधार दो तीन चार पाँच, छह सात आठ नौ, शून्य एक दो तीन	grouped by 4
+golden_hinglish_id_aadhaar_spaced	hinglish	id	Aadhaar 2345 6789 0123	Aadhaar दो तीन चार पाँच, छह सात आठ नौ, शून्य एक दो तीन	grouped by 4
+golden_en_in_id_aadhaar_spaced	en-IN	id	Aadhaar 2345 6789 0123	Aadhaar two three four five, six seven eight nine, zero one two three	grouped by 4
+golden_en_us_id_aadhaar_spaced	en-US	id	Aadhaar 2345 6789 0123	Aadhaar two three four five, six seven eight nine, zero one two three	grouped by 4
+golden_hi_id_aadhaar_hyphen	hi	id	आधार 9876-5432-1098	आधार नौ आठ सात छह, पाँच चार तीन दो, एक शून्य नौ आठ	hyphen groups
+golden_hinglish_id_aadhaar_hyphen	hinglish	id	Aadhaar 9876-5432-1098	Aadhaar नौ आठ सात छह, पाँच चार तीन दो, एक शून्य नौ आठ	hyphen groups
+golden_en_in_id_aadhaar_hyphen	en-IN	id	Aadhaar 9876-5432-1098	Aadhaar nine eight seven six, five four three two, one zero nine eight	hyphen groups
+golden_en_us_id_aadhaar_hyphen	en-US	id	Aadhaar 9876-5432-1098	Aadhaar nine eight seven six, five four three two, one zero nine eight	hyphen groups
+golden_hi_id_aadhaar_joined_with_trigger	hi	id	आधार 345678901234	आधार तीन चार पाँच छह, सात आठ नौ शून्य, एक दो तीन चार	12 digits need the trigger word
+golden_hinglish_id_aadhaar_joined_with_trigger	hinglish	id	Aadhaar 345678901234 hai	Aadhaar तीन चार पाँच छह, सात आठ नौ शून्य, एक दो तीन चार hai	12 digits need the trigger word
+golden_en_in_id_aadhaar_joined_with_trigger	en-IN	id	Aadhaar 345678901234	Aadhaar three four five six, seven eight nine zero, one two three four	12 digits need the trigger word
+golden_en_us_id_aadhaar_joined_with_trigger	en-US	id	Aadhaar 345678901234	Aadhaar three four five six, seven eight nine zero, one two three four	12 digits need the trigger word
+golden_hi_id_card_four_groups	hi	id	कार्ड नंबर 4000 0000 0000 0000	कार्ड नंबर चार शून्य शून्य शून्य, शून्य शून्य शून्य शून्य, शून्य शून्य शून्य शून्य, शून्य शून्य शून्य शून्य	16 digits in four groups
+golden_hinglish_id_card_four_groups	hinglish	id	Card number 4000 0000 0000 0000	Card number चार शून्य शून्य शून्य, शून्य शून्य शून्य शून्य, शून्य शून्य शून्य शून्य, शून्य शून्य शून्य शून्य	16 digits in four groups
+golden_en_in_id_card_four_groups	en-IN	id	Card number 4000 0000 0000 0000	Card number four zero zero zero, zero zero zero zero, zero zero zero zero, zero zero zero zero	16 digits in four groups
+golden_en_us_id_card_four_groups	en-US	id	Card number 4000 0000 0000 0000	Card number four zero zero zero, zero zero zero zero, zero zero zero zero, zero zero zero zero	16 digits in four groups
+golden_hi_long_account_number	hi	long	खाता संख्या 123456789012	खाता संख्या एक दो तीन चार, पाँच छह सात आठ, नौ शून्य एक दो	long digits after account word
+golden_hinglish_long_account_number	hinglish	long	Account number 123456789012 hai	Account number एक दो तीन चार, पाँच छह सात आठ, नौ शून्य एक दो hai	long digits after account word
+golden_en_in_long_account_number	en-IN	long	Account number 123456789012	Account number one two three four, five six seven eight, nine zero one two	long digits after account word
+golden_en_us_long_account_number	en-US	long	Account number 123456789012	Account number one two three four, five six seven eight, nine zero one two	long digits after account word
+golden_hi_long_reference_eight	hi	long	संदर्भ 20260101	संदर्भ दो शून्य दो छह, शून्य एक शून्य एक	reference trigger
+golden_hinglish_long_reference_eight	hinglish	long	Reference 20260101 hai	Reference दो शून्य दो छह, शून्य एक शून्य एक hai	reference trigger
+golden_en_in_long_reference_eight	en-IN	long	Reference 20260101	Reference two zero two six, zero one zero one	reference trigger
+golden_en_us_long_reference_eight	en-US	long	Reference 20260101	Reference two zero two six, zero one zero one	reference trigger
+golden_hi_neg_quantity_1234	hi	neg	मेरे पास 1234 किताबें हैं	मेरे पास एक हज़ार दो सौ चौंतीस किताबें हैं	four digits, no trigger, read as number
+golden_hinglish_neg_quantity_1234	hinglish	neg	Mere paas 1234 kitaabein hain	Mere paas एक हज़ार दो सौ चौंतीस kitaabein hain	four digits, no trigger, read as number
+golden_en_in_neg_quantity_1234	en-IN	neg	I have 1234 books	I have one thousand two hundred thirty-four books	four digits, no trigger, read as number
+golden_en_us_neg_quantity_1234	en-US	neg	I have 1234 books	I have one thousand two hundred thirty-four books	four digits, no trigger, read as number
+golden_hi_neg_four_digits_4829	hi	neg	कुल 4829 यूनिट	कुल चार हज़ार आठ सौ उनतीस यूनिट	no trigger word
+golden_hinglish_neg_four_digits_4829	hinglish	neg	Kul 4829 units	Kul चार हज़ार आठ सौ उनतीस units	no trigger word
+golden_en_in_neg_four_digits_4829	en-IN	neg	Total 4829 units	Total four thousand eight hundred twenty-nine units	no trigger word
+golden_en_us_neg_four_digits_4829	en-US	neg	Total 4829 units	Total four thousand eight hundred twenty-nine units	no trigger word
+golden_hi_neg_six_digits_no_prefix	hi	neg	कुल 560001 लोग	कुल पाँच लाख साठ हज़ार एक लोग	6 digits without PIN stay a number
+golden_hinglish_neg_six_digits_no_prefix	hinglish	neg	Kul 560001 log	Kul पाँच लाख साठ हज़ार एक log	6 digits without PIN stay a number
+golden_en_in_neg_six_digits_no_prefix	en-IN	neg	Total 560001 people	Total five lakh sixty thousand one people	6 digits without PIN stay a number
+golden_en_us_neg_six_digits_no_prefix	en-US	neg	Total 560001 people	Total five hundred sixty thousand one people	6 digits without PIN stay a number
+golden_hi_neg_six_digits_otp_word_absent	hi	neg	संख्या 482916 है	संख्या चार लाख बयासी हज़ार नौ सौ सोलह है	not an OTP
+golden_hinglish_neg_six_digits_otp_word_absent	hinglish	neg	Sankhya 482916 hai	Sankhya चार लाख बयासी हज़ार नौ सौ सोलह hai	not an OTP
+golden_en_in_neg_six_digits_otp_word_absent	en-IN	neg	The count is 482916	The count is four lakh eighty-two thousand nine hundred sixteen	not an OTP
+golden_en_us_neg_six_digits_otp_word_absent	en-US	neg	The count is 482916	The count is four hundred eighty-two thousand nine hundred sixteen	not an OTP
+golden_hi_neg_three_digits_with_otp	hi	neg	OTP 123	ओ टी पी एक सौ तेईस	NM-OTP-07 three digits
+golden_hinglish_neg_three_digits_with_otp	hinglish	neg	OTP 123	ओ टी पी एक सौ तेईस	NM-OTP-07 three digits
+golden_en_in_neg_three_digits_with_otp	en-IN	neg	OTP 123	O T P one hundred twenty-three	NM-OTP-07 three digits
+golden_en_us_neg_three_digits_with_otp	en-US	neg	OTP 123	O T P one hundred twenty-three	NM-OTP-07 three digits
+golden_hi_neg_quantity_250	hi	neg	कुल 250 ग्राम	कुल दो सौ पचास ग्राम	quantity
+golden_hinglish_neg_quantity_250	hinglish	neg	Kul 250 gram	Kul दो सौ पचास gram	quantity
+golden_en_in_neg_quantity_250	en-IN	neg	Total 250 grams	Total two hundred fifty grams	quantity
+golden_en_us_neg_quantity_250	en-US	neg	Total 250 grams	Total two hundred fifty grams	quantity

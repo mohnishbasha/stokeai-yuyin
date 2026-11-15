@@ -257,11 +257,11 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-006, NFR-011; ARCHITECTURE "Text front-end"; TEST_PLAN "Golden corpus"
 - **Description:** Create `crates/yuyin-text/golden/*.tsv` with columns `id`, `lang`, `class`, `input`, `expected`, `notes`. A test harness runs every row. Start with at least 400 rows written by hand across all classes and four languages. Add a `scripts/golden-add.sh` helper.
 - **Acceptance criteria:**
-  - [ ] Corpus has at least 400 hand-written rows across all classes and four languages
-  - [ ] Runner reports per-class pass counts
-  - [ ] CI fails on any regression
-  - [ ] `scripts/golden-add.sh` appends a validated row
-  - [ ] Plan recorded to grow the corpus to 1,500 rows by v1.0.0 (NFR-011)
+  - [x] Corpus has at least 400 hand-written rows across all classes and four languages
+  - [x] Runner reports per-class pass counts
+  - [x] CI fails on any regression
+  - [x] `scripts/golden-add.sh` appends a validated row
+  - [x] Plan recorded to grow the corpus to 1,500 rows by v1.0.0 (NFR-011)
 - **Test scenarios to add:** unit_text_goldenrunner_allrows_passes, unit_text_goldenrunner_regressionrow_failsci, unit_text_goldenrunner_perclassreport_countsprinted
 
 ### S1-T02: Script and language tagging
@@ -272,10 +272,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-004, FR-005; ARCHITECTURE "Language and script tagging"
 - **Description:** Per-token script detection from Unicode blocks. Roman Hindi detection with a bundled lexicon (at least 20,000 frequent romanised Hindi word forms, sourced from data with a permissive licence, licence recorded) plus a character n-gram scorer for unknown words. `language: "auto"` infers the sentence-level matrix language. An explicit `language` constrains the tagger.
 - **Acceptance criteria:**
-  - [ ] At least 95% token-level accuracy on a held-out set of 2,000 hand-labelled Hinglish tokens in `tests/data/tagging/`
-  - [ ] Lexicon has at least 20,000 romanised Hindi forms with licence recorded
-  - [ ] `language: "auto"` infers a sentence-level matrix language
-  - [ ] An explicit `language` constrains the tagger
+  - [x] At least 95% token-level accuracy on a held-out set of 2,000 hand-labelled Hinglish tokens in `tests/data/tagging/`
+  - [x] Lexicon has at least 20,000 romanised Hindi forms with licence recorded
+  - [x] `language: "auto"` infers a sentence-level matrix language
+  - [x] An explicit `language` constrains the tagger
 - **Test scenarios to add:** unit_text_tagger_devanagari_tokenstaggedhindi, unit_text_tagger_romanhindi_lexiconhit_taggedhindi, unit_text_tagger_unknownword_ngramscorer_classified, unit_text_tagger_heldoutset_accuracyatleast95pct, unit_text_tagger_explicitlanguage_constrainsoutput
 
 ### S1-T03: Number verbalisation, Hindi and English, Indian numbering
@@ -286,10 +286,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-006; ARCHITECTURE "Normalisation: numbers"
 - **Description:** Cardinals to 10^15, ordinals, decimals, negatives, and fractions. Hindi forms for 0 to 99 are irregular and must be a lookup table, not a rule. Indian grouping (lakh, crore, arab) for hi, hinglish, and en-IN. Western grouping (million, billion) for en-US.
 - **Acceptance criteria:**
-  - [ ] Golden rows for every integer 0 to 100 in Hindi
-  - [ ] Golden rows for boundary values
-  - [ ] 100 random values pass a round-trip property test (verbalise then parse)
-  - [ ] Indian grouping used for hi, hinglish, en-IN; Western grouping for en-US
+  - [x] Golden rows for every integer 0 to 100 in Hindi
+  - [x] Golden rows for boundary values
+  - [x] 100 random values pass a round-trip property test (verbalise then parse)
+  - [x] Indian grouping used for hi, hinglish, en-IN; Western grouping for en-US
 - **Test scenarios to add:** unit_text_numbers_hindi0to99_tablelookup_matchesgolden, unit_text_numbers_indiangrouping_lakhcrore_verbalised, unit_text_numbers_westerngrouping_enus_million, property_text_numbers_roundtrip_100values_parsebackequal
 
 ### S1-T04: Currency
@@ -300,10 +300,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-007; ARCHITECTURE "Normalisation: currency"
 - **Description:** Handle `₹`, `Rs`, `Rs.`, `INR`, `रु`, `$`, and `USD`. Support paise and cents and forms such as "₹1.5 lakh", "₹2 Cr", and "Rs 12,450/-".
 - **Acceptance criteria:**
-  - [ ] 120 golden rows pass
-  - [ ] All listed symbols and codes are recognised
-  - [ ] Paise and cents are read correctly
-  - [ ] "₹1.5 lakh", "₹2 Cr", and "Rs 12,450/-" produce the expected spoken form
+  - [x] 120 golden rows pass
+  - [x] All listed symbols and codes are recognised
+  - [x] Paise and cents are read correctly
+  - [x] "₹1.5 lakh", "₹2 Cr", and "Rs 12,450/-" produce the expected spoken form
 - **Test scenarios to add:** unit_text_currency_rupeesymbol_spoken_matchesgolden, unit_text_currency_paise_fractionalamount_verbalised, unit_text_currency_lakhcroreshorthand_expanded, unit_text_currency_trailingslashdash_ignored
 
 ### S1-T05: Dates and times
@@ -314,9 +314,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-008; ARCHITECTURE "Normalisation: dates and times"
 - **Description:** Numeric dates per the locale rule in the ARCHITECTURE spec, month names in both languages, relative formats left untouched, 12 and 24 hour times ("5:30 PM", "17:30 hrs"), and durations.
 - **Acceptance criteria:**
-  - [ ] 120 golden rows pass
-  - [ ] An ambiguity test proves 05/12/2026 reads as 5 December for en-IN and May 12 for en-US
-  - [ ] Relative formats are left untouched
+  - [x] 120 golden rows pass
+  - [x] An ambiguity test proves 05/12/2026 reads as 5 December for en-IN and May 12 for en-US
+  - [x] Relative formats are left untouched
 - **Test scenarios to add:** unit_text_dates_ambiguousnumeric_enin_readsdaymonth, unit_text_dates_ambiguousnumeric_enus_readsmonthday, unit_text_times_24hourhrs_verbalised, unit_text_dates_relativeformat_leftuntouched
 
 ### S1-T06: Phone numbers, OTPs, digit strings
@@ -327,9 +327,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-009; ARCHITECTURE "Normalisation: digit strings"
 - **Description:** Digit-string rules as specified. Card and account tails ("ending 4417", "XXXX1234"), PIN codes (6-digit Indian postal codes read digit by digit when preceded by "PIN" or "पिन कोड"), and Aadhaar-like and PAN-like patterns read character by character.
 - **Acceptance criteria:**
-  - [ ] 150 golden rows pass
-  - [ ] Negative cases (years, quantities) are not read digit by digit
-  - [ ] PIN codes are read digit by digit only when preceded by "PIN" or "पिन कोड"
+  - [x] 150 golden rows pass
+  - [x] Negative cases (years, quantities) are not read digit by digit
+  - [x] PIN codes are read digit by digit only when preceded by "PIN" or "पिन कोड"
 - **Test scenarios to add:** unit_text_digits_otp_readdigitbydigit, unit_text_digits_cardtail_xxxxprefix_readcorrectly, unit_text_digits_year_negativecase_readasnumber, unit_text_digits_pincode_withprefix_readbydigit, unit_text_digits_panlike_readcharbychar
 
 ### S1-T07: Acronym lexicon and overrides
@@ -340,10 +340,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-010; ARCHITECTURE "Normalisation: acronyms"
 - **Description:** Built-in lexicon of at least 300 entries for banking, insurance, telecom, and government terms. Per-tenant overrides are passed in as a parameter (the crate performs no I/O). Unknown all-caps tokens of 2 to 5 letters default to letter-by-letter.
 - **Acceptance criteria:**
-  - [ ] Lexicon has at least 300 entries
-  - [ ] Override precedence test passes (tenant override beats built-in)
-  - [ ] Unknown all-caps tokens of 2 to 5 letters default to letter-by-letter
-  - [ ] The crate performs no I/O
+  - [x] Lexicon has at least 300 entries
+  - [x] Override precedence test passes (tenant override beats built-in)
+  - [x] Unknown all-caps tokens of 2 to 5 letters default to letter-by-letter
+  - [x] The crate performs no I/O
 - **Test scenarios to add:** unit_text_acronyms_override_tenantprecedence_beatsbuiltin, unit_text_acronyms_unknowncaps_2to5letters_letterbyletter, unit_text_acronyms_builtin_emikycupi_readcorrectly
 
 ### S1-T08: Units, percent, ranges, email, URL
@@ -354,9 +354,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-011; ARCHITECTURE "Normalisation: other classes"
 - **Description:** Units (kg, km, GB, Mbps, %), ranges ("10-15 days"), emails, and URLs (spoken form with "dot" and "slash").
 - **Acceptance criteria:**
-  - [ ] 100 golden rows pass
-  - [ ] Units, percent, ranges, emails, and URLs are each covered
-  - [ ] URL and email spoken forms use "dot" and "slash" as specified
+  - [x] 100 golden rows pass
+  - [x] Units, percent, ranges, emails, and URLs are each covered
+  - [x] URL and email spoken forms use "dot" and "slash" as specified
 - **Test scenarios to add:** unit_text_units_mbps_expandedcorrectly, unit_text_ranges_daysrange_readasrange, unit_text_email_atdot_spokenform, unit_text_url_slashdot_spokenform
 
 ### S1-T09: Segmenter with short first segment
@@ -367,10 +367,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-001; ARCHITECTURE "Segmentation"
 - **Description:** Split on sentence and clause punctuation in both scripts, including the danda `।`. The first segment is capped at about 60 code points by splitting on the earliest safe boundary. Later segments are capped at about 200. Each segment records its span in the original text for billing.
 - **Acceptance criteria:**
-  - [ ] The union of spans covers the input exactly with no overlap (property test)
-  - [ ] No segment splits inside a semiotic span
-  - [ ] First segment is capped near 60 code points, later segments near 200
-  - [ ] Danda `।` is treated as a sentence boundary
+  - [x] The union of spans covers the input exactly with no overlap (property test)
+  - [x] No segment splits inside a semiotic span
+  - [x] First segment is capped near 60 code points, later segments near 200
+  - [x] Danda `।` is treated as a sentence boundary
 - **Test scenarios to add:** property_text_segmenter_spans_coverinputexactly_nooverlap, unit_text_segmenter_firstsegment_capped60_earliestboundary, unit_text_segmenter_danda_splitsatsentence, unit_text_segmenter_semioticspan_neversplit
 
 ### S1-T10: Engine bake-off spike and ADR
@@ -381,12 +381,12 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-003, FR-004, NFR-001, NFR-002; ARCHITECTURE "Synthesis engine"
 - **Description:** Time box of 3 days. Evaluate at least three open-weights TTS options that can run on CPU through ONNX Runtime or an equivalent permissively licensed runtime. Start from the candidate list (Kokoro-family models, VITS-family voices such as those distributed for Piper, Matcha-TTS-family models, each through a runtime such as sherpa-onnx or the `ort` crate directly) and add any better option found at implementation time. For each candidate record: licence of the code, weights, each voice, and the phonemiser, with links (reject anything that does not clearly allow commercial hosted use and redistribution inside a container image, and watch for GPL phonemisers and non-commercial training data); languages and voices for Hindi, Indian English, US English; whether chunked or incremental output inside a segment is supported; measured real-time factor, time to first audio for a 60-character segment, peak memory, and load time on a 4 vCPU x86 and a 4 vCPU ARM instance; and a 20-utterance listening sample per language. Write `docs/adr/ADR-015-engine-selection.md` with the table, the choice, and the fallback. If no candidate has an acceptable Hindi voice with a clean licence, stop and raise a `status: needs-owner` issue. Do not ship a voice with unclear rights.
 - **Acceptance criteria:**
-  - [ ] ADR-015 merged with the table, the choice, and the fallback
-  - [ ] Benchmark scripts committed under `bench/engine-bakeoff/`
-  - [ ] Licence evidence saved in `docs/licences/`
-  - [ ] At least three candidates evaluated with all recorded measurements on x86 and ARM
-  - [ ] 20-utterance listening sample per language produced
-  - [ ] If no licence-clean Hindi voice exists, a `status: needs-owner` issue is raised
+  - [ ] ADR-015 merged with the table, the choice, and the fallback (table and fallback merged; the choice waits on owner decision #184, carried to #198)
+  - [x] Benchmark scripts committed under `bench/engine-bakeoff/`
+  - [x] Licence evidence saved in `docs/licences/`
+  - [ ] At least three candidates evaluated with all recorded measurements on x86 and ARM (three candidates measured on ARM; x86 carried to #198)
+  - [ ] 20-utterance listening sample per language produced (lists and renderer committed; human listening pass carried to #198)
+  - [x] If no licence-clean Hindi voice exists, a `status: needs-owner` issue is raised
 - **Test scenarios to add:** unit_bench_bakeoff_script_runsonfakeinput_producesreport, unit_docs_licences_voiceentries_evidencefilepresent
 
 ### S1-T11: `SynthesisEngine` trait and fake engine
@@ -397,10 +397,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** ARCHITECTURE "SynthesisEngine trait"; TEST_PLAN "FakeEngine"
 - **Description:** Implement the trait as in the ARCHITECTURE spec. `FakeEngine` generates a deterministic sine sweep whose length is proportional to text length, with a configurable delay, for use in every test above the engine layer.
 - **Acceptance criteria:**
-  - [ ] Trait compiles
-  - [ ] `FakeEngine` has tests and is deterministic
-  - [ ] Cancellation stops synthesis within 20 ms
-  - [ ] Output length is proportional to text length with a configurable delay
+  - [x] Trait compiles
+  - [x] `FakeEngine` has tests and is deterministic
+  - [x] Cancellation stops synthesis within 20 ms
+  - [x] Output length is proportional to text length with a configurable delay
 - **Test scenarios to add:** unit_engine_fakeengine_synthesise_deterministicoutput, unit_engine_fakeengine_cancel_stopswithin20ms, unit_engine_fakeengine_textlength_proportionalduration
 
 ### S1-T12: Property tests and fuzzing for the normaliser
@@ -411,17 +411,17 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** TEST_PLAN "Property and fuzz tests"; PRD NFR-011
 - **Description:** `proptest` for invariants: never panics on arbitrary Unicode, output is deterministic, output contains no ASCII digits when `normalize = true`, and span coverage is exact. Add a `cargo fuzz` target with a 10 minute CI budget on a weekly schedule.
 - **Acceptance criteria:**
-  - [ ] Properties pass with 10,000 cases each
-  - [ ] `cargo fuzz` target runs weekly with a 10 minute budget
-  - [ ] No panic on arbitrary Unicode input
+  - [x] Properties pass with 10,000 cases each
+  - [x] `cargo fuzz` target runs weekly with a 10 minute budget
+  - [x] No panic on arbitrary Unicode input
 - **Test scenarios to add:** property_text_normalise_arbitraryunicode_neverpanics, property_text_normalise_sameinput_deterministicoutput, property_text_normalise_normalizetrue_noasciidigits, property_text_segmenter_anyinput_spancoverageexact
 
 ### Sprint 1 gate
-- [ ] Golden corpus at least 400 rows, 100% pass
-- [ ] `yuyin-text` coverage at least 92%
-- [ ] Tagging accuracy target met
-- [ ] ADR-015 merged with a licence-clean engine choice, or an owner issue raised
-- [ ] No network or file I/O in `yuyin-text` (enforced by a dependency check)
+- [x] Golden corpus at least 400 rows, 100% pass
+- [x] `yuyin-text` coverage at least 92%
+- [x] Tagging accuracy target met
+- [x] ADR-015 merged with a licence-clean engine choice, or an owner issue raised
+- [x] No network or file I/O in `yuyin-text` (enforced by a dependency check)
 
 ---
 
@@ -604,6 +604,8 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 | S3-T15 | Listening sheet generator | S | p0 |
 | S3-T16 | Gateway image with models and `healthcheck` subcommand | M | p0 |
 | S3-T17 | Minimal Helm chart and kind install in CI | L | p0 |
+| S3-T18 | Engine bake-off follow-up: x86 measurements, listening pass, ADR-015 decision | S | p0 |
+| S3-T19 | Sprint 1 deferred text scenarios | S | p1 |
 
 ### S3-T01: ONNX engine implementation
 - **Issue:** #35
@@ -840,6 +842,31 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
   - [ ] Rolling-upgrade test runs in the `kind.yml` workflow
   - [ ] `values.schema.json` validates `values-kind.yaml`
 - **Test scenarios to add:** e2e_helm_kindinstall_smokesuite_passes, e2e_helm_rollingupgrade_underload_zerocutstreams, unit_helm_schema_kindvalues_validates
+
+### S3-T18: Engine bake-off follow-up: x86 measurements, listening pass, ADR-015 decision
+- **Issue:** #198
+- **Labels:** type: test, area: engine, priority: p0, size: S, sprint: 3
+- **Estimate:** S
+- **Dependencies:** owner decision #184; blocks S3-T01
+- **Spec references:** ARCHITECTURE ADR-015, `docs/adr/ADR-015-engine-selection.md`; PRD NFR-001, NFR-002; TEST_PLAN section 11
+- **Description:** Carried over from S1-T10 (#23) at the Sprint 1 end. Run `bench/engine-bakeoff/` on a 4 vCPU x86 host (a GitHub-hosted `ubuntu-latest` runner, since O4 is deferred), do the human listening pass over the 20-utterance lists, and move ADR-015 to Accepted with an engine choice once the owner decides #184.
+- **Acceptance criteria:**
+  - [ ] x86 results committed next to `results/docker-arm64-4cpu/` and recorded in ADR-015
+  - [ ] Listening pass scored per TEST_PLAN section 11 for each candidate still in play
+  - [ ] ADR-015 Accepted with an engine choice and the fallback
+- **Test scenarios to add:** none (benchmark and manual listening)
+
+### S3-T19: Sprint 1 deferred text scenarios
+- **Issue:** #199
+- **Labels:** type: test, area: text, priority: p1, size: S, sprint: 3
+- **Estimate:** S
+- **Dependencies:** NM-LNG-03 needs owner decision #184 (engine input script)
+- **Spec references:** TEST_PLAN 6.2 and 6.3; PRD FR-008; ARCHITECTURE 5.1
+- **Description:** Carried over at the Sprint 1 end. Automate NM-RNG-03, NM-LNG-01, NM-LNG-02, NM-LNG-03, LT-12, and LT-13, which stayed Deferred in Sprint 1. Mixed-class rows go in `golden/mixed.tsv`.
+- **Acceptance criteria:**
+  - [ ] Each scenario is automated and marked ✅ in TEST_PLAN, or re-scoped with a written reason
+  - [ ] `MIN_ROWS` raised to the new row count
+- **Test scenarios to add:** the six listed above (already in TEST_PLAN)
 
 ### Sprint 3 gate
 - [ ] Image builds, chart installs on kind, smoke suite passes against it (required at every gate from here on)
@@ -2156,7 +2183,7 @@ Appendix H dependency notes:
 Key task-level dependencies:
 
 ```
-S1-T10 (ADR-015) -> S3-T01 (ONNX engine) -> S3-T06, S3-T15, S3-T16
+S1-T10 (ADR-015) -> owner #184 -> S3-T18 -> S3-T01 (ONNX engine) -> S3-T06, S3-T15, S3-T16
 S1-T09 (segmenter) + S1-T11 (FakeEngine) -> S3-T03 (pipeline) -> S3-T07 (REST), S3-T08 (WebSocket)
 S3-T04 (Opus) + S3-T05 (PCM/WAV) -> S3-T07, S3-T08
 S3-T07 -> S3-T09 (admission) -> S3-T10 (draining)
@@ -2213,6 +2240,8 @@ Deferred by the owner decisions of 2026-11-13. None of these blocks a sprint gat
 | NP-05 | Managed object storage and secrets | ADR-026 | S3 with KMS and Object Lock for voice intake; Secrets Manager in place of Kubernetes Secrets |
 | NP-06 | AWS billing and cost alerts | ADR-026 | Budget and cost alarms |
 | NP-07 | Vercel hosting for console and marketing site | ADR-024 | Requires a database reachable from Vercel (follows NP-01) |
+| NP-08 | SQLite backend for the self-host edition (optional) | ADR-029 | `sqlx` feature flag selecting SQLite for the single-node self-host binary; same migrations; ledger and isolation tests run on both backends |
+| NP-09 | DuckDB analytics over usage exports (optional) | ADR-029 | Export `usage_daily` and `request_log` to Parquet; DuckDB queries for operator reports and the offline usage report; never in the request path |
 
 ---
 
