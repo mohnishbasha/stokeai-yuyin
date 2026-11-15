@@ -318,6 +318,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: Promotion to `staging` is gated by CI rather than by a second person. Each sprint's `staging` merge commit is tagged `sprint-{n}-complete`. Production promotion (`main`) stays owner only (O14).
 - Status: Accepted.
 
+### ADR-029 Database engine: PostgreSQL kept, SQLite and DuckDB evaluated
+
+- Context: On 2026-11-14 the owner asked whether SQLite or DuckDB could replace PostgreSQL (ADR-024). The database holds API keys, the prepaid credit ledger, usage, organizations and users, voices, consent records, and the audit log. The gateway runs 2 to 20 replicas, each with a `yuyin-meter` ledger batcher writing reservations and settlements concurrently, and the console is a separate process using the same schema.
+- Decision: Keep PostgreSQL for the hosted service. SQLite allows one writer at a time on one machine, so it would pin the gateway to a single pod or need a replication layer (rqlite, LiteFS, libSQL), which adds the operations we wanted to avoid. DuckDB is an analytics engine with a single writer process and is not suited to a transactional credit ledger. Both would turn the Next phase move to NileDB or Neon (NP-01) from a configuration change into a rewrite. SQLite is a candidate backend for the single-node self-host edition only (NP-08). DuckDB is a candidate for offline analytics over usage exports, alongside PostgreSQL (NP-09).
+- Consequences: No change to the current sprints. Migrations stay plain, portable SQL (ADR-024), which keeps an optional SQLite backend possible later.
+- Status: Accepted.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket

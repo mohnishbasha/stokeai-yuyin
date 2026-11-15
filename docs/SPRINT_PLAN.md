@@ -2213,6 +2213,8 @@ Deferred by the owner decisions of 2026-11-13. None of these blocks a sprint gat
 | NP-05 | Managed object storage and secrets | ADR-026 | S3 with KMS and Object Lock for voice intake; Secrets Manager in place of Kubernetes Secrets |
 | NP-06 | AWS billing and cost alerts | ADR-026 | Budget and cost alarms |
 | NP-07 | Vercel hosting for console and marketing site | ADR-024 | Requires a database reachable from Vercel (follows NP-01) |
+| NP-08 | SQLite backend for the self-host edition (optional) | ADR-029 | `sqlx` feature flag selecting SQLite for the single-node self-host binary; same migrations; ledger and isolation tests run on both backends |
+| NP-09 | DuckDB analytics over usage exports (optional) | ADR-029 | Export `usage_daily` and `request_log` to Parquet; DuckDB queries for operator reports and the offline usage report; never in the request path |
 
 ---
 
