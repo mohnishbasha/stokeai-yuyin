@@ -20,6 +20,10 @@ Allowed for code dependencies: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC,
 |---|---|---|
 | `minimatch`, `@isaacs/nonrecursive-glob-match` | BlueOak-1.0.0 | Permissive licence, transitive dev dependency of eslint tooling. Listed by name in `scripts/licence-check.sh`. Owner to confirm. |
 
+## Fonts
+
+IBM Plex Sans, IBM Plex Sans Devanagari and IBM Plex Mono are licensed under the SIL Open Font License 1.1. The WOFF2 files and licence texts are in `apps/console/src/fonts/`, and the texts are copied into the console image at `/licenses/fonts/`.
+
 ## Current dependency summary
 
 | Ecosystem | Third-party runtime dependencies | Notes |

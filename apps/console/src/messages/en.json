@@ -1,0 +1,20 @@
+{
+  "brand.name": "Yuyin",
+  "brand.home": "Yuyin home",
+  "nav.skip": "Skip to content",
+  "nav.primary": "Primary",
+  "nav.console": "Console",
+  "nav.operator": "Operator",
+  "theme.toggle": "Light theme",
+  "home.title": "Text to speech for Hindi, Hinglish, and English.",
+  "home.lead": "Yuyin streams audio as the text arrives. Numbers, amounts, and mixed-script sentences are spoken the way a person would read them.",
+  "home.sampleLabel": "Example input",
+  "home.sampleHi": "आपका ओटीपी 4 8 2 9 1 6 है।",
+  "home.sampleEn": "Your OTP is 4 8 2 9 1 6.",
+  "home.cta": "Open the console",
+  "footer.owner": "Serverless Ventures LLC",
+  "placeholder.console.title": "Console",
+  "placeholder.console.body": "The console screens arrive with the component library and mock data.",
+  "placeholder.operator.title": "Operator",
+  "placeholder.operator.body": "The operator screens arrive after sign-in and role checks."
+}

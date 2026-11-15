@@ -171,6 +171,19 @@ jobs:
       - name: Clean clone builds in a fresh container (PRs to staging)
         if: github.base_ref == 'staging'
         run: bash tests/scaffold/e2e_make_setupbuildcheck_freshcontainer_exitszero.sh
+      - name: Lighthouse on the console home shell (performance 90, accessibility 95)
+        # S2-T01, scenario e2e_console_homeshell_lighthouse_meetsthresholds. Builds the console,
+        # serves it with `next start`, and asserts the thresholds in apps/console/lighthouserc.json.
+        working-directory: apps/console
+        run: |
+          bun run build
+          bunx @lhci/cli@0.16.1 autorun --config=lighthouserc.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse
+          path: apps/console/.lighthouseci/
+          if-no-files-found: ignore
       - name: Playwright against the local stack
         # The Playwright harness arrives with S2-T09.
         run: "echo 'Playwright e2e: available from Sprint 2'"

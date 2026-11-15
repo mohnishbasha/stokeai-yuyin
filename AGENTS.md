@@ -61,7 +61,9 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 │   │                  tests/{integration/,regression/,smoke/}
 │   └── yuyin-count-wasm/
 ├── migrations/
-├── apps/{console/,docs/}
+├── apps/
+│   ├── console/   Next.js App Router: src/{app/{(marketing),(console),(operator),healthz},components,lib,messages,fonts,styles/tokens.css}, next.config.ts, lighthouserc.json
+│   └── docs/
 ├── packages/{sdk-ts/,sdk-python/,cli/,mcp/}
 ├── integrations/{pi/,goose/toolkit.yaml,opencode/README.md}
 ├── bench/{METHOD.md,corpus/,engine-bakeoff/,loadgen/,results/}
