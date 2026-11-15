@@ -376,7 +376,7 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | LT-03 | unit_text_tag_digits_and_symbols_script_classes | Unit | Given digits and symbols, when tagged, then they are tagged Digit and Symbol | FR-005 | S1 | ⚠️ Deferred |
 | LT-04 | unit_text_tag_roman_hindi_lexicon_word_detected | Unit | Given "kya haal hai", when tagged, then the words are lang hi in Latn script via the lexicon | FR-005, FR-004 | S1 | ⚠️ Deferred |
 | LT-05 | unit_text_tag_roman_hindi_unknown_word_ngram_scorer | Unit | Given an out-of-lexicon romanised Hindi word, when tagged, then the n-gram scorer decides | FR-005 | S1 | ⚠️ Deferred |
-| LT-06 | unit_text_tag_lexicon_size_at_least_20000_forms | Unit | Given the bundled lexicon, when counted, then it has at least 20,000 forms and a recorded licence | FR-005, NFR-017 | S1 | ⚠️ Deferred |
+| LT-06 | unit_text_tag_lexicon_size_at_least_20000_forms | Unit | Given the bundled lexicon, when counted, then it has at least 20,000 forms and a recorded licence | FR-005, NFR-017 | S1 | ✅ Automated |
 | LT-07 | unit_text_tag_auto_infers_matrix_language_hindi | Unit | Given `auto` and a mostly Hindi sentence, when tagged, then sentence-level language is hi or hinglish per the rule | FR-004 | S1 | ⚠️ Deferred |
 | LT-08 | unit_text_tag_auto_infers_matrix_language_english | Unit | Given `auto` and an English sentence, when tagged, then it resolves to en | FR-004 | S1 | ⚠️ Deferred |
 | LT-09 | unit_text_tag_explicit_language_constrains_tagger | Unit | Given `language: "en-US"` and ambiguous text, when tagged, then the explicit value wins | FR-004 | S1 | ⚠️ Deferred |
@@ -384,6 +384,11 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | LT-11 | unit_text_tag_mixed_script_in_one_sentence | Unit | Given Devanagari and Latin in one sentence, when tagged, then spans split on script boundaries | FR-005 | S1 | ⚠️ Deferred |
 | LT-12 | unit_text_tag_unsupported_language_value_rejected | Unit | Given `language: "fr"`, when validated, then `unsupported_language` is returned | FR-004, ARCH error codes | S1 | ⚠️ Deferred |
 | LT-13 | prop_text_tag_spans_cover_input_exactly | Property | Given arbitrary text, when tagged, then spans are contiguous and cover the whole input | FR-005 | S1 | ⚠️ Deferred |
+| LT-14 | unit_text_tagger_devanagari_tokenstaggedhindi | Unit | Given Devanagari words, when tagged under any hint, then every word is script Deva and lang hi | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-15 | unit_text_tagger_romanhindi_lexiconhit_taggedhindi | Unit | Given "kya haal hai", when tagged, then each word is script Latn and lang hi through the bundled lexicon of at least 20,000 forms | FR-005, FR-004; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-16 | unit_text_tagger_unknownword_ngramscorer_classified | Unit | Given words in neither lexicon, when tagged, then the n-gram scorer classifies a Hindi-shaped word as hi and an English-shaped word as en | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-17 | unit_text_tagger_heldoutset_accuracyatleast95pct | Unit | Given the 2,000 or more hand-labelled Hinglish tokens in `tests/data/tagging/hinglish_heldout.tsv`, when tagged with `auto`, then token accuracy is at least 95% | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
+| LT-18 | unit_text_tagger_explicitlanguage_constrainsoutput | Unit | Given "kya haal hai", when tagged with `en-IN` or `en-US`, then every word is en; with `hi`, `hinglish`, or `auto` they are hi; `auto` infers each sentence's matrix language | FR-004; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
 
 ### 6.4 Segmentation
 
