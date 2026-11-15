@@ -14,10 +14,27 @@
         "data_dir": "espeak-ng-data"
       },
       "voices": [
-        { "voice": "hf_alpha", "sid": 31, "langs": ["hi", "en-IN"], "lang_code": { "hi": "hi", "en-IN": "en-us" } },
-        { "voice": "hm_omega", "sid": 33, "bench": false, "langs": ["hi", "en-IN"], "lang_code": { "hi": "hi", "en-IN": "en-us" } },
+        {
+          "voice": "hf_alpha",
+          "sid": 31,
+          "langs": ["hi", "en-IN"],
+          "lang_code": { "hi": "hi", "en-IN": "en-us" }
+        },
+        {
+          "voice": "hm_omega",
+          "sid": 33,
+          "bench": false,
+          "langs": ["hi", "en-IN"],
+          "lang_code": { "hi": "hi", "en-IN": "en-us" }
+        },
         { "voice": "af_heart", "sid": 3, "langs": ["en-US"], "lang_code": { "en-US": "en-us" } },
-        { "voice": "am_michael", "sid": 16, "bench": false, "langs": ["en-US"], "lang_code": { "en-US": "en-us" } }
+        {
+          "voice": "am_michael",
+          "sid": 16,
+          "bench": false,
+          "langs": ["en-US"],
+          "lang_code": { "en-US": "en-us" }
+        }
       ]
     },
     {
@@ -33,7 +50,12 @@
         "data_dir": "espeak-ng-data"
       },
       "voices": [
-        { "voice": "hf_alpha", "sid": 31, "langs": ["hi", "en-IN"], "lang_code": { "hi": "hi", "en-IN": "en-us" } },
+        {
+          "voice": "hf_alpha",
+          "sid": 31,
+          "langs": ["hi", "en-IN"],
+          "lang_code": { "hi": "hi", "en-IN": "en-us" }
+        },
         { "voice": "af_heart", "sid": 3, "langs": ["en-US"], "lang_code": { "en-US": "en-us" } }
       ]
     },
@@ -42,7 +64,11 @@
       "family": "piper",
       "dir": "vits-piper-hi_IN-rohan-medium",
       "kind": "vits",
-      "files": { "model": "hi_IN-rohan-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "files": {
+        "model": "hi_IN-rohan-medium.onnx",
+        "tokens": "tokens.txt",
+        "data_dir": "espeak-ng-data"
+      },
       "voices": [{ "voice": "hi_IN-rohan-medium", "sid": 0, "langs": ["hi", "en-IN"] }]
     },
     {
@@ -50,7 +76,11 @@
       "family": "piper",
       "dir": "vits-piper-hi_IN-pratham-medium",
       "kind": "vits",
-      "files": { "model": "hi_IN-pratham-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "files": {
+        "model": "hi_IN-pratham-medium.onnx",
+        "tokens": "tokens.txt",
+        "data_dir": "espeak-ng-data"
+      },
       "voices": [{ "voice": "hi_IN-pratham-medium", "sid": 0, "langs": ["hi", "en-IN"] }]
     },
     {
@@ -58,7 +88,11 @@
       "family": "piper",
       "dir": "vits-piper-hi_IN-priyamvada-medium",
       "kind": "vits",
-      "files": { "model": "hi_IN-priyamvada-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "files": {
+        "model": "hi_IN-priyamvada-medium.onnx",
+        "tokens": "tokens.txt",
+        "data_dir": "espeak-ng-data"
+      },
       "voices": [{ "voice": "hi_IN-priyamvada-medium", "sid": 0, "langs": ["hi", "en-IN"] }]
     },
     {
@@ -66,7 +100,11 @@
       "family": "piper",
       "dir": "vits-piper-en_US-lessac-medium",
       "kind": "vits",
-      "files": { "model": "en_US-lessac-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "files": {
+        "model": "en_US-lessac-medium.onnx",
+        "tokens": "tokens.txt",
+        "data_dir": "espeak-ng-data"
+      },
       "voices": [{ "voice": "en_US-lessac-medium", "sid": 0, "langs": ["en-US"] }]
     },
     {
@@ -74,7 +112,11 @@
       "family": "piper",
       "dir": "vits-piper-en_US-ljspeech-medium",
       "kind": "vits",
-      "files": { "model": "en_US-ljspeech-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "files": {
+        "model": "en_US-ljspeech-medium.onnx",
+        "tokens": "tokens.txt",
+        "data_dir": "espeak-ng-data"
+      },
       "voices": [{ "voice": "en_US-ljspeech-medium", "sid": 0, "langs": ["en-US"] }]
     },
     {
