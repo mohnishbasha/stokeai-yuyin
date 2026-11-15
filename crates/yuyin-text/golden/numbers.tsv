@@ -179,7 +179,7 @@ golden_en_in_cardinal_negative_lakh	en-IN	cardinal	-1,25,000	minus one lakh twen
 golden_en_us_cardinal_negative_decimal	en-US	cardinal	-3.14	minus three point one four	NM-CAR-07
 golden_en_us_cardinal_negative_big	en-US	cardinal	-2,500,000	minus two million five hundred thousand	
 golden_en_us_cardinal_unicode_minus	en-US	cardinal	−2	minus two	
-golden_en_us_cardinal_hyphen_range_not_negative	en-US	cardinal	10-15	ten-fifteen	range owned by S1-T08; until then both ends read
+golden_en_us_cardinal_hyphen_range_not_negative	en-US	cardinal	10-15	ten to fifteen	range owned by S1-T08: read as a range, not a negative
 golden_hi_cardinal_fraction_half	hi	cardinal	1/2	आधा	
 golden_hi_cardinal_fraction_one_and_half	hi	cardinal	3/2	डेढ़	
 golden_hi_cardinal_fraction_two_and_half	hi	cardinal	5/2	ढाई	

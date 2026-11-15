@@ -300,19 +300,19 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-PCT-01 | golden_en_us_percent_integer | Golden | Given "15%", when normalised, then "fifteen percent" | FR-011 | S1 | ⚠️ Deferred |
-| NM-PCT-02 | golden_en_in_percent_decimal | Golden | Given "8.5%", when normalised, then "eight point five percent" | FR-011 | S1 | ⚠️ Deferred |
-| NM-PCT-03 | golden_hi_percent_hindi_word | Golden | Given hi "15%", when normalised, then "पंद्रह प्रतिशत" | FR-011 | S1 | ⚠️ Deferred |
-| NM-PCT-04 | golden_hinglish_percent_p_a_suffix | Golden | Given "9% p.a.", when normalised, then percent and per annum are read | FR-011 | S1 | ⚠️ Deferred |
+| NM-PCT-01 | golden_en_us_percent_integer | Golden | Given "15%", when normalised, then "fifteen percent" | FR-011 | S1 | ✅ Automated |
+| NM-PCT-02 | golden_en_in_percent_decimal | Golden | Given "8.5%", when normalised, then "eight point five percent" | FR-011 | S1 | ✅ Automated |
+| NM-PCT-03 | golden_hi_percent_hindi_word | Golden | Given hi "15%", when normalised, then "पंद्रह प्रतिशत" | FR-011 | S1 | ✅ Automated |
+| NM-PCT-04 | golden_hinglish_percent_p_a_suffix | Golden | Given "9% p.a.", when normalised, then percent and per annum are read | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.9 UNIT
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-UNT-01 | golden_en_us_unit_kg_km_plural_agreement | Golden | Given "1 kg" and "5 km", when normalised, then "one kilogram" and "five kilometers" | FR-011 | S1 | ⚠️ Deferred |
-| NM-UNT-02 | golden_en_in_unit_gb_mbps | Golden | Given "50 GB" and "100 Mbps", when normalised, then gigabytes and megabits per second | FR-011 | S1 | ⚠️ Deferred |
-| NM-UNT-03 | golden_hi_unit_kg_in_hindi_sentence | Golden | Given hi sentence with "2 kg", when normalised, then "दो किलोग्राम" | FR-011 | S1 | ⚠️ Deferred |
-| NM-UNT-04 | golden_hinglish_unit_unknown_unit_passes_through | Golden | Given an unrecognised suffix, when normalised, then it is left unchanged and the number still reads | FR-011 | S1 | ⚠️ Deferred |
+| NM-UNT-01 | golden_en_us_unit_kg_km_plural_agreement | Golden | Given "1 kg" and "5 km", when normalised, then "one kilogram" and "five kilometers" | FR-011 | S1 | ✅ Automated |
+| NM-UNT-02 | golden_en_in_unit_gb_mbps | Golden | Given "50 GB" and "100 Mbps", when normalised, then gigabytes and megabits per second | FR-011 | S1 | ✅ Automated |
+| NM-UNT-03 | golden_hi_unit_kg_in_hindi_sentence | Golden | Given hi sentence with "2 kg", when normalised, then "दो किलोग्राम" | FR-011 | S1 | ✅ Automated |
+| NM-UNT-04 | golden_hinglish_unit_unknown_unit_passes_through | Golden | Given an unrecognised suffix, when normalised, then it is left unchanged and the number still reads | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.10 ACRONYM
 
@@ -335,26 +335,30 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-EML-01 | golden_en_us_email_at_dot_spoken | Golden | Given "support@example.com", when normalised, then "support at example dot com" | FR-011 | S1 | ⚠️ Deferred |
-| NM-EML-02 | golden_hi_email_in_hindi_sentence_reads_at_dot | Golden | Given an email inside hi text, when normalised, then "एट" and "डॉट" are used | FR-011 | S1 | ⚠️ Deferred |
-| NM-EML-03 | golden_en_in_email_underscore_hyphen_digits | Golden | Given "a_b-c1@example.in", when normalised, then underscore, dash, and digits are spoken | FR-011 | S1 | ⚠️ Deferred |
+| NM-EML-01 | golden_en_us_email_at_dot_spoken | Golden | Given "support@example.com", when normalised, then "support at example dot com" | FR-011 | S1 | ✅ Automated |
+| NM-EML-02 | golden_hi_email_in_hindi_sentence_reads_at_dot | Golden | Given an email inside hi text, when normalised, then "एट" and "डॉट" are used | FR-011 | S1 | ✅ Automated |
+| NM-EML-03 | golden_en_in_email_underscore_hyphen_digits | Golden | Given "a_b-c1@example.in", when normalised, then underscore, dash, and digits are spoken | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.12 URL
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-URL-01 | golden_en_us_url_dot_slash_spoken | Golden | Given "https://example.com/pay", when normalised, then "example dot com slash pay" with scheme handled per rule | FR-011 | S1 | ⚠️ Deferred |
-| NM-URL-02 | golden_hi_url_in_hindi_sentence | Golden | Given a URL in hi text, when normalised, then "डॉट" and "स्लैश" are used | FR-011 | S1 | ⚠️ Deferred |
-| NM-URL-03 | golden_en_in_url_query_string_trimmed_by_rule | Golden | Given a URL with a long query string, when normalised, then the documented reading rule applies | FR-011 | S1 | ⚠️ Deferred |
+| NM-URL-01 | golden_en_us_url_dot_slash_spoken | Golden | Given "https://example.com/pay", when normalised, then "example dot com slash pay" with scheme handled per rule | FR-011 | S1 | ✅ Automated |
+| NM-URL-02 | golden_hi_url_in_hindi_sentence | Golden | Given a URL in hi text, when normalised, then "डॉट" and "स्लैश" are used | FR-011 | S1 | ✅ Automated |
+| NM-URL-03 | golden_en_in_url_query_string_trimmed_by_rule | Golden | Given a URL with a long query string, when normalised, then the documented reading rule applies | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.13 RANGE
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-RNG-01 | golden_en_in_range_10_15_days | Golden | Given "10-15 days", when normalised, then "ten to fifteen days" | FR-011 | S1 | ⚠️ Deferred |
-| NM-RNG-02 | golden_hi_range_hindi_se | Golden | Given hi "10-15 दिन", when normalised, then "दस से पंद्रह दिन" | FR-011 | S1 | ⚠️ Deferred |
+| NM-RNG-01 | golden_en_in_range_10_15_days | Golden | Given "10-15 days", when normalised, then "ten to fifteen days" | FR-011 | S1 | ✅ Automated |
+| NM-RNG-02 | golden_hi_range_hindi_se | Golden | Given hi "10-15 दिन", when normalised, then "दस से पंद्रह दिन" | FR-011 | S1 | ✅ Automated |
 | NM-RNG-03 | golden_en_us_range_money_range | Golden | Given "$5-$10", when normalised, then "five to ten dollars" | FR-011, FR-007 | S1 | ⚠️ Deferred |
-| NM-RNG-04 | golden_hinglish_range_hyphenated_word_not_range | Golden | Given "e-mail" or "T-shirt", when normalised, then it is not treated as a range | FR-011 | S1 | ⚠️ Deferred |
+| NM-RNG-04 | golden_hinglish_range_hyphenated_word_not_range | Golden | Given "e-mail" or "T-shirt", when normalised, then it is not treated as a range | FR-011 | S1 | ✅ Automated |
+| NM-OTH-01 | unit_text_units_mbps_expandedcorrectly | Unit | Given "100 Mbps" and "5 km", when normalised, then megabits per second and kilometres (kilometers in en-US) | FR-011 | S1 | ✅ Automated |
+| NM-OTH-02 | unit_text_ranges_daysrange_readasrange | Unit | Given "10-15 days" and "e-mail", when normalised, then the range reads "ten to fifteen days" and the hyphenated word is untouched | FR-011 | S1 | ✅ Automated |
+| NM-OTH-03 | unit_text_email_atdot_spokenform | Unit | Given "support@example.com", when normalised, then "support at example dot com" | FR-011 | S1 | ✅ Automated |
+| NM-OTH-04 | unit_text_url_slashdot_spokenform | Unit | Given "https://example.com/pay", when normalised, then "example dot com slash pay" | FR-011 | S1 | ✅ Automated |
 
 #### 6.2.14 Cross-cutting: language, determinism, options
 
