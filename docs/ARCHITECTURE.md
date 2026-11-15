@@ -443,6 +443,15 @@ Acronyms:
 - A lexicon (`data/acronyms.tsv`) decides letter-by-letter ("KYC", "EMI") versus word ("PAN" as a word in Indian usage).
 - Tenants can override through a per-organization lexicon (`lexicon_entries`), capped at 500 entries.
 
+Normalisation: other classes (percent, units, ranges, email, URL; S1-T08, FR-011):
+
+- Percent: a number directly followed by `%` ("8.5%") reads the number, then "percent" (hi: "प्रतिशत"). A trailing "p.a." adds "per annum" (hi: "प्रति वर्ष"). A leading `-` is "minus".
+- Units: a number followed by a unit symbol, glued or after one space ("5 km", "50GB"), reads the number and then the unit name. A built-in table maps each symbol and its common spellings to a name: length, mass, volume, data size, data rate (Mbps), frequency, power, energy, and temperature. English uses the singular for exactly 1 and the plural otherwise, with "metre" and "litre" in the India locale and "meter" and "liter" in the US locale. Hindi does not inflect. Time units (min, hr, s) belong to the time class, and ambiguous single letters (`m`, `l`) are not units. An unknown suffix is left alone and the number still reads as a cardinal.
+- Ranges: two non-negative numbers joined by a tight `-` or an en dash ("10-15") with the start below the end read "ten to fifteen" (hi: "दस से पंद्रह"). A percent or unit after the range belongs to the end ("5-10 kg": "five to ten kilograms"). Hyphenated words ("T-shirt", "COVID-19"), descending pairs ("2024-12"), and chains ("1-2-3") are not ranges. Money ranges ("$5-$10") follow with the currency class.
+- Email: `local@domain.tld` is spoken "local at domain dot tld" (hi: "एट", "डॉट"). Words in the address are read as written, digits one by one, and the separators `.`, `_`, `-`, `+` are spoken as "dot", "underscore", "dash", "plus" (hi: "डॉट", "अंडरस्कोर", "डैश", "प्लस"). Nothing is spelled letter by letter. Trailing sentence punctuation is not part of the address.
+- URL: only text starting with `http://`, `https://`, or `www.` is a URL. The scheme is not spoken and `www` is spoken letter by letter. Host labels are joined with "dot", path segments with "slash", and a port is "colon" and its digits. A trailing slash is not spoken. The query string and the fragment are dropped (unspeakable and unneeded to find the page). Common top-level domains have Hindi readings ("कॉम", "ऑर्ग", "नेट", "इन").
+- Hindi and Hinglish output speaks structural words in Devanagari and leaves Latin words in the address as written. Anything outside these shapes passes through unchanged.
+
 Determinism:
 
 - The normaliser is deterministic. Same input and same options give the same output. No clock, randomness, locale of the host, or network is consulted.

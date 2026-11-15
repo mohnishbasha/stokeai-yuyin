@@ -178,7 +178,10 @@ pub(crate) mod samples {
             }),
             Semiotic::Cardinal(int(25)),
             Semiotic::Ordinal(Ordinal { value: 3 }),
-            Semiotic::Percent(other::Percent { value: int(8) }),
+            Semiotic::Percent(other::Percent {
+                value: int(8),
+                per_annum: false,
+            }),
             Semiotic::Unit(other::Unit {
                 value: int(5),
                 unit: "km".into(),
