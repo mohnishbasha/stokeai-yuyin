@@ -101,7 +101,7 @@ Crates and paths with no instrumented lines yet are skipped by the gate until co
 
 **Dates:** 2026-11-14 to 2026-11-15
 **Gate:** all five items pass (see docs/SPRINT_PLAN.md, Sprint 1 gate). There are no owner waivers. The ADR-015 item is met by owner issue #184 rather than an engine choice.
-**Staging:** the promotion PR (`develop` into `staging`) is opened after this entry merges and waits for the owner (see docs/OWNER_CHECKLIST.md). The `sprint-1-complete` tag goes on the `staging` merge commit after it merges.
+**Staging:** promotion PR #201 (`develop` into `staging`) is open and waits for the owner (owner checklist B6). The `sprint-1-complete` tag goes on the `staging` merge commit after #201 merges. The TEST_PLAN section 9 staging smoke checklist starts at Sprint 3, so it does not apply to Sprint 1.
 
 ### What was built
 
