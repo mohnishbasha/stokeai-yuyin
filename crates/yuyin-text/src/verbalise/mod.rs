@@ -153,6 +153,7 @@ pub(crate) mod samples {
             Semiotic::Money(money::Money {
                 currency: money::Currency::Inr,
                 amount: int(4500),
+                scale: None,
             }),
             Semiotic::Date(datetime::Date {
                 day: Some(5),
