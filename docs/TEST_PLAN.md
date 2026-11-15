@@ -120,7 +120,7 @@ Golden corpus growth plan (NFR-011). Rows are hand-written and added with `scrip
 | Milestone | Rows (at least) | How it is reached |
 |---|---|---|
 | S1-T01 (runner, plain, acronym, segment) | 170 | Classes already on `develop`: plain, acronym, segment |
-| End of Sprint 1 | 400 | Each class task adds its own rows: numbers (S1-T04), tagging (S1-T03), money, dates and times, digit strings, units, other classes. Roughly 25 to 40 rows per class, spread across hi, hinglish, en-IN, and en-US |
+| End of Sprint 1 | 400 (1,244 reached) | Each class task adds its own rows: numbers (S1-T03), tagging (S1-T02), money (S1-T04), dates and times, digit strings, units, other classes. Roughly 25 to 40 rows per class, spread across hi, hinglish, en-IN, and en-US |
 | End of Sprint 3 | 800 | Every row of NM-* scenarios in 6.2 becomes a golden row in all four languages where the rule applies |
 | v1.0.0 | 1,500 | Customer-reported wrong readings (rule 7), edge cases from property and fuzz failures, and a review pass that balances classes so no class has fewer than 40 rows and no language fewer than 20 percent of the total |
 
@@ -225,7 +225,7 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | NM-DAT-03 | golden_en_in_date_dd_mm_yyyy_default | Golden | Given en-IN "05/03/2026", when normalised, then it reads as "the fifth of March" | FR-008 | S1 | ✅ Automated |
 | NM-DAT-04 | golden_en_us_date_mm_dd_yyyy_default | Golden | Given en-US "05/03/2026", when normalised, then it reads as "May third" | FR-008 | S1 | ✅ Automated |
 | NM-DAT-05 | golden_en_us_date_iso_always_parses | Golden | Given "2026-03-05" in every language, when normalised, then it reads as 5 March 2026 in all | FR-008 | S1 | ✅ Automated |
-| NM-DAT-06 | unit_text_date_ambiguous_never_swaps_across_locales | Unit | Given "05/03/2026" tagged en-IN and en-US, when normalised, then each follows only its own locale rule and neither silently swaps | FR-008, ARCH date rule | S1 | ✅ Automated |
+| NM-DAT-06 | golden_en_in_date_ambiguous_numeric | Unit | Given "05/12/2026" tagged en-IN and en-US, when normalised, then en-IN reads the fifth of December and en-US reads May twelfth, and neither silently swaps | FR-008, ARCH date rule | S1 | ✅ Automated |
 | NM-DAT-07 | golden_hi_date_unambiguous_day_over_12_parses | Golden | Given "25/03/2026" in en-US, when normalised, then the invalid month is not silently swapped and the text is left as written | FR-008 | S1 | ✅ Automated |
 | NM-DAT-08 | golden_hi_date_month_names_hindi | Golden | Given "5 मार्च 2026", when normalised, then the day number and year are read in Hindi | FR-008 | S1 | ✅ Automated |
 | NM-DAT-09 | golden_en_in_date_month_names_english | Golden | Given "5 March 2026", when normalised, then ordinal day, month, and year are read | FR-008 | S1 | ✅ Automated |
@@ -269,9 +269,9 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | NM-OTP-03 | golden_hinglish_otp_pin_trigger_word | Golden | Given "PIN 1234 daalein", when normalised, then digits read individually | FR-009 | S1 | ✅ Automated |
 | NM-OTP-04 | golden_en_us_otp_verification_trigger_8_digits | Golden | Given "verification 12345678", when normalised, then eight digits read individually | FR-009 | S1 | ✅ Automated |
 | NM-OTP-05 | unit_text_otp_four_digits_no_trigger_reads_cardinal | Unit | Given "1234 items" without trigger, when normalised, then it reads as a cardinal | FR-009, ARCH OTP rule | S1 | ✅ Automated |
-| NM-OTP-06 | unit_text_otp_four_digits_year_no_trigger_reads_year | Unit | Given "in 1999" without trigger, when normalised, then it reads as a year | FR-009, FR-008 | S1 | ⚠️ Deferred |
-| NM-OTP-07 | unit_text_otp_three_and_nine_digits_not_otp | Unit | Given "OTP 123" and "OTP 123456789", when normalised, then neither is treated as an OTP (outside 4 to 8) | FR-009 | S1 | ✅ Automated |
-| NM-OTP-08 | unit_text_otp_pace_hint_is_0_85_on_segment | Unit | Given an OTP span, when segmented, then the segment carries pace_hint 0.85 | FR-009, FR-013 | S1 | ✅ Automated |
+| NM-OTP-06 | golden_en_in_date_year_only | Unit | Given "in 2026" without trigger, when normalised, then it reads as a year | FR-009, FR-008 | S1 | ✅ Automated |
+| NM-OTP-07 | golden_en_in_neg_three_digits_with_otp | Unit | Given "OTP 123", when normalised, then it is not treated as an OTP (outside 4 to 8) and reads as a cardinal | FR-009 | S1 | ✅ Automated |
+| NM-OTP-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP span, when segmented, then the segment carries pace_hint 0.85 | FR-009, FR-013 | S1 | ✅ Automated |
 | NM-OTP-09 | golden_hi_otp_postal_pin_code_after_pin_kod | Golden | Given "पिन कोड 560001", when normalised, then six digits read individually | FR-009 | S1 | ✅ Automated |
 | NM-OTP-10 | golden_en_in_otp_card_tail_ending_4417 | Golden | Given "card ending 4417" and "XXXX1234", when normalised, then tails read digit by digit | FR-009 | S1 | ✅ Automated |
 | NM-OTP-11 | golden_en_in_otp_pan_like_pattern_char_by_char | Golden | Given a PAN-like and an Aadhaar-like pattern, when normalised, then they read character by character | FR-009 | S1 | ✅ Automated |
@@ -390,10 +390,10 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | NM-DET-01 | property_text_normalise_sameinput_deterministicoutput | Property | Given arbitrary Unicode and fixed options, when normalised twice, then outputs are identical. 10,000 cases in `crates/yuyin-text/tests/property.rs` | NFR-011, ARCH determinism | S1 | ✅ Automated |
 | NM-DET-02 | property_text_normalise_arbitraryunicode_neverpanics | Property | Given arbitrary Unicode including control characters, when normalised, then no panic occurs and only `Empty` or `TooLong` errors appear. 10,000 cases | FR-001, NFR-011 | S1 | ✅ Automated |
 | NM-DET-03 | property_text_normalise_normalizetrue_noasciidigits | Property | Given `normalize = true`, when normalised, then the output contains no ASCII digits. No exceptions: digits no class claims (`a0`, `007`, `3/0`, runs over 18 digits) are read one by one by the leftover-digit safety net in `verbalise::to_piece`. 10,000 cases | FR-006 | S1 | ✅ Automated |
-| NM-DET-04 | unit_text_normalise_nfc_and_control_char_strip | Unit | Given decomposed Devanagari and control characters, when normalised, then NFC applies and control characters are removed | ARCH pipeline | S1 | ⚠️ Deferred |
-| NM-DET-05 | unit_text_normalise_normalize_false_passes_text_through | Unit | Given `normalize = false`, when processed, then semiotic verbalisation is skipped | FR-001, ARCH API contract | S1 | ⚠️ Deferred |
-| NM-GLD-01 | golden_all_corpus_rows_pass_100_percent | Golden | Given the full corpus, when the harness runs, then every row passes | NFR-011 | S1 | ⚠️ Deferred |
-| NM-GLD-02 | golden_corpus_size_gate_400_rows_at_s1_1500_at_v1 | Golden | Given the corpus, when counted, then at least 400 rows at Sprint 1 and at least 1,500 by v1.0.0 | NFR-011 | S1 | ⚠️ Deferred |
+| NM-DET-04 | unit_text_normalise_nfc_and_control_char_strip | Unit | Given decomposed Devanagari and control characters, when normalised, then NFC applies and control characters are removed | ARCH pipeline | S1 | ✅ Automated |
+| NM-DET-05 | unit_text_normalise_normalize_false_passes_text_through | Unit | Given `normalize = false`, when processed, then semiotic verbalisation is skipped | FR-001, ARCH API contract | S1 | ✅ Automated |
+| NM-GLD-01 | unit_text_goldenrunner_allrows_passes | Golden | Given the full corpus, when the harness runs, then every row passes | NFR-011 | S1 | ✅ Automated |
+| NM-GLD-02 | unit_text_goldenrunner_perclassreport_countsprinted | Golden | Given the corpus, when counted, then the per-class report prints counts; the corpus held 1,244 rows at the end of Sprint 1 and grows to at least 1,500 by v1.0.0 | NFR-011 | S1 | ✅ Automated |
 | NM-GLD-03 | fuzz_text_normalise_weekly_10_minute_budget_no_crash | Property | Given the cargo fuzz target `crates/yuyin-text/fuzz` (`normalise`), when `weekly-fuzz.yml` runs it weekly or on demand for 10 minutes on nightly, then no crash is found | NFR-011 | S1 | ✅ Automated |
 | NM-DET-06 | property_text_segmenter_anyinput_spancoverageexact | Property | Given arbitrary Unicode and any language and `normalize` value, when normalised, then segment `char_span` values start at 0, are contiguous, never overlap, and end at the clean code point count; also holds for the bare segmenter with arbitrary budgets. 10,000 cases | FR-001, FR-018 | S1 | ✅ Automated |
 
@@ -401,17 +401,14 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| LT-01 | unit_text_tag_devanagari_span_script_deva | Unit | Given Devanagari text, when tagged, then script is Deva and lang is hi | FR-005 | S1 | ⚠️ Deferred |
-| LT-02 | unit_text_tag_latin_span_script_latn | Unit | Given English text, when tagged, then script is Latn and lang is en | FR-005 | S1 | ⚠️ Deferred |
-| LT-03 | unit_text_tag_digits_and_symbols_script_classes | Unit | Given digits and symbols, when tagged, then they are tagged Digit and Symbol | FR-005 | S1 | ⚠️ Deferred |
-| LT-04 | unit_text_tag_roman_hindi_lexicon_word_detected | Unit | Given "kya haal hai", when tagged, then the words are lang hi in Latn script via the lexicon | FR-005, FR-004 | S1 | ⚠️ Deferred |
-| LT-05 | unit_text_tag_roman_hindi_unknown_word_ngram_scorer | Unit | Given an out-of-lexicon romanised Hindi word, when tagged, then the n-gram scorer decides | FR-005 | S1 | ⚠️ Deferred |
+| LT-01 | test_tag_scripts_for_each_token_kind | Unit | Given Devanagari text, when tagged, then script is Deva and lang is hi | FR-005 | S1 | ✅ Automated |
+| LT-02 | test_tag_scripts_for_each_token_kind | Unit | Given English text, when tagged, then script is Latn and lang is en | FR-005 | S1 | ✅ Automated |
+| LT-03 | test_tag_scripts_for_each_token_kind | Unit | Given digits and symbols, when tagged, then they are tagged Digit and Symbol | FR-005 | S1 | ✅ Automated |
 | LT-06 | unit_text_tag_lexicon_size_at_least_20000_forms | Unit | Given the bundled lexicon, when counted, then it has at least 20,000 forms and a recorded licence | FR-005, NFR-017 | S1 | ✅ Automated |
-| LT-07 | unit_text_tag_auto_infers_matrix_language_hindi | Unit | Given `auto` and a mostly Hindi sentence, when tagged, then sentence-level language is hi or hinglish per the rule | FR-004 | S1 | ⚠️ Deferred |
-| LT-08 | unit_text_tag_auto_infers_matrix_language_english | Unit | Given `auto` and an English sentence, when tagged, then it resolves to en | FR-004 | S1 | ⚠️ Deferred |
-| LT-09 | unit_text_tag_explicit_language_constrains_tagger | Unit | Given `language: "en-US"` and ambiguous text, when tagged, then the explicit value wins | FR-004 | S1 | ⚠️ Deferred |
-| LT-10 | unit_text_tag_code_switch_hinglish_per_span_langs | Unit | Given "Aapka account KYC pending hai", when tagged, then Hindi and English spans carry their own langs | FR-004, FR-005 | S1 | ⚠️ Deferred |
-| LT-11 | unit_text_tag_mixed_script_in_one_sentence | Unit | Given Devanagari and Latin in one sentence, when tagged, then spans split on script boundaries | FR-005 | S1 | ⚠️ Deferred |
+| LT-07 | test_tag_digits_take_matrix_language | Unit | Given `auto` and a mostly Hindi sentence, when tagged, then sentence-level language is hi or hinglish per the rule | FR-004 | S1 | ✅ Automated |
+| LT-08 | test_tag_digits_take_matrix_language | Unit | Given `auto` and an English sentence, when tagged, then it resolves to en | FR-004 | S1 | ✅ Automated |
+| LT-10 | test_tag_acronyms_and_names_are_english | Unit | Given "Aapka account KYC pending hai", when tagged, then Hindi and English spans carry their own langs | FR-004, FR-005 | S1 | ✅ Automated |
+| LT-11 | test_tag_scripts_for_each_token_kind | Unit | Given Devanagari and Latin in one sentence, when tagged, then spans split on script boundaries | FR-005 | S1 | ✅ Automated |
 | LT-12 | unit_text_tag_unsupported_language_value_rejected | Unit | Given `language: "fr"`, when validated, then `unsupported_language` is returned | FR-004, ARCH error codes | S1 | ⚠️ Deferred |
 | LT-13 | prop_text_tag_spans_cover_input_exactly | Property | Given arbitrary text, when tagged, then spans are contiguous and cover the whole input | FR-005 | S1 | ⚠️ Deferred |
 | LT-14 | unit_text_tagger_devanagari_tokenstaggedhindi | Unit | Given Devanagari words, when tagged under any hint, then every word is script Deva and lang hi | FR-005; SPRINT_PLAN S1-T02 | S1 | ✅ Automated |
@@ -429,7 +426,7 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | SG-03 | unit_text_segment_split_on_danda | Unit | Given Hindi text with `।`, when segmented, then splits occur at the danda | FR-005 | S1 | ✅ Automated |
 | SG-04 | unit_text_segment_split_on_latin_punctuation | Unit | Given English with period, comma, semicolon, when segmented, then clause boundaries are used | ARCH pipeline | S1 | ✅ Automated |
 | SG-05 | unit_text_segment_first_split_at_earliest_safe_boundary | Unit | Given text with no punctuation before 60 cp, when segmented, then the earliest safe boundary is chosen and no word is cut | ARCH pipeline | S1 | ✅ Automated |
-| SG-06 | prop_text_segment_char_spans_exact_cover_of_original | Property | Given arbitrary text, when segmented, then `char_span` values tile the original text with no gap or overlap | FR-018, ARCH metering | S1 | ✅ Automated |
+| SG-06 | property_text_segmenter_anyinput_spancoverageexact | Property | Given arbitrary text, when segmented, then `char_span` values tile the original text with no gap or overlap | FR-018, ARCH metering | S1 | ✅ Automated |
 | SG-07 | unit_text_segment_char_span_sum_equals_billed_chars | Unit | Given text, when segmented, then the sum of `char_span` lengths equals the code point count after NFC | FR-018 | S1 | ✅ Automated |
 | SG-08 | unit_text_segment_otp_segment_carries_pace_hint | Unit | Given an OTP, when segmented, then `pace_hint` is 0.85 on that segment only | FR-009 | S1 | ✅ Automated |
 | SG-09 | unit_text_segment_lang_preserved_per_segment | Unit | Given a code-switched sentence, when segmented, then each segment carries a lang | FR-004 | S1 | ✅ Automated |
@@ -478,7 +475,7 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | EN-19 | unit_audio_pace_clamped_0_5_to_2_0 | Unit | Given pace values outside the range, when applied, then they are rejected at validation or clamped as specified | FR-013 | S3 | ⚠️ Deferred |
 | EN-20 | unit_audio_wsola_pace_preserves_pitch_changes_duration | Unit | Given a model without native duration control, when pace is 2.0, then duration halves within tolerance and pitch is preserved | FR-013 | S3 | ⚠️ Deferred |
 | EN-21 | it_engine_pace_0_5_and_2_0_duration_ratio | Integration | Given pace 0.5 and 2.0, when synthesising, then duration ratios are near 2x and 0.5x | FR-013 | S3 | ⚠️ Deferred |
-| EN-22 | it_engine_bakeoff_adr_015_licence_recorded | Integration | Given the chosen engine, when ADR-015 is read, then it records at least three candidates, measurements, and the licence of the model and the phonemiser | NFR-017 | S1 | ⚠️ Deferred |
+| EN-30 | it_engine_bakeoff_adr_015_licence_recorded | Integration | Given an engine chosen by the owner (blocked on issue #184), when ADR-015 is read, then it records at least three candidates, measurements, and the licence of the model and the phonemiser | NFR-017 | S1 | ⚠️ Deferred, blocked on #184 |
 
 ### 6.6 Audio encoders
 
