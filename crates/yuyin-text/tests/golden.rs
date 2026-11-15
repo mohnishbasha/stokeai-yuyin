@@ -17,9 +17,10 @@ use yuyin_text::{normalise_to_string, LanguageHint, NormaliseOptions};
 /// Column header every golden file starts with.
 const HEADER: &str = "id\tlang\tclass\tinput\texpected\tnotes";
 
-/// Floor on the corpus size. Raised as class tasks add rows: 400 at the end of Sprint 1,
-/// 1,500 by v1.0.0 (NFR-011, `TEST_PLAN` section 5).
-const MIN_ROWS: usize = 570;
+/// Floor on the corpus size. It ratchets up to the row count at each sprint end, so rows
+/// cannot be dropped silently: 1,244 at the end of Sprint 1, 1,500 by v1.0.0 (NFR-011,
+/// `TEST_PLAN` section 5).
+const MIN_ROWS: usize = 1244;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Row {

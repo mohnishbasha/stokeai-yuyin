@@ -96,3 +96,109 @@ Crates and paths with no instrumented lines yet are skipped by the gate until co
 - Reserve TEST_PLAN ID blocks per task when work is split, and merge `develop` into each branch before opening its PR.
 - Review Dependabot major-version PRs by hand. The TypeScript major is ignored until typescript-eslint supports it.
 - Decide the staging approval path (B3) before the Sprint 1 end, so promotion does not stall each sprint.
+
+## Sprint 1: Backend Foundations
+
+**Dates:** 2026-11-14 to 2026-11-15
+**Gate:** all five items pass (see docs/SPRINT_PLAN.md, Sprint 1 gate). There are no owner waivers. The ADR-015 item is met by owner issue #184 rather than an engine choice.
+**Staging:** the promotion PR (`develop` into `staging`) is opened after this entry merges and waits for the owner (see docs/OWNER_CHECKLIST.md). The `sprint-1-complete` tag goes on the `staging` merge commit after it merges.
+
+### What was built
+
+| Issue | Task | PR |
+|---|---|---|
+| #14 | S1-T01 Golden corpus format and runner | #181, #188 |
+| #15 | S1-T02 Script and language tagging | #192 |
+| #16 | S1-T03 Number verbalisation, Hindi and English, Indian numbering | #189 |
+| #17 | S1-T04 Currency | #191 |
+| #18 | S1-T05 Dates and times | #195 |
+| #19 | S1-T06 Phone numbers, OTPs, digit strings | #193 |
+| #20 | S1-T07 Acronym lexicon and overrides | #182 |
+| #21 | S1-T08 Units, percent, ranges, email, URL | #194 |
+| #22 | S1-T09 Segmenter with short first segment | #183 |
+| #23 | S1-T10 Engine bake-off spike and ADR | #190 |
+| #24 | S1-T11 `SynthesisEngine` trait and fake engine | #180 |
+| #25 | S1-T12 Property tests and fuzzing for the normaliser | #196 |
+
+Also merged in the sprint:
+- #185 adds ADR-029 (database).
+- #197 is the spec doc audit.
+- The sprint close PR ratchets the golden floor and fixes the `run-golden` skill summary.
+
+Carried to Sprint 3, each with an explanation on its issue:
+- #198 (S3-T18) carries three S1-T10 criteria:
+  - x86 measurements, because the bake-off ran on arm64 only.
+  - The human listening pass.
+  - The ADR-015 engine choice, which waits on owner decision #184.
+- #199 (S3-T19) carries six Sprint 1 scenarios that stayed Deferred: NM-RNG-03, NM-LNG-01 to 03, LT-12, and LT-13.
+
+### Spec sections updated
+
+- ARCHITECTURE:
+  - 5.1: the text pipeline module split and types.
+  - 6 and ADR-009: no engine chosen yet.
+  - 7: segment budgets.
+  - ADR-015: Proposed, blocked on #184, with the full record in `docs/adr/ADR-015-engine-selection.md` and evidence in `docs/licences/`.
+  - ADR-029.
+  - 16.8: the `yuyin-text` tree, kept in sync with AGENTS.md.
+- PRD: OQ-13 and OQ-14 record the bake-off outcome.
+- TEST_PLAN:
+  - Section 5: the golden corpus format and the growth plan to 1,500 rows.
+  - 6.2 to 6.5: the Sprint 1 rows use the real test and golden ids.
+- SPRINT_PLAN:
+  - The Sprint 1 criteria and gate are ticked.
+  - S3-T18 and S3-T19 are added.
+  - The critical path runs through #184.
+
+### Tests added
+
+TEST_PLAN has 185 Sprint 1 scenarios. 178 are automated and 7 are Deferred: six are carried to #199, and EN-30 is blocked on #184.
+
+| Type | Automated | Deferred |
+|---|---|---|
+| Unit | 97 | 1 |
+| Golden | 73 | 4 |
+| Property | 8 | 1 |
+| Integration | 0 | 1 |
+
+Gate evidence:
+- Golden corpus:
+  - 1,244 rows across 20 classes, 1,244 pass: hi 409, hinglish 242, en-IN 295, en-US 298.
+  - The `MIN_ROWS` floor is now 1,244.
+- Tagging accuracy on the 2,158-token held-out set is 98.24% (2,120 correct), against a target of 95%.
+- The Roman Hindi lexicon has 27,506 rows, with its licence in `docs/licences/roman-hindi-lexicon.md`.
+- The `tests/purity.rs` dependency allowlist and source scan pass, so `yuyin-text` does no network or file I/O.
+- Five property tests run 10,000 cases each. The `normalise` fuzz target runs weekly with a 600 second budget.
+
+### Coverage delta
+
+From `scripts/coverage.sh` at the sprint end:
+
+| Crate or path | Sprint 0 | Sprint 1 | Threshold |
+|---|---|---|---|
+| yuyin-text | not instrumented | 99.23% (2,070 of 2,086 lines) | 92% |
+| yuyin-engine | not instrumented | 98.96% (95 of 96 lines) | 75% |
+| yuyin-gateway | 86.21% | 86.21% | 80% |
+
+The TypeScript and Python placeholders are unchanged at 100%.
+
+### What worked
+
+- Golden rows came before code. Each class task added its rows first, so a regression shows up as a named row diff.
+- The purity check is a test, not a review rule. Any I/O dependency or `std::fs` or `std::net` use in `yuyin-text` fails `cargo test`.
+- The bake-off followed the stop rule. With no licence-clean Hindi voice, it recorded the evidence, raised #184, and did not ship a voice with unclear rights.
+- Running the property tests at 10,000 cases under tarpaulin needed a longer timeout, and that was found and fixed inside the task (S1-T12).
+
+### What did not work
+
+- All twelve issues closed with their acceptance criteria unticked, so the closing protocol was not fully followed. The sprint end audit checked each criterion against the code and ticked 49 of 52. The three open ones moved to #198.
+- The bake-off could not measure x86, because O4 (AWS) is deferred and the build machine is arm64.
+- The golden floor (`MIN_ROWS`) lagged the corpus: 570 against 1,244 rows. The `run-golden` skill still parsed per-row test names after the runner became one test with its own per-class table.
+- `develop` still has no required status checks (O17), so a red PR can still merge.
+
+### What to change
+
+- Tick each acceptance criterion on the issue in the PR that closes it, with evidence in the implementation comment.
+- Raise `MIN_ROWS` in every PR that adds golden rows, as TEST_PLAN section 5 already says.
+- Get owner decision #184 before Sprint 3 starts. S3-T18 and S3-T01 (ONNX engine) wait on it.
+- Run the x86 bake-off on a GitHub-hosted `ubuntu-latest` runner, so it does not wait on O4.
