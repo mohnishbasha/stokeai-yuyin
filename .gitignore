@@ -72,3 +72,8 @@ logs/
 # Local Claude Code state
 .claude/settings.local.json
 .claude/worktrees/
+
+# cargo fuzz (crates/yuyin-text/fuzz, outside the workspace)
+crates/yuyin-text/fuzz/target/
+crates/yuyin-text/fuzz/corpus/
+crates/yuyin-text/fuzz/artifacts/

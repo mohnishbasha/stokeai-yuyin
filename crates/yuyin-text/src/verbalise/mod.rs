@@ -97,6 +97,47 @@ pub fn verbalise(sem: &Semiotic, ctx: &VerbaliseCtx<'_>) -> Option<Verbalised> {
     verbaliser_for(sem)(sem, ctx)
 }
 
+/// Reads any ASCII digit left in `text` as its word, so that normalised output never carries a
+/// digit the engine would have to guess at (`TEST_PLAN` NM-DET-03).
+///
+/// Digits that no class claimed (for example the `0` in `a0`, or the digits of a percentage
+/// before its verbaliser reads it) are spoken one by one, set off from neighbouring characters
+/// by spaces. Text without ASCII digits is returned unchanged.
+///
+/// # Examples
+///
+/// ```
+/// use yuyin_text::verbalise::read_leftover_digits;
+/// use yuyin_text::Lang;
+/// assert_eq!(read_leftover_digits("H2O", Lang::En), "H two O");
+/// assert_eq!(read_leftover_digits("v10!", Lang::En), "v one zero !");
+/// assert_eq!(read_leftover_digits("plain", Lang::En), "plain");
+/// ```
+#[must_use]
+pub fn read_leftover_digits(text: &str, lang: Lang) -> String {
+    if !text.chars().any(|c| c.is_ascii_digit()) {
+        return text.to_owned();
+    }
+    let mut out = String::with_capacity(text.len() * 4);
+    let mut need_space = false;
+    for c in text.chars() {
+        if let Some(d) = c.to_digit(10).and_then(|d| u8::try_from(d).ok()) {
+            if !out.is_empty() && !out.ends_with(char::is_whitespace) {
+                out.push(' ');
+            }
+            out.push_str(number::digit(d, lang));
+            need_space = true;
+        } else {
+            if need_space && !c.is_whitespace() {
+                out.push(' ');
+            }
+            need_space = false;
+            out.push(c);
+        }
+    }
+    out
+}
+
 /// Turns a classified span into a segmenter piece.
 ///
 /// Plain spans pass through. Semiotic spans are verbalised in their context language and
@@ -109,7 +150,9 @@ pub fn to_piece(
     lexicons: &Lexicons,
 ) -> Piece {
     let Some(sem) = &span.semiotic else {
-        return Piece::passthrough(&span.tagged, span.context, text);
+        let mut piece = Piece::passthrough(&span.tagged, span.context, text);
+        piece.text = read_leftover_digits(&piece.text, piece.lang);
+        return piece;
     };
     let range = span.tagged.span.range.clone();
     let source = text.get(range.clone()).unwrap_or_default();
@@ -127,7 +170,7 @@ pub fn to_piece(
     };
     Piece {
         source: range,
-        text: spoken,
+        text: read_leftover_digits(&spoken, span.context),
         lang: span.context,
         pace_hint,
         atomic: true,

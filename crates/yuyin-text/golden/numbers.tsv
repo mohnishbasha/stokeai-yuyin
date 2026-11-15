@@ -160,7 +160,7 @@ golden_hinglish_cardinal_sentence_balance	hinglish	cardinal	Aapka balance 1,25,0
 golden_en_in_cardinal_sentence_items	en-IN	cardinal	You have 45 items	You have forty-five items	
 golden_en_us_cardinal_sentence_items	en-US	cardinal	You have 45 items	You have forty-five items	
 golden_hi_cardinal_devanagari_digits	hi	cardinal	१२३	एक सौ तेईस	Devanagari digits parse
-golden_en_in_cardinal_leading_zero_untouched	en-IN	cardinal	007	007	leading zero is an identifier, left for the digits class
+golden_en_in_cardinal_leading_zero_untouched	en-IN	cardinal	007	zero zero seven	leading zero is an identifier, read digit by digit by the leftover-digit safety net (NM-DET-03)
 golden_hi_cardinal_decimal_pi	hi	cardinal	3.14	तीन दशमलव एक चार	
 golden_hi_cardinal_decimal_half	hi	cardinal	3.5	तीन दशमलव पाँच	NM-CAR-08
 golden_hi_cardinal_decimal_zero_lead	hi	cardinal	0.05	शून्य दशमलव शून्य पाँच	
@@ -195,7 +195,7 @@ golden_en_us_cardinal_fraction_two_thirds	en-US	cardinal	2/3	two thirds
 golden_en_us_cardinal_fraction_one_fifth	en-US	cardinal	1/5	one fifth	
 golden_en_us_cardinal_fraction_three_halves	en-US	cardinal	3/2	three halves	
 golden_en_us_cardinal_fraction_in_sentence	en-US	cardinal	Add 1/2 cup of water	Add one half cup of water	
-golden_en_us_cardinal_fraction_zero_denominator	en-US	cardinal	3/0	3/0	zero denominator is not a fraction; left as written
+golden_en_us_cardinal_fraction_zero_denominator	en-US	cardinal	3/0	three/zero	zero denominator is not a fraction; digits read one by one by the safety net (NM-DET-03)
 golden_hi_ordinal_o1	hi	ordinal	1st	पहला	NM-ORD-03
 golden_hi_ordinal_o2	hi	ordinal	2nd	दूसरा	NM-ORD-03
 golden_hi_ordinal_o3	hi	ordinal	3rd	तीसरा	NM-ORD-03
