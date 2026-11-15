@@ -1,0 +1,13 @@
+# SHA-256 of the model files the bake-off loads (paths relative to models/), recorded 2026-11-14
+# from https://github.com/k2-fsa/sherpa-onnx/releases/tag/tts-models and vocoder-models.
+b40f62b166ac8164b0627ef48a0b358eda0985e272fb03ef5252e7206305da11  kokoro-multi-lang-v1_0/model.onnx
+1c5a5b983d3d50d8586d437a51f3faa2da7919ce76a013c081e65671a3447c29  kokoro-multi-lang-v1_0/voices.bin
+75635ea3b85a32d00094dcdd61a258aba87c160f7c264c304a7b3ae9d734195e  kokoro-int8-multi-lang-v1_0/model.int8.onnx
+1c5a5b983d3d50d8586d437a51f3faa2da7919ce76a013c081e65671a3447c29  kokoro-int8-multi-lang-v1_0/voices.bin
+4ba07d8549906668ee855fd9abf9faf66c5db74742712ff026a159f7277fca9f  vits-piper-en_US-lessac-medium/en_US-lessac-medium.onnx
+8ceba58a4b540d4e7e7e24ad079cf0d92762a4fd334e059f12940787c6c37b3d  vits-piper-en_US-ljspeech-medium/en_US-ljspeech-medium.onnx
+1d77908e8ab724c813c5cefaa48feadc9f2670ec5d145f83bade981c428740a0  vits-piper-hi_IN-pratham-medium/hi_IN-pratham-medium.onnx
+8871f3e07adb6ca490f8dbcd3956a8647c53c35b5d0a1c2a8d097b3bf721a31b  vits-piper-hi_IN-priyamvada-medium/hi_IN-priyamvada-medium.onnx
+353d2a20bdb6dd03b74e1aff82b7a10a1646f677f8474c6c81fd606705536224  vits-piper-hi_IN-rohan-medium/hi_IN-rohan-medium.onnx
+f8e8bae6f731310a1cda0012871ed5e91b0d19f1e2ceff077f62922bba95e3c1  matcha-icefall-en_US-ljspeech/model-steps-3.onnx
+0574a135aa1db2de6e181050db2ec528496cacd4a4701fc5d7faf9f9804c0081  vocos-22khz-univ.onnx

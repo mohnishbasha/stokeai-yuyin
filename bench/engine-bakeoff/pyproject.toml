@@ -1,0 +1,15 @@
+[project]
+name = "yuyin-engine-bakeoff"
+version = "0.0.0"
+description = "S1-T10 engine bake-off harness (ADR-015). Not shipped."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  # 1.13.8 is the last release with the espeak-ng frontend (removed in 2.0.0). Used for
+  # measurement only; see ADR-015 for why the shipped engine must not link espeak-ng.
+  "sherpa-onnx==1.13.8",
+  "sherpa-onnx-core==1.13.8",
+  "numpy==2.3.5",
+]
+
+[tool.uv]
+package = false

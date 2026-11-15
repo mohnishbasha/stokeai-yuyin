@@ -1,0 +1,94 @@
+{
+  "_comment": "Engine bake-off candidates (S1-T10). Model files come from the sherpa-onnx tts-models release and are fetched by fetch.sh into models/ (gitignored). Each entry is measured in its own process. Voices with \"bench\": false are rendered for listening only. Licence evidence for every voice is in docs/licences/ (see ADR-015).",
+  "candidates": [
+    {
+      "id": "kokoro-v1.0-fp32",
+      "family": "kokoro",
+      "dir": "kokoro-multi-lang-v1_0",
+      "kind": "kokoro",
+      "files": {
+        "model": "model.onnx",
+        "voices": "voices.bin",
+        "tokens": "tokens.txt",
+        "lexicon": "lexicon-us-en.txt",
+        "data_dir": "espeak-ng-data"
+      },
+      "voices": [
+        { "voice": "hf_alpha", "sid": 31, "langs": ["hi", "en-IN"], "lang_code": { "hi": "hi", "en-IN": "en-us" } },
+        { "voice": "hm_omega", "sid": 33, "bench": false, "langs": ["hi", "en-IN"], "lang_code": { "hi": "hi", "en-IN": "en-us" } },
+        { "voice": "af_heart", "sid": 3, "langs": ["en-US"], "lang_code": { "en-US": "en-us" } },
+        { "voice": "am_michael", "sid": 16, "bench": false, "langs": ["en-US"], "lang_code": { "en-US": "en-us" } }
+      ]
+    },
+    {
+      "id": "kokoro-v1.0-int8",
+      "family": "kokoro",
+      "dir": "kokoro-int8-multi-lang-v1_0",
+      "kind": "kokoro",
+      "files": {
+        "model": "model.int8.onnx",
+        "voices": "voices.bin",
+        "tokens": "tokens.txt",
+        "lexicon": "lexicon-us-en.txt",
+        "data_dir": "espeak-ng-data"
+      },
+      "voices": [
+        { "voice": "hf_alpha", "sid": 31, "langs": ["hi", "en-IN"], "lang_code": { "hi": "hi", "en-IN": "en-us" } },
+        { "voice": "af_heart", "sid": 3, "langs": ["en-US"], "lang_code": { "en-US": "en-us" } }
+      ]
+    },
+    {
+      "id": "piper-hi_IN-rohan-medium",
+      "family": "piper",
+      "dir": "vits-piper-hi_IN-rohan-medium",
+      "kind": "vits",
+      "files": { "model": "hi_IN-rohan-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "voices": [{ "voice": "hi_IN-rohan-medium", "sid": 0, "langs": ["hi", "en-IN"] }]
+    },
+    {
+      "id": "piper-hi_IN-pratham-medium",
+      "family": "piper",
+      "dir": "vits-piper-hi_IN-pratham-medium",
+      "kind": "vits",
+      "files": { "model": "hi_IN-pratham-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "voices": [{ "voice": "hi_IN-pratham-medium", "sid": 0, "langs": ["hi", "en-IN"] }]
+    },
+    {
+      "id": "piper-hi_IN-priyamvada-medium",
+      "family": "piper",
+      "dir": "vits-piper-hi_IN-priyamvada-medium",
+      "kind": "vits",
+      "files": { "model": "hi_IN-priyamvada-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "voices": [{ "voice": "hi_IN-priyamvada-medium", "sid": 0, "langs": ["hi", "en-IN"] }]
+    },
+    {
+      "id": "piper-en_US-lessac-medium",
+      "family": "piper",
+      "dir": "vits-piper-en_US-lessac-medium",
+      "kind": "vits",
+      "files": { "model": "en_US-lessac-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "voices": [{ "voice": "en_US-lessac-medium", "sid": 0, "langs": ["en-US"] }]
+    },
+    {
+      "id": "piper-en_US-ljspeech-medium",
+      "family": "piper",
+      "dir": "vits-piper-en_US-ljspeech-medium",
+      "kind": "vits",
+      "files": { "model": "en_US-ljspeech-medium.onnx", "tokens": "tokens.txt", "data_dir": "espeak-ng-data" },
+      "voices": [{ "voice": "en_US-ljspeech-medium", "sid": 0, "langs": ["en-US"] }]
+    },
+    {
+      "id": "matcha-icefall-en_US-ljspeech",
+      "family": "matcha",
+      "dir": "matcha-icefall-en_US-ljspeech",
+      "kind": "matcha",
+      "files": {
+        "acoustic_model": "model-steps-3.onnx",
+        "vocoder": "../vocos-22khz-univ.onnx",
+        "tokens": "tokens.txt",
+        "data_dir": "espeak-ng-data"
+      },
+      "voices": [{ "voice": "matcha-ljspeech", "sid": 0, "langs": ["en-US"] }]
+    }
+  ]
+}
