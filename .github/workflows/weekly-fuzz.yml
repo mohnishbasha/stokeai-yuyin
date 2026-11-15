@@ -1,0 +1,41 @@
+# Weekly fuzzing of the text front-end (TEST_PLAN NM-GLD-03, PRD NFR-011): 10 minutes, nightly.
+name: weekly-fuzz
+
+on:
+  schedule:
+    - cron: "43 3 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  fuzz-text:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install nightly Rust toolchain
+        run: |
+          rustup toolchain install nightly --profile minimal
+          rustc +nightly --version
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: crates/yuyin-text/fuzz
+          key: fuzz
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-fuzz
+      - name: Fuzz the normaliser for 10 minutes
+        working-directory: crates/yuyin-text
+        run: cargo +nightly fuzz run normalise -- -max_total_time=600 -rss_limit_mb=2048
+      - name: Upload crashing inputs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: fuzz-artifacts
+          path: crates/yuyin-text/fuzz/artifacts/
+          if-no-files-found: ignore

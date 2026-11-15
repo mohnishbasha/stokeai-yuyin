@@ -6,7 +6,9 @@ cd "$(dirname "$0")/.."
 out=coverage
 rm -rf "$out" && mkdir -p "$out"
 
-cargo tarpaulin --workspace --locked --skip-clean --engine llvm --out Json --output-dir "$out" >"$out/tarpaulin.log" 2>&1 \
+# --timeout: tarpaulin's default 60 s of silence per test binary is too short for the 10,000 case
+# property tests under instrumentation (S1-T12).
+cargo tarpaulin --workspace --locked --skip-clean --engine llvm --timeout 900 --out Json --output-dir "$out" >"$out/tarpaulin.log" 2>&1 \
   || { tail -30 "$out/tarpaulin.log" >&2; exit 1; }
 
 ts_args=()

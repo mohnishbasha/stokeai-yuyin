@@ -1,12 +1,12 @@
 id	lang	class	input	expected	notes
 golden_hi_date_ambiguous_numeric	hi	date	05/12/2026	पाँच दिसंबर दो हज़ार छब्बीस	day first
 golden_hi_date_day_over_12	hi	date	25/03/2026	पच्चीस मार्च दो हज़ार छब्बीस	
-golden_hi_date_us_style_not_swapped	hi	date	03/25/2026	03/25/2026	invalid month, never swapped, left as written
+golden_hi_date_us_style_not_swapped	hi	date	03/25/2026	शून्य तीन/दो पाँच/दो शून्य दो छह	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_hi_date_dash_separator	hi	date	15-08-2026	पंद्रह अगस्त दो हज़ार छब्बीस	
 golden_hi_date_dot_separator	hi	date	01.02.2027	एक फरवरी दो हज़ार सत्ताईस	1 Feb in day first locales
-golden_hi_date_invalid_feb_31	hi	date	31/02/2026	31/02/2026	not a date, left as written
+golden_hi_date_invalid_feb_31	hi	date	31/02/2026	तीन एक/शून्य दो/दो शून्य दो छह	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_hi_date_leap_day_valid	hi	date	29/02/2028	उनतीस फरवरी दो हज़ार अट्ठाईस	
-golden_hi_date_not_leap_invalid	hi	date	29/02/2027	29/02/2027	
+golden_hi_date_not_leap_invalid	hi	date	29/02/2027	दो नौ/शून्य दो/दो शून्य दो सात	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_hi_date_day_month_year_name	hi	date	5 मार्च 2026	पाँच मार्च दो हज़ार छब्बीस	
 golden_hi_date_month_name_abbrev	hi	date	26 Jan 2026	छब्बीस जनवरी दो हज़ार छब्बीस	
 golden_hi_date_month_name_ordinal	hi	date	5th December 2026	पाँच दिसंबर दो हज़ार छब्बीस	
@@ -45,12 +45,12 @@ golden_hi_time_baje_absorbed	hi	time	5:30 बजे	साढ़े पाँच
 golden_hi_time_date_and_time	hi	time	05/12/2026 को 5:30 PM	पाँच दिसंबर दो हज़ार छब्बीस को शाम के साढ़े पाँच बजे	
 golden_hinglish_date_ambiguous_numeric	hinglish	date	05/12/2026	पाँच दिसंबर दो हज़ार छब्बीस	day first
 golden_hinglish_date_day_over_12	hinglish	date	25/03/2026	पच्चीस मार्च दो हज़ार छब्बीस	
-golden_hinglish_date_us_style_not_swapped	hinglish	date	03/25/2026	03/25/2026	invalid month, never swapped, left as written
+golden_hinglish_date_us_style_not_swapped	hinglish	date	03/25/2026	शून्य तीन/दो पाँच/दो शून्य दो छह	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_hinglish_date_dash_separator	hinglish	date	15-08-2026	पंद्रह अगस्त दो हज़ार छब्बीस	
 golden_hinglish_date_dot_separator	hinglish	date	01.02.2027	एक फरवरी दो हज़ार सत्ताईस	1 Feb in day first locales
-golden_hinglish_date_invalid_feb_31	hinglish	date	31/02/2026	31/02/2026	not a date, left as written
+golden_hinglish_date_invalid_feb_31	hinglish	date	31/02/2026	तीन एक/शून्य दो/दो शून्य दो छह	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_hinglish_date_leap_day_valid	hinglish	date	29/02/2028	उनतीस फरवरी दो हज़ार अट्ठाईस	
-golden_hinglish_date_not_leap_invalid	hinglish	date	29/02/2027	29/02/2027	
+golden_hinglish_date_not_leap_invalid	hinglish	date	29/02/2027	दो नौ/शून्य दो/दो शून्य दो सात	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_hinglish_date_day_month_year_name	hinglish	date	5 March 2026	पाँच मार्च दो हज़ार छब्बीस	
 golden_hinglish_date_month_name_abbrev	hinglish	date	26 Jan 2026	छब्बीस जनवरी दो हज़ार छब्बीस	
 golden_hinglish_date_month_name_ordinal	hinglish	date	5th December 2026	पाँच दिसंबर दो हज़ार छब्बीस	
@@ -89,12 +89,12 @@ golden_hinglish_time_baje_absorbed	hinglish	time	5:30 बजे	साढ़े 
 golden_hinglish_time_date_and_time	hinglish	time	05/12/2026 को 5:30 PM	पाँच दिसंबर दो हज़ार छब्बीस को शाम के साढ़े पाँच बजे	
 golden_en_in_date_ambiguous_numeric	en-IN	date	05/12/2026	the fifth of December twenty twenty-six	day first
 golden_en_in_date_day_over_12	en-IN	date	25/03/2026	the twenty-fifth of March twenty twenty-six	
-golden_en_in_date_us_style_not_swapped	en-IN	date	03/25/2026	03/25/2026	invalid month, never swapped, left as written
+golden_en_in_date_us_style_not_swapped	en-IN	date	03/25/2026	zero three/two five/two zero two six	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_en_in_date_dash_separator	en-IN	date	15-08-2026	the fifteenth of August twenty twenty-six	
 golden_en_in_date_dot_separator	en-IN	date	01.02.2027	the first of February twenty twenty-seven	1 Feb in day first locales
-golden_en_in_date_invalid_feb_31	en-IN	date	31/02/2026	31/02/2026	not a date, left as written
+golden_en_in_date_invalid_feb_31	en-IN	date	31/02/2026	three one/zero two/two zero two six	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_en_in_date_leap_day_valid	en-IN	date	29/02/2028	the twenty-ninth of February twenty twenty-eight	
-golden_en_in_date_not_leap_invalid	en-IN	date	29/02/2027	29/02/2027	
+golden_en_in_date_not_leap_invalid	en-IN	date	29/02/2027	two nine/zero two/two zero two seven	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_en_in_date_day_month_year_name	en-IN	date	5 March 2026	the fifth of March twenty twenty-six	
 golden_en_in_date_month_name_abbrev	en-IN	date	26 Jan 2026	the twenty-sixth of January twenty twenty-six	
 golden_en_in_date_month_name_ordinal	en-IN	date	5th December 2026	the fifth of December twenty twenty-six	
@@ -132,13 +132,13 @@ golden_en_in_time_sentence	en-IN	time	Meeting at 5:30 PM.	Meeting at five thirty
 golden_en_in_time_date_and_time	en-IN	time	05/12/2026 at 5:30 PM	the fifth of December twenty twenty-six at five thirty P M	
 golden_en_in_time_relative_with_time	en-IN	time	tomorrow at 5:30 PM	tomorrow at five thirty P M	relative word untouched
 golden_en_us_date_ambiguous_numeric	en-US	date	05/12/2026	May twelfth twenty twenty-six	month first for en-US
-golden_en_us_date_day_over_12_not_swapped	en-US	date	25/03/2026	25/03/2026	invalid month, never swapped, left as written
+golden_en_us_date_day_over_12_not_swapped	en-US	date	25/03/2026	two five/zero three/two zero two six	invalid month, never swapped, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_en_us_date_month_first_numeric	en-US	date	03/25/2026	March twenty-fifth twenty twenty-six	
 golden_en_us_date_dash_separator	en-US	date	08-15-2026	August fifteenth twenty twenty-six	
 golden_en_us_date_dot_separator	en-US	date	01.02.2027	January second twenty twenty-seven	Jan 2 in en-US
-golden_en_us_date_invalid_feb_31	en-US	date	02/31/2026	02/31/2026	not a date, left as written
+golden_en_us_date_invalid_feb_31	en-US	date	02/31/2026	zero two/three one/two zero two six	not a date, left as written; digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_en_us_date_leap_day_valid	en-US	date	02/29/2028	February twenty-ninth twenty twenty-eight	
-golden_en_us_date_not_leap_invalid	en-US	date	02/29/2027	02/29/2027	
+golden_en_us_date_not_leap_invalid	en-US	date	02/29/2027	zero two/two nine/two zero two seven	digits read one by one, not a date (FR-008 AC-3, NM-DET-03)
 golden_en_us_date_month_name_first	en-US	date	March 5, 2026	March fifth twenty twenty-six	
 golden_en_us_date_month_name_abbrev	en-US	date	Jan 26, 2026	January twenty-sixth twenty twenty-six	
 golden_en_us_date_month_name_ordinal	en-US	date	December 5th, 2026	December fifth twenty twenty-six	

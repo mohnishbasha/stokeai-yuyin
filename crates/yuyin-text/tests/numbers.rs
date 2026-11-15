@@ -361,10 +361,13 @@ fn unit_text_cardinal_upper_bound_10_pow_15_handled() {
 
 #[test]
 fn unit_text_numbers_eighteen_digit_limit_then_digit_by_digit_passthrough() {
-    // PRD FR-006: more than 18 digits are not read as a number here.
+    // PRD FR-006 AC-4: more than 18 digits are read digit by digit (leftover-digit safety net).
     let long = "1234567890123456789";
     let out = normalise_to_string(long, &NormaliseOptions::new(LanguageHint::EnIn));
-    assert_eq!(out.as_deref(), Ok(long));
+    assert_eq!(
+        out.as_deref(),
+        Ok("one two three four five six seven eight nine zero one two three four five six seven eight nine")
+    );
 }
 
 /// 128 random values in each of the four languages go through the whole pipeline and are

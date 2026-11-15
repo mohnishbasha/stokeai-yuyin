@@ -1,0 +1,23 @@
+[package]
+name = "yuyin-text-fuzz"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "LicenseRef-Proprietary"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+yuyin-text = { path = ".." }
+
+[[bin]]
+name = "normalise"
+path = "fuzz_targets/normalise.rs"
+test = false
+doc = false
+bench = false
+
+# Not a member of the root workspace: stable builds, clippy, audit, and deny never see it.
+[workspace]
