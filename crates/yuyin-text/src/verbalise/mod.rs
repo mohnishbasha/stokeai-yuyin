@@ -169,6 +169,7 @@ pub(crate) mod samples {
             Semiotic::Phone(digits::Phone {
                 country_code: Some("91".into()),
                 digits: "9000000000".into(),
+                style: digits::PhoneStyle::Indian,
             }),
             Semiotic::Otp(digits::DigitString {
                 kind: digits::DigitStringKind::Otp,

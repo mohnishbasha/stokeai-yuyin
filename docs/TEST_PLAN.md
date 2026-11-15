@@ -242,27 +242,40 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-PHN-01 | golden_hi_phone_indian_mobile_groups_5_5 | Golden | Given a 10-digit Indian mobile, when normalised, then digits are read one by one in groups of 5 and 5 | FR-009, ARCH phone rule | S1 | ⚠️ Deferred |
-| NM-PHN-02 | golden_en_in_phone_plus_91_form_groups | Golden | Given "+91 98765 43210" (fictitious), when normalised, then "plus nine one" then groups 5 and 5 | FR-009 | S1 | ⚠️ Deferred |
-| NM-PHN-03 | golden_en_us_phone_groups_3_3_4 | Golden | Given a US number "(555) 010-1234" style, when normalised, then digits read in groups 3, 3, 4 | FR-009 | S1 | ⚠️ Deferred |
-| NM-PHN-04 | golden_hi_phone_digits_use_hindi_digit_words | Golden | Given hi sentence with a mobile number, when normalised, then digits use Hindi words including शून्य | FR-009 | S1 | ⚠️ Deferred |
-| NM-PHN-05 | golden_hinglish_phone_with_separators_stripped | Golden | Given a number with spaces or hyphens, when normalised, then grouping is by the rule, not by the input separators | FR-009 | S1 | ⚠️ Deferred |
+| NM-PHN-01 | golden_hi_phone_indian_mobile_groups_5_5 | Golden | Given a 10-digit Indian mobile, when normalised, then digits are read one by one in groups of 5 and 5 | FR-009, ARCH phone rule | S1 | ✅ Automated |
+| NM-PHN-02 | golden_en_in_phone_plus_91_form_groups | Golden | Given "+91 98765 43210" (fictitious), when normalised, then "plus nine one" then groups 5 and 5 | FR-009 | S1 | ✅ Automated |
+| NM-PHN-03 | golden_en_us_phone_groups_3_3_4 | Golden | Given a US number "(555) 010-1234" style, when normalised, then digits read in groups 3, 3, 4 | FR-009 | S1 | ✅ Automated |
+| NM-PHN-04 | golden_hi_phone_digits_use_hindi_digit_words | Golden | Given hi sentence with a mobile number, when normalised, then digits use Hindi words including शून्य | FR-009 | S1 | ✅ Automated |
+| NM-PHN-05 | golden_hinglish_phone_with_separators_stripped | Golden | Given a number with spaces or hyphens, when normalised, then grouping is by the rule, not by the input separators | FR-009 | S1 | ✅ Automated |
 
 #### 6.2.5 OTP
 
 | ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
 |---|---|---|---|---|---|---|
-| NM-OTP-01 | golden_en_in_otp_trigger_word_reads_digit_by_digit | Golden | Given "Your OTP is 482916", when normalised, then six digits read individually and pace_hint is 0.85 | FR-009, ARCH OTP rule | S1 | ⚠️ Deferred |
-| NM-OTP-02 | golden_hi_otp_devanagari_trigger_kod | Golden | Given "आपका कोड 4829 है", when normalised, then digits read individually with pace_hint 0.85 | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-03 | golden_hinglish_otp_pin_trigger_word | Golden | Given "PIN 1234 daalein", when normalised, then digits read individually | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-04 | golden_en_us_otp_verification_trigger_8_digits | Golden | Given "verification 12345678", when normalised, then eight digits read individually | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-05 | unit_text_otp_four_digits_no_trigger_reads_cardinal | Unit | Given "1234 items" without trigger, when normalised, then it reads as a cardinal | FR-009, ARCH OTP rule | S1 | ⚠️ Deferred |
+| NM-OTP-01 | golden_en_in_otp_trigger_word_reads_digit_by_digit | Golden | Given "Your OTP is 482916", when normalised, then six digits read individually and pace_hint is 0.85 | FR-009, ARCH OTP rule | S1 | ✅ Automated |
+| NM-OTP-02 | golden_hi_otp_devanagari_trigger_kod | Golden | Given "आपका कोड 4829 है", when normalised, then digits read individually with pace_hint 0.85 | FR-009 | S1 | ✅ Automated |
+| NM-OTP-03 | golden_hinglish_otp_pin_trigger_word | Golden | Given "PIN 1234 daalein", when normalised, then digits read individually | FR-009 | S1 | ✅ Automated |
+| NM-OTP-04 | golden_en_us_otp_verification_trigger_8_digits | Golden | Given "verification 12345678", when normalised, then eight digits read individually | FR-009 | S1 | ✅ Automated |
+| NM-OTP-05 | unit_text_otp_four_digits_no_trigger_reads_cardinal | Unit | Given "1234 items" without trigger, when normalised, then it reads as a cardinal | FR-009, ARCH OTP rule | S1 | ✅ Automated |
 | NM-OTP-06 | unit_text_otp_four_digits_year_no_trigger_reads_year | Unit | Given "in 1999" without trigger, when normalised, then it reads as a year | FR-009, FR-008 | S1 | ⚠️ Deferred |
-| NM-OTP-07 | unit_text_otp_three_and_nine_digits_not_otp | Unit | Given "OTP 123" and "OTP 123456789", when normalised, then neither is treated as an OTP (outside 4 to 8) | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-08 | unit_text_otp_pace_hint_is_0_85_on_segment | Unit | Given an OTP span, when segmented, then the segment carries pace_hint 0.85 | FR-009, FR-013 | S1 | ⚠️ Deferred |
-| NM-OTP-09 | golden_hi_otp_postal_pin_code_after_pin_kod | Golden | Given "पिन कोड 560001", when normalised, then six digits read individually | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-10 | golden_en_in_otp_card_tail_ending_4417 | Golden | Given "card ending 4417" and "XXXX1234", when normalised, then tails read digit by digit | FR-009 | S1 | ⚠️ Deferred |
-| NM-OTP-11 | golden_en_in_otp_pan_like_pattern_char_by_char | Golden | Given a PAN-like and an Aadhaar-like pattern, when normalised, then they read character by character | FR-009 | S1 | ⚠️ Deferred |
+| NM-OTP-07 | unit_text_otp_three_and_nine_digits_not_otp | Unit | Given "OTP 123" and "OTP 123456789", when normalised, then neither is treated as an OTP (outside 4 to 8) | FR-009 | S1 | ✅ Automated |
+| NM-OTP-08 | unit_text_otp_pace_hint_is_0_85_on_segment | Unit | Given an OTP span, when segmented, then the segment carries pace_hint 0.85 | FR-009, FR-013 | S1 | ✅ Automated |
+| NM-OTP-09 | golden_hi_otp_postal_pin_code_after_pin_kod | Golden | Given "पिन कोड 560001", when normalised, then six digits read individually | FR-009 | S1 | ✅ Automated |
+| NM-OTP-10 | golden_en_in_otp_card_tail_ending_4417 | Golden | Given "card ending 4417" and "XXXX1234", when normalised, then tails read digit by digit | FR-009 | S1 | ✅ Automated |
+| NM-OTP-11 | golden_en_in_otp_pan_like_pattern_char_by_char | Golden | Given a PAN-like and an Aadhaar-like pattern, when normalised, then they read character by character | FR-009 | S1 | ✅ Automated |
+
+#### 6.2.5a DIGIT STRINGS (S1-T06)
+
+| ID | Test name | Type | Given / When / Then | Spec ref | Sprint | Status |
+|---|---|---|---|---|---|---|
+| NM-DGT-01 | unit_text_digits_otp_readdigitbydigit | Unit | Given "Your OTP is 482916" and "आपका ओटीपी 1357 है", when normalised, then each digit is read alone in the sentence language and the OTP segment carries pace_hint 0.85 | FR-009 AC-1, AC-2 | S1 | ✅ Automated |
+| NM-DGT-02 | unit_text_digits_cardtail_xxxxprefix_readcorrectly | Unit | Given "card ending 4417", "XXXX1234", and "XXXX XXXX XXXX 4321", when normalised, then only the visible tail digits are read, one by one | FR-009 AC-4 | S1 | ✅ Automated |
+| NM-DGT-03 | unit_text_digits_year_negativecase_readasnumber | Unit | Given "1999", "the year 2026", and "I have 1234 items" without a trigger word, when classified, then no digit string is detected and the quantity reads as a cardinal | FR-009 | S1 | ✅ Automated |
+| NM-DGT-04 | unit_text_digits_pincode_withprefix_readbydigit | Unit | Given "PIN 560001" and "पिन कोड 560001", when normalised, then six digits are read one by one; given "560001" alone, then it reads as a cardinal | FR-009 | S1 | ✅ Automated |
+| NM-DGT-05 | unit_text_digits_panlike_readcharbychar | Unit | Given "PAN ABCDE1234F" and an Aadhaar-like "2345 6789 0123", when normalised, then letters are spelled and digits read one by one (Aadhaar in groups of 4) | FR-009 | S1 | ✅ Automated |
+| NM-DGT-06 | unit_text_digits_otp_outsidefourtoeight_notdigitbydigit | Unit | Given "OTP 123" and "OTP 123456789", when normalised, then both read as cardinals | FR-009 | S1 | ✅ Automated |
+| NM-DGT-07 | unit_text_digits_phone_groupsfiveandfive | Unit | Given "+91 98765 43210" and "(555) 010-1234", when normalised, then groups are 5 and 5 with "plus nine one", and 3, 3, 4 | FR-009 AC-3 | S1 | ✅ Automated |
+
 
 #### 6.2.6 CARDINAL
 
