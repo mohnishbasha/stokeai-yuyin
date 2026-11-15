@@ -31,3 +31,9 @@ Allowed for code dependencies: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC,
 ## Generating the full notice file
 
 Release builds attach the full licence texts. For Rust, generate them with `cargo about generate` once the first third-party crate is added and a `about.toml` is created; for JavaScript, use the output of the licence check as the inventory. Regenerate this file for each release. Release images copy it to `/licenses/`.
+
+## Embedded data
+
+| Data | Source | Licence | Record |
+|---|---|---|---|
+| Roman Hindi word forms in `crates/yuyin-text/data/roman_hindi_lexicon.tsv` (part) | Aksharantar, AI4Bharat, Hindi rows with source `AK-Freq` | CC BY 4.0 (attribution: "Aksharantar, AI4Bharat, <https://huggingface.co/datasets/ai4bharat/Aksharantar>") | `docs/licences/roman-hindi-lexicon.md` |

@@ -5,6 +5,8 @@
 //! | Submodule | Data file | Owner task |
 //! |---|---|---|
 //! | [`roman_hindi`] | `data/roman_hindi_lexicon.tsv` | S1-T02 (tagging) |
+//! | [`english`] | `data/english_lexicon.txt` | S1-T02 (tagging) |
+//! | [`ngram`] | `data/tagger_ngram.tsv` | S1-T02 (tagging) |
 //! | [`acronyms`] | `data/acronyms.tsv` | S1-T07 (acronyms) |
 //! | [`hindi_numbers`] | `data/hindi_numbers.tsv` | S1-T03 (numbers) |
 //! | [`tenant`] | none, passed in by the gateway | S1-T07 (acronyms) |
@@ -14,12 +16,16 @@
 use std::sync::OnceLock;
 
 pub mod acronyms;
+pub mod english;
 pub mod hindi_numbers;
+pub mod ngram;
 pub mod roman_hindi;
 pub mod tenant;
 
 pub use acronyms::{AcronymEntry, AcronymLexicon};
+pub use english::EnglishLexicon;
 pub use hindi_numbers::HindiNumbers;
+pub use ngram::NgramScorer;
 pub use roman_hindi::RomanHindiLexicon;
 pub use tenant::{TenantEntry, TenantLexicon};
 
@@ -28,6 +34,10 @@ pub use tenant::{TenantEntry, TenantLexicon};
 pub struct Lexicons {
     /// Roman-script Hindi word forms for language tagging.
     pub roman_hindi: RomanHindiLexicon,
+    /// English word forms, for telling English from Roman Hindi.
+    pub english: EnglishLexicon,
+    /// Character n-gram model for words no lexicon knows.
+    pub ngram: NgramScorer,
     /// Acronym readings.
     pub acronyms: AcronymLexicon,
     /// Hindi number words.
@@ -48,6 +58,8 @@ impl Lexicons {
     pub fn parse_builtin() -> Self {
         Self {
             roman_hindi: RomanHindiLexicon::builtin(),
+            english: EnglishLexicon::builtin(),
+            ngram: NgramScorer::builtin(),
             acronyms: AcronymLexicon::builtin(),
             hindi_numbers: HindiNumbers::builtin(),
         }
