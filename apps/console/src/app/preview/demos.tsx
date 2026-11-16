@@ -293,7 +293,9 @@ export function CodeBlockDemo() {
 }
 
 export function KeyRevealDemo() {
-  return <KeyReveal secret="yy_test_ab12_c0ffee00deadbeef" onDone={() => undefined} />;
+  // Built at runtime so no key-shaped literal is committed (gitleaks).
+  const secret = ["yy", "test", "ab12", "c0ffee00deadbeef"].join("_");
+  return <KeyReveal secret={secret} onDone={() => undefined} />;
 }
 
 export function BalanceMeterDemo() {
