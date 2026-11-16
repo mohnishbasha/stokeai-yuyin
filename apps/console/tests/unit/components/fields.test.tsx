@@ -51,7 +51,12 @@ describe("Textarea", () => {
   it("test_textarea_overlimit_showsoverbyandinvalid", () => {
     const onOverLimitChange = vi.fn();
     render(
-      <Textarea label="Text" limit={3} defaultValue="abcde" onOverLimitChange={onOverLimitChange} />,
+      <Textarea
+        label="Text"
+        limit={3}
+        defaultValue="abcde"
+        onOverLimitChange={onOverLimitChange}
+      />,
     );
     expect(screen.getByText("2 over the limit")).toBeTruthy();
     expect(screen.getByLabelText("Text").getAttribute("aria-invalid")).toBe("true");

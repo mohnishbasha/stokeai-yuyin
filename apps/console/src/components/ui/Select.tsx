@@ -168,7 +168,11 @@ export function Select({
         onKeyDown={handleKeyDown}
         className={cx(FIELD_CLASS, "min-h-(--control-height) text-left")}
       >
-        {loading ? t("select.loading") : selected !== undefined ? selected.label : t("select.placeholder")}
+        {loading
+          ? t("select.loading")
+          : selected !== undefined
+            ? selected.label
+            : t("select.placeholder")}
         {selected?.secondary !== undefined && !loading ? (
           <span className="text-text-1">{`, ${selected.secondary}`}</span>
         ) : null}

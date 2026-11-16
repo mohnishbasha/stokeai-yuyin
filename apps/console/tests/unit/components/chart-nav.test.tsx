@@ -71,7 +71,9 @@ describe("UsageChart", () => {
     fireEvent.click(screen.getByRole("button", { name: "View as table" }));
     expect(screen.getByRole("table")).toBeTruthy();
     expect(screen.getByText("3,400")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "View as chart" }).getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("button", { name: "View as chart" }).getAttribute("aria-pressed")).toBe(
+      "true",
+    );
   });
 
   it("test_usagechart_rangetabs_reportchange", () => {
@@ -101,8 +103,12 @@ describe("AppNav", () => {
   it("test_appnav_render_marksthecurrentpageandlabelsthelandmark", () => {
     render(<AppNav label="Console" items={ITEMS} currentHref="/dashboard/keys" />);
     expect(screen.getByRole("navigation", { name: "Console" })).toBeTruthy();
-    expect(screen.getByRole("link", { name: "API keys" }).getAttribute("aria-current")).toBe("page");
-    expect(screen.getByRole("link", { name: "Dashboard" }).hasAttribute("aria-current")).toBe(false);
+    expect(screen.getByRole("link", { name: "API keys" }).getAttribute("aria-current")).toBe(
+      "page",
+    );
+    expect(screen.getByRole("link", { name: "Dashboard" }).hasAttribute("aria-current")).toBe(
+      false,
+    );
   });
 
   it("test_appnav_menubutton_opensandescapecloses", () => {

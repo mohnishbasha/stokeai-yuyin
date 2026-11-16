@@ -51,7 +51,11 @@ export function Table<Row extends object>({
 
   if (error !== undefined) {
     return (
-      <div role="region" aria-label={caption} className="rounded-panel border border-line bg-bg-1 p-4">
+      <div
+        role="region"
+        aria-label={caption}
+        className="rounded-panel border border-line bg-bg-1 p-4"
+      >
         {error}
       </div>
     );

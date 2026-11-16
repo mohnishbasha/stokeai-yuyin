@@ -55,7 +55,9 @@ describe("Tabs", () => {
   });
 
   it("test_tabs_controlled_followsselectedprop", () => {
-    const { rerender } = render(<Tabs label="Range" tabs={TABS} selected="b" onChange={() => undefined} />);
+    const { rerender } = render(
+      <Tabs label="Range" tabs={TABS} selected="b" onChange={() => undefined} />,
+    );
     expect(screen.getByRole("tabpanel").textContent).toBe("Panel two");
     rerender(<Tabs label="Range" tabs={TABS} selected="c" onChange={() => undefined} />);
     expect(screen.getByRole("tabpanel").textContent).toBe("Panel three");
@@ -118,7 +120,13 @@ describe("Table", () => {
 
   it("test_table_error_rendersgivenerrorstateinsteadofrows", () => {
     render(
-      <Table caption="Keys" columns={COLUMNS} rows={ROWS} rowKey={(r) => r.id} error={<p>Boom</p>} />,
+      <Table
+        caption="Keys"
+        columns={COLUMNS}
+        rows={ROWS}
+        rowKey={(r) => r.id}
+        error={<p>Boom</p>}
+      />,
     );
     expect(screen.getByText("Boom")).toBeTruthy();
     expect(screen.queryByText("Alpha")).toBeNull();

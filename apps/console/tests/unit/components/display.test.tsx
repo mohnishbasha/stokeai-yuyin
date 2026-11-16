@@ -21,17 +21,26 @@ describe("Badge", () => {
     expect(badge.hasAttribute("tabindex")).toBe(false);
   });
 
-  it.each(["neutral", "ok", "warn", "err", "info"] as const)("test_badge_status_%s_renders", (status) => {
-    render(<Badge status={status}>Label</Badge>);
-    expect(screen.getByText("Label")).toBeTruthy();
-  });
+  it.each(["neutral", "ok", "warn", "err", "info"] as const)(
+    "test_badge_status_%s_renders",
+    (status) => {
+      render(<Badge status={status}>Label</Badge>);
+      expect(screen.getByText("Label")).toBeTruthy();
+    },
+  );
 });
 
 describe("Banner", () => {
   it("test_banner_default_isstatusandactionisalink", () => {
-    render(<Banner status="warn" action={{ label: "Top up", href: "/console/billing" }}>Low balance</Banner>);
+    render(
+      <Banner status="warn" action={{ label: "Top up", href: "/console/billing" }}>
+        Low balance
+      </Banner>,
+    );
     expect(screen.getByRole("status").textContent).toContain("Low balance");
-    expect(screen.getByRole("link", { name: "Top up" }).getAttribute("href")).toBe("/console/billing");
+    expect(screen.getByRole("link", { name: "Top up" }).getAttribute("href")).toBe(
+      "/console/billing",
+    );
   });
 
   it("test_banner_incident_usesalertandcannotbedismissed", () => {
@@ -46,7 +55,11 @@ describe("Banner", () => {
 
   it("test_banner_dismiss_callsback", () => {
     const onDismiss = vi.fn();
-    render(<Banner status="info" onDismiss={onDismiss}>Test mode</Banner>);
+    render(
+      <Banner status="info" onDismiss={onDismiss}>
+        Test mode
+      </Banner>,
+    );
     fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
     expect(onDismiss).toHaveBeenCalled();
   });
@@ -74,10 +87,16 @@ describe("EmptyState", () => {
       <EmptyState
         title="t"
         body="b"
-        action={{ label: "Create", onClick: () => undefined, disabledReason: "Needs the developer role" }}
+        action={{
+          label: "Create",
+          onClick: () => undefined,
+          disabledReason: "Needs the developer role",
+        }}
       />,
     );
-    expect(screen.getByRole("button", { name: /Create/ }).getAttribute("aria-disabled")).toBe("true");
+    expect(screen.getByRole("button", { name: /Create/ }).getAttribute("aria-disabled")).toBe(
+      "true",
+    );
     expect(screen.getByText("Needs the developer role")).toBeTruthy();
   });
 });
@@ -118,7 +137,9 @@ describe("ErrorState", () => {
     act(() => {
       vi.advanceTimersByTime(3_000);
     });
-    expect(screen.getByRole("button", { name: "Retry" }).getAttribute("aria-disabled")).toBe("false");
+    expect(screen.getByRole("button", { name: "Retry" }).getAttribute("aria-disabled")).toBe(
+      "false",
+    );
   });
 
   it("test_errorstate_loading_marksretrybusy", () => {
@@ -147,7 +168,9 @@ describe("BalanceMeter", () => {
     expect(meter.getAttribute("aria-valuemax")).toBe("100");
     expect(meter.getAttribute("aria-valuenow")).toBe("25");
     expect(meter.getAttribute("aria-valuetext")).toBe("$12.50 of $50.00 USD");
-    expect(screen.getByRole("link", { name: "Top up" }).getAttribute("href")).toBe("/console/billing");
+    expect(screen.getByRole("link", { name: "Top up" }).getAttribute("href")).toBe(
+      "/console/billing",
+    );
     expect(screen.queryByText("Low balance")).toBeNull();
   });
 
@@ -165,7 +188,9 @@ describe("BalanceMeter", () => {
   });
 
   it("test_balancemeter_exactamount_isavailableasatooltip", () => {
-    render(<BalanceMeter balanceMicroUsd={1_234_567} capacityMicroUsd={5_000_000} topUpHref="/x" />);
+    render(
+      <BalanceMeter balanceMicroUsd={1_234_567} capacityMicroUsd={5_000_000} topUpHref="/x" />,
+    );
     expect(screen.getByRole("meter").getAttribute("title")).toBe("$1.234567");
   });
 

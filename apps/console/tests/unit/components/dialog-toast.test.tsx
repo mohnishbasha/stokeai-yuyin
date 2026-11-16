@@ -111,10 +111,21 @@ function ToggleHost() {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <button type="button" onClick={() => setOpen(true)}>
+      <button
+        type="button"
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
         Open
       </button>
-      <Dialog open={open} onClose={() => setOpen(false)} title="Hello">
+      <Dialog
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        title="Hello"
+      >
         <p>Body</p>
       </Dialog>
     </div>
@@ -127,7 +138,11 @@ function Pusher({ kind }: { kind: "success" | "error" }) {
     <button
       type="button"
       onClick={() => {
-        toast.push({ kind, message: "Key created", action: { label: "View", onClick: () => undefined } });
+        toast.push({
+          kind,
+          message: "Key created",
+          action: { label: "View", onClick: () => undefined },
+        });
       }}
     >
       Push
@@ -212,7 +227,9 @@ describe("Toast", () => {
     );
     fireEvent.click(screen.getByRole("button", { name: "Push" }));
     expect(screen.getByRole("button", { name: "View" })).toBeTruthy();
-    fireEvent.keyDown(screen.getByText("Key created").closest("li") as HTMLElement, { key: "Escape" });
+    fireEvent.keyDown(screen.getByText("Key created").closest("li") as HTMLElement, {
+      key: "Escape",
+    });
     expect(screen.queryByText("Key created")).toBeNull();
   });
 

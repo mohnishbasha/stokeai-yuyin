@@ -18,7 +18,9 @@ function setup(onChange = vi.fn()) {
 }
 
 function activeText(trigger: HTMLElement): string {
-  return document.getElementById(trigger.getAttribute("aria-activedescendant") ?? "")?.textContent ?? "";
+  return (
+    document.getElementById(trigger.getAttribute("aria-activedescendant") ?? "")?.textContent ?? ""
+  );
 }
 
 describe("Select", () => {

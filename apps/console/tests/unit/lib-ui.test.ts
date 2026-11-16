@@ -19,8 +19,10 @@ describe("countCodePoints", () => {
   });
 
   it("test_count_decomposedform_isnormalisedtonfcfirst", () => {
-    expect(countCodePoints("é")).toBe(1);
-    expect(countCodePoints("क़")).toBe(1);
+    expect(countCodePoints("e\u0301")).toBe(1);
+    expect(countCodePoints("\u00e9")).toBe(1);
+    // U+0958 is a composition exclusion: NFC keeps it as U+0915 U+093C, so it counts as two.
+    expect(countCodePoints("\u0958")).toBe(2);
   });
 
   it("test_count_whitespaceandempty_arecounted", () => {

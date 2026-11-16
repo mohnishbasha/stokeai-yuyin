@@ -6,8 +6,10 @@ import { t } from "../../lib/messages";
 
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive";
 
-export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "disabled" | "children"> {
+export interface ButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "disabled" | "children"
+> {
   readonly variant?: ButtonVariant;
   /** Disabled through `aria-disabled` so the control stays focusable and can explain why. */
   readonly disabled?: boolean;
@@ -59,7 +61,9 @@ export function Button({
         type={type}
         aria-disabled={disabled}
         aria-busy={loading || undefined}
-        aria-describedby={disabled && disabledReason !== undefined ? reasonId : rest["aria-describedby"]}
+        aria-describedby={
+          disabled && disabledReason !== undefined ? reasonId : rest["aria-describedby"]
+        }
         title={disabled ? disabledReason : rest.title}
         onClick={handleClick}
         className={cx(

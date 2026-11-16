@@ -40,7 +40,8 @@ export function VoicePicker({
   const [filter, setFilter] = useState<string | null>(null);
   const [active, setActive] = useState(0);
   const languages = [...new Set(voices.flatMap((voice) => voice.languages))].sort();
-  const shown = filter === null ? voices : voices.filter((voice) => voice.languages.includes(filter));
+  const shown =
+    filter === null ? voices : voices.filter((voice) => voice.languages.includes(filter));
   const activeVoice = shown[Math.min(active, shown.length - 1)];
   const selected = voices.find((voice) => voice.id === selectedId);
 

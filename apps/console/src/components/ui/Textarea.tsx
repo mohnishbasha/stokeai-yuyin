@@ -13,8 +13,10 @@ import { cx } from "../../lib/cx";
 import { t, tf } from "../../lib/messages";
 import { ERROR_CLASS, FIELD_CLASS, HELPER_CLASS, LABEL_CLASS } from "./styles";
 
-export interface TextareaProps
-  extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "id" | "value" | "defaultValue"> {
+export interface TextareaProps extends Omit<
+  TextareaHTMLAttributes<HTMLTextAreaElement>,
+  "id" | "value" | "defaultValue"
+> {
   readonly label: string;
   readonly value?: string;
   readonly defaultValue?: string;
@@ -65,7 +67,11 @@ export function Textarea({
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey) && onSubmitShortcut !== undefined) {
+    if (
+      event.key === "Enter" &&
+      (event.ctrlKey || event.metaKey) &&
+      onSubmitShortcut !== undefined
+    ) {
       event.preventDefault();
       onSubmitShortcut();
     }
@@ -73,9 +79,7 @@ export function Textarea({
   }
 
   const counterText =
-    limit === undefined
-      ? tf("count.plain", { count })
-      : tf("count.of", { count, limit });
+    limit === undefined ? tf("count.plain", { count }) : tf("count.of", { count, limit });
   const counterId = `${id}-counter`;
   const helperId = `${id}-helper`;
   const errorId = `${id}-error`;

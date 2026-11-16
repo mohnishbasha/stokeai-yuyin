@@ -37,7 +37,11 @@ describe("CodeBlock", () => {
 
   it("test_codeblock_render_showscurlfirstwithlabelledfocusableregion", () => {
     render(<CodeBlock snippets={snippets} />);
-    expect(screen.getAllByRole("tab").map((t) => t.textContent)).toEqual(["curl", "TypeScript", "Python"]);
+    expect(screen.getAllByRole("tab").map((t) => t.textContent)).toEqual([
+      "curl",
+      "TypeScript",
+      "Python",
+    ]);
     const region = screen.getByRole("region", { name: /curl/ });
     expect(region.getAttribute("tabindex")).toBe("0");
     expect(region.textContent).toContain("curl");
@@ -163,7 +167,9 @@ describe("KeyReveal", () => {
     const onRetry = vi.fn();
     const { rerender } = render(<KeyReveal secret={null} loading onDone={() => undefined} />);
     expect(document.querySelector('[aria-busy="true"]')).toBeTruthy();
-    rerender(<KeyReveal secret={null} errorCode="internal" onRetry={onRetry} onDone={() => undefined} />);
+    rerender(
+      <KeyReveal secret={null} errorCode="internal" onRetry={onRetry} onDone={() => undefined} />,
+    );
     fireEvent.click(screen.getByRole("button", { name: "Retry" }));
     expect(onRetry).toHaveBeenCalled();
     expect(screen.queryByRole("checkbox")).toBeNull();

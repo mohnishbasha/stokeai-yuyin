@@ -34,11 +34,9 @@ export function Toggle({
   const notesId = `${id}-notes`;
   const inactive = disabled || saving;
   const stateText = saving ? t("common.saving") : checked ? t("common.on") : t("common.off");
-  const notes = [
-    helper,
-    disabled ? disabledReason : undefined,
-    error,
-  ].filter((note): note is string => note !== undefined);
+  const notes = [helper, disabled ? disabledReason : undefined, error].filter(
+    (note): note is string => note !== undefined,
+  );
 
   function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
     // The switch pattern uses Space only; a native button would also activate on Enter.
@@ -68,10 +66,7 @@ export function Toggle({
         >
           <span
             aria-hidden="true"
-            className={cx(
-              "block h-4 w-4 rounded-control",
-              checked ? "bg-accent-ink" : "bg-text-1",
-            )}
+            className={cx("block h-4 w-4 rounded-control", checked ? "bg-accent-ink" : "bg-text-1")}
           />
         </button>
         <span id={`${id}-label`} className={LABEL_CLASS}>
