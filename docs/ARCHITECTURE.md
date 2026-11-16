@@ -325,6 +325,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: No change to the current sprints. Migrations stay plain, portable SQL (ADR-024), which keeps an optional SQLite backend possible later.
 - Status: Accepted.
 
+### ADR-030 Per-package licence exceptions for the Next.js console
+
+- Context: S2-T01 (PR #205) made `apps/console` a Next.js app. `scripts/licence-check.sh` then rejected transitive packages from `next`: `graceful-fs` and `lru-cache` (BlueOak-1.0.0), `tslib` (0BSD), `caniuse-lite` (CC-BY-4.0 browser data), and `@img/sharp-libvips-*` (LGPL-3.0-or-later, optional native binary of `sharp`). The owner recorded this as B7 and merged PR #205 on 2026-11-16 with the check still red.
+- Decision: Add per-package exceptions with written reasons in `scripts/licence-check.sh`, following the `minimatch` precedent. The SPDX allowlist itself is not widened. An exception ending in `*` matches a package name prefix, used only for the platform-specific `@img/sharp-libvips-*` packages. libvips stays a build host dependency and is not copied into the console image.
+- Consequences: `licence-check` is green on `develop` again. Any new package outside the allowlist still fails the check. If the owner prefers to drop libvips entirely, the alternative is to stub out `sharp` and set `images.unoptimized`.
+- Status: Accepted, owner to confirm (B7).
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket

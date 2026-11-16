@@ -15,10 +15,17 @@ NODE_MODULES="${NODE_MODULES:-$ROOT/node_modules}"
 
 # SPDX identifiers allowed for JS packages. Keep in sync with deny.toml.
 ALLOWED='["MIT","Apache-2.0","BSD-2-Clause","BSD-3-Clause","ISC","Zlib","Unicode-3.0","Unicode-DFS-2016","MPL-2.0"]'
-# Explicit per-package exceptions (package names). Each needs a reason here.
-#   BlueOak-1.0.0 is a permissive licence (similar to MIT/ISC) used by the minimatch family,
-#   pulled in by eslint tooling. Not widened into the allowlist; owner to confirm.
-EXCEPTIONS='["minimatch","@isaacs/nonrecursive-glob-match"]'
+# Explicit per-package exceptions (package names; a trailing * matches a name prefix).
+# Each needs a reason here. None widens the allowlist (ADR-030).
+#   minimatch, @isaacs/nonrecursive-glob-match, graceful-fs, lru-cache: BlueOak-1.0.0, a
+#     permissive licence (similar to MIT/ISC), pulled in by eslint tooling and by next.
+#   tslib: 0BSD, a public-domain-equivalent licence, pulled in by next.
+#   caniuse-lite: CC-BY-4.0 browser support data read by the build (browserslist), not code
+#     shipped to users.
+#   @img/sharp-libvips-*: LGPL-3.0-or-later native library, an optional dependency of sharp
+#     (next image optimisation). Build host only, dynamically linked, not copied into the
+#     console image.
+EXCEPTIONS='["minimatch","@isaacs/nonrecursive-glob-match","graceful-fs","lru-cache","tslib","caniuse-lite","@img/sharp-libvips-*"]'
 
 fail=0
 
@@ -46,7 +53,9 @@ bad="$(find "$NODE_MODULES" -name package.json -not -path '*/node_modules/*/node
          | map(split(" AND ") | all(.[]; . as $i | $allowed | index($i) != null))
          | any) as $ok
       | select($ok|not)
-      | select(($exc | index($p.name)) == null)
+      | select([$exc[] | . as $e
+          | if endswith("*") then ($p.name | startswith($e[:-1])) else $p.name == $e end]
+          | any | not)
       | "\($p.name)@\($p.version): \($l)"' 2>/dev/null | sort -u)"
 if [[ -n "$bad" ]]; then
   echo "licence-check: JS packages with a licence outside the allowlist:" >&2
