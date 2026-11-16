@@ -733,6 +733,7 @@ Rules: error responses never echo request text. Every error carries `request_id`
 
 ### Console
 
+- Structure (S2-T01): Next.js App Router with route groups `(marketing)` (`/`), `(console)` (`/dashboard`) and `(operator)` (`/operator`), plus `GET /healthz`. Design tokens are CSS variables in `apps/console/src/styles/tokens.css`, the only file allowed raw colour, type and spacing values (enforced by a unit test). The theme is dark by default with a light theme chosen by the `yuyin-theme` cookie, read on the server and rendered as `data-theme` on `<html>`, so no inline script is needed. User-visible strings come from `src/messages/en.json` through `t()`. The image runs Next standalone output on distroless Node, non-root, port 3000. Lighthouse (performance 90, accessibility 95) runs in the `e2e-tests` CI job.
 - Built-in auth (ADR-025): operators create organizations and users with the `yuyin-admin` command; there is no self-serve sign-up. Sign-in uses an operator-issued email magic link or one-time login token (hashed, single use, 15 minute expiry) and a server-side session in an HttpOnly Secure SameSite cookie. CSRF protection on all mutations. Strict CSP with nonces, no inline scripts, `frame-ancestors 'none'`.
 - Role checks on the server for every action. The client never decides authorisation.
 - Stripe webhooks verified by signature. Secrets in Kubernetes Secrets.
@@ -1322,7 +1323,9 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 │   │                  tests/{integration/,regression/,smoke/}
 │   └── yuyin-count-wasm/
 ├── migrations/
-├── apps/{console/,docs/}
+├── apps/
+│   ├── console/   Next.js App Router: src/{app/{(marketing),(console),(operator),healthz},components,lib,messages,fonts,styles/tokens.css}, next.config.ts, lighthouserc.json
+│   └── docs/
 ├── packages/{sdk-ts/,sdk-python/,cli/,mcp/}
 ├── integrations/{pi/,goose/toolkit.yaml,opencode/README.md}
 ├── bench/{METHOD.md,corpus/,engine-bakeoff/,loadgen/,results/}

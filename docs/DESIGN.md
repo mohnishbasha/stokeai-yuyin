@@ -176,9 +176,11 @@ Rules:
 
 | Face | Expected licence | Status | Verified by | Date | Source URL recorded |
 |---|---|---|---|---|---|
-| IBM Plex Sans | SIL Open Font License 1.1 | To be verified | [owner] | [date] | [URL of licence file in the downloaded package] |
-| IBM Plex Sans Devanagari | SIL Open Font License 1.1 | To be verified | [owner] | [date] | [URL] |
-| IBM Plex Mono | SIL Open Font License 1.1 | To be verified | [owner] | [date] | [URL] |
+| IBM Plex Sans | SIL Open Font License 1.1 | Verified | Claude agent (S2-T01) | 2026-11-15 | LICENSE in the npm package `@fontsource/ibm-plex-sans` 5.3.0, copied to `apps/console/src/fonts/OFL-IBM-Plex-Sans.txt` |
+| IBM Plex Sans Devanagari | SIL Open Font License 1.1 | Verified | Claude agent (S2-T01) | 2026-11-15 | LICENSE in `@fontsource/ibm-plex-sans-devanagari` 5.3.0, copied to `apps/console/src/fonts/OFL-IBM-Plex-Sans-Devanagari.txt` |
+| IBM Plex Mono | SIL Open Font License 1.1 | Verified | Claude agent (S2-T01) | 2026-11-15 | LICENSE in `@fontsource/ibm-plex-mono` 5.3.0, copied to `apps/console/src/fonts/OFL-IBM-Plex-Mono.txt` |
+
+Implementation notes (S2-T01): the WOFF2 files are committed under `apps/console/src/fonts/` and loaded with `next/font/local` (they are not npm dependencies, because `scripts/licence-check.sh` rejects OFL-1.1 packages). Latin Extended is not included yet; only Latin and Devanagari are subset. The footer link to the licence texts is deferred to S2-T06. Tokens live in `apps/console/src/styles/tokens.css` and are mapped to Tailwind v4 utilities with `@theme inline`.
 
 SIL OFL is expected but not yet confirmed. Before the fonts ship, the executing agent downloads the package, reads the licence file inside it, and fills in this table. The licence text is shipped alongside the font files and linked from the site footer. If any face is found to carry different terms, the font is replaced and this section updated.
 

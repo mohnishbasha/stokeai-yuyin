@@ -1,0 +1,244 @@
+/*
+ * Design tokens (DESIGN sections 2 to 4). This is the only file in apps/console/src that may
+ * hold a raw colour, type size, or spacing value; tests/unit/rawvalues.test.ts enforces it.
+ * Everything else references a variable, either directly or through a Tailwind utility
+ * generated from the @theme block at the end of this file.
+ *
+ * Themes: dark is the default. Light applies when data-theme="light" is set, or when the
+ * user has not chosen (no data-theme attribute) and the OS prefers light.
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Colour, dark (DESIGN 2.1) */
+  --bg-0: #0B0D10;
+  --bg-1: #12151A;
+  --bg-2: #1A1E25;
+  --bg-3: #242A33;
+  --line: #2B323C;
+  --line-strong: #6B7686;
+  --text-0: #F2F4F7;
+  --text-1: #B4BCC8;
+  --text-2: #7C8696;
+  --accent: #F5A524;
+  --accent-ink: #1A1200;
+  --accent-dim: #F5A52433;
+  --ok: #3DD68C;
+  --warn: #F5A524;
+  --err: #F2555A;
+  --info: #5AA9F2;
+
+  /* Spacing, 4 px base (DESIGN 4.1) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Radius (DESIGN 4.2) */
+  --radius-control: 6px;
+  --radius-panel: 10px;
+
+  /* Layout (DESIGN 4.1, 4.4) */
+  --control-height: 36px;
+  --control-height-touch: 44px;
+  --content-max: 1200px;
+  --prose-max: 72ch;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* Type scale, size and line height (DESIGN 3.2) */
+  --text-display-size: 44px;
+  --text-display-line: 52px;
+  --text-h1-size: 32px;
+  --text-h1-line: 40px;
+  --text-h2-size: 24px;
+  --text-h2-line: 32px;
+  --text-h3-size: 18px;
+  --text-h3-line: 26px;
+  --text-body-size: 15px;
+  --text-body-line: 24px;
+  --text-small-size: 13px;
+  --text-small-line: 20px;
+  --text-mono-size: 13px;
+  --text-mono-line: 20px;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Devanagari adds 4 px to every line height (DESIGN 3.3 rule 1). globals.css sets
+     --line-extra to this value under :lang(hi). */
+  --line-extra: 0px;
+  --line-extra-hi: 4px;
+
+  /* Font stacks (DESIGN 3.1). The Latin face comes first, so Devanagari glyphs fall through
+     to the Devanagari face per glyph, then to the system fallback. */
+  --font-sans-stack:
+    var(--font-plex-sans), var(--font-plex-devanagari), "Noto Sans Devanagari", system-ui,
+    sans-serif;
+  --font-mono-stack: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-0: #0B0D10;
+  --bg-1: #12151A;
+  --bg-2: #1A1E25;
+  --bg-3: #242A33;
+  --line: #2B323C;
+  --line-strong: #6B7686;
+  --text-0: #F2F4F7;
+  --text-1: #B4BCC8;
+  --text-2: #7C8696;
+  --accent: #F5A524;
+  --accent-ink: #1A1200;
+  --accent-dim: #F5A52433;
+  --ok: #3DD68C;
+  --warn: #F5A524;
+  --err: #F2555A;
+  --info: #5AA9F2;
+}
+
+/* Light, DESIGN 2.2 (includes the contrast overrides for --text-2 and --accent). */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-0: #FBFAF7;
+  --bg-1: #FFFFFF;
+  --bg-2: #F3F1EC;
+  --bg-3: #E9E6DF;
+  --line: #DAD6CC;
+  --line-strong: #7A828E;
+  --text-0: #14171C;
+  --text-1: #474E5A;
+  --text-2: #5F6775;
+  --accent: #9A5A00;
+  --accent-ink: #FFFFFF;
+  --accent-dim: #9A5A0026;
+  --ok: #1A7F4E;
+  --warn: #8A5A00;
+  --err: #B02E33;
+  --info: #2A6FB8;
+}
+
+/* Same light values, applied when the user has not chosen a theme. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+
+    --bg-0: #FBFAF7;
+    --bg-1: #FFFFFF;
+    --bg-2: #F3F1EC;
+    --bg-3: #E9E6DF;
+    --line: #DAD6CC;
+    --line-strong: #7A828E;
+    --text-0: #14171C;
+    --text-1: #474E5A;
+    --text-2: #5F6775;
+    --accent: #9A5A00;
+    --accent-ink: #FFFFFF;
+    --accent-dim: #9A5A0026;
+    --ok: #1A7F4E;
+    --warn: #8A5A00;
+    --err: #B02E33;
+    --info: #2A6FB8;
+  }
+}
+
+/* Coarse pointers get the 44 px control height (DESIGN 4.1). */
+@media (pointer: coarse) {
+  :root {
+    --control-height: var(--control-height-touch);
+  }
+}
+
+/*
+ * Tailwind theme. The default palette, type scale, spacing, radii, shadows, and breakpoints
+ * are cleared so a utility can only resolve to a token. The mapped values are variable
+ * references (inline), so a theme switch changes them without regenerating CSS.
+ */
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --font-weight-*: initial;
+  --spacing-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --blur-*: initial;
+  --breakpoint-*: initial;
+  --container-*: initial;
+  --leading-*: initial;
+  --tracking-*: initial;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+}
+
+@theme inline {
+  --color-bg-0: var(--bg-0);
+  --color-bg-1: var(--bg-1);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text-0: var(--text-0);
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-dim: var(--accent-dim);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-err: var(--err);
+  --color-info: var(--info);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
+  --spacing-6: var(--space-6);
+  --spacing-7: var(--space-7);
+  --spacing-8: var(--space-8);
+  --spacing-9: var(--space-9);
+
+  --radius-control: var(--radius-control);
+  --radius-panel: var(--radius-panel);
+
+  --container-content: var(--content-max);
+  --container-prose: var(--prose-max);
+
+  --font-sans: var(--font-sans-stack);
+  --font-mono: var(--font-mono-stack);
+
+  --text-display: var(--text-display-size);
+  --text-display--line-height: calc(var(--text-display-line) + var(--line-extra));
+  --text-h1: var(--text-h1-size);
+  --text-h1--line-height: calc(var(--text-h1-line) + var(--line-extra));
+  --text-h2: var(--text-h2-size);
+  --text-h2--line-height: calc(var(--text-h2-line) + var(--line-extra));
+  --text-h3: var(--text-h3-size);
+  --text-h3--line-height: calc(var(--text-h3-line) + var(--line-extra));
+  --text-body: var(--text-body-size);
+  --text-body--line-height: calc(var(--text-body-line) + var(--line-extra));
+  --text-small: var(--text-small-size);
+  --text-small--line-height: calc(var(--text-small-line) + var(--line-extra));
+  --text-mono: var(--text-mono-size);
+  --text-mono--line-height: var(--text-mono-line);
+
+  --font-weight-regular: var(--weight-regular);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+}

@@ -707,6 +707,13 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | CN-33 | e2e_site_abuse_report_form_submits_and_queues | E2E | Given the public form, when submitted, then an abuse item appears in the operator queue | FR-031 | S6 | ⚠️ Deferred |
 | CN-34 | e2e_console_signup_requires_aup_acceptance | E2E | Given sign-up, when the policy box is unchecked, then sign-up is blocked | FR-031 | S6 | ⚠️ Deferred |
 | CN-35 | e2e_console_component_library_unit_tests_per_component | E2E | Given each design-system component, when its preview route and unit test run, then both pass | NFR-015 | S2 | ⚠️ Deferred |
+| CN-36 | e2e_console_homeshell_lighthouse_meetsthresholds | E2E | Given the production build served by `next start`, when Lighthouse runs on the home shell (`lighthouserc.json`), then performance is at least 90 and accessibility is at least 95 | FR-022, NFR-015 | S2 | ✅ Automated |
+| CN-37 | unit_console_tokens_themes_darkdefaultlightavailable | Unit | Given `src/styles/tokens.css`, when parsed, then dark values are the default on `:root`, a light theme is selected by `data-theme="light"` (and by OS preference when no choice is stored), and every token in DESIGN 2.1 and 2.2 has the documented value | NFR-015 | S2 | ✅ Automated |
+| CN-38 | unit_console_styles_rawvalues_lintrejects | Unit | Given source files under `apps/console/src`, when scanned, then any hex colour, `rgb()` or `hsl()` call, or `px` literal outside `src/styles/tokens.css` is reported, and a deliberate violation is rejected | NFR-015 | S2 | ✅ Automated |
+| CN-39 | unit_console_fonts_selfhosted_noexternalrequests | Unit | Given the console source and build config, when scanned, then every font is a committed WOFF2 file with its OFL text, the Devanagari face is present, and no source references a remote font host | NFR-015, NFR-016 | S2 | ✅ Automated |
+| CN-40 | unit_console_routes_groups_allthreeexist | Unit | Given `src/app`, when listed, then the route groups `(marketing)`, `(console)`, and `(operator)` each hold a layout and a page, and the home shell is `(marketing)/page.tsx` | FR-022 | S2 | ✅ Automated |
+| CN-41 | unit_console_themetoggle_click_switchesandpersists | Unit | Given the theme toggle, when activated by click or keyboard, then `data-theme` flips, the choice is stored in a cookie, and the control exposes its state through `aria-pressed` and an accessible name | NFR-015 | S2 | ✅ Automated |
+| CN-42 | e2e_console_healthz_get_returns200 | E2E | Given the console image or `next start`, when `GET /healthz` is called, then it returns 200 with body `ok` | NFR-016 | S2 | ✅ Automated |
 
 ### 6.14 Stripe webhooks
 
