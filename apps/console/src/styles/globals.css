@@ -42,6 +42,7 @@
   :focus-visible {
     outline: var(--focus-ring-width) solid var(--accent);
     outline-offset: var(--focus-ring-offset);
+    box-shadow: 0 0 0 var(--focus-ring-halo) var(--accent-dim);
   }
 
   /* Forced-colours mode (DESIGN 2.3). */
