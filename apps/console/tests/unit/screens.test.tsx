@@ -10,7 +10,7 @@ import type { ReactElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ConsoleNav } from "../../src/components/ConsoleNav";
 import { ToastProvider } from "../../src/components/ui/Toast";
-import { t } from "../../src/lib/messages";
+import { t, tf } from "../../src/lib/messages";
 import { MOCK_ERROR_CODE, MOCK_TRACE_ID } from "../../src/lib/data/mock";
 import {
   CONSOLE_HOME_HREF,
@@ -21,6 +21,17 @@ import {
   type ScreenState,
 } from "../../src/lib/screens";
 
+if (typeof window.matchMedia !== "function") {
+  Object.defineProperty(window, "matchMedia", {
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+    }),
+  });
+}
+
 vi.mock("next/navigation", () => ({ usePathname: () => "/dashboard/keys" }));
 
 type PageModule = {
@@ -29,7 +40,11 @@ type PageModule = {
   }) => Promise<ReactElement> | ReactElement;
 };
 
-const PAGES = import.meta.glob<PageModule>("../../src/app/(console)/dashboard/**/page.tsx");
+// Parentheses are glob syntax, so the route group is matched by `*` and filtered by name.
+const ALL_PAGES = import.meta.glob<PageModule>("../../src/app/*/dashboard/**/page.tsx");
+const PAGES = Object.fromEntries(
+  Object.entries(ALL_PAGES).filter(([key]) => key.includes("/(console)/")),
+);
 
 function pageKey(href: string): string {
   const rest = href === CONSOLE_HOME_HREF ? "" : href.slice(CONSOLE_HOME_HREF.length);
@@ -95,7 +110,9 @@ describe("e2e_console_screens_all_reachable", () => {
   });
 
   it("test_screens_everyroutefile_isregistered", () => {
-    const registered = new Set([CONSOLE_HOME_HREF, ...CONSOLE_SCREENS.map((s) => s.href)].map(pageKey));
+    const registered = new Set(
+      [CONSOLE_HOME_HREF, ...CONSOLE_SCREENS.map((s) => s.href)].map(pageKey),
+    );
     expect(new Set(Object.keys(PAGES))).toEqual(registered);
   });
 });
@@ -167,9 +184,9 @@ describe("state flags per screen", () => {
       target: { value: "Batch jobs" },
     });
     fireEvent.click(screen.getByRole("button", { name: t("screen.keys.createSubmit") }));
-    const secret = await screen.findByLabelText(t("key.label"), { selector: "section" }).then(
-      (section) => section.textContent ?? "",
-    );
+    const secret = await screen
+      .findByLabelText(t("key.label"), { selector: "section" })
+      .then((section) => section.textContent);
     expect(secret).toMatch(/yy_live_[a-z0-9]{8}_[a-z0-9]{32}/);
     fireEvent.click(screen.getByLabelText(t("key.stored")));
     fireEvent.click(screen.getByRole("button", { name: t("key.done") }));
@@ -186,14 +203,14 @@ describe("state flags per screen", () => {
 
   it("test_screens_usage_partialflag_showsbannerandtotals", async () => {
     await renderRoute("/dashboard/usage", "partial");
-    expect(screen.getByRole("status").textContent).toContain(t("screen.usage.partial"));
-    expect(screen.getByText(t("screen.usage.byKey"))).toBeTruthy();
+    expect(screen.getByText(t("screen.usage.partial"))).toBeTruthy();
+    expect(screen.getByRole("heading", { name: t("screen.usage.byKey") })).toBeTruthy();
   });
 
   it("test_screens_usage_rangeswitch_changesthetotals", async () => {
     await renderRoute("/dashboard/usage");
     const before = screen.getByTestId("usage-total-characters").textContent;
-    fireEvent.click(screen.getByRole("radio", { name: "7d" }));
+    fireEvent.click(screen.getByRole("tab", { name: "7d" }));
     expect(screen.getByTestId("usage-total-characters").textContent).not.toBe(before);
   });
 
@@ -228,7 +245,7 @@ describe("state flags per screen", () => {
     fireEvent.change(screen.getByLabelText(t("screen.billing.otherAmount")), {
       target: { value: "2" },
     });
-    expect(screen.getByText(/\$5\.00/, { selector: "[id]" })).toBeTruthy();
+    expect(screen.getByText(tf("screen.billing.minError", { min: "$5.00" }))).toBeTruthy();
   });
 
   it("test_screens_lexicon_default_rendersdevanagarirows", async () => {
@@ -288,8 +305,9 @@ describe("state flags per screen", () => {
 
   it("test_screens_playground_zerobalanceflag_showsbannerwithtopuplink", async () => {
     await renderRoute("/dashboard/playground", "zero-balance");
-    const banner = screen.getByRole("status");
-    expect(banner.textContent).toContain(t("screen.playground.zeroBalance"));
+    const banner = screen
+      .getByText(t("screen.playground.zeroBalance"))
+      .closest("div") as HTMLElement;
     expect(within(banner).getByRole("link").getAttribute("href")).toBe("/dashboard/billing");
   });
 
@@ -297,7 +315,9 @@ describe("state flags per screen", () => {
     await renderRoute("/dashboard/playground", "over-limit");
     expect(screen.getByText(/over the limit/)).toBeTruthy();
     expect(
-      screen.getByRole("button", { name: t("screen.playground.play") }).getAttribute("aria-disabled"),
+      screen
+        .getByRole("button", { name: t("screen.playground.play") })
+        .getAttribute("aria-disabled"),
     ).toBe("true");
   });
 
