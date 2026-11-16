@@ -7,6 +7,7 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 ## [Unreleased]
 
 ### Added
+- Built-in console auth (S2-T04, ADR-031): auth schema migration (`organizations`, `users`, `memberships`, `login_tokens`, `sessions`), the `yuyin-admin` operator command (`org create`, `user create`, `login-token issue`), single-use hashed login tokens with 15 minute expiry, server-side sessions in an HttpOnly Secure SameSite cookie, CSRF protection on mutations, owner/admin/developer/billing roles, an organization switcher, a proxy that redirects unauthenticated requests, and an `OPERATOR_USER_IDS` allowlist for `/operator`.
 - Docs site shell (S2-T07): `apps/docs` is a static Next.js site with MDX pages for the six documentation screens, a sidebar, client-side search over an index built at build time, an API reference generated from `api/openapi.yaml`, and a changelog page built from `CHANGELOG.md`. CI fails if the reference cannot be generated.
 - Pulse line (S2-T03): `PulseLine` canvas component driven by a mock audio stream, with a static level meter under `prefers-reduced-motion`, an `aria-hidden` line with a `role="status"` text alternative, forced-colours support, and a preview at `/preview/components/pulse-line`.
 - Console shell (S2-T01): Next.js App Router app with route groups `(marketing)`, `(console)` and `(operator)`, Tailwind v4 CSS-variable design tokens, dark default and light theme with a toggle, self-hosted IBM Plex fonts including Devanagari, a `/healthz` route, a standalone console image, and a Lighthouse CI check.

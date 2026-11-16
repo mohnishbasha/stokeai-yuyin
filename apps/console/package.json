@@ -10,10 +10,12 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "type-check": "tsc -p tsconfig.json --noEmit"
+    "type-check": "tsc -p tsconfig.json --noEmit",
+    "yuyin-admin": "bun scripts/yuyin-admin.ts"
   },
   "dependencies": {
     "next": "16.4.6",
+    "pg": "8.23.1",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
@@ -22,6 +24,7 @@
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@types/node": "26.6.6",
+    "@types/pg": "8.23.1",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "jsdom": "31.0.1",
