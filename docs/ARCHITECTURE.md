@@ -83,7 +83,7 @@ Subdomains: `api.yuyin.openstoke.com` (data plane), `console.yuyin.openstoke.com
 | `crates/yuyin-licence` | Rust | Self-host licence verification (Ed25519), offline usage report |
 | `crates/yuyin-count-wasm` | Rust | WASM build of the character counter (`count.rs`) for the console |
 | `apps/console` | TypeScript | Console, marketing site, playground, operator admin, Stripe webhooks |
-| `apps/docs` | MDX | Documentation site built from MDX plus the OpenAPI file |
+| `apps/docs` | MDX | Documentation site built from MDX plus the OpenAPI file (ADR-031) |
 | `packages/sdk-ts` | TypeScript | Official TypeScript SDK |
 | `packages/sdk-python` | Python | Official Python SDK |
 | `packages/cli` | TypeScript | `yuyin` CLI, compiled with `bun build --compile` |
@@ -331,6 +331,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Decision: Add per-package exceptions with written reasons in `scripts/licence-check.sh`, following the `minimatch` precedent. The SPDX allowlist itself is not widened. An exception ending in `*` matches a package name prefix, used only for the platform-specific `@img/sharp-libvips-*` packages. libvips stays a build host dependency and is not copied into the console image.
 - Consequences: `licence-check` is green on `develop` again. Any new package outside the allowlist still fails the check. If the owner prefers to drop libvips entirely, the alternative is to stub out `sharp` and set `images.unoptimized`.
 - Status: Accepted, owner to confirm (B7).
+
+### ADR-031 Docs site: Next.js static export with MDX
+
+- Context: S2-T07 (issue #32) needs a docs site with MDX pages, a sidebar, search, and an API reference generated from `api/openapi.yaml` (FR-024). The console already runs on Next.js App Router with design tokens and self-hosted fonts.
+- Decision: `apps/docs` is a Next.js App Router app with `output: "export"` (static files in `apps/docs/dist`, no server). Pages are MDX compiled by `@next/mdx` with `remark-gfm` for tables. The API reference is built at build time from `api/openapi.yaml` by `src/lib/openapi.ts` (parsed with `yaml`); a file that cannot be documented throws and fails the build, and CI runs `bun run --cwd apps/docs build:reference` in `contract-tests`. Search is a static JSON index written by `scripts/build-search-index.ts` and matched in the browser, with no external service (NFR-025). `tokens.css` and the fonts are copies of the console's, with a test that the token files are identical and a raw-value scan like the console's. New dependencies, all MIT or ISC and passing `scripts/licence-check.sh` with no new exceptions: `@next/mdx`, `@mdx-js/loader`, `@mdx-js/react`, `@mdx-js/mdx` (tests), `@types/mdx`, `remark-gfm`, `yaml`.
+- Consequences: Hosting is any static file host. The theme choice is applied after hydration from a cookie because there is no server to read it. The browser search test (CN-24) joins the Playwright harness in S2-T09; until then DC-03 covers search as an integration test over the built index and the component. A change to console tokens needs the same change in `apps/docs/src/styles/tokens.css`, which the drift test enforces.
+- Status: Accepted.
 
 ---
 
@@ -1278,7 +1285,7 @@ Chart verification (CI, every PR that touches `deploy/` or the gateway):
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`; Playwright from Sprint 2), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
+| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; docs API reference and site build from `api/openapi.yaml`; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`; Playwright from Sprint 2), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
 | `security.yml` | every PR, pushes to `develop`, and weekly | `audit` (`scripts/audit.sh`: `cargo audit`, `cargo deny check advisories bans sources`, `bun audit`) and `gitleaks` (full history scan with `.gitleaks.toml`) |
 | `licence-check.yml` | every PR and pushes to `develop` | `licence-check` (`scripts/licence-check.sh`, allowlist in `deny.toml`) |
 | `kind.yml` | PRs touching `deploy/` or `crates/`, and all PRs to `staging` | chart verification steps 3 to 5 |
@@ -1332,7 +1339,7 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── migrations/
 ├── apps/
 │   ├── console/   Next.js App Router: src/{app/{(marketing),(console),(operator),healthz},components,lib,messages,fonts,styles/tokens.css}, next.config.ts, lighthouserc.json
-│   └── docs/
+│   └── docs/      Next.js static export (ADR-031): src/{app/{[[...slug]],reference,changelog},components,content/*.mdx,lib,messages,fonts,styles/tokens.css}, mdx-components.tsx, scripts/{build-reference.ts,build-search-index.ts}
 ├── packages/{sdk-ts/,sdk-python/,cli/,mcp/}
 ├── integrations/{pi/,goose/toolkit.yaml,opencode/README.md}
 ├── bench/{METHOD.md,corpus/,engine-bakeoff/,loadgen/,results/}
