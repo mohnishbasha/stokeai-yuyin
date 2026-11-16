@@ -63,7 +63,7 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── migrations/
 ├── apps/
 │   ├── console/   Next.js App Router: src/{app/{(marketing),(console),(operator),healthz},components,lib,messages,fonts,styles/tokens.css}, next.config.ts, lighthouserc.json
-│   └── docs/
+│   └── docs/      Next.js static export (ADR-032): src/{app,components,content/*.mdx,lib,fonts,styles/tokens.css}, scripts/
 ├── packages/{sdk-ts/,sdk-python/,cli/,mcp/}
 ├── integrations/{pi/,goose/toolkit.yaml,opencode/README.md}
 ├── bench/{METHOD.md,corpus/,engine-bakeoff/,loadgen/,results/}

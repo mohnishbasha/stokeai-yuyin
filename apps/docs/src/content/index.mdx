@@ -1,0 +1,27 @@
+# Quickstart
+
+Go from an API key to audio in three steps. This page is a shell: the final text and the samples that run in CI arrive with the documentation content task.
+
+## Get a key
+
+Sign in to the console, open the keys screen, and create a key. Keys starting with `yy_test_` select test mode; keys starting with `yy_live_` bill real characters. Keep the key in an environment variable and never paste it into source code.
+
+```sh
+export YUYIN_API_KEY="your key here"
+```
+
+## Request
+
+Send the text and a voice id to `POST /v1/speech`. List the voices you can use with `GET /v1/voices`. The full request and response tables are in the [API reference](/reference).
+
+```sh
+curl -X POST "https://api.yuyin.openstoke.com/v1/speech" \
+  -H "Authorization: Bearer $YUYIN_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "आपका ओटीपी 4 8 2 9 1 6 है।", "voice": "voice-id", "format": "wav"}' \
+  --output hello.wav
+```
+
+## Hear it
+
+Play `hello.wav` with any audio player. The same request works for English text such as `Your OTP is 4 8 2 9 1 6.` and for sentences that mix both scripts. How numbers and amounts are read is described in the [normalisation guide](/guides/normalisation).
