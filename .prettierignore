@@ -16,3 +16,6 @@ logs/
 
 # Design tokens keep the hex casing used in docs/DESIGN.md.
 apps/console/src/styles/tokens.css
+
+# Same hex casing as the console copy, which mirrors docs/DESIGN.md.
+apps/docs/src/styles/tokens.css

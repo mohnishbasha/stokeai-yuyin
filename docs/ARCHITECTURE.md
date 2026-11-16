@@ -83,7 +83,7 @@ Subdomains: `api.yuyin.openstoke.com` (data plane), `console.yuyin.openstoke.com
 | `crates/yuyin-licence` | Rust | Self-host licence verification (Ed25519), offline usage report |
 | `crates/yuyin-count-wasm` | Rust | WASM build of the character counter (`count.rs`) for the console |
 | `apps/console` | TypeScript | Console, marketing site, playground, operator admin, Stripe webhooks |
-| `apps/docs` | MDX | Documentation site built from MDX plus the OpenAPI file |
+| `apps/docs` | MDX | Documentation site built from MDX plus the OpenAPI file (ADR-031) |
 | `packages/sdk-ts` | TypeScript | Official TypeScript SDK |
 | `packages/sdk-python` | Python | Official Python SDK |
 | `packages/cli` | TypeScript | `yuyin` CLI, compiled with `bun build --compile` |
@@ -337,6 +337,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Context: ADR-025 fixed the behaviour of built-in console auth. S2-T04 needed concrete choices for the operator command, the database driver, the middleware, and CSRF.
 - Decision: (1) `yuyin-admin` is a small TypeScript script run with Bun from the console workspace (`bun run yuyin-admin ...` in `apps/console`), sharing the auth library and migrations with the console; a Rust binary would duplicate the token and session logic. (2) Database access goes through an `AuthStore` interface in `apps/console/src/lib/auth`, with an in-memory store for unit tests and a `pg` (node-postgres, MIT) implementation in `src/server`, tested against the CI Postgres service when `DATABASE_URL` is set. `pg` is the only new runtime dependency (plus `@types/pg`). (3) Next 16 renamed middleware to `proxy`; `src/proxy.ts` redirects requests for `/dashboard` and `/operator` without a session cookie to `/sign-in`, and the `(console)` and `(operator)` layouts validate the session on the server, so a forged cookie never reaches content. Non-allowlisted signed-in users get 404 on `/operator`. (4) The session cookie is `__Host-yuyin-session` (HttpOnly, Secure, SameSite=Lax, Path=/, 8 hour lifetime); the database stores only its SHA-256. The CSRF token is an HMAC-SHA256 of the per-session `csrf_secret` under `SESSION_SECRET`, sent in a form field `csrf` or the `x-csrf-token` header and compared in constant time, and every mutation also requires an `Origin` header equal to the console origin. Sign-in has no session yet: it is guarded by the Origin check and the unguessable token, and the emailed link opens a page with a button, so mail scanners that prefetch it cannot burn the single-use token. (5) `sessions.created_at` is added so operator credit and suspension actions can require a session under 15 minutes old. (6) No email is sent in this phase; the operator sends the printed link.
 - Consequences: Auth logic is unit tested without a database. The `__Host-` cookie needs a secure context, so local development uses `localhost` in a browser that treats it as secure. Playwright coverage of the same flow arrives with S2-T09.
+- Status: Accepted.
+
+### ADR-032 Docs site: Next.js static export with MDX
+
+- Context: S2-T07 (issue #32) needs a docs site with MDX pages, a sidebar, search, and an API reference generated from `api/openapi.yaml` (FR-024). The console already runs on Next.js App Router with design tokens and self-hosted fonts.
+- Decision: `apps/docs` is a Next.js App Router app with `output: "export"` (static files in `apps/docs/dist`, no server). Pages are MDX compiled by `@next/mdx` with `remark-gfm` for tables. The API reference is built at build time from `api/openapi.yaml` by `src/lib/openapi.ts` (parsed with `yaml`); a file that cannot be documented throws and fails the build, and CI runs `bun run --cwd apps/docs build:reference` in `contract-tests`. Search is a static JSON index written by `scripts/build-search-index.ts` and matched in the browser, with no external service (NFR-025). `tokens.css` and the fonts are copies of the console's, with a test that the token files are identical and a raw-value scan like the console's. New dependencies, all MIT or ISC and passing `scripts/licence-check.sh` with no new exceptions: `@next/mdx`, `@mdx-js/loader`, `@mdx-js/react`, `@mdx-js/mdx` (tests), `@types/mdx`, `remark-gfm`, `yaml`.
+- Consequences: Hosting is any static file host. The theme choice is applied after hydration from a cookie because there is no server to read it. The browser search test (CN-24) joins the Playwright harness in S2-T09; until then DC-03 covers search as an integration test over the built index and the component. A change to console tokens needs the same change in `apps/docs/src/styles/tokens.css`, which the drift test enforces.
 - Status: Accepted.
 
 ### ADR-033 Console character counter isolated behind one module until the WASM build lands
@@ -1293,7 +1300,7 @@ Chart verification (CI, every PR that touches `deploy/` or the gateway):
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`; Playwright from Sprint 2), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
+| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; docs API reference and site build from `api/openapi.yaml`; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`; Playwright from Sprint 2), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
 | `security.yml` | every PR, pushes to `develop`, and weekly | `audit` (`scripts/audit.sh`: `cargo audit`, `cargo deny check advisories bans sources`, `bun audit`) and `gitleaks` (full history scan with `.gitleaks.toml`) |
 | `licence-check.yml` | every PR and pushes to `develop` | `licence-check` (`scripts/licence-check.sh`, allowlist in `deny.toml`) |
 | `kind.yml` | PRs touching `deploy/` or `crates/`, and all PRs to `staging` | chart verification steps 3 to 5 |
@@ -1347,7 +1354,7 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 ├── migrations/
 ├── apps/
 │   ├── console/   Next.js App Router: src/{app/{(marketing),(console),(operator),healthz},components,lib,messages,fonts,styles/tokens.css}, next.config.ts, lighthouserc.json
-│   └── docs/
+│   └── docs/      Next.js static export (ADR-031): src/{app/{[[...slug]],reference,changelog},components,content/*.mdx,lib,messages,fonts,styles/tokens.css}, mdx-components.tsx, scripts/{build-reference.ts,build-search-index.ts}
 ├── packages/{sdk-ts/,sdk-python/,cli/,mcp/}
 ├── integrations/{pi/,goose/toolkit.yaml,opencode/README.md}
 ├── bench/{METHOD.md,corpus/,engine-bakeoff/,loadgen/,results/}
