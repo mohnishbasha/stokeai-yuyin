@@ -36,6 +36,25 @@ export function formatMicroUsd(micro: number | bigint, options: FormatOptions = 
   return `${negative ? "-" : ""}$${dollars}.${fraction}`;
 }
 
+const CHARS_PER_PRICE_UNIT = 1_000n;
+
+/**
+ * Estimated cost of `characters` at `perThousandMicroUsd`, rounded up to a whole micro-USD:
+ * `ceil(chars * price_per_1k / 1000)` (PRD FR-018). The gateway count is what is billed.
+ */
+export function estimateCostMicroUsd(characters: number, perThousandMicroUsd: number): number {
+  const product = BigInt(characters) * toBigInt(perThousandMicroUsd);
+  return Number((product + CHARS_PER_PRICE_UNIT - 1n) / CHARS_PER_PRICE_UNIT);
+}
+
+/** Parses typed dollars ("25" or "25.50", at most two decimals) to micro-USD, or null. */
+export function parseDollarsToMicro(text: string): number | null {
+  const match = /^(\d{1,9})(?:\.(\d{1,2}))?$/.exec(text.trim());
+  if (match === null) return null;
+  const cents = BigInt(((match[2] ?? "") + "00").slice(0, 2));
+  return Number(BigInt(match[1] ?? "0") * MICRO_PER_USD + cents * MICRO_PER_CENT);
+}
+
 /** Whole percent (0 to 100) of `part` in `whole`, clamped. Integer arithmetic only. */
 export function percentOf(part: number | bigint, whole: number | bigint): number {
   const p = toBigInt(part);
