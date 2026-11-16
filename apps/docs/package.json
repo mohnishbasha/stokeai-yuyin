@@ -5,12 +5,35 @@
   "private": true,
   "license": "SEE LICENSE IN ../../LICENSE",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": ["dist"],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "dev": "bun run build:search && next dev",
+    "build:reference": "bun scripts/build-reference.ts",
+    "build:search": "bun scripts/build-search-index.ts",
+    "build": "bun run build:search && next build",
     "test": "vitest run",
     "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "3.1.1",
+    "@mdx-js/react": "3.1.1",
+    "@next/mdx": "16.4.6",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remark-gfm": "4.0.1",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@mdx-js/mdx": "3.1.1",
+    "@tailwindcss/postcss": "4.3.5",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@types/mdx": "2.0.14",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "jsdom": "31.0.1",
+    "postcss": "8.5.33",
+    "tailwindcss": "4.3.5"
   }
 }
