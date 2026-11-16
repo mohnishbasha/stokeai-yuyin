@@ -109,7 +109,7 @@ jobs:
         run: |
           pg_isready -h 127.0.0.1 -p 5432 -U yuyin
           exec 3<>/dev/tcp/127.0.0.1/6379 && printf 'PING\r\n' >&3 && head -c 7 <&3 | grep -q PONG
-      - name: Console auth store against Postgres (S2-T04, CN-49)
+      - name: Console auth store against Postgres (S2-T04, CN-52)
         # Applies migrations/*.sql to a scratch schema and runs the AuthStore contract on pg.
         run: bunx vitest run tests/unit/auth-store.test.ts
         working-directory: apps/console

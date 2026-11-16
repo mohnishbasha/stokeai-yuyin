@@ -1,4 +1,4 @@
-// CN-49 unit_console_migrations_authsubset_matchesarchitecture
+// CN-52 unit_console_migrations_authsubset_matchesarchitecture
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import pg from "pg";

@@ -1,5 +1,5 @@
 // Behaviour every AuthStore must have. Run against the in-memory store always and against
-// Postgres when DATABASE_URL is set (CN-49).
+// Postgres when DATABASE_URL is set (CN-52).
 import { expect, it } from "vitest";
 import { createOrganization, createUser, issueLoginToken } from "../../src/lib/auth/admin";
 import { redeemLoginToken } from "../../src/lib/auth/login";

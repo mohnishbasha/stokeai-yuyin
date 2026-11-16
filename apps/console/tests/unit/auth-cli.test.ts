@@ -1,4 +1,4 @@
-// CN-50 at the command layer: yuyin-admin org create, user create, login-token issue.
+// CN-53 at the command layer: yuyin-admin org create, user create, login-token issue.
 import { describe, expect, it } from "vitest";
 import { MemoryAuthStore } from "../../src/lib/auth/memory-store";
 import { sha256 } from "../../src/lib/auth/secrets";

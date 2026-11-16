@@ -1,5 +1,5 @@
-// CN-43 e2e_console_loginlink_firstconsoleview_succeeds (integration over route handlers),
-// CN-44 and CN-45 at the HTTP layer.
+// CN-46 e2e_console_loginlink_firstconsoleview_succeeds (integration over route handlers),
+// CN-47 and CN-48 at the HTTP layer.
 import { describe, expect, it } from "vitest";
 import { createOrganization, createUser, loginLink } from "../../src/lib/auth/admin";
 import { decideAccess } from "../../src/lib/auth/access";
@@ -17,7 +17,7 @@ function deps(store: Awaited<ReturnType<typeof seed>>["store"], at: Date = T0) {
   return { store, config, now: () => at };
 }
 
-describe("e2e_console_loginlink_firstconsoleview_succeeds (CN-43)", () => {
+describe("e2e_console_loginlink_firstconsoleview_succeeds (CN-46)", () => {
   it("test_e2e_loginlink_to_firstconsoleview", async () => {
     const { store, org, user, token } = await seed("developer");
     const link = loginLink(ORIGIN, token);
@@ -73,7 +73,7 @@ describe("e2e_console_loginlink_firstconsoleview_succeeds (CN-43)", () => {
   });
 });
 
-describe("security_console_logintoken_reused_rejected (CN-44, HTTP)", () => {
+describe("security_console_logintoken_reused_rejected (CN-47, HTTP)", () => {
   it("test_signin_tokenreused_rejectedwithgenericerror_nosession", async () => {
     const { store, token } = await seed();
     const first = await handleSignIn(formRequest("/api/auth/sign-in", { token }), deps(store));
@@ -146,7 +146,7 @@ async function signedIn() {
   return { ...ctx, cookie, view };
 }
 
-describe("security_console_mutation_missingcsrf_rejected (CN-45)", () => {
+describe("security_console_mutation_missingcsrf_rejected (CN-48)", () => {
   it("test_switchorg_missingcsrf_rejected_noeffect", async () => {
     const { store, user, cookie, view } = await signedIn();
     const other = await createOrganization(store, { name: "Beta" }, T0);

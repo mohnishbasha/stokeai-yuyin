@@ -1,5 +1,5 @@
-// CN-46 security_console_operatorroute_nonallowlisted_denied, CN-47
-// security_console_middleware_unauthenticated_redirects, CN-48 unit_console_roles_matrix_*
+// CN-49 security_console_operatorroute_nonallowlisted_denied, CN-50
+// security_console_middleware_unauthenticated_redirects, CN-51 unit_console_roles_matrix_*
 import { describe, expect, it } from "vitest";
 import { decideAccess } from "../../src/lib/auth/access";
 import { readAuthConfig } from "../../src/lib/auth/config";
@@ -11,7 +11,7 @@ import { authorizeOperator, resolveView } from "../../src/lib/auth/view";
 import { createSession } from "../../src/lib/auth/sessions";
 import { seed, testConfig, T0 } from "../support/auth-fixture";
 
-describe("proxy rules (CN-47)", () => {
+describe("proxy rules (CN-50)", () => {
   it.each(["/dashboard", "/dashboard/keys", "/operator", "/operator/orgs/1"])(
     "test_proxy_%s_withoutsession_redirectstosignin",
     (path) => {
@@ -37,7 +37,7 @@ describe("proxy rules (CN-47)", () => {
   });
 });
 
-describe("operator allowlist (CN-46)", () => {
+describe("operator allowlist (CN-49)", () => {
   it("test_operator_unsetallowlist_deniesall", () => {
     expect(isOperator("abc", parseOperatorIds(undefined))).toBe(false);
     expect(isOperator("abc", parseOperatorIds(" , ,"))).toBe(false);
@@ -72,7 +72,7 @@ describe("operator allowlist (CN-46)", () => {
   });
 });
 
-describe("roles (CN-48)", () => {
+describe("roles (CN-51)", () => {
   it("test_roles_four_exactly", () => {
     expect([...ROLES]).toEqual(["owner", "admin", "developer", "billing"]);
   });

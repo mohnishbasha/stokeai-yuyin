@@ -1,4 +1,4 @@
-// CN-44 security_console_logintoken_reused_rejected, CN-50 unit_console_adminlib_*
+// CN-47 security_console_logintoken_reused_rejected, CN-53 unit_console_adminlib_*
 import { describe, expect, it } from "vitest";
 import { createOrganization, createUser, issueLoginToken } from "../../src/lib/auth/admin";
 import { redeemLoginToken } from "../../src/lib/auth/login";
@@ -8,7 +8,7 @@ import { seed, T0 } from "../support/auth-fixture";
 
 const MIN = 60 * 1000;
 
-describe("admin library (CN-50)", () => {
+describe("admin library (CN-53)", () => {
   it("test_adminlib_orguserlogintoken_createsrecords", async () => {
     const store = new MemoryAuthStore();
     const org = await createOrganization(store, { name: "  Acme  " }, T0);
@@ -71,7 +71,7 @@ describe("admin library (CN-50)", () => {
   });
 });
 
-describe("login token (CN-44)", () => {
+describe("login token (CN-47)", () => {
   it("test_logintoken_storedonlyashash", async () => {
     const { store, token } = await seed();
     expect(store.loginTokens).toHaveLength(1);
