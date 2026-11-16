@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-// CN-43 unit_console_textarea_counter_codepoints_matchesexpected
+// CN-46 unit_console_textarea_counter_codepoints_matchesexpected
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Input } from "../../../src/components/ui/Input";

@@ -7,6 +7,7 @@ Sections: Added, Changed, Changed readings, Deprecated, Removed, Fixed, Security
 ## [Unreleased]
 
 ### Added
+- Pulse line (S2-T03): `PulseLine` canvas component driven by a mock audio stream, with a static level meter under `prefers-reduced-motion`, an `aria-hidden` line with a `role="status"` text alternative, forced-colours support, and a preview at `/preview/components/pulse-line`.
 - Console shell (S2-T01): Next.js App Router app with route groups `(marketing)`, `(console)` and `(operator)`, Tailwind v4 CSS-variable design tokens, dark default and light theme with a toggle, self-hosted IBM Plex fonts including Devanagari, a `/healthz` route, a standalone console image, and a Lighthouse CI check.
 - `yuyin-text` front end: Hindi and English number, currency, date and time, digit string, unit, percent, range, email, and URL verbalisation; acronym lexicon with tenant overrides; script and language tagging with a Roman Hindi lexicon; a segmenter with a short first segment; a 1,244-row golden corpus with `make golden` and `scripts/golden-add.sh`; property tests and a weekly fuzz job; and a purity check that keeps the crate free of I/O.
 - Engine bake-off (`bench/engine-bakeoff/`), licence evidence (`docs/licences/`), and ADR-015 (Proposed, waiting on owner decision #184).

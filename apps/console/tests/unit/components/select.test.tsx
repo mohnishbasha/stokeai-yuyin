@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-// CN-45 unit_console_components_keyboardnav_focusringvisible (Select)
+// CN-48 unit_console_components_keyboardnav_focusringvisible (Select)
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Select } from "../../../src/components/ui/Select";

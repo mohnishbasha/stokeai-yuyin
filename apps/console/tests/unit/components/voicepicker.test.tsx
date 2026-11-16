@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-// CN-45 unit_console_components_keyboardnav_focusringvisible (VoicePicker)
+// CN-48 unit_console_components_keyboardnav_focusringvisible (VoicePicker)
 import type { ComponentProps } from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";

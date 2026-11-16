@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-// CN-46 unit_console_codeblock_copy_languagetabswork
-// CN-44 unit_console_keyreveal_secret_shownonce
+// CN-49 unit_console_codeblock_copy_languagetabswork
+// CN-47 unit_console_keyreveal_secret_shownonce
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CodeBlock } from "../../../src/components/ui/CodeBlock";
