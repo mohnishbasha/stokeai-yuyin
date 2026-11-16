@@ -339,6 +339,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: Auth logic is unit tested without a database. The `__Host-` cookie needs a secure context, so local development uses `localhost` in a browser that treats it as secure. Playwright coverage of the same flow arrives with S2-T09.
 - Status: Accepted.
 
+### ADR-032 Console character counter isolated behind one module until the WASM build lands
+
+- Context: S2-T02 needs the Textarea to count characters exactly as the gateway bills them (ADR-011, BUILD_PROMPT implementation note 12: one counter, the console uses its WASM build). `crates/yuyin-count-wasm` is still a Sprint 0 placeholder and `yuyin-meter/count.rs` arrives in S4-T05, so no WASM artefact exists to import. `wasm-bindgen` tooling is not part of the current toolchain.
+- Decision: The console counts in exactly one module, `apps/console/src/lib/count.ts` (`countCodePoints`: Unicode scalar values after NFC). No component counts on its own. S4-T05 replaces the body of that module with the `yuyin-count-wasm` export and adds a parity test against the Rust golden rows. The module's tests pin the PRD examples ("नमस्ते" is 6, "आपकी EMI ₹12,450 है" is 19), astral characters, and NFC composition, including composition exclusions such as U+0958, which stay two code points.
+- Consequences: Until S4-T05 there are two implementations in the repository, the Rust one and this interim one. The swap is a one-file change. The Textarea count is an estimate shown to the user; billing always uses the gateway count.
+- Status: Accepted, interim until S4-T05.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket
