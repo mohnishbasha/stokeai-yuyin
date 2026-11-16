@@ -22,3 +22,8 @@ export function nextTheme(theme: Theme): Theme {
 export function themeCookie(theme: Theme): string {
   return `${THEME_COOKIE}=${theme}; path=/; max-age=${String(ONE_YEAR_SECONDS)}; samesite=lax`;
 }
+
+/** The `document.cookie` assignment that clears the choice, so the OS preference applies. */
+export function clearThemeCookie(): string {
+  return `${THEME_COOKIE}=; path=/; max-age=0; samesite=lax`;
+}
