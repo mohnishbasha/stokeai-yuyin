@@ -332,6 +332,13 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Consequences: `licence-check` is green on `develop` again. Any new package outside the allowlist still fails the check. If the owner prefers to drop libvips entirely, the alternative is to stub out `sharp` and set `images.unoptimized`.
 - Status: Accepted, owner to confirm (B7).
 
+### ADR-031 Built-in auth implementation (S2-T04)
+
+- Context: ADR-025 fixed the behaviour of built-in console auth. S2-T04 needed concrete choices for the operator command, the database driver, the middleware, and CSRF.
+- Decision: (1) `yuyin-admin` is a small TypeScript script run with Bun from the console workspace (`bun run yuyin-admin ...` in `apps/console`), sharing the auth library and migrations with the console; a Rust binary would duplicate the token and session logic. (2) Database access goes through an `AuthStore` interface in `apps/console/src/lib/auth`, with an in-memory store for unit tests and a `pg` (node-postgres, MIT) implementation in `src/server`, tested against the CI Postgres service when `DATABASE_URL` is set. `pg` is the only new runtime dependency (plus `@types/pg`). (3) Next 16 renamed middleware to `proxy`; `src/proxy.ts` redirects requests for `/dashboard` and `/operator` without a session cookie to `/sign-in`, and the `(console)` and `(operator)` layouts validate the session on the server, so a forged cookie never reaches content. Non-allowlisted signed-in users get 404 on `/operator`. (4) The session cookie is `__Host-yuyin-session` (HttpOnly, Secure, SameSite=Lax, Path=/, 8 hour lifetime); the database stores only its SHA-256. The CSRF token is an HMAC-SHA256 of the per-session `csrf_secret` under `SESSION_SECRET`, sent in a form field `csrf` or the `x-csrf-token` header and compared in constant time, and every mutation also requires an `Origin` header equal to the console origin. Sign-in has no session yet: it is guarded by the Origin check and the unguessable token, and the emailed link opens a page with a button, so mail scanners that prefetch it cannot burn the single-use token. (5) `sessions.created_at` is added so operator credit and suspension actions can require a session under 15 minutes old. (6) No email is sent in this phase; the operator sends the printed link.
+- Consequences: Auth logic is unit tested without a database. The `__Host-` cookie needs a secure context, so local development uses `localhost` in a browser that treats it as secure. Playwright coverage of the same flow arrives with S2-T09.
+- Status: Accepted.
+
 ---
 
 ## 4. Request lifecycle for REST and WebSocket
@@ -573,7 +580,7 @@ All tenant tables carry `tenant_id`. Tenant context is application-enforced: the
 | `users` | `id` uuid; `email` text unique; `name` text; `status` text check in (`active`,`disabled`); `created_at` | PK `id`. Created by the operator command | Life of account; deleted on verified erasure request |
 | `memberships` | `tenant_id`; `user_id`; `role` text check in (`owner`,`admin`,`developer`,`billing`) | PK (`tenant_id`,`user_id`) | Life of membership |
 | `login_tokens` | `id`; `user_id`; `token_hash` bytea; `expires_at` timestamptz; `used_at` timestamptz null; `issued_by` text | PK `id`; unique `token_hash`. Single use, 15 minute expiry | 30 days after expiry |
-| `sessions` | `id`; `user_id`; `tenant_id`; `token_hash` bytea; `csrf_secret` bytea; `expires_at` timestamptz; `revoked_at` timestamptz null | PK `id`; unique `token_hash` | Deleted after expiry |
+| `sessions` | `id`; `user_id`; `tenant_id`; `token_hash` bytea; `csrf_secret` bytea; `expires_at` timestamptz; `revoked_at` timestamptz null; `created_at` | PK `id`; unique `token_hash` | Deleted after expiry |
 | `api_keys` | `id`; `tenant_id`; `name` text; `prefix` text; `hash` bytea (SHA-256); `scopes` jsonb; `voice_allowlist` text[]; `monthly_char_cap` bigint null; `last_used_at` timestamptz null; `revoked_at` timestamptz null; `created_by` text; `created_at` | PK (`tenant_id`,`id`); unique `prefix`; index on (`tenant_id`, `revoked_at`) | Life of account; revoked rows kept 13 months for audit |
 | `ledger` | `id`; `tenant_id`; `kind` text check in (`credit`,`debit`,`grant`,`refund`,`adjustment`); `amount_micro_usd` bigint; `chars` bigint null; `request_id` text null; `stripe_event_id` text null; `actor` text; `note` text; `created_at` | PK (`tenant_id`,`id`); unique `request_id`; unique `stripe_event_id`; index (`tenant_id`, `created_at`) | Append-only; kept for financial record retention (set by the owner, default 7 years) |
 | `usage_daily` | `tenant_id`; `day` date; `key_id`; `voice_id` text; `format` text; `requests` bigint; `chars` bigint; `cost_micro_usd` bigint | PK (`tenant_id`,`day`,`key_id`,`voice_id`,`format`) | 25 months |
@@ -742,6 +749,7 @@ Rules: error responses never echo request text. Every error carries `request_id`
 
 - Structure (S2-T01): Next.js App Router with route groups `(marketing)` (`/`), `(console)` (`/dashboard`) and `(operator)` (`/operator`), plus `GET /healthz`. Design tokens are CSS variables in `apps/console/src/styles/tokens.css`, the only file allowed raw colour, type and spacing values (enforced by a unit test). The theme is dark by default with a light theme chosen by the `yuyin-theme` cookie, read on the server and rendered as `data-theme` on `<html>`, so no inline script is needed. User-visible strings come from `src/messages/en.json` through `t()`. The image runs Next standalone output on distroless Node, non-root, port 3000. Lighthouse (performance 90, accessibility 95) runs in the `e2e-tests` CI job.
 - Built-in auth (ADR-025): operators create organizations and users with the `yuyin-admin` command; there is no self-serve sign-up. Sign-in uses an operator-issued email magic link or one-time login token (hashed, single use, 15 minute expiry) and a server-side session in an HttpOnly Secure SameSite cookie. CSRF protection on all mutations. Strict CSP with nonces, no inline scripts, `frame-ancestors 'none'`.
+- Implementation (ADR-031): `apps/console/src/lib/auth` (logic, `AuthStore` interface), `src/server` (Postgres store, wiring), `src/proxy.ts` (redirect gate), `scripts/yuyin-admin.ts` (operator command), `migrations/0001_auth_subset.sql`. Routes: `POST /api/auth/sign-in`, `POST /api/auth/sign-out`, `POST /api/org/switch`, page `/sign-in`.
 - Role checks on the server for every action. The client never decides authorisation.
 - Stripe webhooks verified by signature. Secrets in Kubernetes Secrets.
 - Operator routes require an allowlisted user (`OPERATOR_USER_IDS`) and a fresh session (re-auth within 15 minutes for credit and suspension actions).
@@ -1428,6 +1436,7 @@ Environment variables:
 | `STRIPE_WEBHOOK_SECRET` | mock | secret | secret |
 | `DATABASE_URL` (console) | local | secret | secret |
 | `OPERATOR_USER_IDS` | your id | allowlist | allowlist |
+| `YUYIN_CONSOLE_URL` (console) | `http://localhost:3000` | stage URL | prod URL |
 | `LEGAL_DRAFT_BANNER` | `on` | `on` | `on` until owner sets `off` |
 | `PUBLIC_DEMO_DAILY_CHAR_BUDGET` | `10000` | `50000` | owner sets |
 

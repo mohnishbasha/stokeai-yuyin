@@ -659,6 +659,23 @@ Notes: The worked example uses clearly labelled illustrative amounts formatted b
 
 Console frame: NAV at left, content at right, 2 px PulseLine progress indicator at the page top during navigation and requests, Banner slot under it.
 
+**C0. Sign-in and organization switcher (S2-T04)**
+
+```
+Sign-in (no NAV)                              Console account bar
++--------------------------------------+      +------------------------------------------------------+
+| Sign in                              |      | Organization [Acme v] [Switch]  Role: Owner          |
+| Use the sign-in link your operator   |      |                      Signed in as a@x.com [Sign out] |
+| sent you. Each link works once and   |      +------------------------------------------------------+
+| expires after 15 minutes.            |
+| [Continue to the console]            |   With a link token: hidden field, one button.
+|  (no token: [One-time login token]   |   Without: a password-type input and [Sign in].
+|   [Sign in])                         |   Failure: one generic alert, never the reason.
+| No self-serve sign-up. ...           |
++--------------------------------------+
+```
+Notes: Plain forms that work without JavaScript, using tokens only. The switcher is a labelled select plus a Switch button; it lists only organizations the user belongs to and the server re-checks membership. The role is shown as text. Sign out is a button in a form with the CSRF token. Failed sign-in shows `auth.signin.error` in a `role="alert"` block with the `--err` colour and a border, not colour alone. The component library (S2-T02) may restyle these forms; the markup and field names (`token`, `csrf`, `tenant_id`) are the contract.
+
 **C1. Onboarding**
 
 ```
