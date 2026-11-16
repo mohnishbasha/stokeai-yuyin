@@ -1,35 +1,66 @@
-import Link from "next/link";
-import { t } from "../../lib/messages";
+import { DemoPanel } from "../../components/marketing/DemoPanel";
+import { LinkButton } from "../../components/marketing/LinkButton";
+import { MarketingPage, Section } from "../../components/marketing/MarketingPage";
+import { CodeBlock } from "../../components/ui/CodeBlock";
+import { Table, type Column } from "../../components/ui/Table";
+import { t, type MessageKey } from "../../lib/messages";
+import { buildSpeechSnippets } from "../../lib/snippets";
+
+interface ReadRow {
+  readonly id: string;
+  readonly written: string;
+  readonly hindi: string;
+  readonly english: string;
+}
+
+const ROW_KEYS = [
+  ["r1", "site.reads.r1.written", "site.reads.r1.hindi", "site.reads.r1.english"],
+  ["r2", "site.reads.r2.written", "site.reads.r2.hindi", "site.reads.r2.english"],
+  ["r3", "site.reads.r3.written", "site.reads.r3.hindi", "site.reads.r3.english"],
+  ["r4", "site.reads.r4.written", "site.reads.r4.hindi", "site.reads.r4.english"],
+] as const satisfies readonly (readonly [string, MessageKey, MessageKey, MessageKey])[];
 
 export default function HomePage() {
+  const rows: ReadRow[] = ROW_KEYS.map(([id, written, hindi, english]) => ({
+    id,
+    written: t(written),
+    hindi: t(hindi),
+    english: t(english),
+  }));
+  const columns: Column<ReadRow>[] = [
+    { key: "written", header: t("site.reads.written") },
+    {
+      key: "hindi",
+      header: t("site.reads.hindi"),
+      render: (row) => <span lang="hi">{row.hindi}</span>,
+    },
+    {
+      key: "english",
+      header: t("site.reads.english"),
+      render: (row) => <span lang="en">{row.english}</span>,
+    },
+  ];
   return (
-    <main id="main" className="mx-auto max-w-content px-4 py-8 lg:px-6 lg:py-9">
-      <h1 className="max-w-prose text-h1 font-medium text-text-0 lg:text-display">
-        {t("home.title")}
-      </h1>
-      <p className="mt-4 max-w-prose text-body text-text-1">{t("home.lead")}</p>
-      <section
-        aria-labelledby="sample-heading"
-        className="mt-7 max-w-prose rounded-panel border border-line bg-bg-1 p-4"
-      >
-        <h2 id="sample-heading" className="text-small font-medium text-text-1">
-          {t("home.sampleLabel")}
-        </h2>
-        <p lang="hi" className="mt-2 text-h3 text-text-0">
-          {t("home.sampleHi")}
-        </p>
-        <p lang="en" className="mt-2 text-h3 text-text-0">
-          {t("home.sampleEn")}
-        </p>
-      </section>
-      <p className="mt-6">
-        <Link
-          href="/dashboard"
-          className="inline-flex min-h-(--control-height) items-center rounded-control bg-accent px-4 text-body font-medium text-accent-ink no-underline"
-        >
-          {t("home.cta")}
-        </Link>
+    <MarketingPage title={t("site.home.title")} lead={t("site.home.lead")}>
+      <p className="flex flex-wrap gap-3">
+        <LinkButton href="/dashboard" variant="primary">
+          {t("site.nav.getKey")}
+        </LinkButton>
+        <LinkButton href="/docs">{t("site.home.quickstart")}</LinkButton>
       </p>
-    </main>
+      <DemoPanel />
+      <Section id="reads" title={t("site.reads.title")}>
+        <p className="text-body text-text-1">{t("site.reads.lead")}</p>
+        <Table<ReadRow>
+          caption={t("site.reads.caption")}
+          columns={columns}
+          rows={rows}
+          rowKey={(row) => row.id}
+        />
+      </Section>
+      <Section id="code" title={t("site.code.title")}>
+        <CodeBlock snippets={buildSpeechSnippets()} />
+      </Section>
+    </MarketingPage>
   );
 }

@@ -1,1 +1,14 @@
-# Placeholder from Sprint 0. Contents are defined in docs/ARCHITECTURE.md and filled by the sprint that owns this file.
+# Pricing table, read by the gateway seed and the marketing Pricing page (ARCHITECTURE 9).
+# Rates are integer micro-USD (one millionth of a dollar) per unit_characters characters.
+# These are placeholders until the owner sets the real prices (docs/OWNER_CHECKLIST.md).
+unit_characters = 1000
+min_topup_micro_usd = 5_000_000
+
+[rate_micro_usd]
+opus = 2000
+pcm = 2000
+wav = 2400
+
+[launch_grant]
+characters = 1_000_000
+verified_signups = 1000
