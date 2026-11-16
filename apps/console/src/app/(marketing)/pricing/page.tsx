@@ -1,16 +1,11 @@
 import Link from "next/link";
 import { LinkButton } from "../../../components/marketing/LinkButton";
 import { MarketingPage, Prose, Section } from "../../../components/marketing/MarketingPage";
-import { Table, type Column } from "../../../components/ui/Table";
+import { StaticTable } from "../../../components/ui/StaticTable";
 import { countCodePoints } from "../../../lib/count";
 import { t, tf } from "../../../lib/messages";
 import { formatMicroUsd } from "../../../lib/money";
 import { loadPricing, type Pricing } from "../../../lib/pricing";
-
-interface ExampleRow {
-  readonly text: string;
-  readonly count: number;
-}
 
 function Card({ title, children }: { readonly title: string; readonly children: React.ReactNode }) {
   return (
@@ -65,12 +60,13 @@ function Cards({ pricing }: { readonly pricing: Pricing }) {
 
 export default function PricingPage() {
   const pricing = loadPricing();
-  const examples: ExampleRow[] = [t("site.pricing.exampleHi"), t("site.pricing.exampleEn")].map(
-    (text) => ({ text, count: countCodePoints(text) }),
-  );
-  const columns: Column<ExampleRow>[] = [
-    { key: "text", header: t("site.pricing.exampleText") },
-    { key: "count", header: t("site.pricing.exampleCount"), numeric: true },
+  const examples = [t("site.pricing.exampleHi"), t("site.pricing.exampleEn")].map((text) => [
+    { key: `${text}-text`, cell: text },
+    { key: `${text}-count`, cell: countCodePoints(text) },
+  ]);
+  const columns = [
+    { header: t("site.pricing.exampleText") },
+    { header: t("site.pricing.exampleCount"), numeric: true },
   ];
   return (
     <MarketingPage title={t("site.pricing.title")} lead={t("site.pricing.lead")}>
@@ -86,12 +82,7 @@ export default function PricingPage() {
       )}
       <Section id="counted" title={t("site.pricing.counted")}>
         <Prose>{t("site.pricing.countedBody")}</Prose>
-        <Table<ExampleRow>
-          caption={t("site.pricing.exampleCaption")}
-          columns={columns}
-          rows={examples}
-          rowKey={(row) => row.text}
-        />
+        <StaticTable caption={t("site.pricing.exampleCaption")} columns={columns} rows={examples} />
       </Section>
       <p className="flex flex-wrap gap-4 text-body">
         <Link href="/refunds">{t("site.pricing.refunds")}</Link>
