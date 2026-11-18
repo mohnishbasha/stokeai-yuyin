@@ -153,7 +153,7 @@ export function VoicePicker({
                     event.stopPropagation();
                     togglePlay(voice);
                   }}
-                  className="ml-auto text-small text-accent"
+                  className="ml-auto text-small text-text-0 underline"
                 >
                   {playingId === voice.id ? t("voice.playing") : t("voice.play")}
                 </span>

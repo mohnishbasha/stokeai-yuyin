@@ -102,6 +102,8 @@
   "preview.title": "Component previews",
   "preview.lead": "Every design-system component with its states. For development and review only.",
   "preview.back": "All components",
+  "preview.devanagari.title": "Devanagari fixture",
+  "preview.devanagari.lead": "Fifty Hindi lines with conjuncts and matras, rendered to check shaping and line height. For development and review only.",
   "preview.states": "States and variants",
   "pulse.status.idle": "Idle",
   "pulse.status.requesting": "Waiting for audio",
