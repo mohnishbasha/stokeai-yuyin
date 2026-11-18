@@ -202,3 +202,117 @@ The TypeScript and Python placeholders are unchanged at 100%.
 - Raise `MIN_ROWS` in every PR that adds golden rows, as TEST_PLAN section 5 already says.
 - Get owner decision #184 before Sprint 3 starts. S3-T18 and S3-T01 (ONNX engine) wait on it.
 - Run the x86 bake-off on a GitHub-hosted `ubuntu-latest` runner, so it does not wait on O4.
+
+## Sprint 2: UI Shell
+
+**Dates:** 2026-11-15 to 2026-11-17
+**Gate:** all four items pass (see docs/SPRINT_PLAN.md, Sprint 2 gate), and all 34 Sprint 2 criteria are ticked. The first audit found two gaps, and both were closed inside the sprint rather than waived. The seven operator screens (O1 to O7) were missing, so follow-up issue #226 built them with mock data (PR #227); real operator data stays in S6-T03 (#75). The S2-T03 criterion "renders at 60 fps on a mid-range laptop" had only a CPU budget test, so CN-80 (#223) now measures the frame rate under a 4x CPU throttle. There are no owner waivers.
+**Staging:** the promotion PR (`develop` into `staging`) will be opened by the top-level agent and waits for the owner. The `sprint-2-complete` tag goes on the `staging` merge commit after that PR merges. The TEST_PLAN section 9 staging smoke checklist starts at Sprint 3, so it does not apply to Sprint 2.
+
+### What was built
+
+| Issue | Task | PR |
+|---|---|---|
+| #26 | S2-T01 Next.js app, Tailwind tokens, fonts | #205 |
+| #27 | S2-T02 Component library | #213 |
+| #28 | S2-T03 Signature element: the pulse line | #208, #223 (CN-80 frame rate) |
+| #29 | S2-T04 Built-in auth and organization switcher | #209 |
+| #30 | S2-T05 Console screens with mock data | #215, #217 |
+| #226 | S2-T05 follow-up: operator screens O1 to O7 with mock data | #227 |
+| #31 | S2-T06 Marketing site shell | #214 (landed in #213) |
+| #32 | S2-T07 Docs site shell | #210 |
+| #33 | S2-T08 Accessibility and Devanagari rendering checks | #220 |
+| #34 | S2-T09 Playwright harness and visual snapshots | #218 |
+
+Also merged in the sprint:
+- #204 and #203 sync `staging` into `develop` after the Sprint 1 promotion.
+- #206 and #207 record and clear owner item B7 (per-package licence exceptions for Next.js dependencies).
+- #211 and #219 record and resolve owner item B8.
+- #221 is the owner's time-boxed `bun audit` exception for owner item B9.
+- #225 fixes a `yuyin-text` segmenter edge case (a blank leading segment group now goes to the next segment).
+- The sprint close PR is the spec doc audit, the gate ticks and this entry.
+
+### Spec sections updated
+
+- ARCHITECTURE:
+  - ADR-030 (JS licence exceptions), ADR-031 (built-in auth implementation), ADR-032 (docs site) and ADR-033 (console character counter), each added in its task PR.
+  - The Console section structure note from S2-T01.
+  - The CI job table: `visual-tests` added, `e2e-tests` described as Lighthouse, and the docs search browser test marked Deferred (sprint close).
+- DESIGN:
+  - Section 2: contrast note corrected, because the token-table test is not written yet (sprint close).
+  - 6.2: C0 sign-in and switcher.
+  - 6.3: status note that O1 to O7 exist with mock data and real data is S6-T03 (#227).
+  - 9.1: contrast and keyboard rows state what runs today (sprint close).
+  - Font licence table and notes from S2-T01.
+- TEST_PLAN:
+  - Section 6.13 and the S2 rows: CN-35 to CN-70, CN-80, MK-01 to MK-05, DC-01 to DC-10.
+  - The component rows had reused CN-46 to CN-50, which the auth rows already held. They are now CN-60 to CN-64 and the test file comments match.
+  - CN-01, CN-02, CN-03, CN-20, CN-24, CN-28 and CN-29 are reconciled with what was built.
+  - Notes that said the Playwright version "arrives with S2-T09" now name the spec files.
+- SPRINT_PLAN: every Sprint 2 criterion and gate item is ticked, each with the evidence that closed it.
+- PRD: no change.
+
+### Tests added
+
+TEST_PLAN has 61 Sprint 2 scenarios. 57 are automated, 3 are Deferred (CN-03 moves to Sprint 6, CN-24 and CN-28 need the real data layer or a docs Playwright project) and 1 is Skipped (CN-01, there is no self sign-up under ADR-025).
+
+| Type | Automated | Deferred | Skipped |
+|---|---|---|---|
+| Unit | 31 | 0 | 0 |
+| Integration | 9 | 0 | 0 |
+| Contract | 2 | 0 | 0 |
+| E2E | 14 | 3 | 1 |
+| Perf | 1 | 0 | 0 |
+
+Suites at the sprint end:
+- Vitest: console 494 passed and 4 skipped (34 files), docs 33 passed (6 files).
+- Playwright in the `visual-tests` CI job on `ubuntu-24.04-arm`: 124 passed in 47 s (the job took 1 m 40 s against a 6 minute budget). It covers axe on every route in both themes, 24 visual snapshots (12 screens, 2 themes), 2 Devanagari fixture snapshots, and the screens, login and site flows.
+
+Gate evidence:
+- Raw values: a scan of `apps/console/src` and `apps/docs/src` finds no hex colour, colour function or `px` literal outside `styles/tokens.css` (CN-38, DC-08).
+- Accessibility: zero serious or critical axe violations on every route in both themes, with no rule disabled (CN-26).
+- Lighthouse on the console home shell passes its assertions (performance 90, accessibility 95) in the `e2e-tests` job.
+
+### Coverage delta
+
+From `scripts/coverage.sh` at the sprint end (all thresholds met):
+
+| Crate or path | Sprint 1 | Sprint 2 | Threshold |
+|---|---|---|---|
+| yuyin-text | 99.23% | 99.23% (2,070 of 2,086 lines) | 92% |
+| yuyin-engine | 98.96% | 98.96% (95 of 96 lines) | 75% |
+| yuyin-gateway | 86.21% | 86.21% (50 of 58 lines) | 80% |
+| apps/console/src/lib | not instrumented | 97.66% (459 of 470 lines) | 85% |
+| apps/console/src/components | not instrumented | 87.68% (833 of 950 lines) | 75% |
+
+The other TypeScript and Python placeholders are unchanged at 100%. `yuyin-audio`, `yuyin-meter` and `yuyin-licence` have no instrumented lines yet. `apps/docs` has no entry in `.coverage-thresholds.toml`, so its 33 tests are not measured against a threshold.
+
+### What worked
+
+- Tokens came first. The raw-value scanner (CN-38, DC-08) made "tokens are the only source" a failing test, not a review comment.
+- Mock data behind the `ConsoleData` interface let all ten screens, with their empty and error states behind `?state=`, be tested and snapshotted before any real service exists.
+- The Playwright suite runs on the arm64 runner that matches the baselines, so the 24 snapshots are stable and the job stays under the budget.
+
+### What did not work
+
+- B8: a fake `yy_test_` key literal in two commits on a stacked branch made `gitleaks` fail on its full history scan. The owner had to close PR #212 and delete the branch. The literal belongs in a test fixture built at run time, not in source.
+- B9: `bun audit` reported GHSA-fc5q-39xc-vjpf (picomatch ReDoS, high, no patched release) on dev tooling only, which failed the `audit` job on every PR and blocked merges until the owner added a time-boxed exception in #221, expiring 2026-12-17. The exception is the owner's decision and the agent did not change the gate.
+- Stacked PRs each added a `visual-tests` job without updating the SC-40 job graph contract test, so the contract test and the job list drifted apart on the stacked branches.
+- Stale branch merges: #215 (S2-T05) and #214 (S2-T06) merged into `feature/s2-t02-components` after #213 had squash-merged that branch, so #215 never reached `develop` and was re-landed as #217. #31 needed a hand close with a note.
+- Issues #26, #27, #30, #32, #33 and #34 closed with no implementation comment, and all 34 criteria were unticked until this close.
+- TEST_PLAN reused CN-46 to CN-50 for two different sets of scenarios.
+- DESIGN claimed a token-table contrast test that was never written.
+- The seven operator screens fell between S2-T05 (console screens) and S6-T03 (operator console), so the gate wording "every screen in DESIGN.md" was not met until a follow-up issue (#226) was added late in the sprint.
+- The 60 fps criterion was first closed with a CPU budget unit test that did not measure frame rate.
+
+### What to change
+
+- Build fake key fixtures at run time (for example by string concatenation) and run `gitleaks detect` on the whole branch history before pushing a branch that will be stacked on.
+- Check `bun audit` before a sprint starts, and record any advisory exception as an owner item with an expiry date. Remove the picomatch exception from `scripts/audit.sh` by 2026-12-17, or earlier when picomatch ships a fix.
+- Retarget a stacked PR to `develop` before merging the one below it, or merge bottom-up only, and confirm the PR base before merging. Do not merge into a feature branch that has already been squashed.
+- Any PR that adds a CI job updates the SC-40 job graph test in the same PR.
+- Check the next free CN id with `grep "^| CN-" docs/TEST_PLAN.md | sort` before adding scenarios.
+- Write the implementation comment and tick the criteria on the issue in the closing PR, as the Sprint 1 retrospective already asked.
+- At sprint start, map every gate item to the task that delivers it, so a screen or check that no task owns gets an issue on day one, not at the audit.
+- Test a performance criterion with a measurement of the stated metric (frame rate, not only CPU time).
+- Write the token-table contrast test (DESIGN section 2) or remove the claim.

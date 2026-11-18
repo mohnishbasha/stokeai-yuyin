@@ -27,7 +27,7 @@ Contents: 1 Design principles, 2 Color tokens, 3 Typography, 4 Spacing, 5 Compon
 
 Tokens are CSS variables. Dark is the default theme; light is selected by `data-theme="light"` or the user's OS preference when the user has not chosen. Components must reference tokens, never hex values.
 
-Contrast ratios below were computed with the WCAG 2.x relative luminance formula. An automated test over this table runs in CI (S2-T08) and fails the build if any required pair drops below its threshold. Thresholds: 4.5:1 for text under 24 px (or under 18.66 px bold), 3:1 for large text, UI component boundaries, focus indicators, and graphical objects.
+Contrast ratios below were computed with the WCAG 2.x relative luminance formula. The table is not yet checked by its own test: axe runs the contrast rules on every rendered route in both themes (S2-T08, CN-26), and a token-table contrast test is still to be written. Thresholds: 4.5:1 for text under 24 px (or under 18.66 px bold), 3:1 for large text, UI component boundaries, focus indicators, and graphical objects.
 
 ### 2.1 Dark theme (default)
 
@@ -1133,8 +1133,8 @@ Target: WCAG 2.2 level AA on every route, in both themes, at 320 px width and at
 | Check | How |
 |---|---|
 | Automated | axe in Playwright on every route (S2-T08), both themes |
-| Contrast | Token-table test (section 2), CI failure below threshold |
-| Keyboard | Playwright keyboard-only flows for sign-in, create key, play audio, top up |
+| Contrast | axe contrast rules on every rendered route (CN-26); a token-table test (section 2) is not yet written |
+| Keyboard | Component keyboard unit tests (CN-62) now; Playwright keyboard-only flows for sign-in, create key, play audio, top up are Deferred (CN-28) |
 | Screen reader | Manual pass with VoiceOver (Safari) and NVDA (Firefox) before each release, recorded in the release checklist |
 | Devanagari | Snapshot fixture of 50 strings in both themes (S2-T08) |
 | Zoom and reflow | 320 px width and 400 percent zoom, no loss of content or function |
