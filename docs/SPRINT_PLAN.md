@@ -562,7 +562,7 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Estimate:** M
 - **Dependencies:** S2-T05
 - **Spec references:** TEST_PLAN "End-to-end and visual tests"
-- **Description:** Playwright config, auth fixture, and visual snapshots for 12 key screens in both themes.
+- **Description:** Playwright config, auth fixture, and visual snapshots for 12 key screens in both themes. CI runs them in a `visual-tests` job (needs `integration-tests`) on `ubuntu-24.04-arm`, the architecture the baselines were generated on; the job graph contract test (SC-40) includes it.
 - **Acceptance criteria:**
   - [ ] 12 key screens have snapshots in both themes
   - [ ] Auth fixture works with built-in auth (seeded session)

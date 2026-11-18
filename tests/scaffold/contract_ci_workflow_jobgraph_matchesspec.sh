@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SC-40: the job graph in .github/workflows/ci.yml matches SPRINT_PLAN S0-T04.
+# SC-40: the job graph in .github/workflows/ci.yml matches SPRINT_PLAN S0-T04 (plus visual-tests from S2-T09).
 source "$(dirname "$0")/lib.sh"
 cd "$ROOT"
 bun -e '
@@ -10,6 +10,7 @@ const needs = (k) => [j[k]?.needs ?? []].flat();
 const want = {
   "lint-and-typecheck": [], "unit-tests": ["lint-and-typecheck"], "coverage": ["unit-tests"],
   "integration-tests": ["unit-tests"], "contract-tests": ["unit-tests"], "image-build": ["unit-tests"], "e2e-tests": ["integration-tests"],
+  "visual-tests": ["integration-tests"],
   "version-check": [], "cli-matrix": [], "harness-smoke-tests": [],
 };
 for (const [k, n] of Object.entries(want)) {
