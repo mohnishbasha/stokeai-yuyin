@@ -89,3 +89,4 @@ apps/docs/public/search-index.json
 # Playwright (S2-T09): the seeded session and the run output are never committed.
 apps/console/.auth/
 apps/console/test-results/
+apps/console/playwright-report/

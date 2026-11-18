@@ -3,6 +3,7 @@
 #   lint-and-typecheck (amd64, arm64)
 #     -> unit-tests -> coverage
 #                   -> integration-tests -> e2e-tests
+#                                         -> visual-tests (Playwright, arm64)
 #                   -> contract-tests (OpenAPI lint, docs reference and site build)
 #                   -> image-build (amd64, arm64 native, no push)
 #   version-check        PRs to staging and main
@@ -194,13 +195,22 @@ jobs:
           name: lighthouse
           path: apps/console/.lighthouseci/
           if-no-files-found: ignore
-      - name: Playwright (visual snapshots, accessibility, browser flows)
-        # S2-T09, scenarios e2e_visual_keyscreens_{dark,light}theme_matchessnapshots. Runs in the
-        # Playwright image pinned to the installed @playwright/test version, against the
-        # production build and a throwaway Postgres, so the committed Linux snapshots compare
-        # byte for byte with what the maintainers generate locally (bun run e2e:update).
-        # Budget: under 6 minutes including the image pull and the build.
-        timeout-minutes: 10
+
+  visual-tests:
+    # S2-T09, scenarios e2e_visual_keyscreens_{dark,light}theme_matchessnapshots (CN-58, CN-59).
+    # Runner choice: the committed baselines were generated with scripts/e2e-docker.sh on an
+    # arm64 host, so Docker runs the linux/arm64 Playwright image. ubuntu-24.04-arm is the same
+    # architecture and the same image, which keeps font rasterisation identical. Do not move
+    # this job to an amd64 runner without regenerating the baselines (bun run e2e:update).
+    needs: integration-tests
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+      - name: Playwright (visual snapshots and browser flows)
+        # The Playwright image pinned to the installed @playwright/test version runs against
+        # the production build and a throwaway Postgres. The 6 minute budget (S2-T09)
+        # covers the image pulls, install, build and the suite, so the step is capped at 6.
+        timeout-minutes: 6
         working-directory: apps/console
         run: |
           start=$(date +%s)
