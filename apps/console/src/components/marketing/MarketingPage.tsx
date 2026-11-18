@@ -36,5 +36,5 @@ export function Section({ id, title, children }: SectionProps) {
 }
 
 export function Prose({ children }: { readonly children: ReactNode }) {
-  return <p className="max-w-prose text-body text-text-1">{children}</p>;
+  return <p className="max-w-prose text-body text-text-1 [&_a]:underline">{children}</p>;
 }

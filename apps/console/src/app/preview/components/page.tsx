@@ -21,6 +21,9 @@ export default function PreviewIndexPage() {
             <a href={`/preview/components/${item.slug}`}>{item.title}</a>
           </li>
         ))}
+        <li>
+          <a href="/preview/devanagari">{t("preview.devanagari.title")}</a>
+        </li>
       </ul>
     </main>
   );

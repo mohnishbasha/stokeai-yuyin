@@ -98,7 +98,14 @@ export function KeyReveal({ secret, onDone, loading = false, errorCode, onRetry 
         </Button>
       </div>
       <p className="text-small text-text-1">{t("key.curl")}</p>
-      <pre className="overflow-x-auto rounded-control bg-bg-0 p-3">{curl}</pre>
+      <pre
+        role="region"
+        aria-label={t("key.curl")}
+        tabIndex={0}
+        className="overflow-x-auto rounded-control bg-bg-0 p-3"
+      >
+        {curl}
+      </pre>
       <div className="flex items-center gap-2">
         <input
           id={checkId}
