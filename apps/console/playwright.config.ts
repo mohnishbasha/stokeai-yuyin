@@ -10,6 +10,7 @@ const DEFAULT_DATABASE_URL = "postgres://yuyin:yuyin-ci-only@localhost:5432/yuyi
 // A throwaway secret for the e2e server only; the session cookie is signed with it.
 const E2E_SESSION_SECRET = "e2e-only-session-secret-0123456789abcdef";
 const WEB_SERVER_TIMEOUT_MS = 120_000;
+const PERF_SPEC = /pulseline-fps\.spec\.ts$/;
 const IN_CI = process.env.CI !== undefined && process.env.CI !== "";
 
 export default defineConfig({
@@ -32,7 +33,18 @@ export default defineConfig({
     viewport: { width: 1280, height: 800 },
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", testIgnore: PERF_SPEC, use: { ...devices["Desktop Chrome"] } },
+    // Frame-rate measurement (CN-80) runs alone, after the other specs finish: sharing the CPU
+    // with parallel workers would measure the runner load, not the pulse line.
+    {
+      name: "perf",
+      testMatch: PERF_SPEC,
+      dependencies: ["chromium"],
+      fullyParallel: false,
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
   webServer: {
     // The seed prints the operator user id, which the server reads as its allowlist.
     command: `sh -c 'OPERATOR_USER_IDS="$(bun scripts/e2e-seed.ts)" && export OPERATOR_USER_IDS && exec bun run start -p ${String(PORT)}'`,
