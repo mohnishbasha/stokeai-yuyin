@@ -15,8 +15,8 @@
 //!   piece longer than the budget overflows it rather than being cut.
 //! - A cut is never made inside a grapheme cluster.
 //! - Budgets count the spoken text (verbalised text, whitespace runs collapsed to one space).
-//! - Trailing whitespace belongs to the segment before it, so the `char_span`s tile the clean
-//!   text exactly. The meter sums them (ARCHITECTURE 5.1, 7).
+//! - Trailing whitespace belongs to the segment before it (leading whitespace to the one after
+//!   it), so the `char_span`s tile the clean text exactly. The meter sums them (ARCHITECTURE 5.1, 7).
 //! - Segment text is the pieces joined, whitespace runs collapsed to one space, trimmed.
 //! - Segment language is the context language of its first non-space piece. `pace_hint` is the
 //!   smallest piece hint, or 1.0.
@@ -137,6 +137,8 @@ pub fn segment(clean: &CleanText, pieces: &[Piece], opts: &SegmentOptions) -> Ve
     let mut work = pieces.to_vec();
     let mut out: Vec<Segment> = Vec::new();
     let mut start = 0;
+    // Start of a whitespace-only lead with no segment before it, owed to the next segment.
+    let mut lead: Option<usize> = None;
     while start < work.len() {
         let first = out.is_empty();
         let cap = if first {
@@ -147,11 +149,19 @@ pub fn segment(clean: &CleanText, pieces: &[Piece], opts: &SegmentOptions) -> Ve
         let end = find_cut(text, &mut work, start, cap.max(1), first).max(start + 1);
         let group = work.get(start..end).unwrap_or_default();
         match build(text, group) {
-            Some(seg) => out.push(seg),
+            Some(mut seg) => {
+                if let Some(at) = lead.take() {
+                    seg.char_span.start = at;
+                }
+                out.push(seg);
+            }
             None => {
-                // Whitespace-only tail: give it to the previous segment so the spans still tile.
+                // Whitespace-only group: give it to the previous segment, or to the next one if
+                // there is none yet, so the spans still tile.
                 if let (Some(last), Some(piece)) = (out.last_mut(), group.last()) {
                     last.char_span.end = char_offset(text, piece.source.end);
+                } else if let Some(piece) = group.first() {
+                    lead.get_or_insert(char_offset(text, piece.source.start));
                 }
             }
         }
@@ -639,6 +649,22 @@ mod tests {
             segment(&c, space_only, &SegmentOptions::default()),
             Vec::<Segment>::new()
         );
+    }
+
+    /// Shrunk proptest case: the combining mark joins the second space, so the tokeniser emits
+    /// one plain piece and the grapheme split leaves a blank head with no segment before it.
+    #[test]
+    fn unit_text_segmenter_blankleadingsplit_spanstile() {
+        let (c, p) = pieces("  \u{900}", LanguageHint::Auto);
+        let segs = segment(
+            &c,
+            &p,
+            &SegmentOptions {
+                first_max_chars: 1,
+                max_chars: 1,
+            },
+        );
+        assert_tiles(&c, &segs);
     }
 
     use proptest::prelude::*;
