@@ -438,6 +438,7 @@ Corpus growth plan (NFR-011): each Sprint 1 class task adds its rows (S1-T03 to 
 | SG-15 | unit_text_segmenter_semioticspan_neversplit | Unit | Given an atomic span that straddles the cap or contains a terminator, when segmented, then it stays whole in one segment | FR-001, FR-006..FR-011 | S1 | ✅ Automated |
 | SG-16 | unit_text_segmenter_fallback_clause_then_whitespace_then_grapheme | Unit | Given an over-cap run with no punctuation or whitespace, when segmented, then it is cut only at a grapheme cluster boundary | FR-001 | S1 | ✅ Automated |
 | SG-17 | unit_text_segmenter_laterfallback_prefers_clause_over_whitespace | Unit | Given a later sentence over 200 cp with a comma and spaces, when segmented, then the cut is at the last clause boundary within the cap | FR-001 | S1 | ✅ Automated |
+| SG-18 | unit_text_segmenter_blankleadingsplit_spanstile | Unit | Given `"  \u{900}"` with 1 cp budgets (the combining mark joins the second space, so the grapheme split leaves a blank head with no segment before it), when segmented, then the blank lead is given to the next segment and the spans still start at 0 and tile. Shrunk case from SG-06 / NM-DET-06 in CI | FR-018, ARCH metering | S2 | ✅ Automated |
 
 ### 6.5 Engine
 
