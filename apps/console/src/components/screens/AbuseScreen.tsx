@@ -106,7 +106,7 @@ function AbuseBody({ cases }: { readonly cases: readonly AbuseCase[] }) {
             <tr
               key={row.id}
               className={
-                row.id === selected?.id ? "border-b border-line bg-bg-3" : "border-b border-line"
+                row.id === selected?.id ? "border-b-2 border-accent" : "border-b border-line"
               }
             >
               <td className="px-3 py-2">
