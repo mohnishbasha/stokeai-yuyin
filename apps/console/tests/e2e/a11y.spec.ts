@@ -1,5 +1,5 @@
 // Accessibility checks on every route (S2-T08, CN-26, DESIGN 9.1).
-// Scenario: e2e_a11y_allroutes_axe_zeroseriousviolations.
+// Scenarios: e2e_a11y_allroutes_axe_zeroseriousviolations, e2e_a11y_operator_routes_axe_zeroseriousviolations.
 // axe runs with the WCAG 2.0, 2.1 and 2.2 level A and AA rule tags in both themes. A route
 // passes with zero violations of impact serious or critical. No rule is disabled.
 import { readdirSync } from "node:fs";
@@ -31,7 +31,16 @@ const SIGNED_IN_PATHS = [
   "/dashboard/voices",
   "/dashboard/voices/request",
   "/operator",
+  "/operator/abuse",
+  "/operator/audit",
+  "/operator/capacity",
+  "/operator/ledger",
+  "/operator/organizations",
+  "/operator/voices",
 ];
+// Dynamic routes are skipped by the on-disk check, so each is checked at one sample address
+// (CN-70, the operator organization detail screen).
+const SAMPLE_DYNAMIC_PATHS = ["/operator/organizations/org_acme"];
 // The preview routes are enabled in the harness by YUYIN_PREVIEW_ROUTES=1. The component
 // pages under /preview/components/<name> are discovered from the index page.
 const PREVIEW_PATHS = ["/preview/components", "/preview/devanagari"];
@@ -93,7 +102,7 @@ test.describe("e2e_a11y_allroutes_axe_zeroseriousviolations", () => {
       });
 
       test.describe("signed-in routes", () => {
-        for (const path of SIGNED_IN_PATHS) {
+        for (const path of [...SIGNED_IN_PATHS, ...SAMPLE_DYNAMIC_PATHS]) {
           test(path, async ({ page }) => {
             await page.goto(path);
             await settle(page);

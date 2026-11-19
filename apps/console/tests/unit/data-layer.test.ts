@@ -17,6 +17,7 @@ describe("mock data layer", () => {
         "keys",
         "lexicon",
         "onboarding",
+        "operator",
         "playground",
         "settings",
         "team",

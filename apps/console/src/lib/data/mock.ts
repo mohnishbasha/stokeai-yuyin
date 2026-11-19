@@ -4,6 +4,7 @@
 // or a database. Hindi and English rows are equals: lexicon and voice data carry both.
 import { can } from "../auth/roles";
 import { estimateCostMicroUsd } from "../money";
+import { createOperatorMock } from "./mock-operator";
 import type { Role } from "../auth/types";
 import type { ScreenId, ScreenState } from "../screens";
 import {
@@ -345,6 +346,12 @@ export function createMockData(state: ScreenState, screen: ScreenId): ConsoleDat
                 : "आपका ओटीपी 4 8 2 9 1 6 है।",
         })),
     },
+    operator: createOperatorMock({
+      state,
+      read,
+      daysAgo,
+      keyPrefix: (index) => buildMockKey(index).prefix,
+    }),
     onboarding: {
       progress: () =>
         read(() => ({

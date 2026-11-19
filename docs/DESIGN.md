@@ -966,6 +966,8 @@ Notes: All figures come from live gateway metrics; if metrics are unavailable th
 ```
 Notes: Read-only and append-only; rows expand to show the before and after values. Times are stored in UTC and displayed in the operator's locale with a UTC toggle. States: no results, loading, export in progress and ready (Toast), error.
 
+**Status after Sprint 2.** All seven operator screens (O1 to O7) exist and are navigable with mock data behind the `?state=` flag (S2-T05). Mutation controls are clearly mock: they are disabled with a reason, or they show a mock notice and change nothing. Real data, real mutations and the audit rows they write are wired in S6-T03 (#75). The allowlist guard is unchanged.
+
 ### 6.4 Docs (6 screens)
 
 Docs frame: top bar with product mark, search field (`/` focuses it), version label, theme switch; left sidebar of sections; right "On this page" list at lg and above. Content is MDX.
