@@ -102,9 +102,9 @@ export function Result<T>({
 }
 
 /** For actions that need the backend: tells the reviewer nothing was saved. */
-export function useMockAction(): () => void {
+export function useMockAction(message: MessageKey = "screen.mock.notConnected"): () => void {
   const toast = useToast();
   return () => {
-    toast.push({ kind: "info", message: t("screen.mock.notConnected") });
+    toast.push({ kind: "info", message: t(message) });
   };
 }

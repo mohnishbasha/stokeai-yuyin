@@ -1,10 +1,23 @@
+import Link from "next/link";
+import { Banner } from "../../../components/ui/Banner";
 import { t } from "../../../lib/messages";
+import { OPERATOR_SCREENS } from "../../../lib/screens";
 
+/** The operator overview: one link per screen, and a note that the data is sample data. */
 export default function OperatorHomePage() {
   return (
-    <main id="main" className="mx-auto max-w-content p-4 lg:p-6">
-      <h1 className="text-h1 font-medium">{t("placeholder.operator.title")}</h1>
-      <p className="mt-3 max-w-prose text-body text-text-1">{t("placeholder.operator.body")}</p>
+    <main id="main" className="mx-auto flex max-w-content flex-col gap-5 p-4 lg:p-6">
+      <h1 className="text-h1 font-medium text-text-0">{t("op.home.title")}</h1>
+      <Banner status="info">{t("op.home.mockNotice")}</Banner>
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {OPERATOR_SCREENS.map((def) => (
+          <li key={def.id} className="rounded-panel border border-line bg-bg-1 p-4">
+            <Link href={def.href} className="text-body font-medium text-text-0 underline">
+              {t(def.titleKey)}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }

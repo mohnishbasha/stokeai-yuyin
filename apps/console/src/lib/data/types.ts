@@ -193,6 +193,167 @@ export interface OnboardingApi {
   progress(): Promise<OnboardingProgress>;
 }
 
+// Operator types (DESIGN 6.3, O1 to O7). Mock data until S6-T03 wires the operator repository.
+
+export type OrgStatus = "active" | "suspended";
+export type OrgPlan = "pay-as-you-go" | "committed";
+
+export interface OperatorOrg {
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt: string;
+  readonly balanceMicroUsd: number;
+  readonly status: OrgStatus;
+  readonly plan: OrgPlan;
+  readonly ownerEmail: string;
+}
+
+export interface OrgEvent {
+  readonly id: string;
+  readonly at: string;
+  readonly event: string;
+  readonly actor: string;
+}
+
+export interface OrgDetail {
+  readonly org: OperatorOrg;
+  /** Prefix and last four only, never the secret (PRD FR-015). */
+  readonly keys: readonly ApiKeyRecord[];
+  readonly usage: readonly UsagePointRecord[];
+  readonly events: readonly OrgEvent[];
+  readonly abuseFlags: number;
+  readonly voiceRequests: number;
+}
+
+export interface LedgerAdjustment {
+  readonly id: string;
+  readonly at: string;
+  readonly orgId: string;
+  readonly orgName: string;
+  readonly amountMicroUsd: number;
+  readonly reason: string;
+  readonly operator: string;
+}
+
+export interface LedgerAdjustments {
+  readonly orgs: readonly OperatorOrg[];
+  readonly recent: readonly LedgerAdjustment[];
+  /** `failed` makes the next apply report that nothing was applied (DESIGN O3). */
+  readonly applyFails: boolean;
+  /** A form the screen opens with, used to show the would-go-negative warning. */
+  readonly prefill: {
+    readonly orgId: string;
+    readonly type: "credit" | "debit" | "refund";
+    /** Typed dollars, as the form field holds them. */
+    readonly amount: string;
+  } | null;
+}
+
+export type AbuseSeverity = "low" | "medium" | "high";
+export type AbuseStatus = "open" | "actioned";
+
+export interface AbuseCase {
+  readonly id: string;
+  readonly openedAt: string;
+  readonly orgId: string;
+  readonly orgName: string;
+  readonly source: string;
+  readonly severity: AbuseSeverity;
+  readonly status: AbuseStatus;
+  readonly summary: string;
+  /** Held server-side and shown redacted until an audited reveal (DESIGN O4). */
+  readonly evidence: string;
+  readonly timeline: readonly { readonly at: string; readonly text: string }[];
+  /** Set when another operator already actioned the case. */
+  readonly conflict: boolean;
+}
+
+export type VoiceStage = "consent" | "recordings" | "review" | "decided";
+export type ConsentStatus = "verified" | "pending";
+
+export interface VoiceRequestItem {
+  readonly id: string;
+  readonly orgName: string;
+  readonly stage: VoiceStage;
+  readonly submittedAt: string;
+  readonly owner: string;
+  readonly consent: ConsentStatus;
+  readonly recordings: readonly {
+    readonly id: string;
+    readonly name: string;
+    readonly check: "pass" | "fail";
+  }[];
+  /** Recordings cannot be played (DESIGN O5, asset unavailable). */
+  readonly assetUnavailable: boolean;
+}
+
+export type AdmissionMode = "open" | "shedding" | "closed";
+export type NodeState = "ready" | "draining" | "down";
+
+export interface FleetNode {
+  readonly id: string;
+  readonly nodeClass: string;
+  readonly state: NodeState;
+  readonly activeSessions: number;
+  readonly sessionLimit: number;
+}
+
+export interface FleetCapacity {
+  /** False when gateway metrics cannot be read: no figures, only the last good read. */
+  readonly metricsAvailable: boolean;
+  readonly updatedAt: string;
+  readonly lastGoodReadAt: string;
+  readonly nodes: readonly FleetNode[];
+  readonly admission: AdmissionMode;
+  readonly queueDepth: number;
+  readonly rejections503: number;
+  readonly sessions: readonly UsagePointRecord[];
+  readonly incidentOpen: boolean;
+}
+
+export interface AuditEntry {
+  readonly id: string;
+  readonly at: string;
+  readonly actor: string;
+  readonly action: string;
+  readonly target: string;
+  readonly orgId: string;
+  readonly reason: string;
+  readonly before: string;
+  readonly after: string;
+}
+
+export interface OrgsApi {
+  list(): Promise<readonly OperatorOrg[]>;
+  /** `null` when the organization does not exist. */
+  get(id: string): Promise<OrgDetail | null>;
+}
+export interface LedgerAdjustmentsApi {
+  overview(): Promise<LedgerAdjustments>;
+}
+export interface AbuseApi {
+  cases(): Promise<readonly AbuseCase[]>;
+}
+export interface CustomVoiceQueueApi {
+  queue(): Promise<readonly VoiceRequestItem[]>;
+}
+export interface FleetApi {
+  capacity(): Promise<FleetCapacity>;
+}
+export interface AuditApi {
+  entries(): Promise<readonly AuditEntry[]>;
+}
+
+/** What the operator screens read. Reads only: mutations and audit writes arrive in S6-T03. */
+export interface OperatorApi {
+  readonly orgs: OrgsApi;
+  readonly ledger: LedgerAdjustmentsApi;
+  readonly abuse: AbuseApi;
+  readonly customVoices: CustomVoiceQueueApi;
+  readonly fleet: FleetApi;
+  readonly audit: AuditApi;
+}
+
 /** Everything a console screen reads. The mock and the real layer both implement this. */
 export interface ConsoleData {
   readonly viewer: ViewerApi;
@@ -205,6 +366,7 @@ export interface ConsoleData {
   readonly settings: SettingsApi;
   readonly playground: PlaygroundApi;
   readonly onboarding: OnboardingApi;
+  readonly operator: OperatorApi;
 }
 
 /** What a page hands to its screen component: serialisable, so it crosses the server boundary. */

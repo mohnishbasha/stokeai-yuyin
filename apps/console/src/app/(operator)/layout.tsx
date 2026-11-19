@@ -1,6 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { OperatorNav } from "../../components/OperatorNav";
 import { OrgSwitcher } from "../../components/OrgSwitcher";
+import { ToastProvider } from "../../components/ui/Toast";
 import { authorizeOperator } from "../../lib/auth/view";
 import { authConfig, currentView } from "../../server/runtime";
 
@@ -20,7 +22,8 @@ export default async function OperatorLayout({ children }: { children: ReactNode
   return (
     <div className="min-h-screen bg-bg-0">
       <OrgSwitcher view={view} />
-      {children}
+      <OperatorNav />
+      <ToastProvider>{children}</ToastProvider>
     </div>
   );
 }

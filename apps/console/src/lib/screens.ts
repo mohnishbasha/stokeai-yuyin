@@ -21,6 +21,12 @@ export const SCREEN_STATES = [
   "complete",
   "submitted",
   "rejected",
+  "suspended",
+  "not-found",
+  "negative",
+  "conflict",
+  "asset-error",
+  "metrics-unavailable",
 ] as const;
 export type ScreenState = (typeof SCREEN_STATES)[number];
 
@@ -28,7 +34,7 @@ export function isScreenState(value: unknown): value is ScreenState {
   return typeof value === "string" && (SCREEN_STATES as readonly string[]).includes(value);
 }
 
-export const SCREEN_IDS = [
+export const CONSOLE_SCREEN_IDS = [
   "onboarding",
   "playground",
   "keys",
@@ -40,6 +46,16 @@ export const SCREEN_IDS = [
   "team",
   "settings",
 ] as const;
+export const OPERATOR_SCREEN_IDS = [
+  "organizations",
+  "organization",
+  "ledger-adjustments",
+  "abuse",
+  "custom-voices",
+  "capacity",
+  "audit",
+] as const;
+export const SCREEN_IDS = [...CONSOLE_SCREEN_IDS, ...OPERATOR_SCREEN_IDS] as const;
 export type ScreenId = (typeof SCREEN_IDS)[number];
 
 export interface ScreenDef {
@@ -147,8 +163,81 @@ export const CONSOLE_NAV_ITEMS: readonly ConsoleNavItem[] = [
   ...CONSOLE_SCREENS.map((def) => ({ href: def.href, labelKey: def.titleKey })),
 ];
 
+// The operator frame lives under /operator, behind the OPERATOR_USER_IDS allowlist (ADR-025).
+export const OPERATOR_HOME_HREF = "/operator";
+/** A fixed sample organization, so the O2 detail screen has an address to link to. */
+export const OPERATOR_SAMPLE_ORG_ID = "org_acme";
+
+export const OPERATOR_SCREENS: readonly ScreenDef[] = [
+  {
+    id: "organizations",
+    wireframe: "O1",
+    href: "/operator/organizations",
+    titleKey: "op.orgs.title",
+    emptyTitleKey: "op.orgs.empty.title",
+    states: ["default", "loading", "empty", "error"],
+  },
+  {
+    id: "organization",
+    wireframe: "O2",
+    href: `/operator/organizations/${OPERATOR_SAMPLE_ORG_ID}`,
+    titleKey: "op.org.title",
+    emptyTitleKey: "op.org.notFound.title",
+    states: ["default", "loading", "suspended", "not-found", "error"],
+  },
+  {
+    id: "ledger-adjustments",
+    wireframe: "O3",
+    href: "/operator/ledger",
+    titleKey: "op.ledger.title",
+    states: ["default", "loading", "negative", "failed", "error"],
+  },
+  {
+    id: "abuse",
+    wireframe: "O4",
+    href: "/operator/abuse",
+    titleKey: "op.abuse.title",
+    emptyTitleKey: "op.abuse.empty.title",
+    states: ["default", "loading", "empty", "conflict", "error"],
+  },
+  {
+    id: "custom-voices",
+    wireframe: "O5",
+    href: "/operator/voices",
+    titleKey: "op.voices.title",
+    emptyTitleKey: "op.voices.empty.title",
+    states: ["default", "loading", "empty", "asset-error", "error"],
+  },
+  {
+    id: "capacity",
+    wireframe: "O6",
+    href: "/operator/capacity",
+    titleKey: "op.capacity.title",
+    states: ["default", "loading", "metrics-unavailable", "error"],
+  },
+  {
+    id: "audit",
+    wireframe: "O7",
+    href: "/operator/audit",
+    titleKey: "op.audit.title",
+    emptyTitleKey: "op.audit.empty.title",
+    states: ["default", "loading", "empty", "error"],
+  },
+];
+
+/** The operator navigation (DESIGN 6.3): the overview, then the six top-level screens. */
+export const OPERATOR_NAV_ITEMS: readonly ConsoleNavItem[] = [
+  { href: OPERATOR_HOME_HREF, labelKey: "op.home.title" },
+  { href: "/operator/organizations", labelKey: "op.nav.organizations" },
+  { href: "/operator/ledger", labelKey: "op.nav.ledger" },
+  { href: "/operator/abuse", labelKey: "op.nav.abuse" },
+  { href: "/operator/voices", labelKey: "op.nav.voices" },
+  { href: "/operator/capacity", labelKey: "op.nav.capacity" },
+  { href: "/operator/audit", labelKey: "op.nav.audit" },
+];
+
 export function screenById(id: ScreenId): ScreenDef {
-  const found = CONSOLE_SCREENS.find((screen) => screen.id === id);
+  const found = [...CONSOLE_SCREENS, ...OPERATOR_SCREENS].find((screen) => screen.id === id);
   if (found === undefined) throw new Error(`Unknown console screen: ${id}`);
   return found;
 }
