@@ -1,4 +1,4 @@
-// CN-46 (counting helper) unit_console_textarea_counter_codepoints_matchesexpected
+// CN-60 (counting helper) unit_console_textarea_counter_codepoints_matchesexpected
 import { describe, expect, it } from "vitest";
 import { countCodePoints } from "../../src/lib/count";
 import { formatMicroUsd, percentOf } from "../../src/lib/money";
