@@ -83,7 +83,7 @@ Subdomains: `api.yuyin.openstoke.com` (data plane), `console.yuyin.openstoke.com
 | `crates/yuyin-licence` | Rust | Self-host licence verification (Ed25519), offline usage report |
 | `crates/yuyin-count-wasm` | Rust | WASM build of the character counter (`count.rs`) for the console |
 | `apps/console` | TypeScript | Console, marketing site, playground, operator admin, Stripe webhooks |
-| `apps/docs` | MDX | Documentation site built from MDX plus the OpenAPI file |
+| `apps/docs` | MDX | Documentation site built from MDX plus the OpenAPI file (ADR-031) |
 | `packages/sdk-ts` | TypeScript | Official TypeScript SDK |
 | `packages/sdk-python` | Python | Official Python SDK |
 | `packages/cli` | TypeScript | `yuyin` CLI, compiled with `bun build --compile` |
@@ -324,6 +324,34 @@ Format: context, decision, consequences, status. Entries ADR-001 to ADR-014 reco
 - Decision: Keep PostgreSQL for the hosted service. SQLite allows one writer at a time on one machine, so it would pin the gateway to a single pod or need a replication layer (rqlite, LiteFS, libSQL), which adds the operations we wanted to avoid. DuckDB is an analytics engine with a single writer process and is not suited to a transactional credit ledger. Both would turn the Next phase move to NileDB or Neon (NP-01) from a configuration change into a rewrite. SQLite is a candidate backend for the single-node self-host edition only (NP-08). DuckDB is a candidate for offline analytics over usage exports, alongside PostgreSQL (NP-09).
 - Consequences: No change to the current sprints. Migrations stay plain, portable SQL (ADR-024), which keeps an optional SQLite backend possible later.
 - Status: Accepted.
+
+### ADR-030 Per-package licence exceptions for the Next.js console
+
+- Context: S2-T01 (PR #205) made `apps/console` a Next.js app. `scripts/licence-check.sh` then rejected transitive packages from `next`: `graceful-fs` and `lru-cache` (BlueOak-1.0.0), `tslib` (0BSD), `caniuse-lite` (CC-BY-4.0 browser data), and `@img/sharp-libvips-*` (LGPL-3.0-or-later, optional native binary of `sharp`). The owner recorded this as B7 and merged PR #205 on 2026-11-16 with the check still red.
+- Decision: Add per-package exceptions with written reasons in `scripts/licence-check.sh`, following the `minimatch` precedent. The SPDX allowlist itself is not widened. An exception ending in `*` matches a package name prefix, used only for the platform-specific `@img/sharp-libvips-*` packages. libvips stays a build host dependency and is not copied into the console image.
+- Consequences: `licence-check` is green on `develop` again. Any new package outside the allowlist still fails the check. If the owner prefers to drop libvips entirely, the alternative is to stub out `sharp` and set `images.unoptimized`.
+- Status: Accepted, owner to confirm (B7).
+
+### ADR-031 Built-in auth implementation (S2-T04)
+
+- Context: ADR-025 fixed the behaviour of built-in console auth. S2-T04 needed concrete choices for the operator command, the database driver, the middleware, and CSRF.
+- Decision: (1) `yuyin-admin` is a small TypeScript script run with Bun from the console workspace (`bun run yuyin-admin ...` in `apps/console`), sharing the auth library and migrations with the console; a Rust binary would duplicate the token and session logic. (2) Database access goes through an `AuthStore` interface in `apps/console/src/lib/auth`, with an in-memory store for unit tests and a `pg` (node-postgres, MIT) implementation in `src/server`, tested against the CI Postgres service when `DATABASE_URL` is set. `pg` is the only new runtime dependency (plus `@types/pg`). (3) Next 16 renamed middleware to `proxy`; `src/proxy.ts` redirects requests for `/dashboard` and `/operator` without a session cookie to `/sign-in`, and the `(console)` and `(operator)` layouts validate the session on the server, so a forged cookie never reaches content. Non-allowlisted signed-in users get 404 on `/operator`. (4) The session cookie is `__Host-yuyin-session` (HttpOnly, Secure, SameSite=Lax, Path=/, 8 hour lifetime); the database stores only its SHA-256. The CSRF token is an HMAC-SHA256 of the per-session `csrf_secret` under `SESSION_SECRET`, sent in a form field `csrf` or the `x-csrf-token` header and compared in constant time, and every mutation also requires an `Origin` header equal to the console origin. Sign-in has no session yet: it is guarded by the Origin check and the unguessable token, and the emailed link opens a page with a button, so mail scanners that prefetch it cannot burn the single-use token. (5) `sessions.created_at` is added so operator credit and suspension actions can require a session under 15 minutes old. (6) No email is sent in this phase; the operator sends the printed link.
+- Consequences: Auth logic is unit tested without a database. The `__Host-` cookie needs a secure context, so local development uses `localhost` in a browser that treats it as secure. Playwright coverage of the same flow arrives with S2-T09.
+- Status: Accepted.
+
+### ADR-032 Docs site: Next.js static export with MDX
+
+- Context: S2-T07 (issue #32) needs a docs site with MDX pages, a sidebar, search, and an API reference generated from `api/openapi.yaml` (FR-024). The console already runs on Next.js App Router with design tokens and self-hosted fonts.
+- Decision: `apps/docs` is a Next.js App Router app with `output: "export"` (static files in `apps/docs/dist`, no server). Pages are MDX compiled by `@next/mdx` with `remark-gfm` for tables. The API reference is built at build time from `api/openapi.yaml` by `src/lib/openapi.ts` (parsed with `yaml`); a file that cannot be documented throws and fails the build, and CI runs `bun run --cwd apps/docs build:reference` in `contract-tests`. Search is a static JSON index written by `scripts/build-search-index.ts` and matched in the browser, with no external service (NFR-025). `tokens.css` and the fonts are copies of the console's, with a test that the token files are identical and a raw-value scan like the console's. New dependencies, all MIT or ISC and passing `scripts/licence-check.sh` with no new exceptions: `@next/mdx`, `@mdx-js/loader`, `@mdx-js/react`, `@mdx-js/mdx` (tests), `@types/mdx`, `remark-gfm`, `yaml`.
+- Consequences: Hosting is any static file host. The theme choice is applied after hydration from a cookie because there is no server to read it. The docs app has no Playwright project, so the browser search test (CN-24) stays Deferred and DC-03 covers search as an integration test over the built index and the component. A change to console tokens needs the same change in `apps/docs/src/styles/tokens.css`, which the drift test enforces.
+- Status: Accepted.
+
+### ADR-033 Console character counter isolated behind one module until the WASM build lands
+
+- Context: S2-T02 needs the Textarea to count characters exactly as the gateway bills them (ADR-011, BUILD_PROMPT implementation note 12: one counter, the console uses its WASM build). `crates/yuyin-count-wasm` is still a Sprint 0 placeholder and `yuyin-meter/count.rs` arrives in S4-T05, so no WASM artefact exists to import. `wasm-bindgen` tooling is not part of the current toolchain.
+- Decision: The console counts in exactly one module, `apps/console/src/lib/count.ts` (`countCodePoints`: Unicode scalar values after NFC). No component counts on its own. S4-T05 replaces the body of that module with the `yuyin-count-wasm` export and adds a parity test against the Rust golden rows. The module's tests pin the PRD examples ("नमस्ते" is 6, "आपकी EMI ₹12,450 है" is 19), astral characters, and NFC composition, including composition exclusions such as U+0958, which stay two code points.
+- Consequences: Until S4-T05 there are two implementations in the repository, the Rust one and this interim one. The swap is a one-file change. The Textarea count is an estimate shown to the user; billing always uses the gateway count.
+- Status: Accepted, interim until S4-T05.
 
 ---
 
@@ -566,7 +594,7 @@ All tenant tables carry `tenant_id`. Tenant context is application-enforced: the
 | `users` | `id` uuid; `email` text unique; `name` text; `status` text check in (`active`,`disabled`); `created_at` | PK `id`. Created by the operator command | Life of account; deleted on verified erasure request |
 | `memberships` | `tenant_id`; `user_id`; `role` text check in (`owner`,`admin`,`developer`,`billing`) | PK (`tenant_id`,`user_id`) | Life of membership |
 | `login_tokens` | `id`; `user_id`; `token_hash` bytea; `expires_at` timestamptz; `used_at` timestamptz null; `issued_by` text | PK `id`; unique `token_hash`. Single use, 15 minute expiry | 30 days after expiry |
-| `sessions` | `id`; `user_id`; `tenant_id`; `token_hash` bytea; `csrf_secret` bytea; `expires_at` timestamptz; `revoked_at` timestamptz null | PK `id`; unique `token_hash` | Deleted after expiry |
+| `sessions` | `id`; `user_id`; `tenant_id`; `token_hash` bytea; `csrf_secret` bytea; `expires_at` timestamptz; `revoked_at` timestamptz null; `created_at` | PK `id`; unique `token_hash` | Deleted after expiry |
 | `api_keys` | `id`; `tenant_id`; `name` text; `prefix` text; `hash` bytea (SHA-256); `scopes` jsonb; `voice_allowlist` text[]; `monthly_char_cap` bigint null; `last_used_at` timestamptz null; `revoked_at` timestamptz null; `created_by` text; `created_at` | PK (`tenant_id`,`id`); unique `prefix`; index on (`tenant_id`, `revoked_at`) | Life of account; revoked rows kept 13 months for audit |
 | `ledger` | `id`; `tenant_id`; `kind` text check in (`credit`,`debit`,`grant`,`refund`,`adjustment`); `amount_micro_usd` bigint; `chars` bigint null; `request_id` text null; `stripe_event_id` text null; `actor` text; `note` text; `created_at` | PK (`tenant_id`,`id`); unique `request_id`; unique `stripe_event_id`; index (`tenant_id`, `created_at`) | Append-only; kept for financial record retention (set by the owner, default 7 years) |
 | `usage_daily` | `tenant_id`; `day` date; `key_id`; `voice_id` text; `format` text; `requests` bigint; `chars` bigint; `cost_micro_usd` bigint | PK (`tenant_id`,`day`,`key_id`,`voice_id`,`format`) | 25 months |
@@ -733,7 +761,9 @@ Rules: error responses never echo request text. Every error carries `request_id`
 
 ### Console
 
+- Structure (S2-T01): Next.js App Router with route groups `(marketing)` (`/`), `(console)` (`/dashboard`) and `(operator)` (`/operator`), plus `GET /healthz`. Design tokens are CSS variables in `apps/console/src/styles/tokens.css`, the only file allowed raw colour, type and spacing values (enforced by a unit test). The theme is dark by default with a light theme chosen by the `yuyin-theme` cookie, read on the server and rendered as `data-theme` on `<html>`, so no inline script is needed. User-visible strings come from `src/messages/en.json` through `t()`. The image runs Next standalone output on distroless Node, non-root, port 3000. Lighthouse (performance 90, accessibility 95) runs in the `e2e-tests` CI job.
 - Built-in auth (ADR-025): operators create organizations and users with the `yuyin-admin` command; there is no self-serve sign-up. Sign-in uses an operator-issued email magic link or one-time login token (hashed, single use, 15 minute expiry) and a server-side session in an HttpOnly Secure SameSite cookie. CSRF protection on all mutations. Strict CSP with nonces, no inline scripts, `frame-ancestors 'none'`.
+- Implementation (ADR-031): `apps/console/src/lib/auth` (logic, `AuthStore` interface), `src/server` (Postgres store, wiring), `src/proxy.ts` (redirect gate), `scripts/yuyin-admin.ts` (operator command), `migrations/0001_auth_subset.sql`. Routes: `POST /api/auth/sign-in`, `POST /api/auth/sign-out`, `POST /api/org/switch`, page `/sign-in`.
 - Role checks on the server for every action. The client never decides authorisation.
 - Stripe webhooks verified by signature. Secrets in Kubernetes Secrets.
 - Operator routes require an allowlisted user (`OPERATOR_USER_IDS`) and a fresh session (re-auth within 15 minutes for credit and suspension actions).
@@ -1270,7 +1300,7 @@ Chart verification (CI, every PR that touches `deploy/` or the gateway):
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`; Playwright from Sprint 2), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
+| `ci.yml` | every PR, and pushes to `develop` | Jobs: `lint-and-typecheck` (amd64 and arm64, runs `make lint` and `make type-check`), `unit-tests` (`make test` and `tests/scaffold/run.sh`), `coverage` (`scripts/coverage.sh` against `.coverage-thresholds.toml`), `integration-tests` (Postgres and Valkey service containers, gateway smoke), `contract-tests` (OpenAPI lint; docs API reference and site build from `api/openapi.yaml`; SDK type drift check from Sprint 5), `image-build` (native amd64 and arm64 runners, no push, image tests), `e2e-tests` (dev stack, fresh-container build on PRs to `staging`, and Lighthouse on the console home shell), `visual-tests` (S2-T09: needs `integration-tests`, runs on `ubuntu-24.04-arm`, the architecture the snapshot baselines were generated on; Playwright axe, visual and Devanagari snapshot specs against the production build), `version-check` (PRs to `staging` and `main` only), and the skipped stubs `cli-matrix` (Sprint 8) and `harness-smoke-tests` (Sprint 10). `make helm-lint` joins in Sprint 3 |
 | `security.yml` | every PR, pushes to `develop`, and weekly | `audit` (`scripts/audit.sh`: `cargo audit`, `cargo deny check advisories bans sources`, `bun audit`) and `gitleaks` (full history scan with `.gitleaks.toml`) |
 | `licence-check.yml` | every PR and pushes to `develop` | `licence-check` (`scripts/licence-check.sh`, allowlist in `deny.toml`) |
 | `kind.yml` | PRs touching `deploy/` or `crates/`, and all PRs to `staging` | chart verification steps 3 to 5 |
@@ -1322,7 +1352,9 @@ yuyin-tts/                           (repository root: stokeai-yuyin, see ADR-01
 │   │                  tests/{integration/,regression/,smoke/}
 │   └── yuyin-count-wasm/
 ├── migrations/
-├── apps/{console/,docs/}
+├── apps/
+│   ├── console/   Next.js App Router: src/{app/{(marketing),(console),(operator),healthz},components,lib,messages,fonts,styles/tokens.css}, next.config.ts, lighthouserc.json
+│   └── docs/      Next.js static export (ADR-031): src/{app/{[[...slug]],reference,changelog},components,content/*.mdx,lib,messages,fonts,styles/tokens.css}, mdx-components.tsx, scripts/{build-reference.ts,build-search-index.ts}
 ├── packages/{sdk-ts/,sdk-python/,cli/,mcp/}
 ├── integrations/{pi/,goose/toolkit.yaml,opencode/README.md}
 ├── bench/{METHOD.md,corpus/,engine-bakeoff/,loadgen/,results/}
@@ -1418,6 +1450,7 @@ Environment variables:
 | `STRIPE_WEBHOOK_SECRET` | mock | secret | secret |
 | `DATABASE_URL` (console) | local | secret | secret |
 | `OPERATOR_USER_IDS` | your id | allowlist | allowlist |
+| `YUYIN_CONSOLE_URL` (console) | `http://localhost:3000` | stage URL | prod URL |
 | `LEGAL_DRAFT_BANNER` | `on` | `on` | `on` until owner sets `off` |
 | `PUBLIC_DEMO_DAILY_CHAR_BUDGET` | `10000` | `50000` | owner sets |
 

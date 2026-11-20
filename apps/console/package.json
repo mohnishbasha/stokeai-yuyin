@@ -5,14 +5,35 @@
   "private": true,
   "license": "SEE LICENSE IN ../../LICENSE",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "test": "vitest run",
-    "type-check": "tsc -p tsconfig.json --noEmit"
+    "e2e": "playwright test",
+    "e2e:docker": "bash scripts/e2e-docker.sh",
+    "e2e:update": "bash scripts/e2e-docker.sh --update-snapshots",
+    "type-check": "tsc -p tsconfig.json --noEmit",
+    "yuyin-admin": "bun scripts/yuyin-admin.ts"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "pg": "8.23.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/postcss": "4.3.5",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "26.6.6",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "jsdom": "31.0.1",
+    "postcss": "8.5.33",
+    "tailwindcss": "4.3.5"
   }
 }

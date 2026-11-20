@@ -3,7 +3,8 @@
 #   lint-and-typecheck (amd64, arm64)
 #     -> unit-tests -> coverage
 #                   -> integration-tests -> e2e-tests
-#                   -> contract-tests
+#                                         -> visual-tests (Playwright, arm64)
+#                   -> contract-tests (OpenAPI lint, docs reference and site build)
 #                   -> image-build (amd64, arm64 native, no push)
 #   version-check        PRs to staging and main
 #   cli-matrix           stub, active from Sprint 8
@@ -109,6 +110,10 @@ jobs:
         run: |
           pg_isready -h 127.0.0.1 -p 5432 -U yuyin
           exec 3<>/dev/tcp/127.0.0.1/6379 && printf 'PING\r\n' >&3 && head -c 7 <&3 | grep -q PONG
+      - name: Console auth store against Postgres (S2-T04, CN-52)
+        # Applies migrations/*.sql to a scratch schema and runs the AuthStore contract on pg.
+        run: bunx vitest run tests/unit/auth-store.test.ts
+        working-directory: apps/console
       - name: Integration tests
         # Integration suites (tests/integration, crates/*/tests) arrive from Sprint 2.
         run: cargo test --workspace --locked --tests
@@ -130,6 +135,12 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: OpenAPI lint
         run: bun run lint:openapi
+      - name: Docs API reference builds from OpenAPI
+        # S2-T07, scenario contract_docs_reference_buildfromopenapi_succeeds. Fails when
+        # api/openapi.yaml cannot be turned into the reference, then builds the whole docs site.
+        run: |
+          bun run --cwd apps/docs build:reference
+          bun run --cwd apps/docs build
       - name: SDK type drift check
         # Compares the generated SDK types with api/openapi.yaml once the SDKs exist (S5-T03, S5-T04).
         run: "echo 'SDK type drift check: available from Sprint 5'"
@@ -171,9 +182,48 @@ jobs:
       - name: Clean clone builds in a fresh container (PRs to staging)
         if: github.base_ref == 'staging'
         run: bash tests/scaffold/e2e_make_setupbuildcheck_freshcontainer_exitszero.sh
-      - name: Playwright against the local stack
-        # The Playwright harness arrives with S2-T09.
-        run: "echo 'Playwright e2e: available from Sprint 2'"
+      - name: Lighthouse on the console home shell (performance 90, accessibility 95)
+        # S2-T01, scenario e2e_console_homeshell_lighthouse_meetsthresholds. Builds the console,
+        # serves it with `next start`, and asserts the thresholds in apps/console/lighthouserc.json.
+        working-directory: apps/console
+        run: |
+          bun run build
+          bunx @lhci/cli@0.16.1 autorun --config=lighthouserc.json
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse
+          path: apps/console/.lighthouseci/
+          if-no-files-found: ignore
+
+  visual-tests:
+    # S2-T09, scenarios e2e_visual_keyscreens_{dark,light}theme_matchessnapshots (CN-58, CN-59).
+    # Runner choice: the committed baselines were generated with scripts/e2e-docker.sh on an
+    # arm64 host, so Docker runs the linux/arm64 Playwright image. ubuntu-24.04-arm is the same
+    # architecture and the same image, which keeps font rasterisation identical. Do not move
+    # this job to an amd64 runner without regenerating the baselines (bun run e2e:update).
+    needs: integration-tests
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+      - name: Playwright (visual snapshots and browser flows)
+        # The Playwright image pinned to the installed @playwright/test version runs against
+        # the production build and a throwaway Postgres. The 6 minute budget (S2-T09)
+        # covers the image pulls, install, build and the suite, so the step is capped at 6.
+        timeout-minutes: 6
+        working-directory: apps/console
+        run: |
+          start=$(date +%s)
+          bash scripts/e2e-docker.sh
+          echo "Playwright suite wall time: $(( $(date +%s) - start )) s" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            apps/console/playwright-report/
+            apps/console/test-results/
+          if-no-files-found: ignore
 
   version-check:
     if: github.event_name == 'pull_request' && (github.base_ref == 'staging' || github.base_ref == 'main')

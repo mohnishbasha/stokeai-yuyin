@@ -27,7 +27,7 @@ Contents: 1 Design principles, 2 Color tokens, 3 Typography, 4 Spacing, 5 Compon
 
 Tokens are CSS variables. Dark is the default theme; light is selected by `data-theme="light"` or the user's OS preference when the user has not chosen. Components must reference tokens, never hex values.
 
-Contrast ratios below were computed with the WCAG 2.x relative luminance formula. An automated test over this table runs in CI (S2-T08) and fails the build if any required pair drops below its threshold. Thresholds: 4.5:1 for text under 24 px (or under 18.66 px bold), 3:1 for large text, UI component boundaries, focus indicators, and graphical objects.
+Contrast ratios below were computed with the WCAG 2.x relative luminance formula. The table is not yet checked by its own test: axe runs the contrast rules on every rendered route in both themes (S2-T08, CN-26), and a token-table contrast test is still to be written. Thresholds: 4.5:1 for text under 24 px (or under 18.66 px bold), 3:1 for large text, UI component boundaries, focus indicators, and graphical objects.
 
 ### 2.1 Dark theme (default)
 
@@ -176,9 +176,11 @@ Rules:
 
 | Face | Expected licence | Status | Verified by | Date | Source URL recorded |
 |---|---|---|---|---|---|
-| IBM Plex Sans | SIL Open Font License 1.1 | To be verified | [owner] | [date] | [URL of licence file in the downloaded package] |
-| IBM Plex Sans Devanagari | SIL Open Font License 1.1 | To be verified | [owner] | [date] | [URL] |
-| IBM Plex Mono | SIL Open Font License 1.1 | To be verified | [owner] | [date] | [URL] |
+| IBM Plex Sans | SIL Open Font License 1.1 | Verified | Claude agent (S2-T01) | 2026-11-15 | LICENSE in the npm package `@fontsource/ibm-plex-sans` 5.3.0, copied to `apps/console/src/fonts/OFL-IBM-Plex-Sans.txt` |
+| IBM Plex Sans Devanagari | SIL Open Font License 1.1 | Verified | Claude agent (S2-T01) | 2026-11-15 | LICENSE in `@fontsource/ibm-plex-sans-devanagari` 5.3.0, copied to `apps/console/src/fonts/OFL-IBM-Plex-Sans-Devanagari.txt` |
+| IBM Plex Mono | SIL Open Font License 1.1 | Verified | Claude agent (S2-T01) | 2026-11-15 | LICENSE in `@fontsource/ibm-plex-mono` 5.3.0, copied to `apps/console/src/fonts/OFL-IBM-Plex-Mono.txt` |
+
+Implementation notes (S2-T01): the WOFF2 files are committed under `apps/console/src/fonts/` and loaded with `next/font/local` (they are not npm dependencies, because `scripts/licence-check.sh` rejects OFL-1.1 packages). Latin Extended is not included yet; only Latin and Devanagari are subset. The footer link to the licence texts is deferred to S2-T06. Tokens live in `apps/console/src/styles/tokens.css` and are mapped to Tailwind v4 utilities with `@theme inline`.
 
 SIL OFL is expected but not yet confirmed. Before the fonts ship, the executing agent downloads the package, reads the licence file inside it, and fills in this table. The licence text is shipped alongside the font files and linked from the site footer. If any face is found to carry different terms, the font is replaced and this section updated.
 
@@ -657,6 +659,23 @@ Notes: The worked example uses clearly labelled illustrative amounts formatted b
 
 Console frame: NAV at left, content at right, 2 px PulseLine progress indicator at the page top during navigation and requests, Banner slot under it.
 
+**C0. Sign-in and organization switcher (S2-T04)**
+
+```
+Sign-in (no NAV)                              Console account bar
++--------------------------------------+      +------------------------------------------------------+
+| Sign in                              |      | Organization [Acme v] [Switch]  Role: Owner          |
+| Use the sign-in link your operator   |      |                      Signed in as a@x.com [Sign out] |
+| sent you. Each link works once and   |      +------------------------------------------------------+
+| expires after 15 minutes.            |
+| [Continue to the console]            |   With a link token: hidden field, one button.
+|  (no token: [One-time login token]   |   Without: a password-type input and [Sign in].
+|   [Sign in])                         |   Failure: one generic alert, never the reason.
+| No self-serve sign-up. ...           |
++--------------------------------------+
+```
+Notes: Plain forms that work without JavaScript, using tokens only. The switcher is a labelled select plus a Switch button; it lists only organizations the user belongs to and the server re-checks membership. The role is shown as text. Sign out is a button in a form with the CSRF token. Failed sign-in shows `auth.signin.error` in a `role="alert"` block with the `--err` colour and a border, not colour alone. The component library (S2-T02) may restyle these forms; the markup and field names (`token`, `csrf`, `tenant_id`) are the contract.
+
 **C1. Onboarding**
 
 ```
@@ -947,6 +966,8 @@ Notes: All figures come from live gateway metrics; if metrics are unavailable th
 ```
 Notes: Read-only and append-only; rows expand to show the before and after values. Times are stored in UTC and displayed in the operator's locale with a UTC toggle. States: no results, loading, export in progress and ready (Toast), error.
 
+**Status after Sprint 2.** All seven operator screens (O1 to O7) exist and are navigable with mock data behind the `?state=` flag (S2-T05). Mutation controls are clearly mock: they are disabled with a reason, or they show a mock notice and change nothing. Real data, real mutations and the audit rows they write are wired in S6-T03 (#75). The allowlist guard is unchanged.
+
 ### 6.4 Docs (6 screens)
 
 Docs frame: top bar with product mark, search field (`/` focuses it), version label, theme switch; left sidebar of sections; right "On this page" list at lg and above. Content is MDX.
@@ -1112,8 +1133,8 @@ Target: WCAG 2.2 level AA on every route, in both themes, at 320 px width and at
 | Check | How |
 |---|---|
 | Automated | axe in Playwright on every route (S2-T08), both themes |
-| Contrast | Token-table test (section 2), CI failure below threshold |
-| Keyboard | Playwright keyboard-only flows for sign-in, create key, play audio, top up |
+| Contrast | axe contrast rules on every rendered route (CN-26); a token-table test (section 2) is not yet written |
+| Keyboard | Component keyboard unit tests (CN-62) now; Playwright keyboard-only flows for sign-in, create key, play audio, top up are Deferred (CN-28) |
 | Screen reader | Manual pass with VoiceOver (Safari) and NVDA (Firefox) before each release, recorded in the release checklist |
 | Devanagari | Snapshot fixture of 50 strings in both themes (S2-T08) |
 | Zoom and reflow | 320 px width and 400 percent zoom, no loss of content or function |

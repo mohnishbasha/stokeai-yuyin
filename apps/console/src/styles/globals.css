@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@layer base {
+  html {
+    background-color: var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--font-sans-stack);
+    font-size: var(--text-body-size);
+    line-height: calc(var(--text-body-line) + var(--line-extra));
+    font-weight: var(--weight-regular);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  /* Devanagari line height is 4 px larger at every size (DESIGN 3.3). No letter-spacing and no
+     synthesised weights, so the shirorekha stays connected. */
+  :lang(hi) {
+    --line-extra: var(--line-extra-hi);
+    letter-spacing: normal;
+    font-synthesis: none;
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono-stack);
+    font-size: var(--text-mono-size);
+    line-height: var(--text-mono-line);
+    font-variant-numeric: tabular-nums;
+  }
+
+  a {
+    color: var(--accent);
+    text-underline-offset: var(--space-1);
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--accent);
+    outline-offset: var(--focus-ring-offset);
+    box-shadow: 0 0 0 var(--focus-ring-halo) var(--accent-dim);
+  }
+
+  /* Forced-colours mode (DESIGN 2.3). */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      scroll-behavior: auto !important;
+    }
+  }
+}

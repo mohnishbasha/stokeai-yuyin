@@ -6,6 +6,12 @@ for s in run-tests check-types run-golden run-bench; do
   f=".agent/skills/$s/run.sh"
   [ -f "$f" ] || { echo "FAIL: missing $f"; exit 1; }
   [ -x "$f" ] || { echo "FAIL: $f is not executable"; exit 1; }
-  bash "$f" >/dev/null 2>&1 || { echo "FAIL: $f exited non-zero"; exit 1; }
+  out="$(mktemp)"
+  if ! bash "$f" >"$out" 2>&1; then
+    echo "FAIL: $f exited non-zero"
+    tail -n 60 "$out"
+    exit 1
+  fi
+  rm -f "$out"
 done
 echo "ok: smoke_agent_skills_run_sh_exit_0"

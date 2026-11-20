@@ -453,11 +453,11 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** DESIGN "Design System"; ARCHITECTURE "Console"
 - **Description:** Next.js App Router with strict TypeScript. Tailwind configured with the tokens from the Design System section expressed as CSS variables, dark theme default with a light theme. Self-host the fonts. Route groups: `(marketing)`, `(console)`, `(operator)`.
 - **Acceptance criteria:**
-  - [ ] Lighthouse performance at least 90 on the home shell
-  - [ ] Lighthouse accessibility at least 95 on the home shell
-  - [ ] Design tokens are CSS variables; no raw colour, type, or spacing values elsewhere
-  - [ ] Fonts are self-hosted
-  - [ ] Route groups `(marketing)`, `(console)`, `(operator)` exist
+  - [x] Lighthouse performance at least 90 on the home shell
+  - [x] Lighthouse accessibility at least 95 on the home shell
+  - [x] Design tokens are CSS variables; no raw colour, type, or spacing values elsewhere
+  - [x] Fonts are self-hosted
+  - [x] Route groups `(marketing)`, `(console)`, `(operator)` exist
 - **Test scenarios to add:** e2e_console_homeshell_lighthouse_meetsthresholds, unit_console_tokens_themes_darkdefaultlightavailable, unit_console_styles_rawvalues_lintrejects
 
 ### S2-T02: Component library
@@ -468,11 +468,11 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** DESIGN "Components"; PRD FR-022
 - **Description:** Build Button, Input, Textarea (with a code point counter that counts the same way as the gateway), Select, VoicePicker, Table, Tabs, Dialog, Toast, Badge, CodeBlock with copy and language tabs (curl, TypeScript, Python), KeyReveal (shows a secret once), BalanceMeter, UsageChart, EmptyState, and ErrorState. Each has a Storybook story or an equivalent preview route and a unit test.
 - **Acceptance criteria:**
-  - [ ] Every listed component exists with a story or preview route
-  - [ ] Every component has a unit test
-  - [ ] Every component has keyboard support and a visible focus ring
-  - [ ] Textarea counter counts Unicode code points
-  - [ ] KeyReveal shows a secret exactly once
+  - [x] Every listed component exists with a story or preview route
+  - [x] Every component has a unit test
+  - [x] Every component has keyboard support and a visible focus ring
+  - [x] Textarea counter counts Unicode code points
+  - [x] KeyReveal shows a secret exactly once
 - **Test scenarios to add:** unit_console_textarea_counter_codepoints_matchesexpected, unit_console_keyreveal_secret_shownonce, unit_console_components_keyboardnav_focusringvisible, unit_console_codeblock_copy_languagetabswork
 
 ### S2-T03: Signature element: the pulse line
@@ -483,9 +483,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** DESIGN "Signature element"; PRD FR-022
 - **Description:** The pulse line component described in the Design System section, driven by a mock audio stream.
 - **Acceptance criteria:**
-  - [ ] Renders at 60 fps on a mid-range laptop
-  - [ ] Respects `prefers-reduced-motion`
-  - [ ] Has an accessible text alternative
+  - [x] Renders at 60 fps on a mid-range laptop (CN-80, #223: median at least 58 fps and p95 frame interval at most 20 ms under a 4x CDP CPU throttle as the mid-range laptop stand-in; CN-45 keeps the 4 ms per-frame CPU budget; the physical laptop check stays a manual step in CN-45)
+  - [x] Respects `prefers-reduced-motion`
+  - [x] Has an accessible text alternative
 - **Test scenarios to add:** unit_console_pulseline_reducedmotion_staticrender, unit_console_pulseline_render_hasaccessibletextalternative, perf_console_pulseline_mockstream_sustains60fps
 
 ### S2-T04: Built-in auth and organization switcher
@@ -496,12 +496,12 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-021; ARCHITECTURE "Authentication and roles"
 - **Description:** Built-in auth (ADR-025). Organizations and users are created by the operator CLI `yuyin-admin`, which issues a single-use magic link or one-time token (hashed in `login_tokens`, 15 minute expiry). Sign-in sets an HttpOnly, Secure, SameSite session cookie (`sessions`) and all mutating requests require a CSRF token. Roles map to owner, admin, developer, billing through `memberships`. Middleware protects `(console)` and `(operator)`. Operator access is an allowlist of user ids from the environment. This task creates the auth subset of the schema (`organizations`, `users`, `memberships`, `login_tokens`, `sessions`) as plain SQL migrations; S4-T01 extends it. The Clerk integration is a Next phase task (NP-02).
 - **Acceptance criteria:**
-  - [ ] An e2e test covers operator-issued login link to first console view using built-in auth
-  - [ ] Roles map to owner, admin, developer, billing
-  - [ ] A login token is single use, expires after 15 minutes, and is stored only as a hash
-  - [ ] Session cookie is HttpOnly, Secure, SameSite, and mutating requests without a valid CSRF token are rejected
-  - [ ] Unauthenticated requests to `(console)` and `(operator)` are redirected
-  - [ ] Operator routes are accessible only to the env-configured allowlist
+  - [x] An e2e test covers operator-issued login link to first console view using built-in auth
+  - [x] Roles map to owner, admin, developer, billing
+  - [x] A login token is single use, expires after 15 minutes, and is stored only as a hash
+  - [x] Session cookie is HttpOnly, Secure, SameSite, and mutating requests without a valid CSRF token are rejected
+  - [x] Unauthenticated requests to `(console)` and `(operator)` are redirected
+  - [x] Operator routes are accessible only to the env-configured allowlist
 - **Test scenarios to add:** e2e_console_loginlink_firstconsoleview_succeeds, security_console_logintoken_reused_rejected, security_console_mutation_missingcsrf_rejected, security_console_operatorroute_nonallowlisted_denied, security_console_middleware_unauthenticated_redirects
 
 ### S2-T05: Console screens with mock data
@@ -512,9 +512,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** DESIGN "Screens"; PRD FR-015, FR-016, FR-020, FR-022, FR-026
 - **Description:** Implement all console screens from DESIGN.md, backed by a typed mock data layer behind the same interfaces the real data layer will implement.
 - **Acceptance criteria:**
-  - [ ] Every screen in DESIGN.md is reachable
-  - [ ] Every empty and error state is viewable through a query flag
-  - [ ] The mock data layer implements the same TypeScript interfaces as the planned real layer
+  - [x] Every screen in DESIGN.md is reachable (ten console screens, 11 marketing screens, 6 docs screens, and operator screens O1 to O7 with mock data from #226, PR #227, covered by CN-65)
+  - [x] Every empty and error state is viewable through a query flag
+  - [x] The mock data layer implements the same TypeScript interfaces as the planned real layer
 - **Test scenarios to add:** e2e_console_screens_all_reachable, e2e_console_screens_emptystateflag_renders, e2e_console_screens_errorstateflag_renders
 
 ### S2-T06: Marketing site shell
@@ -525,10 +525,10 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-023; DESIGN "Marketing site"
 - **Description:** Home with a demo panel (mock), Pricing (reads `config/pricing.toml`), Benchmarks page (placeholder stating numbers will be published from the harness), Custom voice, FAQ, About, Contact, and legal page stubs. All copy is original. No performance claims.
 - **Acceptance criteria:**
-  - [ ] No page contains a latency or capacity number
-  - [ ] Pricing reads `config/pricing.toml`
-  - [ ] All listed pages exist
-  - [ ] Benchmarks page states numbers will be published from the harness
+  - [x] No page contains a latency or capacity number
+  - [x] Pricing reads `config/pricing.toml`
+  - [x] All listed pages exist
+  - [x] Benchmarks page states numbers will be published from the harness
 - **Test scenarios to add:** unit_site_pages_allpublic_noperformancenumbers, unit_site_pricing_configfile_rendersvalues, e2e_site_pages_alllisted_navigable
 
 ### S2-T07: Docs site shell
@@ -539,9 +539,9 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** PRD FR-024; DESIGN "Docs site"
 - **Description:** Docs site with MDX, sidebar, search, and an API reference generated from `api/openapi.yaml`.
 - **Acceptance criteria:**
-  - [ ] Reference page builds from the OpenAPI file in CI
-  - [ ] Sidebar and search work
-  - [ ] MDX pages render
+  - [x] Reference page builds from the OpenAPI file in CI
+  - [x] Sidebar and search work
+  - [x] MDX pages render
 - **Test scenarios to add:** contract_docs_reference_buildfromopenapi_succeeds, e2e_docs_search_knownterm_returnsresult
 
 ### S2-T08: Accessibility and Devanagari rendering checks
@@ -552,8 +552,8 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Spec references:** DESIGN "Accessibility"; TEST_PLAN "Accessibility"
 - **Description:** Run axe checks in Playwright on every route. Add a fixture page that renders 50 Devanagari strings with conjuncts and matras, snapshot-tested.
 - **Acceptance criteria:**
-  - [ ] Zero serious or critical axe violations on every route
-  - [ ] Devanagari fixture page with 50 strings is snapshot-tested
+  - [x] Zero serious or critical axe violations on every route
+  - [x] Devanagari fixture page with 50 strings is snapshot-tested
 - **Test scenarios to add:** e2e_a11y_allroutes_axe_zeroseriousviolations, e2e_render_devanagarifixture_conjunctsmatras_matchessnapshot
 
 ### S2-T09: Playwright harness and visual snapshots
@@ -562,18 +562,18 @@ Priority convention: p0 means the task is directly required by the sprint gate; 
 - **Estimate:** M
 - **Dependencies:** S2-T05
 - **Spec references:** TEST_PLAN "End-to-end and visual tests"
-- **Description:** Playwright config, auth fixture, and visual snapshots for 12 key screens in both themes.
+- **Description:** Playwright config, auth fixture, and visual snapshots for 12 key screens in both themes. CI runs them in a `visual-tests` job (needs `integration-tests`) on `ubuntu-24.04-arm`, the architecture the baselines were generated on; the job graph contract test (SC-40) includes it.
 - **Acceptance criteria:**
-  - [ ] 12 key screens have snapshots in both themes
-  - [ ] Auth fixture works with built-in auth (seeded session)
-  - [ ] The suite runs in CI in under 6 minutes
+  - [x] 12 key screens have snapshots in both themes
+  - [x] Auth fixture works with built-in auth (seeded session)
+  - [x] The suite runs in CI in under 6 minutes
 - **Test scenarios to add:** e2e_visual_keyscreens_darktheme_matchessnapshots, e2e_visual_keyscreens_lighttheme_matchessnapshots
 
 ### Sprint 2 gate
-- [ ] Every screen in DESIGN.md exists and is navigable
-- [ ] Design tokens are the only source of colour, type, and spacing values
-- [ ] Zero serious accessibility violations
-- [ ] Visual snapshots committed
+- [x] Every screen in DESIGN.md exists and is navigable (console, marketing and docs screens, plus operator O1 to O7 with mock data from #226, PR #227; real operator data stays in S6-T03)
+- [x] Design tokens are the only source of colour, type, and spacing values
+- [x] Zero serious accessibility violations
+- [x] Visual snapshots committed
 
 ---
 
